@@ -1,0 +1,16 @@
+name = "UI Mass Fab Manager - Auto Fab Manager"
+uid = "64f9802a-4bd7-11dc-8314-0800200c987987"
+version = 1
+copyright = ""
+description = "Automatically switches mass fabricators on/off."
+author = "Stephen Evans (aka Goom)"
+url = ""
+selectable = true
+enabled = true
+exclusive = false
+ui_only = true
+requires = {}
+requiresNames = {}
+conflicts = {}
+before = {}
+after = {}

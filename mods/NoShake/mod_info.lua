@@ -1,0 +1,16 @@
+name = "NoShake"
+uid = "06E0D4F2-2231-11E3-A9FB-92EE6088709B"
+version = 2
+copyright = "GPL v3"
+description = "Disable camera shake"
+author = "darkbroski"
+icon = "/mods/NoShake/NoShakeIcon.png"
+selectable = true
+enabled = true
+exclusive = false
+ui_only = true
+requires = {}
+requiresNames = {}
+conflicts = {}
+before = {}
+after = {}

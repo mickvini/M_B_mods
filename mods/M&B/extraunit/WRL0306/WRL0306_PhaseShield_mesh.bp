@@ -1,0 +1,14 @@
+MeshBlueprint {
+    IconFadeInZoom = 130,
+    LODs = {
+        {
+            MeshName = '/mods/M&B/extraunit/WRL0306/WRL0306_lod0.scm',
+            AlbedoName = '/mods/M&B/extraunit/WRL0306/WRL0306_albedo.dds',
+            NormalsName = '/mods/M&B/extraunit/WRL0306/WRL0306_normals.dds',
+            SpecularName = '/mods/M&B/extraunit/WRL0306/WRL0306_specteam.dds',
+            LookupName = '/effects/entities/PhaseShield/PhaseShieldLookup.dds',
+            ShaderName = 'PhaseShield',
+            LODCutoff = 195,
+        },
+    },
+}

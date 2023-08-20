@@ -1,0 +1,12 @@
+TrailEmitterBlueprint {
+	BlueprintId = 'AeonT3NCM2_polytrails_emit',
+	Lifetime = -1.00,
+    TrailLength = 0.5,
+    Size = 0.07,
+    SortOrder = 0,
+    BlendMode = 3,
+    TextureRepeatRate = 1,
+    LODCutoff = 260,
+	RampTexture = [[/mods/M&B/textures/particles/AeonT3NCM2_polytrails.dds]],
+	RepeatTexture = [[/textures/particles/ramp_phalanx_munition_01.dds]],
+}

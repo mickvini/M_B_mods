@@ -1,0 +1,352 @@
+UnitBlueprint {
+    Merge = true,
+    AI = {
+        GuardReturnRadius = 130,
+    },
+    Audio = {
+        AmbientMove = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Loop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        AmbientMoveSub = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Loop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Killed = Sound {
+            Bank = 'UASDestroy',
+            Cue = 'UAS0203_Destroy',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StartMove = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Start',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StartMoveSub = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Start',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StopMove = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Stop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StopMoveSub = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS0304_Move_Stop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        SubmergeStart = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS_Sub_Submerge',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        SurfaceStart = Sound {
+            Bank = 'XSS',
+            Cue = 'XSS_Sub_Surface',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        UISelection = Sound {
+            Bank = 'SeraphimSelect',
+            Cue = 'Seraphim_Select_Sub',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+    },
+    BuildIconSortPriority = 15,
+    Buffs = {
+        Regen = {
+            Level1 = 3,
+            Level2 = 6,
+            Level3 = 9,
+            Level4 = 12,
+            Level5 = 15,
+        },
+    },
+    Categories = {
+        'PRODUCTFA',
+        'SELECTABLE',
+        'BUILTBYTIER2FACTORY',
+        'BUILTBYTIER3FACTORY',
+        'BUILTBYEXPERIMENTALSUB',
+        'SERAPHIM',
+        'MOBILE',
+        'NAVAL',
+        'TECH2',
+        'ANTINAVY',
+        'SUBMERSIBLE',
+        'VISIBLETORECON',
+        'RECLAIMABLE',
+        'OVERLAYSONAR',
+        'OVERLAYANTIAIR',
+        'OVERLAYDEFENSE',
+        'OVERLAYANTINAVY',
+    },
+    Defense = {
+        ArmorType = 'Normal',
+        Health = 2600,
+        MaxHealth = 2600,
+        RegenRate = 0,
+        AirThreatLevel = 0,
+        SurfaceThreatLevel = 60,
+        SubThreatLevel = 0,
+        EconomyThreatLevel = 0,
+    },
+    Description = 'Подводная лодка T2',
+    Display = {
+        Abilities = {            
+            '<LOC ability_sonar>Sonar',
+            '<LOC ability_submersible>Submersible',
+            '<LOC ability_torpedo>Torpedoes',            
+        },
+        CannonOpenAnimation = '/units/xss0304/xss0304_aopen.sca',
+        IdleEffects = {
+            Sub = {
+                Effects = {
+                    {
+                        Bones = {
+                            'Exhaust02',
+                            'Exhaust01',
+                            'XSS0304',
+                        },
+                        Type = 'UnderWater01',
+                    },
+                },
+            },
+            Water = {
+                Effects = {
+                    {
+                        Bones = {
+                            'XSS0304',
+                        },
+                        Scale = 0.5,
+                        Type = 'SeaIdle01',
+                    },
+                },
+            },
+        },
+        Mesh = {
+            IconFadeInZoom = 130,
+            LODs = {
+                {
+                    LODCutoff = 100,
+                    LookupName = '/textures/environment/Falloff_seraphim_lookup.dds',
+                    ShaderName = 'Seraphim',
+                },
+                {
+                    AlbedoName = 'xss0304_lod1_albedo.dds',
+                    LODCutoff = 215,
+                    LookupName = '/textures/environment/Falloff_seraphim_lookup.dds',
+                    ShaderName = 'Seraphim',
+                    SpecularName = 'xss0304_lod1_specteam.dds',
+                },
+            },
+        },
+        MotionChangeEffects = {
+            SubBottomUp = {
+                Effects = {
+                    {
+                        Bones = {
+                            'XSS0304',
+                        },
+                        Type = 'Surface01',
+                    },
+                },
+            },
+            WaterTopDown = {
+                Effects = {
+                    {
+                        Bones = {
+                            'XSS0304',
+                        },
+                        Type = 'Submerge01',
+                    },
+                },
+            },
+        },
+        MovementEffects = {
+            Sub = {
+                Effects = {
+                    {
+                        Bones = {
+                            'Exhaust01',
+                            'Exhaust02',
+                        },
+                        Scale = 1.75,
+                        Type = 'BackWake',
+                    },
+                },
+            },
+            Water = {
+                Effects = {
+                    {
+                        Bones = {
+                            'XSS0304',
+                        },
+                        Offset = {
+                            0,
+                            0,
+                            -0.5,
+                        },
+                        Scale = 0.9,
+                        Type = 'BackWake',
+                    },
+                },
+            },
+        },
+        PlaceholderMeshName = 'UXS0001',
+        SpawnRandomRotation = true,
+        UniformScale = 0.04,
+    },
+    Economy = {
+        BuildCostEnergy = 0,
+        BuildCostMass = 780,
+        BuildTime = 6000,
+    },
+    General = {
+        Category = 'Submarine',
+        Classification = 'RULEUC_MilitaryShip',
+        CommandCaps = {
+            RULEUCC_Attack = true,
+            RULEUCC_CallTransport = false,
+            RULEUCC_Capture = false,
+            RULEUCC_Dive = true,
+            RULEUCC_Guard = true,
+            RULEUCC_Move = true,
+            RULEUCC_Nuke = false,
+            RULEUCC_Patrol = true,
+            RULEUCC_Reclaim = false,
+            RULEUCC_Repair = false,
+            RULEUCC_RetaliateToggle = true,
+            RULEUCC_Stop = true,
+            RULEUCC_Transport = false,
+        },
+        FactionName = 'Seraphim',
+        Icon = 'sea',
+        TechLevel = 'RULEUTL_Basic',
+        UnitWeight = 1,
+        UnitName = '<LOC xss0304_name>Yathsou',
+    },
+    Intel = {
+        SonarRadius = 45,
+        VisionRadius = 25,
+        WaterVisionRadius = 10,
+    },
+    Interface = {
+        HelpText = '<LOC xss0304_help>Submarine Hunter',
+    },
+    LifeBarHeight = 0.075,
+    LifeBarOffset = 1.5,
+    LifeBarSize = 0.75,
+    Physics = {
+        BackUpDistance = 5,
+        BankingSlope = 0,
+        BuildOnLayerCaps = {
+            LAYER_Air = false,
+            LAYER_Land = false,
+            LAYER_Orbit = false,
+            LAYER_Seabed = false,
+            LAYER_Sub = true,
+            LAYER_Water = false,
+        },
+        CatchUpAcc = 10,
+        DragCoefficient = 0.2,
+        Elevation = -1.5,
+        MaxAcceleration = 2.4,
+        MaxBrake = 2.4,
+        MaxSpeed = 2.4,
+        MaxSpeedReverse = 2.4,
+        MaxSteerForce = 5,
+        MeshExtentsX = 0.6,
+        MeshExtentsY = 0.65,
+        MeshExtentsZ = 2.5,
+        MinSpeedPercent = 0,
+        MotionType = 'RULEUMT_SurfacingSub',
+        TurnRadius = 5,
+        TurnRate = 40,
+    },
+    SelectionSizeX = 0.6,
+    SelectionSizeZ = 1.8,
+    SelectionThickness = 0.37,
+    SizeX = 1,
+    SizeY = 0.8,
+    SizeZ = 2.6,
+    StrategicIconName = 'icon_sub3_antinavy',
+    StrategicIconSortPriority = 165,
+    CollisionOffsetX = 0.05,
+    CollisionOffsetY = -0.4,
+    CollisionOffsetZ = -0.01,
+    Footprint = {
+        SizeX = 2,
+        SizeZ = 5,
+    },
+    Veteran = {
+        Level1 = 12,
+        Level2 = 24,
+        Level3 = 36,
+        Level4 = 48,
+        Level5 = 60,
+    },
+    Weapon = {
+        {
+            Audio = {
+                Fire = Sound {
+                    Bank = 'XSS_Weapon',
+                    Cue = 'XSS0304_Uall_Torpedo',
+                    LodCutoff = 'Weapon_LodCutoff',
+                },
+            },
+            BallisticArc = 'RULEUBA_None',
+            CollideFriendly = false,
+            Damage = 413,
+            DamageType = 'Normal',
+            DisplayName = 'Uall Cavitation Torpedo',
+            FireTargetLayerCapsTable = {
+                Sub = 'Seabed|Sub|Water',
+                Water = 'Seabed|Sub|Water',
+            },
+            FiringTolerance = 2,
+            Label = 'TorpedoFront',
+            MaxRadius = 35,
+            MuzzleSalvoDelay = 1,
+            MuzzleSalvoSize = 4,
+            MuzzleVelocity = 5,
+            ProjectileId = '/projectiles/SANUallCavitationTorpedo04/SANUallCavitationTorpedo04_proj.bp',
+            ProjectileLifetime = 7,
+            RackBones = {
+                {
+                    MuzzleBones = {
+                        'Projectile01',
+                        'Projectile02',
+                        'Projectile03',
+                    },
+                    RackBone = 'Torpedo02',
+                },
+            },
+            RackFireTogether = false,
+            RackSlavedToTurret = false,
+            RackRecoilDistance = 0,
+            RackReloadTimeout = 10,
+            RateOfFire = 0.05,
+            RackSalvoChargeTime = 0,
+            RackSalvoReloadTime = 0,
+            RackSalvoSize = 1,
+            TargetCheckInterval = 2,
+            TargetPriorities = {
+                'SPECIALHIGHPRI',
+                'MOBILE',
+                'STRUCTURE DEFENSE',
+                'SPECIALLOWPRI',
+                'ALLUNITS',
+            },
+            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            WeaponCategory = 'Anti Navy',
+            RangeCategory = 'UWRC_AntiNavy',
+            SlavedToBody = true,
+            SlavedToBodyArcRange = 10,
+            Turreted = false,
+        },
+    },
+}

@@ -1,0 +1,234 @@
+UnitBlueprint {
+    Audio = {
+        AmbientMove = Sound {
+            Bank = 'UAL',
+            Cue = 'UAL0307_Move_Loop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Destroyed = Sound {
+            Bank = 'UALDestroy',
+            Cue = 'UAL_Destroy_Land',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        ShieldOff = Sound {
+            Bank = 'UAL',
+            Cue = 'UAL0307_Shield_Activate',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        ShieldOn = Sound {
+            Bank = 'UAL',
+            Cue = 'UAL0307_Shield_Activate',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StartMove = Sound {
+            Bank = 'UAL',
+            Cue = 'UAL0307_Move_Start',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StopMove = Sound {
+            Bank = 'UAL',
+            Cue = 'UAL0307_Move_Stop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        UISelection = Sound {
+            Bank = 'Interface',
+            Cue = 'Aeon_Select_Vehicle',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+    },
+    BuildIconSortPriority = 50,
+    Categories = {
+        'SELECTABLE',
+        'BUILTBYTIER3FACTORY',
+        'AEON',
+        'MOBILE',
+        'LAND',
+        'TECH3',
+        'SHIELD',
+        'DEFENSE',
+        'VISIBLETORECON',
+        'RECLAIMABLE',
+        'DUMMYGSRWEAPON',
+    },
+    Defense = {
+        ArmorType = 'Normal',
+        Health = 340,
+        MaxHealth = 340,
+        Shield = {
+            ImpactEffects = 'AeonShieldHit01',
+            RegenAssistMult = 60,
+            ShieldEnergyDrainRechargeTime = 15,
+            ShieldMaxHealth = 4800,
+            ShieldRechargeTime = 35,
+            ShieldRegenRate = 48,
+            ShieldRegenStartTime = 1,
+            ShieldSize = 22,
+            ShieldVerticalOffset = -3,
+            ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
+            Mesh = '/effects/entities/AeonShield01/AeonShield01_mesh',
+            MeshZ = '/effects/entities/Shield01/Shield01z_mesh',
+            ShieldSpillOverDamageMod = 0.5,
+        },
+        EconomyThreatLevel = 5,
+    },
+    Description = 'Эон Мобильный T3 щит',
+    Display = {
+        Abilities = {
+            '<LOC ability_amphibious>Amphibious',
+            '<LOC ability_shielddome>Shield Dome',
+        },
+        AnimationDeath = {
+            {
+                Animation = '/mods/M&B/units/sal0322/sal0322_Adeath.sca',
+                AnimationRateMax = 1.6,
+                AnimationRateMin = 1.5,
+                Weight = 100,
+            },
+        },
+        AnimationOpen = '/mods/M&B/units/SAL0322/SAL0322_aopen.sca',
+        IdleEffects = {
+            Land = {
+                Effects = {
+                    {
+                        Bones = {0},
+                        Offset = {0, -0.25, 0},
+                        Type = 'AeonGroundFX01',
+                    },
+                },
+            },
+        },
+        Mesh = {
+            IconFadeInZoom = 130,
+            LODs = {
+                {LODCutoff = 100, Scrolling = true, ShaderName = 'Aeon'},
+                {LODCutoff = 215, Scrolling = true, ShaderName = 'Aeon'},
+            },
+        },
+        MovementEffects = {
+            Land = {
+                Effects = {
+                    {
+                        Bones = {0},
+                        Type = 'GroundKickup01',
+                    },
+                    {
+                        Bones = {0},
+                        Offset = {0, -0.25, 0},
+                        Type = 'AeonGroundFX01',
+                    },
+                },
+                Treads = {
+                    ScrollTreads = true,
+                    TreadMarks = {
+                        {
+                            TreadMarks = 'tank_treads03_albedo',
+                            TreadMarksInterval = 0.045,
+                            TreadMarksSizeX = 0.22,
+                            TreadMarksSizeZ = 3.3,
+                            TreadOffset = {-0.33, 0, -1.6},
+                        },
+                        {
+                            TreadMarks = 'tank_treads03_albedo',
+                            TreadMarksInterval = 0.045,
+                            TreadMarksSizeX = 0.22,
+                            TreadMarksSizeZ = 3.3,
+                            TreadOffset = {0.33, 0, -1.6},
+                        },
+                    },
+                },
+            },
+            Water = {
+                Effects = {
+                    {
+                        Bones = {0},
+                        Scale = 0.3,
+                        Type = 'BackWake',
+                    },
+                },
+            },
+        },
+        TransportAnimation = {
+            {Weight = 100, Animation = '/mods/M&B/units/SAL0322/SAL0322_Atransportfold.sca'},
+        },
+        TransportDropAnimation = {
+            {Weight = 100, Animation = '/mods/M&B/units/SAL0322/SAL0322_Atransportunfold.sca'},
+        },
+        UniformScale = 0.02,
+    },
+    Economy = {
+        BuildCostEnergy = 0,
+        BuildCostMass = 520,
+        BuildTime = 1800,
+        MaintenanceConsumptionPerSecondEnergy = 200,
+        TeleportEnergyMod = 0.15,
+        TeleportMassMod = 1,
+        TeleportTimeMod = 0.01,
+    },
+    General = {
+        ToggleCaps = {
+            RULEUTC_ShieldToggle = true,
+        },
+        OrderOverrides = {
+            RULEUTC_ShieldToggle = {
+                bitmapId = 'shield-dome',
+                helpText = 'toggle_shield_dome',
+            },
+        },
+        CommandCaps = {
+            RULEUCC_CallTransport = true,
+            RULEUCC_Guard = true,
+            RULEUCC_Move = true,
+            RULEUCC_Patrol = true,
+            RULEUCC_Stop = true,
+        },
+        FactionName = 'Aeon',
+        Icon = 'amph',
+        UnitName = '<LOC sal0322_name>Flame Lotus',
+    },
+    Intel = {
+        VisionRadius = 20,
+    },
+    LifeBarHeight = 0.075,
+    LifeBarOffset = 0.3,
+    LifeBarSize = 0.8,
+    Physics = {
+        BankingSlope = 0.5,
+        Elevation = 0.25,
+        MaxAcceleration = 4,
+        MaxBrake = 4,
+        MaxSpeed = 2.2,
+        MaxSpeedReverse = 0,
+        MaxSteerForce = 1000,
+        MeshExtentsX = 1,
+        MeshExtentsY = 0.65,
+        MeshExtentsZ = 1,
+        MotionType = 'RULEUMT_Amphibious',
+        RotateBodyWhileMoving = true,
+        RotateOnSpot = true,
+        TurnFacingRate = 120,
+        TurnRate = 150,
+        RotateOnSpotThreshold = 0.1,
+    },
+    SelectionSizeX = 0.55,
+    SelectionSizeZ = 0.55,
+    SelectionThickness = 0.68,
+    SizeX = 0.8,
+    SizeY = 0.5,
+    SizeZ = 0.8,
+    StrategicIconName = 'icon_land3_shield',
+    StrategicIconSortPriority = 125,
+    Transport = {
+        TransportClass = 3,
+    },
+    Wreckage = {
+        Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',
+        EnergyMult = 0,
+        HealthMult = 0.9,
+        MassMult = 0.9,
+        ReclaimTimeMultiplier = 1,
+        WreckageLayers = {
+            Land = true,
+            Seabed = true,
+        },
+    },
+}

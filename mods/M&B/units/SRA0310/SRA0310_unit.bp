@@ -1,0 +1,246 @@
+UnitBlueprint {
+    Audio = {
+        AirUnitWaterImpact = Sound {
+            Bank = 'Explosions',
+            Cue = 'Expl_Water_Lrg_01',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        AmbientMove = Sound {
+            Bank = 'URA',
+            Cue = 'URA0302_Move_Loop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Destroyed = Sound {
+            Bank = 'URADestroy',
+            Cue = 'URA_Destroy_Air',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Killed = Sound {
+            Bank = 'URADestroy',
+            Cue = 'URA_Destroy_Air_Killed',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Landing = Sound {
+            Bank = 'URA',
+            Cue = 'URA0302_Move_Land',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Refueling = Sound {
+            Bank = 'UEA',
+            Cue = 'UEA_Repair_Refuel',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StartMove = Sound {
+            Bank = 'URA',
+            Cue = 'URA0302_Move_Start',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StopMove = Sound {
+            Bank = 'URA',
+            Cue = 'URA0302_Move_Stop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Thruster = Sound {
+            Bank = 'URA',
+            Cue = 'URA0302_Move_Thruster',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        UISelection = Sound {
+            Bank = 'Interface',
+            Cue = 'Cybran_Select_Air',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+    },
+    Air = {
+        AutoLandTime = 1,
+        BankFactor = 5,
+        BreakOffDistance = 15,
+        BreakOffTrigger = 20,
+        CanFly = true,
+        CombatTurnSpeed = 1.9,
+        EngageDistance = 50,
+        KLift = 3,
+        KLiftDamping = 2.5,
+        KMove = 1.5,
+        KMoveDamping = 1,
+        KRoll = 1.5,
+        KRollDamping = 1,
+        KTurn = 1.5,
+        KTurnDamping = 2.3,
+        LiftFactor = 7,
+        MaxAirspeed = 25,
+        MinAirspeed = 8,
+        StartTurnDistance = 5,
+        TightTurnMultiplier = 1.03,
+        TurnSpeed = 1.9,
+        Winged = true,
+        BuildIconSortPriority = false,
+    },
+    BuildIconSortPriority = 25,
+    Categories = {
+        'SELECTABLE',
+        'MOBILE',
+        'BUILTBYTIER3FACTORY',
+        'AIR',
+        'HIGHALTAIR',
+        'EXPERIMENTAL',
+        'COUNTERINTELLIGENCE',
+        'VISIBLETORECON',
+        'RECLAIMABLE',
+        'OVERLAYCOUNTERINTEL',
+        'SPECIALHIGHPRI',
+    },
+    Defense = {
+        ArmorType = 'Light',
+        Health = 700,
+        MaxHealth = 700,
+        EconomyThreatLevel = 250,
+    },
+    Description = '<LOC sair0201>Decoy Plane',
+    Display = {
+        Abilities = {
+            '<LOC ability_personalstealth>Personal Stealth',
+            '<LOC ability_jamming>Jamming',
+        },
+        LayerChangeEffects = {
+            AirLand = {
+                Effects = {
+                    {
+                        Bones = {0},
+                        Type = 'Landing01',
+                    },
+                },
+            },
+            LandAir = {
+                Effects = {
+                    {
+                        Bones = {0},
+                        Type = 'TakeOff01',
+                    },
+                },
+            },
+        },
+        Mesh = {
+            IconFadeInZoom = 130,
+            LODs = {
+                {
+                    LODCutoff = 140,
+                    ShaderName = 'Insect',
+                    MeshName = '/units/ura0310/ura0310_lod0.scm',
+                    AlbedoName = '/units/ura0310/ura0310_albedo.dds',
+                    NormalsName = '/units/ura0310/ura0310_normalsTS.dds',
+                    SpecularName = '/units/ura0310/ura0310_specteam.dds',
+                },
+                {
+                    LODCutoff = 215,
+                    ShaderName = 'Insect',
+                    MeshName = '/units/ura0303/ura0303_lod1.scm',
+                    AlbedoName = '/units/ura0303/ura0303_lod1_albedo.dds',
+                    NormalsName = '/units/ura0303/ura0303_lod1_normalsTS.dds',
+                    SpecularName = '/units/ura0303/ura0303_lod1_specteam.dds',
+                },
+            },
+        },
+        MovementEffects = {
+            Air = {
+                Contrails = {
+                    Bones = {
+                        'Contrail_L',
+                        'Contrail_R',
+                    },
+                    ZOffset = 0,
+                },
+                Effects = {
+                    {
+                        Bones = {'Exhaust'},
+                        Type = 'AirMoveExhaust01',
+                    },
+                },
+            },
+        },
+        UniformScale = 0.11,
+    },
+    Economy = {
+        BuildCostEnergy = 0,
+        BuildCostMass = 350,
+        BuildTime = 1800,
+        MaintenanceConsumptionPerSecondEnergy = 25,
+    },
+    General = {
+        ToggleCaps = {
+            RULEUTC_JammingToggle = true,
+        },
+        CommandCaps = {
+            RULEUCC_CallTransport = true,
+            RULEUCC_Dock = true,
+            RULEUCC_Guard = true,
+            RULEUCC_Move = true,
+            RULEUCC_Patrol = true,
+            RULEUCC_Stop = true,
+        },
+        FactionName = 'Cybran',
+        Icon = 'air',
+        UnitName = '<LOC sra0310_name>Vanguard',
+    },
+    Intel = {
+        JamRadius = {
+            Max = 80,
+            Min = 30,
+        },
+        JammerBlips = 20,
+        RadarStealth = true,
+        VisionRadius = 32,
+    },
+    LifeBarHeight = 0.075,
+    LifeBarOffset = 0.6,
+    LifeBarSize = 1.75,
+    Physics = {
+        Elevation = 20,
+        FuelRechargeRate = 15,
+        FuelUseTime = 1000,
+        MaxSpeed = 0.5,
+        MotionType = 'RULEUMT_Air',
+        GroundCollisionOffset = 2.375,
+    },
+    SelectionSizeX = 0.8,
+    SelectionSizeZ = 1.1,
+    SelectionThickness = 0.39,
+    SizeX = 1,
+    SizeY = 0.3,
+    SizeZ = 1.2,
+    StrategicIconName = 'icon_fighter3_intel',
+    StrategicIconSortPriority = 55,
+    Footprint = {
+        MaxSlope = 0.25,
+        SizeX = 1,
+        SizeZ = 1,
+    },
+    SizeSphere = 2.375,
+    Transport = {
+        AirClass = true,
+        TransportClass = 3,
+    },
+    Weapon = {
+        {
+            Damage = 12.5,
+            DamageFriendly = true,
+            DamageRadius = 1,
+            DamageType = 'Normal',
+            DisplayName = 'Air Crash',
+            DummyWeapon = true,
+            FiringTolerance = 2,
+            Label = 'DeathImpact',
+            WeaponCategory = 'Death',
+        },
+    },
+    Wreckage = {
+        Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',
+        EnergyMult = 0,
+        HealthMult = 0.9,
+        MassMult = 0.9,
+        ReclaimTimeMultiplier = 1,
+        WreckageLayers = {
+            Land = true,
+        },
+    },
+}

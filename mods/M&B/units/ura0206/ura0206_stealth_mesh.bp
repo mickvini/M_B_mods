@@ -1,0 +1,43 @@
+MeshBlueprint {
+    IconFadeInZoom = 130,
+    LODs = {
+        {           
+	        AlbedoName = '/mods/4th_Dimension_212/units/ura0206/ura0206_albedo.dds',
+            LookupName = '/effects/entities/PhaseShield/PhaseShieldLookup.dds',	        
+		    MeshName = '/mods/4th_Dimension_212/units/ura0206/ura0206_lod0.scm',	                
+	        NormalsName = '/mods/4th_Dimension_212/units/ura0206/ura0206_normalsTS.dds',
+	        SpecularName = '/mods/4th_Dimension_212/units/ura0206/ura0206_stealth_texture.dds',
+	        LODCutoff = 215,
+	        ShaderName = 'ShieldCybran',            
+        },
+    },
+}
+
+
+            #ShaderName = 'Aeon',                 # Aeon unit shader.
+            #ShaderName = 'AeonBuildPuddle',      # Texture rotates around the model.
+            #ShaderName = 'AlphaFade',            # Unit will glow briefly at max alpha and then fade from sight.
+            #ShaderName = 'CybranShieldImpact',   # No noticeable effect other then unit disapears totaly.
+            #ShaderName = 'GlassAlpha',           # Object looses its shadow and reflectivity.
+            #ShaderName = 'Insect',               # Cybran unit shader.
+            #ShaderName = 'MapImager',            # Looks as if the units has had Sepia color adjustment. (Colors inverted)
+            #ShaderName = 'NukeEMP',              # Unit is invisible and without shadow.
+            #ShaderName = 'NukeUEF',              # Unit is invisible and without shadow.
+            #ShaderName = 'PhalanxEffect',        # Unit texture shown at max alpha
+            #ShaderName = 'PhaseShield',          # Unit personel shield effect
+            #ShaderName = 'Seraphim',             # Seraphim unit shader.
+            #ShaderName = 'ShieldAeon',           # Clear outline of a units model, without a shadow, very reflective.
+            #ShaderName = 'ShieldCybran',         # Clear outline of a units model, without a shadow, pinkish tint.
+            #ShaderName = 'ShieldFill',           # Unit is invisible and without shadow.   
+            #ShaderName = 'ShieldSeraphim',       # Texture rotates around the model as a slightly green outline. (A bit hard to see)
+            #ShaderName = 'ShieldUEF',            # Texture rotates around the model, its translucent with high alpha.
+            #ShaderName = 'TMeshAdd',             # Texture rotates around the model with minor Sepia effect.
+            #ShaderName = 'TMeshGlow',            # Textures look blue, no alpha, and shadow remains unchanged.
+            #ShaderName = 'TMeshNoLighting',      # Textures look blue, no alpha, and shadow remains unchanged.
+            #ShaderName = 'TMeshNoNormals',       # Textures look blue, no alpha, and shadow remains unchanged.
+            #ShaderName = 'TMeshOuterCloud',      # Unit is invisible and without shadow. 
+            #ShaderName = 'TMeshQuantumNuke',     # Unit is invisible and without shadow.
+            #ShaderName = 'UEFBuildCube',         # Texture rotates while Sepia changes, unit is with shadow.
+            #ShaderName = 'UEFQuantumGate',       # Textures look translucent, blue and rotates, unit has no shadow.
+            #ShaderName = 'Unit',                 # UEF unit shader.
+            #ShaderName = 'UnitFormationPreview', # Texture is a clear outline of the unit.

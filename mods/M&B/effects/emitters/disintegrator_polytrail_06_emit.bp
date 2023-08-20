@@ -1,0 +1,13 @@
+TrailEmitterBlueprint {
+	BlueprintId = 'disintegrator_polytrail_01',
+	Lifetime = -1.00,
+    TrailLength = 0.7,
+    Size = 0.08,
+    SortOrder = 0,
+    BlendMode = 3,
+    TextureRepeatRate = 1,
+    LODCutoff = 160,
+	RepeatTexture = [[/mods/m&b/textures/particles/trail_green_01.dds]],
+	RampTexture = [[/mods/m&b/textures/particles/ramp_green_disintegrator_01.dds]],
+}
+

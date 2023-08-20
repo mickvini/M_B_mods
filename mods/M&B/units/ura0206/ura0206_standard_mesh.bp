@@ -1,0 +1,13 @@
+MeshBlueprint {
+    IconFadeInZoom = 130,
+    LODs = {
+        {
+	        AlbedoName = '/mods/4th_Dimension_212/units/ura0206/ura0206_albedo.dds',
+		    MeshName = '/mods/4th_Dimension_212/units/ura0206/ura0206_lod0.scm',	                
+	        NormalsName = '/mods/4th_Dimension_212/units/ura0206/ura0206_normalsTS.dds',
+	        SpecularName = '/mods/4th_Dimension_212/units/ura0206/ura0206_specteam.dds',
+	        LODCutoff = 140,
+	        ShaderName = 'Insect',
+        },
+    },
+}        

@@ -1,0 +1,12 @@
+TrailEmitterBlueprint {
+	BlueprintId = 'aeonfigther_munition',
+	Lifetime = -1.00,
+    TrailLength = 0.2,
+    Size = 0.03,
+    SortOrder = 0,
+    BlendMode = 3,
+    TextureRepeatRate = 1,
+    LODCutoff = 260,
+	RampTexture = [[/mods/m&b/textures/particles/aeonfigther_munition.dds]],
+	RepeatTexture = [[/textures/particles/ramp_phalanx_munition_01.dds]],
+}

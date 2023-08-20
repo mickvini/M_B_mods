@@ -1,0 +1,11 @@
+MeshBlueprint {
+    LODs = {
+        {
+        	MeshName = '/mods/M&B/meshes/tech1_lod0.scm',        	
+            ShaderName = 'PhalanxEffect',
+            LODCutoff = 500,
+        },
+    },
+    IconFadeInZoom = 100,
+    UniformScale = 0.1,
+}

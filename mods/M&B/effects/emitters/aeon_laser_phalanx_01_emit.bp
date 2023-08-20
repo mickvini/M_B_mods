@@ -1,0 +1,13 @@
+TrailEmitterBlueprint {
+    BlueprintId = 'aeon_laser_phalanx_01',
+    Lifetime = -1.00,
+    TrailLength = 1.0,
+    Size = 0.020,
+    SortOrder = 0,
+    BlendMode = 3,
+    TextureRepeatRate = 1,
+    LODCutoff = 160,
+    RepeatTexture = [[/textures/particles/beam_ultrachrom_01.dds]],
+    RampTexture = [[/textures/particles/ramp_blue_03.dds]],
+}
+

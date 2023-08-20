@@ -1,0 +1,225 @@
+UnitBlueprint {
+    Audio = {
+        AmbientMove = Sound {
+            Bank = 'UEL',
+            Cue = 'UEL0307_Move_Loop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        Destroyed = Sound {
+            Bank = 'UELDestroy',
+            Cue = 'UEL_Destroy_Med_Land',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        ShieldOff = Sound {
+            Bank = 'UEL',
+            Cue = 'UEL0307_Shield_Activate',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        ShieldOn = Sound {
+            Bank = 'UEL',
+            Cue = 'UEL0307_Shield_Activate',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StartMove = Sound {
+            Bank = 'UEL',
+            Cue = 'UEL0307_Move_Start',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        StopMove = Sound {
+            Bank = 'UEL',
+            Cue = 'UEL0307_Move_Stop',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+        UISelection = Sound {
+            Bank = 'Interface',
+            Cue = 'UEF_Select_Vehicle',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+    },
+    BuildIconSortPriority = 50,
+    Buffs = {
+        Regen = {
+            Level1 = 3,
+            Level2 = 6,
+            Level3 = 9,
+            Level4 = 12,
+            Level5 = 15,
+        },
+    },
+    Categories = {
+        'SELECTABLE',
+        'BUILTBYTIER3FACTORY',
+        'UEF',
+        'MOBILE',
+        'LAND',
+        'TECH3',
+        'SHIELD',
+        'DEFENSE',
+        'VISIBLETORECON',
+        'RECLAIMABLE',
+        'DUMMYGSRWEAPON',
+    },
+    Defense = {
+        ArmorType = 'Normal',
+        Health = 440,
+        MaxHealth = 440,
+        Shield = {
+            ImpactEffects = 'UEFShieldHit01',
+            RegenAssistMult = 60,
+            ShieldEnergyDrainRechargeTime = 15,
+            ShieldMaxHealth = 5000,
+            ShieldRechargeTime = 35,
+            ShieldRegenRate = 48,
+            ShieldRegenStartTime = 1,
+            ShieldSize = 26,
+            ShieldVerticalOffset = -3.75,
+            ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
+            Mesh = '/effects/entities/Shield01/Shield01_mesh',
+            MeshZ = '/effects/entities/Shield01/Shield01z_mesh',
+        },
+        EconomyThreatLevel = 5,
+    },
+    Description = 'ОФЗ Мобильный T3 щит',
+    Display = {
+        Abilities = {
+            '<LOC ability_amphibious>Amphibious',
+            '<LOC ability_shielddome>Shield Dome',
+        },
+        AnimationWater = '/mods/M&B/units/sel0322/sel0322_afold.sca',
+        AnimationOpen = '/units/uel0307/uel0307_Aactivate.sca',
+        Mesh = {
+            IconFadeInZoom = 130,
+            LODs = {
+                {
+                    LODCutoff = 100,
+                    Scrolling = true,
+                    ShaderName = 'Unit',
+                    AlbedoName = '/units/uel0307/uel0307_albedo.dds',
+                    SpecularName = '/units/uel0307/uel0307_specteam.dds',
+                },
+                {
+                    LODCutoff = 215,
+                    ShaderName = 'Unit',
+                    MeshName = '/units/uel0307/uel0307_lod1.scm',
+                    AlbedoName = '/units/uel0307/uel0307_lod1_albedo.dds',
+                    NormalsName = '/units/uel0307/uel0307_lod1_normalsTS.dds',
+                    SpecularName = '/units/uel0307/uel0307_lod1_specteam.dds',
+                },
+            },
+        },
+        MovementEffects = {
+            Land = {
+                Effects = {
+                    {
+                        Bones = {
+                            'Exhaust_Left',
+                            'Exhaust_Right',
+                        },
+                        Type = 'GroundKickup01',
+                    },
+                },
+                Treads = {
+                    ScrollMultiplier = 0.5,
+                    ScrollTreads = true,
+                    TreadMarks = {
+                        {
+                            BoneName = 0,
+                            TreadMarks = 'tank_treads_albedo',
+                            TreadMarksInterval = 0.28,
+                            TreadMarksSizeX = 0.72,
+                            TreadMarksSizeZ = 0.48,
+                            TreadOffset = {0,0,0},
+                        },
+                    },
+                },
+            },
+            Water = {
+                Effects = {
+                    {
+                        Bones = {
+                            'Exhaust_Left',
+                            'Exhaust_Right',
+                        },
+                        Scale = 0.4,
+                        Type = 'BackWake',
+                    },
+                },
+            },
+        },
+        UniformScale = 0.12,
+    },
+    Economy = {
+        BuildCostEnergy = 0,
+        BuildCostMass = 520,
+        BuildTime = 1800,
+        MaintenanceConsumptionPerSecondEnergy = 210,
+        TeleportEnergyMod = 0.15,
+        TeleportMassMod = 1,
+        TeleportTimeMod = 0.01,
+    },
+    General = {
+        ToggleCaps = {
+            RULEUTC_ShieldToggle = true,
+        },
+        OrderOverrides = {
+            RULEUTC_ShieldToggle = {
+                bitmapId = 'shield-dome',
+                helpText = 'toggle_shield_dome',
+            },
+        },
+        CommandCaps = {
+            RULEUCC_CallTransport = true,
+            RULEUCC_Guard = true,
+            RULEUCC_Move = true,
+            RULEUCC_Patrol = true,
+            RULEUCC_Stop = true,
+        },
+        FactionName = 'UEF',
+        Icon = 'amph',
+        UnitName = '<LOC sel0322_name>Ella',
+    },
+    Intel = {
+        VisionRadius = 34,
+    },
+    LifeBarHeight = 0.075,
+    LifeBarOffset = 0.3,
+    LifeBarSize = 0.7,
+    Physics = {
+        MaxAcceleration = 4,
+        MaxBrake = 4,
+        MaxSpeed = 2.2,
+        MaxSpeedReverse = 0,
+        MaxSteerForce = 10,
+        MeshExtentsX = 0.9,
+        MeshExtentsY = 0.72,
+        MeshExtentsZ = 1.02,
+        MotionType = 'RULEUMT_AmphibiousFloating',
+        RotateOnSpot = true,
+        TurnRate = 120,
+        RotateOnSpotThreshold = 0.1,
+    },
+    SelectionCenterOffsetX = 0,
+    SelectionCenterOffsetZ = 0.025,
+    SelectionSizeX = 0.6,
+    SelectionSizeZ = 0.6,
+    SelectionThickness = 0.85,
+    SizeX = 0.72,
+    SizeY = 0.42,
+    SizeZ = 0.84,
+    StrategicIconName = 'icon_land3_shield',
+    StrategicIconSortPriority = 125,
+    CollisionOffsetZ = 0.05,
+    Transport = {
+        TransportClass = 3,
+    },
+    Wreckage = {
+        Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',
+        EnergyMult = 0,
+        HealthMult = 0.9,
+        MassMult = 0.9,
+        ReclaimTimeMultiplier = 1,
+        WreckageLayers = {
+            Land = true,
+        },
+    },
+}

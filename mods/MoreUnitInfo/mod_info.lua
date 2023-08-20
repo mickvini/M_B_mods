@@ -1,0 +1,10 @@
+name = "MoreUnitInfo"
+uid = "CC51528A-1823-113D-BF33-044655D89593"
+version = 0.1
+description = "show more weapon informations for units"
+author = "ingenic"
+selectable = true
+enabled = true
+exclusive = false
+ui_only = true
+requires = { }
