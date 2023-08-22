@@ -305,7 +305,7 @@ UnitBlueprint {
         RegenCeilingT4 = 40,
         RegenCeilingSCU = 30, 
         RegenFloor = 3,
-        RegenPerSecond = 0.02,
+        RegenPerSecond = 0.01,
         MaxHealthFactor = 1.1,
 		UnitCategory = 'BUILTBYTIER3FACTORY, BUILTBYQUANTUMGATE, NEEDMOBILEBUILD',
     },
