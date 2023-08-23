@@ -112,7 +112,7 @@ UnitBlueprint {
         UnitName = '<LOC ssb2311_name>Sinn Unthe',
     },
     Intel = {
-        VisionRadius = 180,
+        VisionRadius = 96,
     },
     Interface = {
         HelpText = '<LOC ssb2311_desc>Anti-Armor Point Defense',
@@ -191,7 +191,7 @@ UnitBlueprint {
             FiringRandomness = 0.1,
             FiringTolerance = 1.5,
             Label = 'RightArm',
-            MaxRadius = 196,
+            MaxRadius = 126,
             MinRadius = 6,
             MuzzleChargeDelay = 1,
             MuzzleSalvoDelay = 0,
@@ -221,7 +221,7 @@ UnitBlueprint {
             TurretPitchSpeed = 30,
             TurretPitchRange = 50,
             TurretYawRange = 360,
-            TurretYawSpeed = 22,
+            TurretYawSpeed = 30,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {
@@ -231,7 +231,7 @@ UnitBlueprint {
                 'DEFENSE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,     WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,      WALL',
             RangeCategory = 'UWRC_DirectFire',
             TurretDualManipulators = false,
             Turreted = true,

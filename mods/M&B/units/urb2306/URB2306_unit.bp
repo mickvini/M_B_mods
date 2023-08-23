@@ -252,7 +252,7 @@ UnitBlueprint {
             TurretPitchSpeed = 50,
             TurretPitchRange = 90,
             TurretYawRange = 360,
-            TurretYawSpeed = 20,
+            TurretYawSpeed = 50,
             TurretPitch = -20,
             TurretYaw = 0,
             TargetPriorities = {
@@ -321,10 +321,10 @@ UnitBlueprint {
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
             TargetCheckInterval = 0.3,
-            TurretPitchSpeed = 90,
+            TurretPitchSpeed = 50,
             TurretPitchRange = 55,
             TurretYawRange = 180,
-            TurretYawSpeed = 90,
+            TurretYawSpeed = 50,
             TurretPitch = 10,
             TurretYaw = 0,
             TargetPriorities = {
@@ -341,7 +341,7 @@ UnitBlueprint {
             RangeCategory = 'UWRC_DirectFire',
             TurretDualManipulators = false,
             Turreted = true,
-        },        
+        },
     },
     Wreckage = {
         Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',

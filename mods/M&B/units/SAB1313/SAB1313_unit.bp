@@ -43,8 +43,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 14400,
-        MaxHealth = 14400,
+        Health = 13600,
+        MaxHealth = 13600,
         RegenRate = 2.5,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -65,7 +65,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 925,
     },
-    Description = '<LOC sab1313_desc>Shielded Mass Fabricator',
+    Description = 'Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',
@@ -164,10 +164,10 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 7500,
-        BuildTime = 73600,
-        MaintenanceConsumptionPerSecondEnergy = 5000,
-        ProductionPerSecondMass = 12.5,
+        BuildCostMass = 3400,
+        BuildTime = 8200,
+        MaintenanceConsumptionPerSecondEnergy = 2420,
+        ProductionPerSecondMass = 16,
         RebuildBonusIds = {
             'uab1303',
             'sab1313',
@@ -263,7 +263,7 @@ UnitBlueprint {
     },
     Weapon = {
         {
-            Damage = 8000,
+            Damage = 13600,
             DamageFriendly = true,
             DamageRadius = 7.5,
             DamageType = 'Normal',

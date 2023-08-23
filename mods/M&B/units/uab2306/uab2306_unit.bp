@@ -265,7 +265,7 @@ UnitBlueprint {
             TurretPitchSpeed = 50,
             TurretPitchRange = 45,
             TurretYawRange = 180,
-            TurretYawSpeed = 45,
+            TurretYawSpeed = 50,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

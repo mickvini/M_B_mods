@@ -122,7 +122,7 @@ UnitBlueprint {
     },
     Intel = {
         RadarStealth = true,
-        VisionRadius = 180,
+        VisionRadius = 96,
     },
     Interface = {
         HelpText = '<LOC seb2401_desc>Experimental Point Defense',
@@ -211,7 +211,7 @@ UnitBlueprint {
             FiringRandomness = 0.3,
             FiringTolerance = 2,
             Label = 'ParticleGunLeft',
-            MaxRadius = 196,
+            MaxRadius = 126,
             MinRadius = 4,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
@@ -241,7 +241,7 @@ UnitBlueprint {
             TurretPitchSpeed = 30,
             TurretPitchRange = 90,
             TurretYawRange = 180,
-            TurretYawSpeed = 45,
+            TurretYawSpeed = 30,
             TurretPitch = 10,
             TurretYaw = 0,
             TargetPriorities = {

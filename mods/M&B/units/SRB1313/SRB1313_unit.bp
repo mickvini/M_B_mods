@@ -41,15 +41,15 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 12000,
-        MaxHealth = 12000,
+        Health = 13600,
+        MaxHealth = 13600,
         RegenRate = 1,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
         SubThreatLevel = 0,
         EconomyThreatLevel = 625,
     },
-    Description = '<LOC srb1313_desc>Cloakable Mass Fabricator',
+    Description = 'Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_cloak>Cloaking',
@@ -100,10 +100,10 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 7500,
-        BuildTime = 67200,
-        MaintenanceConsumptionPerSecondEnergy = 5000,
-        ProductionPerSecondMass = 12.5,
+        BuildCostMass = 3400,
+        BuildTime = 8200,
+        MaintenanceConsumptionPerSecondEnergy = 2420,
+        ProductionPerSecondMass = 16,
         RebuildBonusIds = {
             'urb1303',
             'srb1313',
@@ -193,7 +193,7 @@ UnitBlueprint {
     },
     Weapon = {
         {
-            Damage = 9600,
+            Damage = 13600,
             DamageFriendly = true,
             DamageRadius = 7.5,
             DamageType = 'Normal',

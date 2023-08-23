@@ -91,15 +91,15 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 16800,
-        MaxHealth = 16800,
+        Health = 13600,
+        MaxHealth = 13600,
         RegenRate = 1,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
         SubThreatLevel = 0,
         EconomyThreatLevel = 646,
     },
-    Description = '<LOC seb1313_desc>Engineering Mass Fabricator',
+    Description = 'Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_engineeringsuite>Engineering Suite',
@@ -174,17 +174,17 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 7500,
-        BuildRate = 222,
-        BuildTime = 80000,
+        BuildCostMass = 3400,
+        BuildRate = 16,
+        BuildTime = 8200,
         BuildableCategory = {
             'BUILTBYTIER1ENGINEER DEFENSE DIRECTFIRE UEF',
             'BUILTBYTIER1ENGINEER DEFENSE ANTIAIR UEF',
             'BUILTBYTIER1ENGINEER DEFENSE ANTINAVY UEF',
             'BUILTBYTIER3ENGINEER MASSSTORAGE UEF',
         },
-        MaintenanceConsumptionPerSecondEnergy = 5000,
-        ProductionPerSecondMass = 12.5,
+        MaintenanceConsumptionPerSecondEnergy = 2420,
+        ProductionPerSecondMass = 16,
         RebuildBonusIds = {
             'ueb1303',
             'seb1313',
@@ -278,7 +278,7 @@ UnitBlueprint {
     },
     Weapon = {
         {
-            Damage = 6400,
+            Damage = 13600,
             DamageFriendly = true,
             DamageRadius = 7.5,
             DamageType = 'Normal',

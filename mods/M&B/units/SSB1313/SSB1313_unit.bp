@@ -46,15 +46,15 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 19200,
-        MaxHealth = 19200,
+        Health = 13600,
+        MaxHealth = 13600,
         RegenRate = 5,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
         SubThreatLevel = 0,
         EconomyThreatLevel = 925,
     },
-    Description = '<LOC ssb1313_desc>NANO-Armored Mass Fabricator',
+    Description = 'Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',
@@ -153,10 +153,10 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 7500,
-        BuildTime = 60800,
-        MaintenanceConsumptionPerSecondEnergy = 5000,
-        ProductionPerSecondMass = 12.5,
+        BuildCostMass = 3400,
+        BuildTime = 8200,
+        MaintenanceConsumptionPerSecondEnergy = 2420,
+        ProductionPerSecondMass = 16,
         RebuildBonusIds = {
             'xsb1303',
             'ssb1313',
@@ -244,7 +244,7 @@ UnitBlueprint {
     },
     Weapon = {
         {
-            Damage = 11200,
+            Damage = 13600,
             DamageFriendly = true,
             DamageRadius = 7.5,
             DamageType = 'Normal',
