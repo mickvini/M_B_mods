@@ -272,7 +272,7 @@ UnitBlueprint {
         UniformScale = 0.018,
     },
     Economy = {
-        BuildCostEnergy = 5000000,
+        BuildCostEnergy = 1,
         BuildCostMass = 18000,
         BuildRate = 12,
         BuildTime = 60000,
@@ -318,7 +318,7 @@ UnitBlueprint {
         },
         EXImprovedEngineering = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1500,
+            BuildCostMass = 2200,
             BuildTime = 1440,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER AEON',
             Icon = 'exles1',
@@ -367,7 +367,7 @@ UnitBlueprint {
             NewBuildRate = 42,
             NewHealth = 1500,
             ProductionPerSecondEnergy = 1800,
-            ProductionPerSecondMass = 8,
+            ProductionPerSecondMass = 16,
             ShowBones = {
                 'Engineering',
             },
@@ -409,7 +409,7 @@ UnitBlueprint {
             NewBuildRate = 52,
             NewHealth = 2000,
             ProductionPerSecondEnergy = 4600,
-            ProductionPerSecondMass = 18,
+            ProductionPerSecondMass = 30,
             ShowBones = {
                 'Engineering',
             },
@@ -653,7 +653,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoLauncher = {
-            BuildCostEnergy = 90000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1440,
             BuildTime = 3600,
             Icon = 'exrtorp1',
@@ -692,7 +692,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoRapidLoader = {
-            BuildCostEnergy = 480000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3000,
             BuildTime = 10800,
             Icon = 'exrtorp2',
@@ -733,7 +733,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoClusterLauncher = {
-            BuildCostEnergy = 900000,
+            BuildCostEnergy = 1,
             BuildCostMass = 6300,
             BuildTime = 21600,
             Icon = 'exrtorp3',
@@ -775,7 +775,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXArtilleryMiasma = {
-            BuildCostEnergy = 45000,
+            BuildCostEnergy = 1,
             BuildCostMass = 990,
             BuildTime = 2700,
             Icon = 'exramc1',
@@ -808,7 +808,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXAdvancedShells = {
-            BuildCostEnergy = 225000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 8100,
             Icon = 'exramc2',
@@ -843,7 +843,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXImprovedReloader = {
-            BuildCostEnergy = 525000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4500,
             BuildTime = 18000,
             Icon = 'exramc3',
@@ -879,7 +879,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXBeamPhason = {
-            BuildCostEnergy = 45000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1080,
             BuildTime = 2700,
             Icon = 'exrgec1',
@@ -924,7 +924,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXImprovedCoolingSystem = {
-            BuildCostEnergy = 225000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 8100,
             Icon = 'exrgec2',
@@ -971,7 +971,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXPowerBooster = {
-            BuildCostEnergy = 525000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4500,
             BuildTime = 18000,
             Icon = 'exrgec3',
@@ -1019,7 +1019,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXShieldBattery = {
-            BuildCostEnergy = 45000,
+            BuildCostEnergy = 1,
             BuildCostMass = 840,
             BuildTime = 1800,
             Icon = 'exbsh1',
@@ -1059,7 +1059,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXActiveShielding = {
-            BuildCostEnergy = 225000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 8100,
             Icon = 'exbsh2',
@@ -1102,7 +1102,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXImprovedShieldBattery = {
-            BuildCostEnergy = 420000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3600,
             BuildTime = 14400,
             Icon = 'exbsh3',
@@ -1145,7 +1145,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXElectronicsEnhancment = {
-            BuildCostEnergy = 22500,
+            BuildCostEnergy = 1,
             BuildCostMass = 450,
             BuildTime = 900,
             Icon = 'exbint1',
@@ -1191,7 +1191,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXElectronicCountermeasures = {
-            BuildCostEnergy = 315000,
+            BuildCostEnergy = 1,
             BuildCostMass = 270,
             BuildTime = 8100,
             Icon = 'exbint2',
@@ -1238,7 +1238,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXCloakingSubsystems = {
-            BuildCostEnergy = 720000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4500,
             BuildTime = 21600,
             Icon = 'exbint3',
@@ -1286,7 +1286,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXMaelstromQuantum = {
-            BuildCostEnergy = 90000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1080,
             BuildTime = 2700,
             Icon = 'exbbat1',
@@ -1339,7 +1339,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXFieldExpander = {
-            BuildCostEnergy = 480000,
+            BuildCostEnergy = 1,
             BuildCostMass = 2040,
             BuildTime = 10800,
             Icon = 'exbbat2',
@@ -1394,7 +1394,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXQuantumInstability = {
-            BuildCostEnergy = 900000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4860,
             BuildTime = 21600,
             Icon = 'exbbat3',

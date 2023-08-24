@@ -271,7 +271,7 @@ UnitBlueprint {
         UniformScale = 0.05,
     },
     Economy = {
-        BuildCostEnergy = 5000000,
+        BuildCostEnergy = 1,
         BuildCostMass = 18000,
         BuildRate = 12,
         BuildTime = 60000,
@@ -316,7 +316,7 @@ UnitBlueprint {
             },
         },
         EXImprovedEngineering = {
-            BuildCostEnergy = 30000,
+            BuildCostEnergy = 1,
             BuildCostMass = 750,
             BuildTime = 1500,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER SERAPHIM',
@@ -356,7 +356,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXAdvancedEngineering = {
-            BuildCostEnergy = 105000,
+            BuildCostEnergy = 1,
             BuildCostMass = 2100,
             BuildTime = 6300,
             BuildableCategoryAdds = 'BUILTBYTIER3COMMANDER SERAPHIM',
@@ -398,7 +398,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXExperimentalEngineering = {
-            BuildCostEnergy = 270000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4050,
             BuildTime = 24300,
             BuildableCategoryAdds = 'BUILTBYTIER4COMMANDER SERAPHIM',
@@ -441,7 +441,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXCombatEngineering = {
-            BuildCostEnergy = 24000,
+            BuildCostEnergy = 1,
             BuildCostMass = 600,
             BuildTime = 1200,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER SERAPHIM',
@@ -487,7 +487,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXAssaultEngineering = {
-            BuildCostEnergy = 90000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 5400,
             BuildableCategoryAdds = 'BUILTBYTIER3COMMANDER SERAPHIM',
@@ -536,7 +536,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXApocolypticEngineering = {
-            BuildCostEnergy = 240000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3600,
             BuildTime = 21600,
             BuildableCategoryAdds = 'BUILTBYTIER4COMMANDER SERAPHIM',
@@ -579,7 +579,7 @@ UnitBlueprint {
             Slot = 'LCH',
         },
         EXChronotonBooster = {
-            BuildCostEnergy = 24000,
+            BuildCostEnergy = 1,
             BuildCostMass = 800,
             BuildTime = 800,
             Icon = 'exrzb1',
@@ -611,7 +611,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoLauncher = {
-            BuildCostEnergy = 45000,
+            BuildCostEnergy = 1,
             BuildCostMass = 900,
             BuildTime = 2700,
             Icon = 'exrtorp1',
@@ -650,7 +650,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoRapidLoader = {
-            BuildCostEnergy = 225000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 8100,
             Icon = 'exrtorp2',
@@ -691,7 +691,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXTorpedoClusterLauncher = {
-            BuildCostEnergy = 525000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4500,
             BuildTime = 18000,
             Icon = 'exrtorp3',
@@ -733,7 +733,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXCannonBigBall = {
-            BuildCostEnergy = 90000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1800,
             BuildTime = 3600,
             Icon = 'exramc1',
@@ -778,7 +778,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXImprovedContainmentBottle = {
-            BuildCostEnergy = 480000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3000,
             BuildTime = 10800,
             Icon = 'exramc2',
@@ -825,7 +825,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXPowerBooster = {
-            BuildCostEnergy = 900000,
+            BuildCostEnergy = 1,
             BuildCostMass = 6300,
             BuildTime = 21600,
             Icon = 'exramc3',
@@ -873,7 +873,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXCannonRapid = {
-            BuildCostEnergy = 21000,
+            BuildCostEnergy = 1,
             BuildCostMass = 840,
             BuildTime = 1800,
             Icon = 'exrgec1',
@@ -912,7 +912,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXImprovedCoolingSystem = {
-            BuildCostEnergy = 105000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1200,
             BuildTime = 5400,
             Icon = 'exrgec2',
@@ -953,7 +953,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXEnergyShellHardener = {
-            BuildCostEnergy = 300000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3000,
             BuildTime = 14400,
             Icon = 'exrgec3',
@@ -995,7 +995,7 @@ UnitBlueprint {
             Slot = 'RCH',
         },
         EXL1Lambda = {
-            BuildCostEnergy = 60000,
+            BuildCostEnergy = 1,
             BuildCostMass = 720,
             BuildTime = 1800,
             Icon = 'exbsh1',
@@ -1042,7 +1042,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXL2Lambda = {
-            BuildCostEnergy = 360000,
+            BuildCostEnergy = 1,
             BuildCostMass = 1530,
             BuildTime = 8100,
             Icon = 'exbsh2',
@@ -1091,7 +1091,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXL3Lambda = {
-            BuildCostEnergy = 600000,
+            BuildCostEnergy = 1,
             BuildCostMass = 2400,
             BuildTime = 14400,
             Icon = 'exbsh3',
@@ -1139,7 +1139,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXElectronicsEnhancment = {
-            BuildCostEnergy = 36000,
+            BuildCostEnergy = 1,
             BuildCostMass = 660,
             BuildTime = 1800,
             Icon = 'exbint1',
@@ -1190,7 +1190,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXElectronicCountermeasures = {
-            BuildCostEnergy = 540000,
+            BuildCostEnergy = 1,
             BuildCostMass = 4500,
             BuildTime = 16200,
             Icon = 'exbint2',
@@ -1246,7 +1246,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXCloakingSubsystems = {
-            BuildCostEnergy = 405000,
+            BuildCostEnergy = 1,
             BuildCostMass = 2700,
             BuildTime = 10800,
             Icon = 'exbint3',
@@ -1301,7 +1301,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXBasicDefence = {
-            BuildCostEnergy = 67500,
+            BuildCostEnergy = 1,
             BuildCostMass = 1080,
             BuildTime = 2700,
             Icon = 'exbbat1',
@@ -1358,7 +1358,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXTacticalMisslePack = {
-            BuildCostEnergy = 180000,
+            BuildCostEnergy = 1,
             BuildCostMass = 3000,
             BuildTime = 10800,
             Icon = 'exbbat2',
@@ -1415,7 +1415,7 @@ UnitBlueprint {
             Slot = 'Back',
         },
         EXOverchargeOverdrive = {
-            BuildCostEnergy = 450000,
+            BuildCostEnergy = 1,
             BuildCostMass = 5400,
             BuildTime = 21600,
             Icon = 'exbbat3',

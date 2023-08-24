@@ -94,8 +94,6 @@ UnitBlueprint {
     },
     Categories = {
         'SELECTABLE',
-        'BUILTBYTIER3FACTORY',
-        'SERAPHIM',
         'MOBILE',
         'AIR',
         'HIGHALTAIR',
