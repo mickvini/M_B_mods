@@ -236,8 +236,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20,
-            DamageRadius = 0.3,
+            Damage = 40,
+            DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Ionized Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -250,7 +250,7 @@ UnitBlueprint {
             MinRadius = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 150,
+            MuzzleVelocity = 80,
             ProjectileId = '/mods/M&B/projectiles/BRMT1EXM1proj/BRMT1EXM1proj_proj.bp',
             ProjectilesPerOnFire = 1,
             RackBones = {
@@ -288,7 +288,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = -2.5,
             RackReloadTimeout = 0,
-            RateOfFire = 10,
+            RateOfFire = 5,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

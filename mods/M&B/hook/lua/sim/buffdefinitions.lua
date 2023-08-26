@@ -70,7 +70,7 @@ BuffBlueprint {
     Name = 'WeaponBuffLand' .. 5, DisplayName = 'WeaponBuffLand' .. 5,
     BuffType = 'WeaponBuffLand', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
-        --Damage = {Add = 0, Mult = 1 + i/10*4},  
+        Damage = {Add = 0, Mult = 1 + 0.6},  
         DamageRadius = {Add = 0, Mult = 1 + 0.3},  
         MaxRadius = {Add = 0, Mult = 1 + 0.2},
         RateOfFire = {Add = 0, Mult = 1 - 0.55},            
@@ -106,7 +106,7 @@ BuffBlueprint {
     Name = 'WeaponBuffTurret' .. 5, DisplayName = 'WeaponBuffTurret' .. 5,
     BuffType = 'WeaponBuffTurret', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
-        --Damage = {Add = 0, Mult = 1 + i/10},  
+        Damage = {Add = 0, Mult = 1 + 0.3},  
         DamageRadius = {Add = 0, Mult = 1 + 0.4},  
         MaxRadius = {Add = 0, Mult = 1 + 0.24},
         RateOfFire = {Add = 0, Mult = 1 - 0.6},            
@@ -149,7 +149,7 @@ do
             Name = 'WeaponBuffLand' .. i, DisplayName = 'WeaponBuffLand' .. i,
             BuffType = 'WeaponBuffLand', Stacks = 'REPLACE', Duration = -1,
             Affects = {        
-                --Damage = {Add = 0, Mult = 1 + i/10*4},  
+                Damage = {Add = 0, Mult = 1 + i/10},  
                 DamageRadius = {Add = 0, Mult = 1 + i/20},  
                 MaxRadius = {Add = 0, Mult = 1 + i/10*0.4},
                 RateOfFire = {Add = 0, Mult = 1 - 0.05 - i/10},            
@@ -163,6 +163,16 @@ do
                 Regen = {Add = 1*i, Mult = 1},              
             },
         }
+        BuffBlueprint {
+            Name = 'WeaponBuffAir' .. i, DisplayName = 'WeaponBuffAir' .. i,
+            BuffType = 'WeaponBuffAir', Stacks = 'REPLACE', Duration = -1,
+            Affects = {        
+                Damage = {Add = 0, Mult = 1 + i*6/100},  
+                DamageRadius = {Add = 0, Mult = 1 + i/50},  
+                MaxRadius = {Add = 0, Mult = 1 + i*3/100},
+                RateOfFire = {Add = 0, Mult = 1 - i/20},            
+            },
+        }      
         BuffBlueprint {
             Name = 'MobileBuffNaval' .. i, DisplayName = 'MobileBuffNaval' .. i,
             BuffType = 'MobileBuffNaval', Stacks = 'REPLACE', Duration = -1,
@@ -185,7 +195,7 @@ do
             Name = 'WeaponBuffTurret' .. i, DisplayName = 'WeaponBuffTurret' .. i,
             BuffType = 'WeaponBuffTurret', Stacks = 'REPLACE', Duration = -1,
             Affects = {        
-                --Damage = {Add = 0, Mult = 1 + i/10},  
+                Damage = {Add = 0, Mult = 1 + i/20},  
                 DamageRadius = {Add = 0, Mult = 1 + 0.05 + i/20},  
                 MaxRadius = {Add = 0, Mult = 1 + i/25},
                 RateOfFire = {Add = 0, Mult = 1 - 0.05- i/10},            
@@ -233,6 +243,16 @@ BuffBlueprint {
     },
 }
 BuffBlueprint {
+    Name = 'WeaponBuffAir' .. 5, DisplayName = 'WeaponBuffAir' .. 5,
+    BuffType = 'WeaponBuffAir', Stacks = 'REPLACE', Duration = -1,
+    Affects = {        
+        Damage = {Add = 0, Mult = 1 + 0.35},  
+        DamageRadius = {Add = 0, Mult = 1 + 0.1},  
+        MaxRadius = {Add = 0, Mult = 1 + 0.15},
+        RateOfFire = {Add = 0, Mult = 1 - 0.25},            
+    },
+}      
+BuffBlueprint {
     Name = 'HealthBuffNaval' .. 4, DisplayName = 'HealthBuffNaval' .. 4,
     BuffType = 'HealthBuffNaval', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
@@ -252,7 +272,7 @@ do
     local maxRadiusPercent = {0.06, 0.09, 0.12, 0.15, 0.20}
     local rateOfFirePercent = {0.06, 0.09, 0.12, 0.15, 0.20}
     local damageRadiusPercent = {0.04, 0.08, 0.16, 0.24, 0.50}
-
+    local damagePercent = {0.06, 0.12, 0.18, 0.24, 0.35,}
     for i = 1, 5 do  
         BuffBlueprint {
             Name = 'WeaponBuffNaval' .. i, DisplayName = 'WeaponBuffNaval' .. i,
@@ -260,7 +280,8 @@ do
             Affects = {        
                 MaxRadius = {Add = 0, Mult = 1 + maxRadiusPercent[i]},
                 RateOfFire = {Add = 0, Mult = 1 - rateOfFirePercent[i]},  
-                DamageRadius = {Add = 0, Mult = 1 + damageRadiusPercent[i]},              
+                DamageRadius = {Add = 0, Mult = 1 + damageRadiusPercent[i]},
+                Damage = {Add = 0, Mult = 1 + damagePercent[i]},              
             },
         }
     end
@@ -277,18 +298,7 @@ do
                 AccMult = {Add = 0, Mult = 1 + i/20}, 
                 TurnMult = {Add = 0, Mult = 1 + i/50},               
             },
-        }     
-
-        BuffBlueprint {
-            Name = 'WeaponBuffAir' .. i, DisplayName = 'WeaponBuffAir' .. i,
-            BuffType = 'WeaponBuffAir', Stacks = 'REPLACE', Duration = -1,
-            Affects = {        
-                --Damage = {Add = 0, Mult = 1.10 + i/10},  
-                DamageRadius = {Add = 0, Mult = 1 + i/50},  
-                MaxRadius = {Add = 0, Mult = 1 + i*3/100},
-                RateOfFire = {Add = 0, Mult = 1 - i/20},            
-            },
-        }      
+        }            
         
     end
 end

@@ -1,9 +1,9 @@
-local AEnergyCreationUnit = import('/lua/defaultunits.lua').EnergyCreationUnit
+local AConstructionStructureUnit = import('/lua/cybranunits.lua').CConstructionStructureUnit
 
 local EffectTemplate = import('/lua/EffectTemplates.lua')
 local EffectUtil = import('/lua/EffectUtilities.lua')
 
-WAB0201 = Class(AEnergyCreationUnit) {
+WAB0201 = Class(AConstructionStructureUnit) {
 
     OnStopBeingBuilt = function(self,builder,layer)
         AEnergyCreationUnit.OnStopBeingBuilt(self,builder,layer)
@@ -18,6 +18,27 @@ WAB0201 = Class(AEnergyCreationUnit) {
     CreateBuildEffects = function( self, unitBeingBuilt, order )
         EffectUtil.CreateAeonCommanderBuildingEffects( self, unitBeingBuilt, self:GetBlueprint().General.BuildBones.BuildEffectBones, self.BuildEffectsBag )
     end,  
+
+    OnStartBuild = function(self, unitBeingBuilt, order)
+
+        local myArmy = self:GetArmy()
+        local otherArmy = unitBeingBuilt:GetArmy()
+        
+        if order != 'Repair' or (IsAlly( myArmy, otherArmy) and not ArmyIsCivilian( otherArmy)) then
+        
+            AConstructionStructureUnit.OnStartBuild(self, unitBeingBuilt, order)
+            
+        else
+            IssueStop( {self} )
+            IssueClearCommands( {self} )
+        end
+    end,
+    
+    OnStopBuild = function(self, unitBeingBuilt)
+    
+        AConstructionStructureUnit.OnStopBuild(self, unitBeingBuilt)
+
+    end,
 }
 
 TypeClass = WAB0201

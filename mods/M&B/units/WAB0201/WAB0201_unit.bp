@@ -31,7 +31,7 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'FUCKTHISSUPRIM',
-        'BYUILTBYTIER3COMMANDER',
+        'BUILTBYTIER3COMMANDER',
         'AEON',
         'STRUCTURE',
         'CONSTRUCTION',
@@ -44,6 +44,7 @@ UnitBlueprint {
         'RECLAIM',
         'CAPTURE',
         'PATROLHELPER',
+        'ENGINEER',
         'ENGINEERSTATION',
         'SHOWQUEUE',
         'OVERLAYMISC',

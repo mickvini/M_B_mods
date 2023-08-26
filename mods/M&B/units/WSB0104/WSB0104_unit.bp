@@ -39,6 +39,7 @@ UnitBlueprint {
         'RECLAIM',
         'CAPTURE',
         'PATROLHELPER',
+        'ENGINEER',
         'ENGINEERSTATION',
         'OVERLAYMISC',
         'SORTCONSTRUCTION',
@@ -106,7 +107,7 @@ UnitBlueprint {
         },
     },
     General = {
-        CapCost = 3,
+        CapCost = 1,
         BuildBones = {
             AimBone = 0,
             BuildEffectBones = {

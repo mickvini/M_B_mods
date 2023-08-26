@@ -233,7 +233,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 9,
+            Damage = 18,
             DamageType = 'Normal',
             DisplayName = 'Shleo AA AutoGun',
             FireTargetLayerCapsTable = {
@@ -272,7 +272,7 @@ UnitBlueprint {
             RackSlavedToTurret = true,
             RackRecoilDistance = 0,
             RackReloadTimeout = 10,
-            RateOfFire = 4,
+            RateOfFire = 2,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

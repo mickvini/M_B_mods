@@ -340,14 +340,14 @@ UnitBlueprint {
         EXImprovedEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 2200,
-            BuildTime = 1500,
+            BuildTime = 1440,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER UEF',
             Icon = 'exles1',
             Name = '<LOC enhancements_0503>Tech 2 Improved Engineering (T1)',
-            NewBuildRate = 17,
-            NewHealth = 2000,
-            ProductionPerSecondEnergy = 500,
-            ProductionPerSecondMass = 2,
+            NewBuildRate = 32,
+            NewHealth = 1500,
+            ProductionPerSecondEnergy = 900,
+            ProductionPerSecondMass = 8,
             ShowBones = {
                 'Engineering_Suite',
             },
@@ -382,15 +382,15 @@ UnitBlueprint {
         EXAdvancedEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 9600,
-            BuildTime = 6300,
+            BuildTime = 3840,
             BuildableCategoryAdds = 'BUILTBYTIER3COMMANDER UEF',
             Icon = 'exles2',
             Name = '<LOC enhancements_0505>Tech 3 Advanced Engineering (T2)',
 			Prerequisite = 'EXImprovedEngineering',
             NewBuildRate = 27,
-            NewHealth = 6000,
-            ProductionPerSecondEnergy = 2000,
-            ProductionPerSecondMass = 8,
+            NewHealth = 1500,
+            ProductionPerSecondEnergy = 1800,
+            ProductionPerSecondMass = 16,
             ShowBones = {
                 'Engineering_Suite',
             },
@@ -404,7 +404,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 30,
+			NewRegenRate = 5,
         },
         EXAdvancedEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -426,15 +426,15 @@ UnitBlueprint {
         EXExperimentalEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 24400,
-            BuildTime = 24300,
+            BuildTime = 5040,
             BuildableCategoryAdds = 'BUILTBYTIER4COMMANDER UEF',
             Icon = 'exles3',
             Name = '<LOC enhancements_0507>Tech 4 Experimental Engineering (T3)',
 			Prerequisite = 'EXAdvancedEngineering',
             NewBuildRate = 120,
-            NewHealth = 12000,
-            ProductionPerSecondEnergy = 3000,
-            ProductionPerSecondMass = 12,
+            NewHealth = 2000,
+            ProductionPerSecondEnergy = 4600,
+            ProductionPerSecondMass = 30,
             ShowBones = {
                 'Engineering_Suite',
             },
@@ -448,7 +448,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 140,
+			NewRegenRate = 5,
         },
         EXExperimentalEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -471,7 +471,7 @@ UnitBlueprint {
         EXCombatEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 600,
-            BuildTime = 1200,
+            BuildTime = 1440,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER UEF',
             Icon = 'exlce1',
             Name = '<LOC enhancements_0509>Tech 2 Combat Engineering (T1)',
@@ -513,7 +513,7 @@ UnitBlueprint {
         EXAssaultEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 1800,
-            BuildTime = 5400,
+            BuildTime = 2040,
             BuildableCategoryAdds = 'BUILTBYTIER3COMMANDER UEF',
             Icon = 'exlce2',
             Name = '<LOC enhancements_0511>Tech 3 Assault Engineering (T2)',
@@ -556,13 +556,13 @@ UnitBlueprint {
         },
         EXApocolypticEngineering = {
             BuildCostEnergy = 1,
-            BuildCostMass = 3600,
-            BuildTime = 21600,
+            BuildCostMass = 24400,
+            BuildTime = 3240,
             BuildableCategoryAdds = 'BUILTBYTIER4COMMANDER UEF',
             Icon = 'exlce3',
             Name = '<LOC enhancements_0513>Tech 4 Apocolyptic Engineering (T3)',
-			Prerequisite = 'EXAssaultEngineering',
-            NewBuildRate = 120,
+			Prerequisite = 'EXAssaultEngineering',            
+            NewBuildRate = 32,
             NewHealth = 10000,
             ShowBones = {
                 'Flamer',
@@ -601,7 +601,7 @@ UnitBlueprint {
         },
         EXZephyrBooster = {
             BuildCostEnergy = 1,
-            BuildCostMass = 800,
+            BuildCostMass = 1600,
             BuildTime = 800,
             Icon = 'exrzb1',
             Name = '<LOC enhancements_0501>Jury Rigged Zephyr (T1)',
@@ -634,7 +634,7 @@ UnitBlueprint {
         },
         EXTorpedoLauncher = {
             BuildCostEnergy = 1,
-            BuildCostMass = 990,
+            BuildCostMass = 3200,
             BuildTime = 2700,
             Icon = 'exrtorp1',
             Name = '<LOC enhancements_0515>Torpedo Launcher (T2)',
@@ -674,7 +674,7 @@ UnitBlueprint {
         },
         EXTorpedoRapidLoader = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1800,
+            BuildCostMass = 6800,
             BuildTime = 8100,
             Icon = 'exrtorp2',
             Name = '<LOC enhancements_0517>Improved Reloader (T3)',
@@ -715,7 +715,7 @@ UnitBlueprint {
         },
         EXTorpedoClusterLauncher = {
             BuildCostEnergy = 1,
-            BuildCostMass = 4500,
+            BuildCostMass = 14200,
             BuildTime = 18000,
             Icon = 'exrtorp3',
             Name = '<LOC enhancements_0519>Advanced Warheads (T4)',
@@ -757,7 +757,7 @@ UnitBlueprint {
         },
         EXAntiMatterCannon = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1080,
+            BuildCostMass = 2400,
             BuildTime = 2700,
             Icon = 'exramc1',
             Name = '<LOC enhancements_0521>Anti-Matter Cannon (T2)',
@@ -797,7 +797,7 @@ UnitBlueprint {
         },
         EXImprovedContainmentBottle = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1800,
+            BuildCostMass = 4900,
             BuildTime = 8100,
             Icon = 'exramc2',
             Name = '<LOC enhancements_0523>Improved Particle Accelerator (T3)',
@@ -839,7 +839,7 @@ UnitBlueprint {
         },
         EXPowerBooster = {
             BuildCostEnergy = 1,
-            BuildCostMass = 4500,
+            BuildCostMass = 11400,
             BuildTime = 18000,
             Icon = 'exramc3',
             Name = '<LOC enhancements_0525>Enhanced Mag Bottle (T4)',
@@ -882,7 +882,7 @@ UnitBlueprint {
         },
         EXGattlingEnergyCannon = {
             BuildCostEnergy = 1,
-            BuildCostMass = 900,
+            BuildCostMass = 2600,
             BuildTime = 2700,
             Icon = 'exrgec1',
             Name = '<LOC enhancements_0527>Gattling Energy Cannon (T2)',
@@ -922,7 +922,7 @@ UnitBlueprint {
         },
         EXImprovedCoolingSystem = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1800,
+            BuildCostMass = 5200,
             BuildTime = 8100,
             Icon = 'exrgec2',
             Name = '<LOC enhancements_0529>Automatic Barrel Stabalizers (T3)',
@@ -964,7 +964,7 @@ UnitBlueprint {
         },
         EXEnergyShellHardener = {
             BuildCostEnergy = 1,
-            BuildCostMass = 4500,
+            BuildCostMass = 12000,
             BuildTime = 18000,
             Icon = 'exrgec3',
             Name = '<LOC enhancements_0531>Enhanced Power Subsystems (T4)',
@@ -1007,7 +1007,7 @@ UnitBlueprint {
         },
         EXShieldBattery = {
             BuildCostEnergy = 1,
-            BuildCostMass = 840,
+            BuildCostMass = 2800,
             BuildTime = 1800,
             Icon = 'exbsh1',
             ImpactEffects = 'UEFShieldHit01',
@@ -1053,7 +1053,7 @@ UnitBlueprint {
         },
         EXActiveShielding = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1800,
+            BuildCostMass = 4600,
             BuildTime = 8100,
             Icon = 'exbsh2',
             ImpactEffects = 'UEFShieldHit01',
@@ -1103,7 +1103,7 @@ UnitBlueprint {
         },
         EXImprovedShieldBattery = {
             BuildCostEnergy = 1,
-            BuildCostMass = 3600,
+            BuildCostMass = 7200,
             BuildTime = 14400,
             Icon = 'exbsh3',
             ImpactEffects = 'UEFShieldHit01',
@@ -1154,7 +1154,7 @@ UnitBlueprint {
         },
         EXShieldExpander = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1200,
+            BuildCostMass = 14600,
             BuildTime = 14400,
             Icon = 'exbsh4',
             ImpactEffects = 'UEFShieldHit01',
@@ -1203,7 +1203,7 @@ UnitBlueprint {
         },
         EXElectronicsEnhancment = {
             BuildCostEnergy = 1,
-            BuildCostMass = 510,
+            BuildCostMass = 1800,
             BuildTime = 900,
             Icon = 'exbint1',
             Name = '<LOC enhancements_0541>Electronic Enhancment (T2)',
@@ -1242,7 +1242,7 @@ UnitBlueprint {
         },
         EXElectronicCountermeasures = {
             BuildCostEnergy = 1,
-            BuildCostMass = 2250,
+            BuildCostMass = 3400,
             BuildTime = 8100,
             Icon = 'exbint2',
             Name = '<LOC enhancements_0543>Spysat Control Systems (T3)',
@@ -1284,7 +1284,7 @@ UnitBlueprint {
         },
         EXCloakingSubsystems = {
             BuildCostEnergy = 1,
-            BuildCostMass = 4500,
+            BuildCostMass = 18200,
             BuildTime = 21600,
             Icon = 'exbint3',
             Name = '<LOC enhancements_0545>Modified Recall Device (T4)',
@@ -1327,7 +1327,7 @@ UnitBlueprint {
         },
         EXClusterMisslePack = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1350,
+            BuildCostMass = 2600,
             BuildTime = 2700,
             Icon = 'exbbat1',
             Name = '<LOC enhancements_0547>Cluster Missile System (T2)',
@@ -1362,7 +1362,7 @@ UnitBlueprint {
         },
         EXTacticalMisslePack = {
             BuildCostEnergy = 1,
-            BuildCostMass = 3000,
+            BuildCostMass = 4400,
             BuildTime = 10800,
             Icon = 'exbbat2',
             Name = '<LOC enhancements_0549>Tactical Missile System (T3)',
@@ -1401,7 +1401,7 @@ UnitBlueprint {
         },
         EXTacticalNukeSubstitution = {
             BuildCostEnergy = 1,
-            BuildCostMass = 7200,
+            BuildCostMass = 18500,
             BuildTime = 21600,
             Icon = 'exbbat3',
             Name = '<LOC enhancements_0551>Tactical Nuclear System (T4)',
@@ -1441,7 +1441,7 @@ UnitBlueprint {
         },
         LeftPod = {
             BuildCostEnergy = 1,
-            BuildCostMass = 120,
+            BuildCostMass = 800,
             BuildTime = 400,
             Icon = 'led',
             Name = '<LOC enhancements_0553>C-D1 Shoulder Drone (T1)',
@@ -1472,7 +1472,7 @@ UnitBlueprint {
         },
         RightPod = {
             BuildCostEnergy = 1,
-            BuildCostMass = 120,
+            BuildCostMass = 2000,
             BuildTime = 400,
             Icon = 'red',
             Name = '<LOC enhancements_0555>C-D2 Shoulder Drone (T1)',

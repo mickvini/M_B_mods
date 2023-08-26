@@ -58,7 +58,7 @@ UnitBlueprint {
     Air = {
         AutoLandTime = 1,
         BankFactor = 2,
-        BreakOffDistance = 30,
+        BreakOffDistance = 160,
         BreakOffTrigger = 20,
         CanFly = true,
         CombatTurnSpeed = 1.5,

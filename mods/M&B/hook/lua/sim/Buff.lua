@@ -1,4 +1,3 @@
-
 function BuffAffectUnit(unit, buffName, instigator, afterRemove)
     
     local buffDef = Buffs[buffName]
@@ -75,15 +74,17 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
             
             unit:SetRegenRate(val)
 
-        elseif atype == 'ShieldRegeneration' then
-            local val = BuffCalculate(unit, buffName, 'ShieldRegeneration', 1)
-            local regenrate = unit:GetBlueprint().Defense.Shield.ShieldRegenRate or 1
-
-            unit.MyShield:SetShieldRegenRate(val * regenrate)
-                
-            --unit:SetStat('SHIELDREGEN', val * regenrate )
         
+
+        elseif atype == 'ShieldRegeneration' then            
+                LOG('SHIELDREGEN')
+                local val = BuffCalculate(unit, buffName, 'ShieldRegeneration', 1)                
+                local regenrate = unit:GetBlueprint().Defense.Shield.ShieldRegenRate or 1                
+                unit.MyShield:SetShieldRegenRate(regenrate* val)               
+                 LOG(val)
+                --unit.MyShield:SetStat('SHIELDREGEN', val * regenrate )                       
         elseif atype == 'ShieldSize' then
+            LOG('SHIELDSIZE')
             local val = BuffCalculate(unit, buffName, 'ShieldSize', 1)
             local shieldsize = unit:GetBlueprint().Defense.Shield.ShieldSize or 1
 
@@ -95,27 +96,29 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 unit.MyShield:CreateShieldMesh()
                     
             end
-        elseif atype == 'ShieldHealth' then
-            local val = BuffCalculate(unit, buffName, 'ShieldHealth', 1)
-            local shieldhealth = unit:GetBlueprint().Defense.Shield.ShieldMaxHealth or 1
+        elseif atype == 'ShieldHealth' then            
+                LOG('SHIELDHEALTH')
+                local val = BuffCalculate(unit, buffName, 'ShieldHealth', 1)
+                local shieldhealth = unit:GetBlueprint().Defense.Shield.ShieldMaxHealth or 1
+                LOG(shieldhealth)
+                local shield = unit.MyShield
+                LOG(val)
+                shield:SetMaxHealth(shieldhealth * val)
 
-            local shield = unit.MyShield
+                --shield:SetStat('SHIELDHP', val * shieldhealth )                
+                shield.Owner:SetShieldRatio(shield:GetHealth() / shield:GetMaxHealth())
 
-            shield:SetMaxHealth( val * shieldhealth)
-
-            --unit:SetStat('SHIELDHP', val * shieldhealth )
-
-            --shield.Owner:SetShieldRatio(shield:GetHealth() / shield:GetMaxHealth() )            
-
-            if shield.RegenThread then
-                KillThread(shield.RegenThread)
-               shield.RegenThread = nil
-            end
-
-            shield.RegenThread = shield:ForkThread( shield.RegenStartThread )
+                -- if unit.EntityID then
+                --     ForkThread(FloatingEntityText, unit.EntityID, 'Max Health now '..math.floor( GetMaxHealth(shield) or 0 ).." Size is "..math.floor(shield.Size or 0).."  Regen is "..math.floor(shield.RegenRate or 0))
+                -- end
                 
-            TrashAdd( shield.Owner.Trash, shield.RegenThread )            
-
+                if shield.RegenThread then
+                    KillThread(shield.RegenThread)
+                    shield.RegenThread = nil
+                end
+                shield.RegenThread = ForkThread(shield.RegenStartThread, shield)                
+                TrashBag.Add( shield.Owner.Trash, shield.RegenThread)            
+                    
         elseif atype == 'Damage' then
         
             for i = 1, unit:GetWeaponCount() do
@@ -133,9 +136,10 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                         val = math.floor(val)
                     end
                     LOG(val)
-                    wep:ChangeDamage(val) 
-                    wepdam = val
-                    LOG(wepbp.Damage)                 
+                    wep.DamageMod = 0
+                    wep:AddDamageMod(val - wepdam) 
+                    -- wepdam = val
+                    -- LOG(wepbp.Damage)                 
                     LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed damage to ', (val))
                 end
             end
