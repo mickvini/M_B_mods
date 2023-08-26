@@ -22,11 +22,11 @@ local GoldLaserBombEffect01 = '/mods/M&B/effects/Entities/GoldLaserBombEffect01/
 local GoldLaserBombEffect06 = '/mods/M&B/effects/Entities/GoldLaserBombEffect06/GoldLaserBombEffect06_proj.bp'
 
 GoldLaserBombEffectController01 = Class(NullShell) {
-    NukeInnerRingDamage = 2000,
+    NukeInnerRingDamage = 1,
     NukeInnerRingRadius = 2,
     NukeInnerRingTicks = 1,
     NukeInnerRingTotalTime = 0,
-    NukeOuterRingDamage = 800,
+    NukeOuterRingDamage = 1,
     NukeOuterRingRadius = 5,
     NukeOuterRingTicks = 1,
     NukeOuterRingTotalTime = 0,

@@ -81,7 +81,7 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 local val = BuffCalculate(unit, buffName, 'ShieldRegeneration', 1)                
                 local regenrate = unit:GetBlueprint().Defense.Shield.ShieldRegenRate or 1                
                 unit.MyShield:SetShieldRegenRate(regenrate* val)               
-                 LOG(val)
+                LOG(val)
                 --unit.MyShield:SetStat('SHIELDREGEN', val * regenrate )                       
         elseif atype == 'ShieldSize' then
             LOG('SHIELDSIZE')
