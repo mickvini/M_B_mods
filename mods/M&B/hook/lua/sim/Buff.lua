@@ -320,11 +320,10 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 local delay = 1 / wepbp.RateOfFire
                 LOG('*BUFF: Old RateOfFire = ' ..  weprof )
                 
-                if unit:GetBlueprint().General.Category == 'Defense' then
-                    LOG(unit.BaseRateOfFire[i])
-                    unit.BaseRateOfFire[i] = (1 / ( val * delay ))
-                    LOG(unit.BaseRateOfFire[i])
+                if unit:GetBlueprint().General.Category == 'Defense' then                                        
+                    unit.BaseRateOfFire[i] = (1 / ( val * delay ))                    
                 end
+                wep:ChangeRateOfFire( 1 / ( val * delay ) )
                 LOG('*BUFF: New RateOfFire = ' ..  (1 / ( val * delay )) )
             end
 

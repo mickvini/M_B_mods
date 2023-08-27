@@ -281,7 +281,7 @@ UnitBlueprint {
             'URL0001UPGRADE',
         },
         MaintenanceConsumptionPerSecondEnergy = 0,
-        MaxBuildDistance = 10,
+        MaxBuildDistance = 15,
         NaturalProducer = true,
         NeedToFaceTargetToBuild = false,
         ProductionPerSecondEnergy = 500,

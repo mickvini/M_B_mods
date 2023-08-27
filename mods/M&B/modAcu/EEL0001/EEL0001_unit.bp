@@ -305,7 +305,7 @@ UnitBlueprint {
             'BUILTBYTIER4COMMANDER UEF',
         },
         MaintenanceConsumptionPerSecondEnergy = 0,
-        MaxBuildDistance = 10,
+        MaxBuildDistance = 15,
         NaturalProducer = true,
         NeedToFaceTargetToBuild = false,
         ProductionPerSecondEnergy = 500,
@@ -361,7 +361,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 20,
+			NewRegenRate = 10,
         },
         EXImprovedEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -387,7 +387,7 @@ UnitBlueprint {
             Icon = 'exles2',
             Name = '<LOC enhancements_0505>Tech 3 Advanced Engineering (T2)',
 			Prerequisite = 'EXImprovedEngineering',
-            NewBuildRate = 27,
+            NewBuildRate = 42,
             NewHealth = 1500,
             ProductionPerSecondEnergy = 1800,
             ProductionPerSecondMass = 16,
@@ -404,7 +404,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 5,
+			NewRegenRate = 15,
         },
         EXAdvancedEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -431,7 +431,7 @@ UnitBlueprint {
             Icon = 'exles3',
             Name = '<LOC enhancements_0507>Tech 4 Experimental Engineering (T3)',
 			Prerequisite = 'EXAdvancedEngineering',
-            NewBuildRate = 120,
+            NewBuildRate = 52,
             NewHealth = 2000,
             ProductionPerSecondEnergy = 4600,
             ProductionPerSecondMass = 30,
@@ -448,7 +448,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 5,
+			NewRegenRate = 25,
         },
         EXExperimentalEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -470,13 +470,15 @@ UnitBlueprint {
         },
         EXCombatEngineering = {
             BuildCostEnergy = 1,
-            BuildCostMass = 600,
+            BuildCostMass = 2200,
             BuildTime = 1440,
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER UEF',
             Icon = 'exlce1',
             Name = '<LOC enhancements_0509>Tech 2 Combat Engineering (T1)',
-            NewBuildRate = 30,
-            NewHealth = 1500,
+            NewBuildRate = 17,
+            NewHealth = 2000,
+            ProductionPerSecondEnergy = 500,
+            ProductionPerSecondMass = 2,
             ShowBones = {
                 'Flamer',
                 'Engineering_Suite',
@@ -491,7 +493,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 50,
+			NewRegenRate = 10,
         },
         EXCombatEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -512,14 +514,16 @@ UnitBlueprint {
         },
         EXAssaultEngineering = {
             BuildCostEnergy = 1,
-            BuildCostMass = 1800,
-            BuildTime = 2040,
+            BuildCostMass = 9600,
+            BuildTime = 3840,
             BuildableCategoryAdds = 'BUILTBYTIER3COMMANDER UEF',
             Icon = 'exlce2',
             Name = '<LOC enhancements_0511>Tech 3 Assault Engineering (T2)',
 			Prerequisite = 'EXCombatEngineering',
-            NewBuildRate = 90,
-            NewHealth = 5000,
+            NewBuildRate = 27,
+            NewHealth = 2000,
+            ProductionPerSecondEnergy = 1500,
+            ProductionPerSecondMass = 6,
             ShowBones = {
                 'Flamer',
                 'Engineering_Suite',
@@ -534,7 +538,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 50,
+			NewRegenRate = 20,
         },
         EXAssaultEngineeringRemove = {
             BuildCostEnergy = 1,
@@ -557,13 +561,15 @@ UnitBlueprint {
         EXApocolypticEngineering = {
             BuildCostEnergy = 1,
             BuildCostMass = 24400,
-            BuildTime = 3240,
+            BuildTime = 5040,
             BuildableCategoryAdds = 'BUILTBYTIER4COMMANDER UEF',
             Icon = 'exlce3',
             Name = '<LOC enhancements_0513>Tech 4 Apocolyptic Engineering (T3)',
 			Prerequisite = 'EXAssaultEngineering',            
             NewBuildRate = 32,
-            NewHealth = 10000,
+            NewHealth = 4000,
+            ProductionPerSecondEnergy = 3500,
+            ProductionPerSecondMass = 12,
             ShowBones = {
                 'Flamer',
                 'Engineering_Suite',
@@ -578,7 +584,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'UEL0001',
             },
-			NewRegenRate = 200,
+			NewRegenRate = 30,
         },
         EXApocolypticEngineeringRemove = {
             BuildCostEnergy = 1,

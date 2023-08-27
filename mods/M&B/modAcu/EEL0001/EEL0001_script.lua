@@ -287,6 +287,68 @@ EEL0001 = Class(TWalkingLandUnit) {
         self:GetAIBrain():GiveResource('Mass', self:GetBlueprint().Economy.StorageMass)
     end,
 
+    UpdateUnitsInRange = function(self)        
+        while not self.Dead do
+            local MK = import('/lua/defaultunits.lua').MK
+            local pos = self:GetPosition()
+            local army = self:GetArmy()
+            local updateTargets = GetUnitsInRect(pos[1] - 100, pos[3] - 100, pos[1] + 100, pos[3] + 100)
+            for i, unit in updateTargets do
+                if (unit) then 
+                    if IsAlly(army, unit:GetArmy()) then
+                        local unitBp = unit:GetBlueprint()
+                        local factionCat = unitBp.General.FactionName
+                        if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER')then
+                            if table.find(unitBp.Categories, 'LAND') then
+                                if MK[army][4][factionCat] > 0 and MK[army][4][factionCat] ~= unit.MarkLevel[4]  then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffLand' .. MK[army][4][factionCat])
+                                    unit.MarkLevel[4] = MK[army][4][factionCat]                                       
+                                end
+                                if MK[army][5][factionCat] > 0 and MK[army][5][factionCat] ~= unit.MarkLevel[5] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffLand' .. MK[army][5][factionCat])
+                                    unit.MarkLevel[5] = MK[army][5][factionCat]
+                                end        
+                                if MK[army][6][factionCat] > 0 and MK[army][6][factionCat] ~= unit.MarkLevel[6] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffLand' .. MK[army][6][factionCat])
+                                    unit.MarkLevel[6] = MK[army][6][factionCat]                                     
+                                end                            
+                            elseif table.find(unitBp.Categories, 'AIR') then
+                                if MK[army][7][factionCat] > 0 and MK[army][7][factionCat] ~= unit.MarkLevel[7] then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
+                                    unit.MarkLevel[7] = MK[army][7][factionCat] 
+                                end
+                                LOG(MK[army][8][factionCat])
+                                LOG(unit.MarkLevel[8])
+                                if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
+                                    unit.MarkLevel[8] = MK[army][8][factionCat] 
+                                end        
+                                if MK[army][9][factionCat] > 0 and MK[army][9][factionCat] ~= unit.MarkLevel[9] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffAir' .. MK[army][9][factionCat])
+                                    unit.MarkLevel[9] = MK[army][9][factionCat]                                    
+                                end                            
+                            elseif table.find(unitBp.Categories, 'NAVAL') then
+                                if MK[army][10][factionCat] > 0 and MK[army][10][factionCat] ~= unit.MarkLevel[10] then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffNaval' .. MK[army][10][factionCat])
+                                    unit.MarkLevel[10] = MK[army][10][factionCat]                                   
+                                end
+                                if MK[army][11][factionCat] > 0 and MK[army][11][factionCat] ~= unit.MarkLevel[11] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffNaval' .. MK[army][11][factionCat])
+                                    unit.MarkLevel[11] = MK[army][11][factionCat]
+                                end        
+                                if MK[army][12][factionCat] > 0 and MK[army][12][factionCat] ~= unit.MarkLevel[12] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffNaval' .. MK[army][12][factionCat])
+                                    unit.MarkLevel[12] = MK[army][12][factionCat]
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            WaitSeconds(50)
+        end                            
+    end,
+
     OnStopBeingBuilt = function(self,builder,layer)
         TWalkingLandUnit.OnStopBeingBuilt(self,builder,layer)
         if self:BeenDestroyed() then return end
@@ -358,6 +420,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 		self:ForkThread(self.EXRegenBuffThread)
 		self:ForkThread(self.EXRegenHeartbeat)
 		self.DefaultGunBuffApplied = false
+        local UpdateUnitsInRangeThread = self:ForkThread(self.UpdateUnitsInRange)
+        self.Trash:Add(UpdateUnitsInRangeThread)
     end,
 
     PlayCommanderWarpInEffect = function(self)
@@ -1119,10 +1183,10 @@ EEL0001 = Class(TWalkingLandUnit) {
         elseif enh =='EXCombatEngineering' then
             local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
             self:RemoveBuildRestriction(cat)
-            if not Buffs['UEFACUT2BuildRate'] then
+            if not Buffs['UEFACUC2BuildRate'] then
                 BuffBlueprint {
-                    Name = 'UEFACUT2BuildRate',
-                    DisplayName = 'UEFACUT2BuildRate',
+                    Name = 'UEFACUC2BuildRate',
+                    DisplayName = 'UEFACUC2BuildRate',
                     BuffType = 'ACUBUILDRATE',
                     Stacks = 'REPLACE',
                     Duration = -1,
@@ -1134,7 +1198,7 @@ EEL0001 = Class(TWalkingLandUnit) {
                     },
                 }
             end
-            Buff.ApplyBuff(self, 'UEFACUT2BuildRate')
+            Buff.ApplyBuff(self, 'UEFACUC2BuildRate')
             if not Buffs['EXUEFHealthBoost4'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost4',
@@ -1151,6 +1215,9 @@ EEL0001 = Class(TWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost4')
+            local bpEcon = self:GetBlueprint().Economy            
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()
@@ -1170,8 +1237,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineeringRemove' then
             local bp = self:GetBlueprint().Economy.BuildRate
-            if Buff.HasBuff( self, 'UEFACUT2BuildRate' ) then
-                Buff.RemoveBuff( self, 'UEFACUT2BuildRate' )
+            if Buff.HasBuff( self, 'UEFACUC2BuildRate' ) then
+                Buff.RemoveBuff( self, 'UEFACUC2BuildRate' )
             end
             if not bp then return end
             self:RestoreBuildRestrictions()
@@ -1186,6 +1253,9 @@ EEL0001 = Class(TWalkingLandUnit) {
 				end
 				self.FlamerEffectsBag = {}
 			end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1197,10 +1267,10 @@ EEL0001 = Class(TWalkingLandUnit) {
         elseif enh =='EXAssaultEngineering' then
             local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
             self:RemoveBuildRestriction(cat)
-            if not Buffs['UEFACUT3BuildRate'] then
+            if not Buffs['UEFACUC3BuildRate'] then
                 BuffBlueprint {
-                    Name = 'UEFACUT3BuildRate',
-                    DisplayName = 'UEFCUT3BuildRate',
+                    Name = 'UEFACUC3BuildRate',
+                    DisplayName = 'UEFACUC3BuildRate',
                     BuffType = 'ACUBUILDRATE',
                     Stacks = 'REPLACE',
                     Duration = -1,
@@ -1212,7 +1282,7 @@ EEL0001 = Class(TWalkingLandUnit) {
                     },
                 }
             end
-            Buff.ApplyBuff(self, 'UEFACUT3BuildRate')
+            Buff.ApplyBuff(self, 'UEFACUC3BuildRate')
             if not Buffs['EXUEFHealthBoost5'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost5',
@@ -1229,6 +1299,9 @@ EEL0001 = Class(TWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost5')
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			self.wcFlamer01 = false
             self.wcFlamer02 = true
 			self:ForkThread(self.WeaponRangeReset)
@@ -1241,8 +1314,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bp = self:GetBlueprint().Economy.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
-            if Buff.HasBuff( self, 'UEFACUT3BuildRate' ) then
-                Buff.RemoveBuff( self, 'UEFACUT3BuildRate' )
+            if Buff.HasBuff( self, 'UEFACUC3BuildRate' ) then
+                Buff.RemoveBuff( self, 'UEFACUC3BuildRate' )
             end
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )     
@@ -1258,6 +1331,9 @@ EEL0001 = Class(TWalkingLandUnit) {
 				end
 				self.FlamerEffectsBag = {}
 			end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1269,10 +1345,10 @@ EEL0001 = Class(TWalkingLandUnit) {
         elseif enh =='EXApocolypticEngineering' then
             local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
             self:RemoveBuildRestriction(cat)
-            if not Buffs['UEFACUT4BuildRate'] then
+            if not Buffs['UEFACUC4BuildRate'] then
                 BuffBlueprint {
-                    Name = 'UEFACUT4BuildRate',
-                    DisplayName = 'UEFCUT4BuildRate',
+                    Name = 'UEFACUC4BuildRate',
+                    DisplayName = 'UEFACUC4BuildRate',
                     BuffType = 'ACUBUILDRATE',
                     Stacks = 'REPLACE',
                     Duration = -1,
@@ -1284,7 +1360,7 @@ EEL0001 = Class(TWalkingLandUnit) {
                     },
                 }
             end
-            Buff.ApplyBuff(self, 'UEFACUT4BuildRate')
+            Buff.ApplyBuff(self, 'UEFACUC4BuildRate')
             if not Buffs['EXUEFHealthBoost6'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost6',
@@ -1301,6 +1377,9 @@ EEL0001 = Class(TWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost6')
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
@@ -1309,8 +1388,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bp = self:GetBlueprint().Economy.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
-            if Buff.HasBuff( self, 'UEFACUT4BuildRate' ) then
-                Buff.RemoveBuff( self, 'UEFACUT4BuildRate' )
+            if Buff.HasBuff( self, 'UEFACUC4BuildRate' ) then
+                Buff.RemoveBuff( self, 'UEFACUC4BuildRate' )
             end
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
@@ -1323,6 +1402,9 @@ EEL0001 = Class(TWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXUEFHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost6' )
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()

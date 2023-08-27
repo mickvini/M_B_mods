@@ -354,6 +354,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		self:ForkThread(self.EXRegenBuffThread)
 		self:ForkThread(self.EXRegenHeartbeat)
 		self.DefaultGunBuffApplied = false
+        local UpdateUnitsInRangeThread = self:ForkThread(self.UpdateUnitsInRange)
+        self.Trash:Add(UpdateUnitsInRangeThread)
     end,
 
     OnFailedToBuild = function(self)
@@ -447,6 +449,68 @@ ESL0001 = Class( SWalkingLandUnit ) {
         self:GetAIBrain():GiveResource('Mass', self:GetBlueprint().Economy.StorageMass)
     end,
 
+    UpdateUnitsInRange = function(self)        
+        while not self.Dead do
+            local MK = import('/lua/defaultunits.lua').MK
+            local pos = self:GetPosition()
+            local army = self:GetArmy()
+            local updateTargets = GetUnitsInRect(pos[1] - 100, pos[3] - 100, pos[1] + 100, pos[3] + 100)
+            for i, unit in updateTargets do
+                if (unit) then 
+                    if IsAlly(army, unit:GetArmy()) then
+                        local unitBp = unit:GetBlueprint()
+                        local factionCat = unitBp.General.FactionName
+                        if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER')then
+                            if table.find(unitBp.Categories, 'LAND') then
+                                if MK[army][4][factionCat] > 0 and MK[army][4][factionCat] ~= unit.MarkLevel[4]  then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffLand' .. MK[army][4][factionCat])
+                                    unit.MarkLevel[4] = MK[army][4][factionCat]                                       
+                                end
+                                if MK[army][5][factionCat] > 0 and MK[army][5][factionCat] ~= unit.MarkLevel[5] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffLand' .. MK[army][5][factionCat])
+                                    unit.MarkLevel[5] = MK[army][5][factionCat]
+                                end        
+                                if MK[army][6][factionCat] > 0 and MK[army][6][factionCat] ~= unit.MarkLevel[6] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffLand' .. MK[army][6][factionCat])
+                                    unit.MarkLevel[6] = MK[army][6][factionCat]                                     
+                                end                            
+                            elseif table.find(unitBp.Categories, 'AIR') then
+                                if MK[army][7][factionCat] > 0 and MK[army][7][factionCat] ~= unit.MarkLevel[7] then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
+                                    unit.MarkLevel[7] = MK[army][7][factionCat] 
+                                end
+                                LOG(MK[army][8][factionCat])
+                                LOG(unit.MarkLevel[8])
+                                if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
+                                    unit.MarkLevel[8] = MK[army][8][factionCat] 
+                                end        
+                                if MK[army][9][factionCat] > 0 and MK[army][9][factionCat] ~= unit.MarkLevel[9] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffAir' .. MK[army][9][factionCat])
+                                    unit.MarkLevel[9] = MK[army][9][factionCat]                                    
+                                end                            
+                            elseif table.find(unitBp.Categories, 'NAVAL') then
+                                if MK[army][10][factionCat] > 0 and MK[army][10][factionCat] ~= unit.MarkLevel[10] then
+                                    Buff.ApplyBuff(unit ,  'MobileBuffNaval' .. MK[army][10][factionCat])
+                                    unit.MarkLevel[10] = MK[army][10][factionCat]                                   
+                                end
+                                if MK[army][11][factionCat] > 0 and MK[army][11][factionCat] ~= unit.MarkLevel[11] then
+                                    Buff.ApplyBuff(unit ,  'HealthBuffNaval' .. MK[army][11][factionCat])
+                                    unit.MarkLevel[11] = MK[army][11][factionCat]
+                                end        
+                                if MK[army][12][factionCat] > 0 and MK[army][12][factionCat] ~= unit.MarkLevel[12] then
+                                    Buff.ApplyBuff(unit ,  'WeaponBuffNaval' .. MK[army][12][factionCat])
+                                    unit.MarkLevel[12] = MK[army][12][factionCat]
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            WaitSeconds(50)
+        end                            
+    end,
+    
     CreateBuildEffects = function( self, unitBeingBuilt, order )
         EffectUtil.CreateSeraphimUnitEngineerBuildingEffects( self, unitBeingBuilt, self:GetBlueprint().General.BuildBones.BuildEffectBones, self.BuildEffectsBag )
     end,
