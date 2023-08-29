@@ -221,11 +221,9 @@ UnitBlueprint {
             CollideFriendly = false,
             Damage = 744,
             DamageFriendly = true,
-            DamageRadius = 2,
+            DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Sonance Artillery',
-            DoTPulses = 30,
-            DoTTime = 5,
             EnergyDrainPerSecond = 60,
             EnergyRequired = 240,
             FireTargetLayerCapsTable = {

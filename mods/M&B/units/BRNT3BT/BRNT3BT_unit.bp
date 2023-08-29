@@ -1,6 +1,6 @@
 UnitBlueprint {
     AI = {
-        GuardScanRadius = 60,
+        ##GuardScanRadius = 60,
 		TargetBones = {
 			'Turret',
         },
@@ -83,17 +83,30 @@ UnitBlueprint {
                     ScrollTreads = true,
                     TreadMarks = {
                         {
-                            BoneName = 'BRNT3BT',
-                            TreadMarks = 'BRNT3BT_Albedo',
-                            TreadMarksInterval = 0.1,
-                            TreadMarksSizeX = 0.64,
-                            TreadMarksSizeZ = 3.00,
+                            BoneName = 'Threads1',
+                            TreadMarks = 'tank_treads07_albedo',
+                            TreadMarksInterval = 0.35,
+                            TreadMarksSizeX = 0.4,
+                            TreadMarksSizeZ = 1,
                             TreadOffset = {
+                                -0.1,
                                 0,
                                 0,
-                                -1.2,
                             },
                         },
+                        {
+                            BoneName = 'Threads02',
+                            TreadMarks = 'tank_treads07_albedo',
+                            TreadMarksInterval = 0.35,
+                            TreadMarksSizeX = 0.4,
+                            TreadMarksSizeZ = 1,
+                            TreadOffset = {
+                                -0.1,
+                                0,
+                                0,
+                            },
+                        },                        
+                        
                     },
                 },
             },

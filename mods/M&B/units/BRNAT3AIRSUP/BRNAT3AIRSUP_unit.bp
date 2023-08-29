@@ -150,10 +150,10 @@ UnitBlueprint {
                     ShaderName = 'Unit',
                 },
                 {
-                    AlbedoName = 'uea0303_lod1_albedo.dds',
+                    AlbedoName = '/units/uea0303/uea0303_lod1_albedo.dds',
                     LODCutoff = 215,
                     ShaderName = 'Unit',
-                    SpecularName = 'uea0303_lod1_specteam.dds',
+                    SpecularName = '/units/uea0303/uea0303_lod1_specteam.dds',
                 },
             },
         },
