@@ -78,8 +78,7 @@ UnitBlueprint {
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
-            '<LOC ability_sonar>Sonar',
-            '<LOC ability_personalshield>Personal Shield',
+            '<LOC ability_sonar>Sonar',            
             '<LOC ability_torpedodef>Torpedo Defense',
         },
         AnimationDeath = {
@@ -204,7 +203,7 @@ UnitBlueprint {
     SizeX = 4.4,
     SizeY = 3.3,
     SizeZ = 23.54,
-    StrategicIconName = 'icon_ship4_artillery',
+    StrategicIconName = 'icon_experimental_generic',
     StrategicIconSortPriority = 46,
     CollisionOffsetY = -1,
     Footprint = {

@@ -262,6 +262,7 @@ UnitBlueprint {
         BuildTime = 36000,
         BuildableCategory = {
             'BUILTBYTIER3ENGINEER AEON',
+            'FUCKTHISSUPRIM AEON',
         },
         NaturalProducer = true,
         ProductionPerSecondEnergy = 300,

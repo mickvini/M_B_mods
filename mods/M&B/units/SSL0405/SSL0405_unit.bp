@@ -404,7 +404,7 @@ UnitBlueprint {
     SizeX = 5,
     SizeY = 3,
     SizeZ = 6,
-    StrategicIconName = 'icon_seabed4_directfire2',
+    StrategicIconName = 'icon_experimental_generic',
     StrategicIconSortPriority = 115,
     CollisionOffsetY = 1.5,
     CollisionOffsetYTall = 5,
