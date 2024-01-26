@@ -282,7 +282,7 @@ UnitBlueprint {
             MaxRadius = 42,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 15,
+            MuzzleVelocity = 0,
             ProjectileId = '/projectiles/SBOZhanaseeBomb01/SBOZhanaseeBomb01_proj.bp',
             ProjectilesPerOnFire = 2,
             RackBones = {
@@ -302,7 +302,7 @@ UnitBlueprint {
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
-            TargetCheckInterval = 2.5,
+            TargetCheckInterval = 1,
             TargetPriorities = {
                 'SPECIALHIGHPRI',
                 'TECH3 STRUCTURE',

@@ -72,7 +72,7 @@ UnitBlueprint {
         KRollDamping = 2,
         KTurn = 0.8,
         KTurnDamping = 1,
-        LiftFactor = 7,
+        LiftFactor = 15,
         MaxAirspeed = 16,
         MinAirspeed = 12,
         PredictAheadForBombDrop = 3,
@@ -289,10 +289,10 @@ UnitBlueprint {
             FiringRandomness = 0,
             FiringTolerance = 3,
             Label = 'Bomb',
-            MaxRadius = 44,
+            MaxRadius = 65,
             MuzzleSalvoDelay = 0.1,
             MuzzleSalvoSize = 10,
-            MuzzleVelocity = 12,
+            MuzzleVelocity = 0,
             ProjectileId = '/projectiles/AIFBombQuark01/AIFBombQuark01_proj.bp',
             RackBones = {
                 {
@@ -310,7 +310,7 @@ UnitBlueprint {
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
-            TargetCheckInterval = 2.5,
+            TargetCheckInterval = 1,
             TargetPriorities = {
                 'SPECIALHIGHPRI',
                 'TECH4',
@@ -325,7 +325,7 @@ UnitBlueprint {
             WeaponCategory = 'Bomb',
             BombDropThreshold = 3.5,
             Display = 'Quark Bomb',
-            EffectiveRadius = 25,
+            EffectiveRadius = 44,
             NeedToComputeBombDrop = true,
         },
         {
