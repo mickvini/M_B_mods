@@ -7,7 +7,7 @@ GMSB403 = Class(SStructureUnit) {
         DeathWeapon = Class(SIFCommanderDeathWeapon) {},
         MainGun = Class(SIFSuthanusArtilleryCannon) {
 		CreateProjectileAtMuzzle = function(self, muzzle)
-		numProjectiles = 5
+		numProjectiles = 1
 		for i = 0, (numProjectiles -1) do
 		local proj = SIFSuthanusArtilleryCannon.CreateProjectileAtMuzzle(self, muzzle)
 		end
