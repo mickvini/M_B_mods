@@ -74,7 +74,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской линкор T3',
+    Description = '<LOC UAS03020_desc>Морской линкор T3',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
@@ -541,7 +541,7 @@ UnitBlueprint {
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
             TargetCheckInterval = 0.5,
-            TargetRestrictDisallow = 'UNTARGETABLE,       STRATEGIC',
+            TargetRestrictDisallow = 'UNTARGETABLE,        STRATEGIC',
             TargetRestrictOnlyAllow = 'MISSILE',
             TrackingRadius = 1.5,
             WeaponCategory = 'Defense',

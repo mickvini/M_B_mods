@@ -59,7 +59,7 @@ UnitBlueprint {
         AirThreatLevel = 10,
         SurfaceThreatLevel = 23,
     },
-    Description = 'Легкий танк T4',
+    Description = '<LOC SRL0312_desc>Легкий танк T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

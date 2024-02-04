@@ -53,7 +53,7 @@ UnitBlueprint {
     },
     Categories = {
         'SELECTABLE',
-        'BUILTBYTIER3FACTORY',        
+        'BUILTBYTIER3FACTORY',
         'MOBILE',
         'LAND',
         'TECH3',

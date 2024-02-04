@@ -62,7 +62,7 @@ UnitBlueprint {
             MeshZ = '/effects/entities/Shield01/Shield01z_mesh',
         },
     },
-    Description = 'Кибран Мобильный T2 щит',
+    Description = '<LOC WRL0207_desc>Кибран Мобильный T2 щит',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

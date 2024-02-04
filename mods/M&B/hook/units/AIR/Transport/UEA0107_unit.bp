@@ -112,7 +112,7 @@ UnitBlueprint {
         MaxHealth = 2880,
         RegenRate = 0,
     },
-    Description = 'Воздушный транспорт T1',
+    Description = '<LOC UEA0107_desc>Воздушный транспорт T1',
     Display = {
         Abilities = {
             '<LOC ability_transport>Transport',

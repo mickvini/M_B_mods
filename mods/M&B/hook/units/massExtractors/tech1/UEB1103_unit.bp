@@ -52,7 +52,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1000,
     },
-    Description = 'Экстрактор материи T1',
+    Description = '<LOC UEB1103_desc>Экстрактор материи T1',
     Display = {
         Abilities = {
             '<LOC ability_upgradable>Upgradeable',

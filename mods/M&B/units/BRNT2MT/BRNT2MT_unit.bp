@@ -45,7 +45,7 @@ UnitBlueprint {
         RegenRate = 0.5,
         SurfaceThreatLevel = 6.4,
     },
-    Description = 'Легкий танк T2',
+    Description = '<LOC BRNT2MT_desc>Легкий танк T2',
     Display = {
         Abilities = {
 			'Fast Moving',

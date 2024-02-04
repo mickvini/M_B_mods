@@ -46,7 +46,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 35,
     },
-    Description = 'Стационарный радар T3',
+    Description = '<LOC URB3104_desc>Стационарный радар T3',
     Display = {
         Abilities = {
             '<LOC ability_omni>Omni Sensor',

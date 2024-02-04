@@ -54,7 +54,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Гидрокарбонка T3',
+    Description = '<LOC BAB1302_desc>Гидрокарбонка T3',
     Display = {
 		Abilities = {
             '<LOC ability_deathaoe>Volatile',

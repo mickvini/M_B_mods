@@ -58,7 +58,7 @@ UnitBlueprint {
         AirThreatLevel = 85,
         SurfaceThreatLevel = 229.9,
     },
-    Description = 'Тяжелое орудие T4',
+    Description = '<LOC BRPEXPD_desc>Тяжелое орудие T4',
     Display = {
         Abilities = {
             'Ground Defense & Anti-Air',

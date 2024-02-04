@@ -61,7 +61,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий бот T3',
+    Description = '<LOC XSL0305_desc>Легкий бот T3',
     Display = {
         Abilities = {
             'Damage - 750',		

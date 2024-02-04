@@ -57,7 +57,7 @@ UnitBlueprint {
         RegenRate = 2,
         EconomyThreatLevel = 120,
     },
-    Description = 'Инженерная станция T3',
+    Description = '<LOC WAB0201_desc>Инженерная станция T3',
     Display = {
         Abilities = {
             'Engineering Suite',

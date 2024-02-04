@@ -114,7 +114,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный штурмовик T2',
+    Description = '<LOC UEA0203_desc>Воздушный штурмовик T2',
     Display = {
         Abilities = {
             '<LOC ability_transport>Transport',
@@ -331,7 +331,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,           UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',

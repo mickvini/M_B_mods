@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 6,
         EconomyThreatLevel = 50,
     },
-    Description = 'Гидроакустический комплекс T3',
+    Description = '<LOC UES0305_desc>Гидроакустический комплекс T3',
     Display = {
         Abilities = {
             '<LOC ability_sonar>Sonar',
@@ -278,7 +278,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

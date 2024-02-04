@@ -29,7 +29,7 @@ UnitBlueprint {
         'BUILTBYTIER1ENGINEER',
         'BUILTBYTIER2ENGINEER',
         'BUILTBYTIER3ENGINEER',
-        'BUILTBYCOMMANDER',        
+        'BUILTBYCOMMANDER',
         'SERAPHIM',
         'STRUCTURE',
         'INTELLIGENCE',
@@ -53,7 +53,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1,
     },
-    Description = 'Стационарный радар T1',
+    Description = '<LOC XSB3101_desc>Стационарный радар T1',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',

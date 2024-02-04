@@ -350,7 +350,7 @@ UnitBlueprint {
             ProjectileLifetime = 20,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'AGM_001',
                         'AGM_002',
@@ -358,7 +358,7 @@ UnitBlueprint {
                     RackBone = 'AGM_001',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'AGM_003',
                         'AGM_004',
@@ -366,7 +366,7 @@ UnitBlueprint {
                     RackBone = 'AGM_003',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'AGM_005',
                         'AGM_006',
@@ -467,7 +467,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             NotExclusive = true,

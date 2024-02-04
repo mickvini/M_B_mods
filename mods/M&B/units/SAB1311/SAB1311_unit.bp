@@ -74,7 +74,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 595,
     },
-    Description = 'Генератор энергии T4',
+    Description = '<LOC SAB1311_desc>Генератор энергии T4',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',

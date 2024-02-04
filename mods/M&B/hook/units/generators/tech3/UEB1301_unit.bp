@@ -62,7 +62,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 56,
     },
-    Description = 'Генератор энергии T3',
+    Description = '<LOC UEB1301_desc>Генератор энергии T3',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

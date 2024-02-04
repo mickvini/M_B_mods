@@ -49,7 +49,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 294,
     },
-    Description = 'Стратегическая ракетная оборона T3',
+    Description = '<LOC XSB4302_desc>Стратегическая ракетная оборона T3',
     Display = {
         Abilities = {
             '<LOC ability_stratmissiledef>Strategic Missile Defense',

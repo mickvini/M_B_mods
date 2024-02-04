@@ -114,7 +114,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий истребитель T3',
+    Description = '<LOC BRNAT3AIRSUP_desc>Легкий истребитель T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -334,7 +334,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',
@@ -407,7 +407,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             WeaponCategory = 'Anti Air',
             CannotAttackGround = true,

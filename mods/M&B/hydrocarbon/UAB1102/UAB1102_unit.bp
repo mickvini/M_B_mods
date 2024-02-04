@@ -58,7 +58,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Гидрокарбонка T1',
+    Description = '<LOC UAB1102_desc>Гидрокарбонка T1',
     Display = {
         AnimationPermOpen = '/Units/UAB1102/UAB1102_Aopen.sca',
         Mesh = {

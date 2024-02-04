@@ -64,7 +64,7 @@ UnitBlueprint {
         RegenRate = 0,
         SurfaceThreatLevel = 27,
     },
-    Description = 'Легкий бот T3',
+    Description = '<LOC URL0305_desc>Легкий бот T3',
     Display = {
 		AnimationDeath = {
             {

@@ -118,7 +118,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Prototype Strategic Bomber',
+    Description = '<LOC WEA0305_desc>Prototype Strategic Bomber',
     Display = {
         LayerChangeEffects = {
             AirLand = {
@@ -299,14 +299,14 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile01',
                     },
                     RackBone = 'Missile01',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile02',
                     },

@@ -49,7 +49,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2500,
     },
-    Description = 'Экстрактор материи T3',
+    Description = '<LOC UEB1302_desc>Экстрактор материи T3',
     Display = {
         AnimationOpen = '/units/ueb1302/ueb1302_Apump.sca',
         AnimationUpgrade = '/units/ueb1302/ueb1302_Aupgrade.sca',

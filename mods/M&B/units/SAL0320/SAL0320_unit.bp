@@ -61,7 +61,7 @@ UnitBlueprint {
         AirThreatLevel = 43,
         EconomyThreatLevel = 74,
     },
-    Description = 'Мобильная зенитка T3',
+    Description = '<LOC SAL0320_desc>Мобильная зенитка T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

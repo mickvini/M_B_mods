@@ -125,7 +125,7 @@ UnitBlueprint {
         BuildCostMass = 600,
         BuildRate = 50,
         BuildTime = 680,
-        BuildableCategory = {            
+        BuildableCategory = {
             'BUILTBYRESEARCH SERAPHIM',
         },
         MaintenanceConsumptionPerSecondEnergy = 500,

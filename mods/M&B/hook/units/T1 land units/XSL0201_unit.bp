@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий танк T1',
+    Description = '<LOC XSL0201_desc>Легкий танк T1',
     Display = {
         Abilities = {	
             'Armor - 15.0%',

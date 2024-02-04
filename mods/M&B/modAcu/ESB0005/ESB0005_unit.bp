@@ -1,7 +1,14 @@
 UnitBlueprint {
+    Audio = {
+        UISelection = Sound {
+            Bank = 'Interface',
+            Cue = 'UEF_Select_Structure',
+            LodCutoff = 'UnitMove_LodCutoff',
+        },
+    },
     Air = {
         BankFactor = 0.1,
-        BankForward = false,
+        BuildIconSortPriority = false,
         CanFly = true,
         CirclingDirChangeFrequencySec = 1,
         CirclingElevationChangeRatio = 0.25,
@@ -19,16 +26,9 @@ UnitBlueprint {
         MinAirspeed = 3,
         StartTurnDistance = 5,
     },
-    Audio = {
-        UISelection = Sound {
-            Bank = 'Interface',
-            Cue = 'UEF_Select_Structure',
-            LodCutoff = 'UnitMove_LodCutoff',
-        },
-    },
     Categories = {
         'UNSELECTABLE',
-		'UNTARGETABLE',
+        'UNTARGETABLE',
         'DRONE',
         'SERAPHIM',
         'DEFENSE',
@@ -37,9 +37,16 @@ UnitBlueprint {
         'AIR',
         'VISIBLETORECON',
     },
-    CollisionOffsetZ = -0.07,
     Defense = {
+        ArmorType = 'Structure',
+        Health = 1,
+        MaxHealth = 1,
+        RegenRate = 0,
         AirThreatLevel = 0,
+        SurfaceThreatLevel = 0,
+        SubThreatLevel = 0,
+        ThreatLevel = 0,
+        EconomyThreatLevel = 0,
         SeraLambdaField01 = {
             AttachBone = 'XSB0001',
             Radius = 4,
@@ -50,14 +57,6 @@ UnitBlueprint {
             Radius = 3,
             RedirectRateOfFire = 4,
         },
-        ArmorType = 'Structure',
-        EconomyThreatLevel = 0,
-        Health = 1,
-        MaxHealth = 1,
-        RegenRate = 0,
-        SubThreatLevel = 0,
-        SurfaceThreatLevel = 0,
-        ThreatLevel = 0,
     },
     Description = '<LOC ESB0005_desc>Lambda Emitter',
     Display = {
@@ -87,7 +86,7 @@ UnitBlueprint {
         BuildTime = 60,
     },
     General = {
-    	CapCost = 0,
+        CapCost = 0,
         Category = 'Utility',
         Classification = 'RULEUC_MilitaryAircraft',
         CommandCaps = {
@@ -140,5 +139,5 @@ UnitBlueprint {
     SizeY = 0.1,
     SizeZ = 0.1,
     StrategicIconSortPriority = 210,
+    CollisionOffsetZ = -0.07,
 }
-

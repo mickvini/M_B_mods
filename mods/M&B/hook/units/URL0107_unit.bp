@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Assault Laser QuadBot',
+    Description = '<LOC URL0107_desc>Assault Laser QuadBot',
     Display = {
         Abilities = {
             'Armor - 10.5%',

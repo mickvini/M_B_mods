@@ -97,7 +97,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 863,
     },
-    Description = 'Экстрактор материи T4',
+    Description = '<LOC SEB1312_desc>Экстрактор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_engineeringsuite>Engineering Suite',

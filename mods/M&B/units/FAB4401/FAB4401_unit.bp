@@ -73,7 +73,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 20000,
     },
-    Description = 'Эон Стационарный T4 щит',
+    Description = '<LOC FAB4401_desc>Эон Стационарный T4 щит',
     Display = {
         Abilities = {
             '<LOC ability_hugeshielddome>Huge Shield Dome',

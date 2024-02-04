@@ -115,7 +115,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 12,
         EconomyThreatLevel = 1,
     },
-    Description = 'Воздушный бомбордировщик T2',
+    Description = '<LOC SEA0211_desc>Воздушный бомбордировщик T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -367,7 +367,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',

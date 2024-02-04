@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 10,
     },
-    Description = 'Heavy Mobile Defense Unit',
+    Description = '<LOC UAL0310_desc>Heavy Mobile Defense Unit',
     Display = {
         Abilities = {
             '<LOC ability_tacmissiledef>Tactical Missile Defense',

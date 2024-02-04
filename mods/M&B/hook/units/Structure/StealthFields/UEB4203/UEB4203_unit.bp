@@ -51,7 +51,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Стелс поле T2',
+    Description = '<LOC UEB4203_desc>Стелс поле T2',
     Display = {
         Abilities = {
             '<LOC ability_stealthfield>Stealth Field',

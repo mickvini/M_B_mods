@@ -54,7 +54,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Тяжелое орудие T3',
+    Description = '<LOC BRMT1EXPDT2_desc>Тяжелое орудие T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

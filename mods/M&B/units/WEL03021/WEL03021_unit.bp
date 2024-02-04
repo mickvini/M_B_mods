@@ -85,7 +85,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Средний бот T4',
+    Description = '<LOC WEL03021_desc>Средний бот T4',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',

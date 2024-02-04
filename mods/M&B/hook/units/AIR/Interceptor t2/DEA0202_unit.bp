@@ -121,7 +121,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый истребитель T2',
+    Description = '<LOC DEA0202_desc>Тяжелый истребитель T2',
     Display = {
         Abilities = {
         },
@@ -346,7 +346,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',
@@ -424,7 +424,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

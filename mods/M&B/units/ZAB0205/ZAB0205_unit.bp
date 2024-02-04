@@ -108,10 +108,10 @@ UnitBlueprint {
         BuildCostMass = 500,
         BuildRate = 5,
         BuildTime = 300,
-        MaintenanceConsumptionPerSecondEnergy = 200,
         BuildableCategory = {
             '',
         },
+        MaintenanceConsumptionPerSecondEnergy = 200,
         MaxBuildDistance = 75,
     },
     General = {

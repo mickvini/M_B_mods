@@ -54,7 +54,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 46,
     },
-    Description = 'Легкое орудие T3',
+    Description = '<LOC XEB2306_desc>Легкое орудие T3',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

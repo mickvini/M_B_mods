@@ -1,6 +1,5 @@
 UnitBlueprint {
     AI = {
-        ##GuardScanRadius = 60,
 		TargetBones = {
 			'Turret',
         },
@@ -43,7 +42,7 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'TANK',
-        'OVERLAYDIRECTFIRE',        
+        'OVERLAYDIRECTFIRE',
     },
     Defense = {
         ArmorType = 'Normal',
@@ -52,7 +51,7 @@ UnitBlueprint {
         RegenRate = 2,
         SurfaceThreatLevel = 38.7,
     },
-    Description = 'Средний танк T4',
+    Description = '<LOC BRNT3BT_desc>Средний танк T4',
     Display = {
 		Abilities = {
 			'Rocket Pods with Stun',
@@ -106,7 +105,6 @@ UnitBlueprint {
                                 0,
                             },
                         },                        
-                        
                     },
                 },
             },
@@ -288,7 +286,7 @@ UnitBlueprint {
             FiringRandomness = 0.1,
             FiringTolerance = 0.5,
             Label = 'rocket',
-            MaxRadius = 70,            
+            MaxRadius = 70,
             MuzzleSalvoDelay = 0.6,
             MuzzleSalvoSize = 4,
             MuzzleVelocity = 18,
@@ -350,7 +348,7 @@ UnitBlueprint {
             RenderFireClock = true,
             TurretDualManipulators = true,
             Turreted = true,
-        },        
+        },
     },
     Wreckage = {
         Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',

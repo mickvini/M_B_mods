@@ -36,7 +36,7 @@ UnitBlueprint {
         RegenRate = 2,
         EconomyThreatLevel = 63,
     },
-    Description = 'Хранилище энергии T2',
+    Description = '<LOC XSB2105_desc>Хранилище энергии T2',
     Display = {
         Abilities = {
 			'Adjacency bonuses to Energy Production & Shields',

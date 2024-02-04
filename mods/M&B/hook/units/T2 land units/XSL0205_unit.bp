@@ -68,7 +68,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная зенитка T2',
+    Description = '<LOC XSL0205_desc>Мобильная зенитка T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

@@ -53,7 +53,7 @@ UnitBlueprint {
         RegenRate = 4,
         SurfaceThreatLevel = 99.9,
     },
-    Description = 'Легкое орудие T3',
+    Description = '<LOC BRPT3PD_desc>Легкое орудие T3',
     Display = {
 		Abilities = {
 			'Volatile',

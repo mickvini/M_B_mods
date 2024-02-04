@@ -38,7 +38,7 @@ UnitBlueprint {
         'SHOWQUEUE',
         'SORTECONOMY',
         'OVERLAYRADAR',
-        'RADAR',        
+        'RADAR',
     },
     Defense = {
         ArmorType = 'Structure',
@@ -64,12 +64,11 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Щитовая Гидрокарбонка T2',
+    Description = '<LOC RHYDRO3_desc>Щитовая Гидрокарбонка T2',
     Display = {
 	Abilities = {
 	    '<LOC ability_upgradable>Upgradeable',           
             '<LOC ability_shielddome>Shield Dome',
-            
         },
         Mesh = {
             IconFadeInZoom = 130,
@@ -146,7 +145,7 @@ UnitBlueprint {
         UnitWeight = 1,
         UpgradesTo = 'rhydro4',
         UpgradesFrom = 'rhydro2',
-    },    
+    },
     Interface = {
         HelpText = '<LOC urb1102_help>Hydrocarbon Power Plant',
     },

@@ -115,7 +115,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный перехватчик T3',
+    Description = '<LOC UEA0303_desc>Воздушный перехватчик T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -334,7 +334,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           LAND,           STRUCTURE,           NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',
@@ -407,7 +407,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           LAND,           STRUCTURE,           NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             WeaponCategory = 'Anti Air',
             CannotAttackGround = true,

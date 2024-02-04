@@ -97,7 +97,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильный инженер T3',
+    Description = '<LOC XSL0309_desc>Мобильный инженер T3',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

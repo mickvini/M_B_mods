@@ -68,7 +68,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 50,
     },
-    Description = 'Кибран Стационарный T4 щит ED5',
+    Description = '<LOC URB4207_desc>Кибран Стационарный T4 щит ED5',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

@@ -52,7 +52,7 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'TANK',
-        'OVERLAYDIRECTFIRE',        
+        'OVERLAYDIRECTFIRE',
     },
     Defense = {
         ArmorType = 'Normal',
@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Средний танк T2',
+    Description = '<LOC BRNT1BTT2_desc>Средний танк T2',
     Display = {
         Mesh = {
             IconFadeInZoom = 140,

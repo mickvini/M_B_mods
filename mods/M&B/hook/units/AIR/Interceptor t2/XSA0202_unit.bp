@@ -119,7 +119,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий истребитель T2',
+    Description = '<LOC XSA0202_desc>Легкий истребитель T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -347,7 +347,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             WeaponCategory = 'Anti Air',
             CannotAttackGround = true,
@@ -422,7 +422,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             WeaponCategory = 'Anti Air',
             CannotAttackGround = true,

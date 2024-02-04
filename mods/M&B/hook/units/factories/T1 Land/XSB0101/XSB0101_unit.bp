@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 3,
     },
-    Description = 'Наземный завод T1',
+    Description = '<LOC XSB0101_desc>Наземный завод T1',
     Display = {
         Abilities = {
             '<LOC ability_upgradable>Upgradeable',

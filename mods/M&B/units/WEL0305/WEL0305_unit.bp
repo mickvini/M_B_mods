@@ -93,7 +93,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый бот T4',
+    Description = '<LOC WEL0305_desc>Тяжелый бот T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',
@@ -527,7 +527,7 @@ UnitBlueprint {
             TurretYawSpeed = 180,
             TurretPitch = 0,
             TurretYaw = 0,
-            TargetRestrictDisallow = 'UNTARGETABLE,        STRATEGIC',
+            TargetRestrictDisallow = 'UNTARGETABLE,         STRATEGIC',
             TargetRestrictOnlyAllow = 'TACTICAL MISSILE',
             TrackingRadius = 1.2,
             WeaponCategory = 'Defense',

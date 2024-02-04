@@ -120,7 +120,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный транспорт T1',
+    Description = '<LOC UAA0107_desc>Воздушный транспорт T1',
     Display = {
         Abilities = {
             '<LOC ability_transport>Transport',

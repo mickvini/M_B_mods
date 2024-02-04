@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная арта T1',
+    Description = '<LOC UAL0103_desc>Мобильная арта T1',
     Display = {
         Mesh = {
         Abilities = {

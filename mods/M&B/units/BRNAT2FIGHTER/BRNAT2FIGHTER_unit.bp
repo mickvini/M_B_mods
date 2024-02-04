@@ -112,7 +112,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Fighter',
+    Description = '<LOC BRNAT2FIGHTER_desc>Fighter',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -297,56 +297,56 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object05',
                     },
                     RackBone = 'Object05',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object06',
                     },
                     RackBone = 'Object06',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object03',
                     },
                     RackBone = 'Object03',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object04',
                     },
                     RackBone = 'Object04',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object08',
                     },
                     RackBone = 'Object08',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object09',
                     },
                     RackBone = 'Object09',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object07',
                     },
                     RackBone = 'Object07',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object10',
                     },
@@ -378,7 +378,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,     LAND,     STRUCTURE,     NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,      LAND,      STRUCTURE,      NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',
@@ -420,14 +420,14 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object11',
                     },
                     RackBone = 'Object11',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Object02',
                     },
@@ -459,7 +459,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,     LAND,     STRUCTURE,     NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,      LAND,      STRUCTURE,      NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',

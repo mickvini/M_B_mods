@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый бот T4',
+    Description = '<LOC WAL4404_desc>Тяжелый бот T4',
     Display = {
         Abilities = {
             'Armor - 15%',

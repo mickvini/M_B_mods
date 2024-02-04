@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная ракетница T4',
+    Description = '<LOC BRNT3ML_desc>Мобильная ракетница T4',
     Display = {
         Mesh = {
             IconFadeInZoom = 150,

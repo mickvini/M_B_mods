@@ -52,7 +52,7 @@ UnitBlueprint {
         MaxHealth = 6200,
         EconomyThreatLevel = 160,
     },
-    Description = 'Исследовательский центр',
+    Description = '<LOC SEB9101_desc>Исследовательский центр',
     Display = {
         Abilities = {
             '<LOC ability_upgradable>Upgradeable',

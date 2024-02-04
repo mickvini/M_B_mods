@@ -114,7 +114,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Multipurpose Fighter',
+    Description = '<LOC WRA0305_desc>Advanced Multipurpose Fighter',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

@@ -72,7 +72,7 @@ UnitBlueprint {
         },
         EconomyThreatLevel = 3,
     },
-    Description = 'Серафим Мобильный T2 щит',
+    Description = '<LOC SSL0222_desc>Серафим Мобильный T2 щит',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

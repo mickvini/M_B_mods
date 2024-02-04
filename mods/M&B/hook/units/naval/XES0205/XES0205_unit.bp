@@ -78,7 +78,7 @@ UnitBlueprint {
         SubThreatLevel = 9,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской щит T2',
+    Description = '<LOC XES0205_desc>Морской щит T2',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

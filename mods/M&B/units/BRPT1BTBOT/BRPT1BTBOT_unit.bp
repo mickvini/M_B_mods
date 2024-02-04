@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 5,
     },
-    Description = 'Тяжелый бот T4',
+    Description = '<LOC BRPT1BTBOT_desc>Тяжелый бот T4',
     Display = {
         Abilities = {
             'Anti-Air',

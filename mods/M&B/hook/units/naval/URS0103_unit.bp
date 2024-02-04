@@ -78,7 +78,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской фрегат T1',
+    Description = '<LOC URS0103_desc>Морской фрегат T1',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

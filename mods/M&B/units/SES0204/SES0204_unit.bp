@@ -83,7 +83,7 @@ UnitBlueprint {
         AirThreatLevel = 15,
         SubThreatLevel = 11,
     },
-    Description = 'Подводная лодка T2',
+    Description = '<LOC SES0204_desc>Подводная лодка T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -265,7 +265,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,          HOVER',
             TrackingRadius = 1.15,
             RangeCategory = 'UWRC_AntiNavy',
         },

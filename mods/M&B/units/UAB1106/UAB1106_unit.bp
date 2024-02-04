@@ -36,7 +36,7 @@ UnitBlueprint {
         RegenRate = 1,
         EconomyThreatLevel = 21,
     },
-    Description = 'Хранилище материи T1',
+    Description = '<LOC UAB1106_desc>Хранилище материи T1',
     Display = {
         Abilities = {
 			'Adjacency bonuses to Mass Production',

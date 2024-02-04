@@ -109,7 +109,7 @@ UnitBlueprint {
         MaxHealth = 1540,
         AirThreatLevel = 33,
     },
-    Description = 'Тяжелый истребитель T2',
+    Description = '<LOC SRA0212_desc>Тяжелый истребитель T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -267,7 +267,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           LAND,           STRUCTURE,           NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

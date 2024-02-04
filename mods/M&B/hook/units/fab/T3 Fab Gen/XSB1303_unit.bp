@@ -55,7 +55,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 39,
     },
-    Description = 'Фабрикатор материи T3',
+    Description = '<LOC XSB1303_desc>Фабрикатор материи T3',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

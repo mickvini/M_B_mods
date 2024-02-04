@@ -86,7 +86,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Assault Shield QuadBot',
+    Description = '<LOC UAL0303_desc>Assault Shield QuadBot',
     Display = {
         Abilities = {
             'Armor - 15.0%',

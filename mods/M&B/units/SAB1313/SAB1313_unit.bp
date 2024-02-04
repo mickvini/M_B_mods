@@ -65,7 +65,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 925,
     },
-    Description = 'Фабрикатор материи T4',
+    Description = '<LOC SAB1313_desc>Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',

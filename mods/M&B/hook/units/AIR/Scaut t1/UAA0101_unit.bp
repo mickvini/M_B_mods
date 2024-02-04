@@ -105,7 +105,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный разведчик T1',
+    Description = '<LOC UAA0101_desc>Воздушный разведчик T1',
     Display = {
         LayerChangeEffects = {
             AirLand = {

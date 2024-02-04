@@ -57,7 +57,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Тяжелое орудие T1',
+    Description = '<LOC UAB2301_desc>Тяжелое орудие T1',
     Display = {
         AnimationPermOpen = '/units/UAB2301/UAB2301_Aopen.sca',
         Mesh = {

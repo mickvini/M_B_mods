@@ -93,7 +93,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Heavy Tank',
+    Description = '<LOC UAL0202_desc>Heavy Tank',
     Display = {
         Abilities = {
             'Armor - 24%',

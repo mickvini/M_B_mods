@@ -86,7 +86,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'ОФЗ Мобильный T2 щит',
+    Description = '<LOC UEL0307_desc>ОФЗ Мобильный T2 щит',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

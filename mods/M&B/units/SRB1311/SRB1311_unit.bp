@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 498,
     },
-    Description = 'Генератор энергии T4',
+    Description = '<LOC SRB1311_desc>Генератор энергии T4',
     Display = {
         Abilities = {
             '<LOC ability_cloak>Cloaking',

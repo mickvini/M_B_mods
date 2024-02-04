@@ -46,7 +46,7 @@ UnitBlueprint {
         RegenRate = 1,
         SurfaceThreatLevel = 17.6,
     },
-    Description = 'Тяжелое орудие T1',
+    Description = '<LOC BRPT1PD_desc>Тяжелое орудие T1',
     Display = {
 		Abilities = {'Good Range',},
         Mesh = {

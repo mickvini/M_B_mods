@@ -43,7 +43,7 @@ UnitBlueprint {
         RegenRate = 2,
         SurfaceThreatLevel = 12.8,
     },
-    Description = 'Дальнобойная арта T1',
+    Description = '<LOC SRB2103_desc>Дальнобойная арта T1',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

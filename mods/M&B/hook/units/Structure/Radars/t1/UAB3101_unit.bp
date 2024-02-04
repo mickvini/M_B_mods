@@ -48,7 +48,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1,
     },
-    Description = 'Стационарный радар T1',
+    Description = '<LOC UAB3101_desc>Стационарный радар T1',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',

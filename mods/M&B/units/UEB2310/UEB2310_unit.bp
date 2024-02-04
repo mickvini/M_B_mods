@@ -60,7 +60,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 5000,
     },
-    Description = 'Экспериментальная скорострельная арта',
+    Description = '<LOC UEB2310_desc>Экспериментальная скорострельная арта',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

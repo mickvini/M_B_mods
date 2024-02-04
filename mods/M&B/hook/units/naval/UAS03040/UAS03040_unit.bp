@@ -97,7 +97,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Подводная лодка T3',
+    Description = '<LOC UAS03040_desc>Подводная лодка T3',
     Display = {
         Abilities = {
             '<LOC ability_manuallaunch>Manual Launch',
@@ -370,7 +370,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

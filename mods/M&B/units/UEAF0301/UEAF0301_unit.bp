@@ -115,7 +115,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Multipurpose Fighter',
+    Description = '<LOC UEAF0301_desc>Advanced Multipurpose Fighter',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -280,7 +280,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 2,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile01',
                         'Missile06',
@@ -288,7 +288,7 @@ UnitBlueprint {
                     RackBone = 'Projectile_Aim',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile02',
                         'Missile03',
@@ -296,7 +296,7 @@ UnitBlueprint {
                     RackBone = 'Projectile_Aim',
                 },
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile04',
                         'Missile05',

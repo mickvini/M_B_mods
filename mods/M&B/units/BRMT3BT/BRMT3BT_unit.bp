@@ -68,7 +68,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый танк T4',
+    Description = '<LOC BRMT3BT_desc>Тяжелый танк T4',
     Display = {
         Mesh = {
             IconFadeInZoom = 160,

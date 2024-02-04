@@ -108,7 +108,7 @@ UnitBlueprint {
         MaxHealth = 2800,
         SubThreatLevel = 23,
     },
-    Description = 'Воздушный торпедник T3',
+    Description = '<LOC SSA0307_desc>Воздушный торпедник T3',
     Display = {
         Abilities = {
             '<LOC ability_sonar>Sonar',
@@ -299,7 +299,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             EffectiveRadius = 19,

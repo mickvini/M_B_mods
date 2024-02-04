@@ -109,7 +109,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 20,
     },
-    Description = 'Воздушный штурмовик T2',
+    Description = '<LOC BSA0310_desc>Воздушный штурмовик T2',
     Display = {
     	Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -338,7 +338,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,             UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             SlavedToBody = true,

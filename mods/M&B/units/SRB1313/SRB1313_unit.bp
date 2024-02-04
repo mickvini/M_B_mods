@@ -49,7 +49,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 625,
     },
-    Description = 'Фабрикатор материи T4',
+    Description = '<LOC SRB1313_desc>Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_cloak>Cloaking',

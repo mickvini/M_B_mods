@@ -41,8 +41,8 @@ UnitBlueprint {
     },
     Categories = {
         'PRODUCTSC1',
-        'SELECTABLE',        
-        'BUILTBYTIER3FACTORY',        
+        'SELECTABLE',
+        'BUILTBYTIER3FACTORY',
         'AEON',
         'MOBILE',
         'LAND',
@@ -65,7 +65,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий ховер T4',
+    Description = '<LOC BROT2EXTH_desc>Легкий ховер T4',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

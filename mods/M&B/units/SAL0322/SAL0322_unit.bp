@@ -71,7 +71,7 @@ UnitBlueprint {
         },
         EconomyThreatLevel = 5,
     },
-    Description = 'Эон Мобильный T3 щит',
+    Description = '<LOC SAL0322_desc>Эон Мобильный T3 щит',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

@@ -58,7 +58,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 32,
     },
-    Description = 'Дальнобойная арта T1',
+    Description = '<LOC UAB2303_desc>Дальнобойная арта T1',
     Display = {
         AnimationPermOpen = '/units/uab2303/uab2303_aopen.sca',
         Mesh = {

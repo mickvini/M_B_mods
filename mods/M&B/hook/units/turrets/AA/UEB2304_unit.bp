@@ -54,7 +54,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 17,
     },
-    Description = 'Стационарная зенитка T3',
+    Description = '<LOC UEB2304_desc>Стационарная зенитка T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

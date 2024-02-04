@@ -55,7 +55,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 17,
     },
-    Description = 'Experimental Gatling Defense System',
+    Description = '<LOC BRNT1EXPDT2_desc>Experimental Gatling Defense System',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

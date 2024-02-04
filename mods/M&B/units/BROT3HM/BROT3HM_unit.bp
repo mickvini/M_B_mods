@@ -74,7 +74,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий бот T4',
+    Description = '<LOC BROT3HM_desc>Легкий бот T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

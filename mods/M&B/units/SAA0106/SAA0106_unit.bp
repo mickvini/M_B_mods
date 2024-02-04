@@ -113,7 +113,7 @@ UnitBlueprint {
         MaxHealth = 1100,
         SubThreatLevel = 5,
     },
-    Description = 'Воздушный торпедник T1',
+    Description = '<LOC SAA0106_desc>Воздушный торпедник T1',
     Display = {
         Abilities = {
             '<LOC ability_depthcharge>Depth Charges',
@@ -280,7 +280,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,              HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             EffectiveRadius = 19,

@@ -94,7 +94,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Подводная лодка T2',
+    Description = '<LOC XSS0304_desc>Подводная лодка T2',
     Display = {
         Abilities = {            
             '<LOC ability_sonar>Sonar',
@@ -341,7 +341,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
             SlavedToBody = true,

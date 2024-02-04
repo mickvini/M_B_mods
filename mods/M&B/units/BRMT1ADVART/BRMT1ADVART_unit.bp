@@ -57,7 +57,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Скорострельная арта T1',
+    Description = '<LOC BRMT1ADVART_desc>Скорострельная арта T1',
     Display = {
         Mesh = {
             IconFadeInZoom = 180,

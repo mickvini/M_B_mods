@@ -70,7 +70,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской артшип T2',
+    Description = '<LOC BROST1BATTLESHIP_desc>Морской артшип T2',
     Display = {
         AnimationDeath = {
             {

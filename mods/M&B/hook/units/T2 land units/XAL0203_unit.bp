@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий ховер T2',
+    Description = '<LOC XAL0203_desc>Легкий ховер T2',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

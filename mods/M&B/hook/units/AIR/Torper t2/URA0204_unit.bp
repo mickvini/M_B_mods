@@ -120,7 +120,7 @@ UnitBlueprint {
         SubThreatLevel = 6,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный торпедник T2',
+    Description = '<LOC URA0204_desc>Воздушный торпедник T2',
     Display = {
         Abilities = {
             '<LOC ability_sonar>Sonar',
@@ -342,7 +342,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             Turreted = false,

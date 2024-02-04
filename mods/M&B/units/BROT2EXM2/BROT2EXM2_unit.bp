@@ -42,7 +42,7 @@ UnitBlueprint {
     Categories = {
         'PRODUCTSC1',
         'SELECTABLE',
-        'BUILTBYTIER3FACTORY',        
+        'BUILTBYTIER3FACTORY',
         'AEON',
         'MOBILE',
         'LAND',
@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Средний танк T4',
+    Description = '<LOC BROT2EXM2_desc>Средний танк T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

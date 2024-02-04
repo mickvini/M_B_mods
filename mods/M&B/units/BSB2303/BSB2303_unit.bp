@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 31,
     },
-    Description = 'Постановщик мин T2',
+    Description = '<LOC BSB2303_desc>Постановщик мин T2',
     Display = {
 		Abilities = {
             '<LOC ability_mine>Deploys Land Mines',

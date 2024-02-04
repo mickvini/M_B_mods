@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Средний бот T2',
+    Description = '<LOC BRMT2BM_desc>Средний бот T2',
     Display = {
         AnimationDeath = {
             {

@@ -54,7 +54,7 @@ UnitBlueprint {
         RegenRate = 0,
         SurfaceThreatLevel = 27,
     },
-    Description = 'Тяжёлый танк T3',
+    Description = '<LOC UAL0302_desc>Тяжёлый танк T3',
     Display = {
        IconName = 'ual0302',	
        Mesh = {

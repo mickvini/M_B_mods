@@ -102,7 +102,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный разведчик T3',
+    Description = '<LOC UAA0302_desc>Воздушный разведчик T3',
     Display = {
         Abilities = {
             '<LOC ability_omni>Omni Sensor',

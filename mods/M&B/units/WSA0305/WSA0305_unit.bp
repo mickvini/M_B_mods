@@ -114,7 +114,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный перехватчик T3',
+    Description = '<LOC WSA0305_desc>Воздушный перехватчик T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

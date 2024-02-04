@@ -112,7 +112,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный штурмовик T2',
+    Description = '<LOC URA0203_desc>Воздушный штурмовик T2',
     Display = {
         IdleEffects = {
             Air = {
@@ -337,7 +337,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,           UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             LeadTarget = true,

@@ -117,7 +117,7 @@ UnitBlueprint {
         SubThreatLevel = 18,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный торпедник T3',
+    Description = '<LOC XAA0306_desc>Воздушный торпедник T3',
     Display = {
         Abilities = {
             '<LOC ability_sonar>Sonar',
@@ -339,7 +339,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             WeaponCategory = 'Anti Navy',
             TurretDualManipulators = false,
             Turreted = false,

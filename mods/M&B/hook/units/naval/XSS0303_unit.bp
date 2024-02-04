@@ -78,7 +78,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской авианосец T3',
+    Description = '<LOC XSS0303_desc>Морской авианосец T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

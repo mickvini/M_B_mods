@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжёлый бот T2',
+    Description = '<LOC GMEL305_desc>Тяжёлый бот T2',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',            
@@ -347,7 +347,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'missile_01',
                         'missile_02',

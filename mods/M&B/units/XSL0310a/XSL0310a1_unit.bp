@@ -44,7 +44,7 @@ UnitBlueprint {
         'MOBILE',
         'OVERLAYDIRECTFIRE',
         'RECLAIMABLE',
-        'SELECTABLE',        
+        'SELECTABLE',
         'TECH3',
         'VISIBLETORECON',
     },
@@ -406,7 +406,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile',
                     },

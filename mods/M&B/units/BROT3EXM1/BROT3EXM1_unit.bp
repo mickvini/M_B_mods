@@ -41,8 +41,8 @@ UnitBlueprint {
     },
     Categories = {
         'PRODUCTSC1',
-        'SELECTABLE',        
-        'BUILTBYTIER3FACTORY',        
+        'SELECTABLE',
+        'BUILTBYTIER3FACTORY',
         'AEON',
         'MOBILE',
         'LAND',
@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый танк T4',
+    Description = '<LOC BROT3EXM1_desc>Тяжелый танк T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',                        
@@ -148,7 +148,7 @@ UnitBlueprint {
         UnitWeight = 1,
         UnitName = 'Granite',
     },
-    Intel = {        
+    Intel = {
         VisionRadius = 56,
     },
     Interface = {

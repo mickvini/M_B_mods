@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 50,
     },
-    Description = 'Щитовая Гидрокарбонка T2',
+    Description = '<LOC AHYDRO3_desc>Щитовая Гидрокарбонка T2',
     Display = {
 	Abilities = {
             '<LOC ability_shielddome>Shield Dome',

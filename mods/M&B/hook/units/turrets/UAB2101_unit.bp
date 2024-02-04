@@ -62,7 +62,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 3,
     },
-    Description = 'Легкое орудие T1',
+    Description = '<LOC UAB2101_desc>Легкое орудие T1',
     Display = {
         DamageEffects = {
             {

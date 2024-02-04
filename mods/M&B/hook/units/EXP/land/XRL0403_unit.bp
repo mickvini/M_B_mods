@@ -558,7 +558,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
             Turreted = false,

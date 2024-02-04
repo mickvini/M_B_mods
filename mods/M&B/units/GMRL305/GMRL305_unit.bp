@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 5,
     },
-    Description = 'Средний бот T4',
+    Description = '<LOC GMRL305_desc>Средний бот T4',
     Display = {
         Abilities = {
             '<LOC ability_tacticalmissledeflect>Tactical Deflection: Diverts incoming Tactical Missiles',

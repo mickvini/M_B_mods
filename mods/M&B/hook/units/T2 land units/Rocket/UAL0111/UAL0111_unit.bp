@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная ракетница T2',
+    Description = '<LOC UAL0111_desc>Мобильная ракетница T2',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,
@@ -252,7 +252,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Missile',
                     },

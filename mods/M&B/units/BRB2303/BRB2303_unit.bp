@@ -58,7 +58,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 26,
     },
-    Description = 'Экспериментальная дальнобойная арта',
+    Description = '<LOC BRB2303_desc>Экспериментальная дальнобойная арта',
     Display = {
 		Abilities = {
             '<LOC ability_energy>High Energy Consumption',

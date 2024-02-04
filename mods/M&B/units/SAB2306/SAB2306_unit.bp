@@ -58,7 +58,7 @@ UnitBlueprint {
         AirThreatLevel = 15,
         SurfaceThreatLevel = 29,
     },
-    Description = 'Легкое орудие T4',
+    Description = '<LOC SAB2306_desc>Легкое орудие T4',
     Display = {
         Abilities = {
             '<LOC ability_omni>Omni Sensor',
@@ -307,7 +307,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,        HIGHALTAIR',
             WeaponCategory = 'Direct Fire',
             DoNotCollideList = {
                 'MISSILE',

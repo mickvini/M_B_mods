@@ -67,7 +67,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Кибран Мобильный T3 стелс~щит',
+    Description = '<LOC URL0306_desc>Кибран Мобильный T3 стелс~щит',
     Display = {
         Abilities = {
             '<LOC ability_stealthfield>Stealth Field',

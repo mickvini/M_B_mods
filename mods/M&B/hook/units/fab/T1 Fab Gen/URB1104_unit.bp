@@ -52,7 +52,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1,
     },
-    Description = 'Фабрикатор материи T2',
+    Description = '<LOC URB1104_desc>Фабрикатор материи T2',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

@@ -61,7 +61,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 79,
     },
-    Description = 'Дальнобойная арта T2',
+    Description = '<LOC SAB2311_desc>Дальнобойная арта T2',
     Display = {
         AnimationPermOpen = '/mods/M&B/units/SAB2311/SAB2311_aopen01.sca',
         Mesh = {

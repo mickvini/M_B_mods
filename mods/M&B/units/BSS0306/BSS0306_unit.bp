@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской линейный T3 крейсер',
+    Description = '<LOC BSS0306_desc>Морской линейный T3 крейсер',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

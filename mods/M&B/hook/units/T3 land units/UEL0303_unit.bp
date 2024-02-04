@@ -86,7 +86,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий бот T3',
+    Description = '<LOC UEL0303_desc>Легкий бот T3',
     Display = {
         Abilities = {
             'Armor - 5%',

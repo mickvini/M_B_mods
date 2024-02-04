@@ -74,7 +74,7 @@ UnitBlueprint {
         AirThreatLevel = 75,
         SurfaceThreatLevel = 472,
     },
-    Description = 'Морской дредноут T4',
+    Description = '<LOC SAS0401_desc>Морской дредноут T4',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
@@ -668,7 +668,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           SATELLITE',
+            TargetRestrictDisallow = 'UNTARGETABLE,            SATELLITE',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',
             AlwaysRecheckTarget = true,
@@ -739,7 +739,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,          SATELLITE',
+            TargetRestrictDisallow = 'UNTARGETABLE,           SATELLITE',
             TrackingRadius = 1.4,
             AlwaysRecheckTarget = true,
             CannotAttackGround = true,

@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжелый танк T4',
+    Description = '<LOC GMSL312_desc>Тяжелый танк T4',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

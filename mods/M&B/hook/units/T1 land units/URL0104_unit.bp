@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная зенитка T1',
+    Description = '<LOC URL0104_desc>Мобильная зенитка T1',
     Display = {
         Abilities = {
             'AAMissle - 23 DPS / R - 60 / S - 0',	

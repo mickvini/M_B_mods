@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжёлый танк T2',
+    Description = '<LOC BRPT1EXTANK2_desc>Тяжёлый танк T2',
     Display = {
         Abilities = {
             'Radar',

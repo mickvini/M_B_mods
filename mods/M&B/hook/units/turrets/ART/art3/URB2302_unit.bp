@@ -61,7 +61,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1151,
     },
-    Description = 'Дальнобойная арта T3',
+    Description = '<LOC URB2302_desc>Дальнобойная арта T3',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

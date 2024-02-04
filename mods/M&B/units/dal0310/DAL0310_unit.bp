@@ -59,7 +59,7 @@ UnitBlueprint {
         RegenRate = 1,
         SurfaceThreatLevel = 27,
     },
-    Description = 'Легкий ховер T3',
+    Description = '<LOC DAL0310_desc>Легкий ховер T3',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

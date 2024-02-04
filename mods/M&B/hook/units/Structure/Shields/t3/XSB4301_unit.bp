@@ -78,7 +78,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 60,
     },
-    Description = 'Серафим Стационарный T3 щит',
+    Description = '<LOC XSB4301_desc>Серафим Стационарный T3 щит',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

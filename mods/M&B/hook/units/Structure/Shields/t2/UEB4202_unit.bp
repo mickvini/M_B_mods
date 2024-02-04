@@ -66,7 +66,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 8,
     },
-    Description = 'ОФЗ Стационарный T2 щит',
+    Description = '<LOC UEB4202_desc>ОФЗ Стационарный T2 щит',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

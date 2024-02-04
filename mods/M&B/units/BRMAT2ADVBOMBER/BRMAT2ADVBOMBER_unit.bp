@@ -111,7 +111,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Stealth Bomber',
+    Description = '<LOC BRMAT2ADVBOMBER_desc>Advanced Stealth Bomber',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -413,7 +413,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,     LAND,     STRUCTURE,     NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,      LAND,      STRUCTURE,      NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',

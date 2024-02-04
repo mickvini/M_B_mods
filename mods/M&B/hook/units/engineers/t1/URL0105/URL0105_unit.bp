@@ -92,7 +92,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильный инженер T1',
+    Description = '<LOC URL0105_desc>Мобильный инженер T1',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

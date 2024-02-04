@@ -48,7 +48,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 3,
     },
-    Description = 'Гидроакустический комплекс T2',
+    Description = '<LOC UAB3202_desc>Гидроакустический комплекс T2',
     Display = {
         Abilities = {
             '<LOC ability_sonar>Sonar',

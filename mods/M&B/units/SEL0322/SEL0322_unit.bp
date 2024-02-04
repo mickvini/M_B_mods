@@ -79,7 +79,7 @@ UnitBlueprint {
         },
         EconomyThreatLevel = 5,
     },
-    Description = 'ОФЗ Мобильный T3 щит',
+    Description = '<LOC SEL0322_desc>ОФЗ Мобильный T3 щит',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

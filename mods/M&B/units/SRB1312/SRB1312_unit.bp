@@ -47,7 +47,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2500,
     },
-    Description = 'Экстрактор материи T4',
+    Description = '<LOC SRB1312_desc>Экстрактор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_cloak>Cloaking',

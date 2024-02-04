@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской крейсер T2',
+    Description = '<LOC UAS0202_desc>Морской крейсер T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -483,7 +483,7 @@ UnitBlueprint {
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
             TargetCheckInterval = 0.5,
-            TargetRestrictDisallow = 'UNTARGETABLE,       STRATEGIC',
+            TargetRestrictDisallow = 'UNTARGETABLE,        STRATEGIC',
             TargetRestrictOnlyAllow = 'MISSILE',
             TrackingRadius = 1.5,
             WeaponCategory = 'Defense',

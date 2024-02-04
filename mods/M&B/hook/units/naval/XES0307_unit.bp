@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 45,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской линейный T3 крейсер',
+    Description = '<LOC XES0307_desc>Морской линейный T3 крейсер',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
@@ -461,7 +461,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             EffectiveRadius = 77,
@@ -520,7 +520,7 @@ UnitBlueprint {
             TurretYawSpeed = 180,
             TurretPitch = 40,
             TurretYaw = 0,
-            TargetRestrictDisallow = 'UNTARGETABLE,       STRATEGIC',
+            TargetRestrictDisallow = 'UNTARGETABLE,        STRATEGIC',
             TargetRestrictOnlyAllow = 'MISSILE',
             TrackingRadius = 1.5,
             WeaponCategory = 'Defense',

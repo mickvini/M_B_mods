@@ -89,7 +89,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Medium Armored Rocket Heavy Mech',
+    Description = '<LOC BRMT3MCM_desc>Medium Armored Rocket Heavy Mech',
     Display = {
         Abilities = {           		
             '<LOC ability_amphibious>Amphibious',

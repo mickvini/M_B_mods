@@ -68,7 +68,7 @@ UnitBlueprint {
         },
         SurfaceThreatLevel = 17,
     },
-    Description = 'Тяжёлый бот T3',
+    Description = '<LOC SSL0311_desc>Тяжёлый бот T3',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',

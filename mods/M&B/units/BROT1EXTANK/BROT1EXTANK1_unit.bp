@@ -91,7 +91,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Heavy Armor Battle Tank',
+    Description = '<LOC BROT1EXTANK1_desc>Heavy Armor Battle Tank',
     Display = {
         Mesh = {
             IconFadeInZoom = 170,

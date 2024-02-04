@@ -52,7 +52,7 @@ UnitBlueprint {
         MaxHealth = 640,
         EconomyThreatLevel = 42,
     },
-    Description = 'Генератор энергии T1',
+    Description = '<LOC SEB1201_desc>Генератор энергии T1',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

@@ -51,7 +51,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Гидрокарбонка T1',
+    Description = '<LOC URB1102_desc>Гидрокарбонка T1',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

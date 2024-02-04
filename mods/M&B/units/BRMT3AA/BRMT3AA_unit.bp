@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная зенитка T3',
+    Description = '<LOC BRMT3AA_desc>Мобильная зенитка T3',
     Display = {
         Abilities = {
             'Anti-Air',

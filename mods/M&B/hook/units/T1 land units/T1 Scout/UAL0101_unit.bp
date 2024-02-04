@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий разведчик T0',
+    Description = '<LOC UAL0101_desc>Легкий разведчик T0',
     Display = {
         Abilities = {
             'Main Weapon - 20 DPS / R - 15 / S - 0',

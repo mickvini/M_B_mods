@@ -62,7 +62,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Heavy Tank',
+    Description = '<LOC BRNT3HT_desc>Heavy Tank',
     Display = {
         Mesh = {
             IconFadeInZoom = 160,

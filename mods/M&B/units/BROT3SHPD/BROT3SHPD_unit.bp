@@ -70,7 +70,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 35,
     },
-    Description = 'Экспериментальное тяжелое орудие',
+    Description = '<LOC BROT3SHPD_desc>Экспериментальное тяжелое орудие',
     Display = {
         Abilities = {
             '<LOC ability_antiair>Anti-Air',

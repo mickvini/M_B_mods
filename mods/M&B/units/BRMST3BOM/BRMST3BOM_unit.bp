@@ -71,7 +71,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 225,
         SubThreatLevel = 16,
     },
-    Description = 'Морской артшип T2',
+    Description = '<LOC BRMST3BOM_desc>Морской артшип T2',
     Display = {
         Abilities = {
 			'Bombardment Gun',            

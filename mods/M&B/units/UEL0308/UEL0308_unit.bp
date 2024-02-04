@@ -54,7 +54,7 @@ UnitBlueprint {
         RegenRate = 0,
         SurfaceThreatLevel = 27,
     },
-    Description = 'Мобильная зенитка T4',
+    Description = '<LOC UEL0308_desc>Мобильная зенитка T4',
     Display = {
         Mesh = {
             IconFadeInZoom = 140,

@@ -110,7 +110,7 @@ UnitBlueprint {
         MaxHealth = 2800,
         SubThreatLevel = 38,
     },
-    Description = 'Воздушный торпедник T3',
+    Description = '<LOC SRA0307_desc>Воздушный торпедник T3',
     Display = {
         Abilities = {
             '<LOC ability_personalstealth>Personal Stealth',
@@ -283,7 +283,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             Turreted = false,

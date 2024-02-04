@@ -108,7 +108,7 @@ UnitBlueprint {
         BuildCostMass = 600,
         BuildRate = 50,
         BuildTime = 620,
-        BuildableCategory = {            
+        BuildableCategory = {
             'BUILTBYRESEARCH CYBRAN',
         },
         MaintenanceConsumptionPerSecondEnergy = 500,

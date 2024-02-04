@@ -50,7 +50,7 @@ UnitBlueprint {
         RegenRate = 3,
         SurfaceThreatLevel = 37.8,
     },
-    Description = 'Легкий танк T3',
+    Description = '<LOC WSL0308_desc>Легкий танк T3',
     Display = {
         IdleEffects = {
             Seabed = {

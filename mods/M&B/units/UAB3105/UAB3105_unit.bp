@@ -35,7 +35,7 @@ UnitBlueprint {
         RegenRate = 3,
         EconomyThreatLevel = 82,
     },
-    Description = 'Хранилище энергии T3',
+    Description = '<LOC UAB3105_desc>Хранилище энергии T3',
     Display = {
         Abilities = {
 			'Adjacency bonuses to Energy Production & Shields',

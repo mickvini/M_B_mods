@@ -65,7 +65,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6000,
     },
-    Description = 'Экспериментальная дальнобойная арта',
+    Description = '<LOC GMSB403_desc>Экспериментальная дальнобойная арта',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

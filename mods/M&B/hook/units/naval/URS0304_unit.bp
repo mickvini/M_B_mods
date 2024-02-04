@@ -100,7 +100,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Подводная лодка T3',
+    Description = '<LOC URS0304_desc>Подводная лодка T3',
     Display = {
         Abilities = {
             '<LOC ability_stun>EMP Weapon',
@@ -453,7 +453,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,          HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,           HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

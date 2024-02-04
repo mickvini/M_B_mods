@@ -52,7 +52,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 1253,
     },
-    Description = 'Экстрактор материи T4',
+    Description = '<LOC SSB1312_desc>Экстрактор материи T4',
     Display = {
         AnimationActivate = '/units/XSB1302/XSB1302_Apump.sca',
         AnimationDeath = {

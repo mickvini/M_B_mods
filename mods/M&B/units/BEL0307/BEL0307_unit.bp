@@ -55,7 +55,7 @@ UnitBlueprint {
         AirThreatLevel = 15,
         SurfaceThreatLevel = 65.6,
     },
-    Description = 'Тяжелый танк T4',
+    Description = '<LOC BEL0307_desc>Тяжелый танк T4',
     Display = {
         Abilities = {
             'Amphibious',
@@ -234,7 +234,7 @@ UnitBlueprint {
             ProjectileLifetime = 0.9,
             RackBones = {
                 {
-                    HideMuzzle = 'true',
+                    HideMuzzle = true,
                     MuzzleBones = {
                         'Railgun_Muzzle',
                     },
@@ -263,7 +263,7 @@ UnitBlueprint {
                 'MOBILE -AIR',
                 'STRUCTURE -WALL',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE, WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,  WALL',
             TrackingRadius = 1.2,
             LeadTarget = true,
             NotExclusive = true,
@@ -332,7 +332,7 @@ UnitBlueprint {
                 'STRUCTURE -WALL',
                 'GROUNDATTACK',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HIGHALTAIR,      SATELLITE',
+            TargetRestrictDisallow = 'UNTARGETABLE,       HIGHALTAIR,       SATELLITE',
             TrackingRadius = 1.2,
             AimsStraightOnDisable = false,
             MuzzleVelocityRandom = 3,
@@ -577,7 +577,7 @@ UnitBlueprint {
                 'STRUCTURE -WALL',
                 'MOBILE -AIR',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,       WALL',
             TrackingRadius = 1.1,
             AlwaysRecheckTarget = true,
             NoPause = true,

@@ -45,7 +45,7 @@ UnitBlueprint {
         'SELECTABLE',
         'BUILTBYTIER2FACTORY',
         'BUILTBYTIER3FACTORY',
-        'BUILTBYEXPERIMENTALSUB',        
+        'BUILTBYEXPERIMENTALSUB',
         'MOBILE',
         'NAVAL',
         'TECH2',
@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской крейсер T2',
+    Description = '<LOC XSS0202_desc>Морской крейсер T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -217,7 +217,7 @@ UnitBlueprint {
         Level4 = 64,
         Level5 = 80,
     },
-    Weapon = {   
+    Weapon = {
         {
             AboveWaterTargetsOnly = true,
             Audio = {
@@ -480,7 +480,7 @@ UnitBlueprint {
             TurretYawSpeed = 720,
             TurretPitch = 0,
             TurretYaw = 0,
-            TargetRestrictDisallow = 'UNTARGETABLE,     STRATEGIC',
+            TargetRestrictDisallow = 'UNTARGETABLE,      STRATEGIC',
             TargetRestrictOnlyAllow = 'MISSILE',
             TrackingRadius = 1.5,
             WeaponCategory = 'Defense',

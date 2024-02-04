@@ -73,7 +73,7 @@ UnitBlueprint {
     Categories = {
         'PRODUCTSC1',
         'SELECTABLE',
-        'BUILTBYTIER3FACTORY',        
+        'BUILTBYTIER3FACTORY',
         'MOBILE',
         'NAVAL',
         'TECH3',
@@ -98,7 +98,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Подводная лодка T3',
+    Description = '<LOC UES0304_desc>Подводная лодка T3',
     Display = {
         Abilities = {
             '<LOC ability_manuallaunch>Manual Launch',
@@ -304,7 +304,6 @@ UnitBlueprint {
         Level5 = 60,
     },
     Weapon = {
-        
         {
             AboveWaterTargetsOnly = true,
             Audio = {

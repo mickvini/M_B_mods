@@ -120,7 +120,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный бомбордировщик T1',
+    Description = '<LOC XSA0103_desc>Воздушный бомбордировщик T1',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',

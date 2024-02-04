@@ -29,7 +29,7 @@ UnitBlueprint {
         ThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Lambda Emitter',
+    Description = '<LOC EEB0001_desc>Lambda Emitter',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

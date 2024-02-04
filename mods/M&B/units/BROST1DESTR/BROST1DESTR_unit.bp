@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской линейный T3 крейсер',
+    Description = '<LOC BROST1DESTR_desc>Морской линейный T3 крейсер',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -453,7 +453,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,          HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

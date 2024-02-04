@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 12,
     },
-    Description = 'Судостроительный завод T2',
+    Description = '<LOC UEB0203_desc>Судостроительный завод T2',
     Display = {
         Abilities = {
             '<LOC ability_upgradable>Upgradeable',

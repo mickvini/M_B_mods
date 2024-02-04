@@ -83,7 +83,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Экспериментальная скорострельная арта',
+    Description = '<LOC URL0401_desc>Экспериментальная скорострельная арта',
     Display = {
         Abilities = {
             '<LOC ability_deploys>Deploys',

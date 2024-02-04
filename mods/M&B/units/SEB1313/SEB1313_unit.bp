@@ -99,7 +99,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 646,
     },
-    Description = 'Фабрикатор материи T4',
+    Description = '<LOC SEB1313_desc>Фабрикатор материи T4',
     Display = {
         Abilities = {
             '<LOC ability_engineeringsuite>Engineering Suite',

@@ -84,7 +84,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная арта T2',
+    Description = '<LOC XSL0203_desc>Мобильная арта T2',
     Display = {
         Abilities = {
             'Armor - 3.25%',		

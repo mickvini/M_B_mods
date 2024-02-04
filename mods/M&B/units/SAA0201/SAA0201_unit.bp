@@ -99,7 +99,7 @@ UnitBlueprint {
         MaxHealth = 540,
         EconomyThreatLevel = 250,
     },
-    Description = 'Воздушный разведчик T2',
+    Description = '<LOC SAA0201_desc>Воздушный разведчик T2',
     Display = {
         Abilities = {
             '<LOC ability_jamming>Jamming',

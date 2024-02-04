@@ -118,7 +118,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Gunship',
+    Description = '<LOC BRNAT1EXGS_desc>Advanced Gunship',
     Display = {
         IdleEffects = {
             Air = {
@@ -536,7 +536,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.05,
             WeaponCategory = 'Anti Air',

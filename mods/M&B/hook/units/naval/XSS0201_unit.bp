@@ -97,7 +97,7 @@ UnitBlueprint {
         SubThreatLevel = 21,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской эсминец T2',
+    Description = '<LOC XSS0201_desc>Морской эсминец T2',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
@@ -482,7 +482,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
             Turreted = false,

@@ -96,7 +96,6 @@ UnitBlueprint {
                     SpecularName = 'zeb0205_lod1_specteam.dds',
                 },          
             },
-
         },
         PlaceholderMeshName = 'UXB0015',
         SpawnRandomRotation = true,
@@ -124,10 +123,10 @@ UnitBlueprint {
         BuildCostMass = 500,
         BuildRate = 5,
         BuildTime = 300,
-        MaintenanceConsumptionPerSecondEnergy = 200,
         BuildableCategory = {
             '',
         },
+        MaintenanceConsumptionPerSecondEnergy = 200,
         MaxBuildDistance = 75,
     },
     General = {

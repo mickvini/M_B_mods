@@ -59,7 +59,7 @@ UnitBlueprint {
         AirThreatLevel = 7,
         SurfaceThreatLevel = 65,
     },
-    Description = 'Морской артшип T2',
+    Description = '<LOC BSS0206_desc>Морской артшип T2',
     Display = {
         Abilities = {
             'Anti-Air',
@@ -253,7 +253,7 @@ UnitBlueprint {
                 'MOBILE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,          AIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,           AIR',
             ArtilleryShieldBlocks = true,
             RangeCategory = 'UWRC_IndirectFire',
             TurretDualManipulators = false,
@@ -325,7 +325,7 @@ UnitBlueprint {
                 'MOBILE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,          AIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,           AIR',
             ArtilleryShieldBlocks = true,
             TurretDualManipulators = false,
             Turreted = true,

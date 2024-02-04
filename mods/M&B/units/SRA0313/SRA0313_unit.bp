@@ -114,7 +114,7 @@ UnitBlueprint {
             AttachBone = 'MissileDetector',
         },
     },
-    Description = 'Тяжелый истребитель T3',
+    Description = '<LOC SRA0313_desc>Тяжелый истребитель T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

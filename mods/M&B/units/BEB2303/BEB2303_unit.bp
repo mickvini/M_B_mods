@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 30,
     },
-    Description = 'Скорострельная арта T2',
+    Description = '<LOC BEB2303_desc>Скорострельная арта T2',
     Display = {
 		Abilities = {
             '<LOC ability_energy>High Energy Consumption',

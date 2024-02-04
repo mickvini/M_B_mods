@@ -55,7 +55,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий разведчик T0',
+    Description = '<LOC URL0101_desc>Легкий разведчик T0',
     Display = {
         Abilities = {
             '<LOC ability_cloak>Cloaking',

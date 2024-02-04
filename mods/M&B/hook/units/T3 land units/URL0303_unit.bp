@@ -69,7 +69,7 @@ UnitBlueprint {
             RedirectRateOfFire = 1,
         },
     },
-    Description = 'Средний бот T3',
+    Description = '<LOC URL0303_desc>Средний бот T3',
     Display = {
         Abilities = {
             'Armor - 5%',
@@ -420,7 +420,7 @@ UnitBlueprint {
             },
             RateOfFire = 0.5,
             TargetCheckInterval = 1,
-            TargetRestrictDisallow = 'UNTARGETABLE,      AIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,       AIR',
             WeaponCategory = 'Direct Fire',
             Accurate = true,
             IgnoreIfDisabled = true,

@@ -51,7 +51,7 @@ UnitBlueprint {
         RegenRate = 2,
         EconomyThreatLevel = 128,
     },
-    Description = 'Инженерная станция T3',
+    Description = '<LOC WSB0104_desc>Инженерная станция T3',
     Display = {
         Abilities = {
             'Engineering Suite',
@@ -137,8 +137,8 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Advanced',
-        UpgradesFrom = 'wsb01041',
         UnitWeight = 1,
+        UpgradesFrom = 'wsb01041',
         UnitName = '<LOC wsb0104_name>Dehgarwof',
     },
     Intel = {

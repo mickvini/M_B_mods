@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Серафим Мобильный T3 щит',
+    Description = '<LOC XSL0307_desc>Серафим Мобильный T3 щит',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

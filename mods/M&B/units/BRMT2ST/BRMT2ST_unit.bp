@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Легкий танк T2',
+    Description = '<LOC BRMT2ST_desc>Легкий танк T2',
     Display = {
         Abilities = {
             'Personal Stealth',

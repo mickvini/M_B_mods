@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Скорострельная арта T1',
+    Description = '<LOC MST0018_desc>Скорострельная арта T1',
     Display = {
         AnimationDeath = {
             {

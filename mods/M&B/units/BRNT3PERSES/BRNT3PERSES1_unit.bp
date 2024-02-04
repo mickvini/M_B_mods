@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 6,
     },
-    Description = 'Экспериментальное тяжелое орудие',
+    Description = '<LOC BRNT3PERSES1_desc>Экспериментальное тяжелое орудие',
     Display = {
         Abilities = {
             '<LOC ability_shielddome>Shield Dome',

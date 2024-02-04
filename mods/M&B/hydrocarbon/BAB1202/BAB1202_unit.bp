@@ -56,7 +56,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Гидрокарбонка T2',
+    Description = '<LOC BAB1202_desc>Гидрокарбонка T2',
     Display = {
 		Abilities = {
             '<LOC ability_upgradable>Upgradeable',

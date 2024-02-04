@@ -49,7 +49,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 269,
     },
-    Description = 'Экспериментальное тяжелое орудие',
+    Description = '<LOC SRB2402_desc>Экспериментальное тяжелое орудие',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

@@ -156,15 +156,7 @@ UnitBlueprint {
             'xeb0104',
             'xeb0204',
         },
-        EngineeringPods = {
-            {
-                CreateWithUnit = true,
-                PodAttachpoint = 'AttachSpecial01',
-                PodName = 'PodOne',
-                PodUnitID = 'XEA3204',
-            },
-        }, 
-    },
+        EngineeringPods = {            {                CreateWithUnit = true,                PodAttachpoint = 'AttachSpecial01',                PodName = 'PodOne',                PodUnitID = 'XEA3204',            },        },     },
     General = {
         OrderOverrides = {
             DroneL = {

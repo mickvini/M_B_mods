@@ -56,7 +56,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 9,
     },
-    Description = 'Ракетная установка T2',
+    Description = '<LOC URB2108_desc>Ракетная установка T2',
     Display = {
         Abilities = {
             '<LOC ability_manuallaunch>Manual Launch',

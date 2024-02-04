@@ -43,7 +43,7 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'TANK',
-        'OVERLAYDIRECTFIRE',        
+        'OVERLAYDIRECTFIRE',
     },
     Defense = {
         ArmorType = 'Normal',
@@ -52,7 +52,7 @@ UnitBlueprint {
         RegenRate = 1,
         SurfaceThreatLevel = 20.3,
     },
-    Description = 'Легкий танк T4',
+    Description = '<LOC BRNT3WT_desc>Легкий танк T4',
     Display = {
 		Abilities = {
 			'Assault Tank',
@@ -177,7 +177,6 @@ UnitBlueprint {
         Level5 = 50,
     },
     Weapon = {
-        
         {
             AboveWaterTargetsOnly = true,
             Audio = {

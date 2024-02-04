@@ -64,7 +64,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная арта T2',
+    Description = '<LOC BRNT2POTSHOT_desc>Мобильная арта T2',
     Display = {
         Mesh = {
             IconFadeInZoom = 150,

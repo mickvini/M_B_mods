@@ -60,7 +60,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 25,
     },
-    Description = 'Тяжелое орудие T4',
+    Description = '<LOC uab2306_desc>Тяжелое орудие T4',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,

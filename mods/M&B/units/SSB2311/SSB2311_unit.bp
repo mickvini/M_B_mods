@@ -67,7 +67,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 131.1,
         EconomyThreatLevel = 120,
     },
-    Description = 'Экспериментальное тяжелое орудие',
+    Description = '<LOC SSB2311_desc>Экспериментальное тяжелое орудие',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,
@@ -231,7 +231,7 @@ UnitBlueprint {
                 'DEFENSE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,       WALL',
             RangeCategory = 'UWRC_DirectFire',
             TurretDualManipulators = false,
             Turreted = true,

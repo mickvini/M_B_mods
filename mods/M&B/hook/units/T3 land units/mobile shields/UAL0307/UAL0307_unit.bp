@@ -78,7 +78,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Эон Мобильный T2 щит',
+    Description = '<LOC UAL0307_desc>Эон Мобильный T2 щит',
     Display = {
         Abilities = {
             '<LOC ability_hover>Hover',

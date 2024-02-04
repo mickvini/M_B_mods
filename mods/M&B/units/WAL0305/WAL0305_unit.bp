@@ -72,7 +72,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Rapid Assault Bot',
+    Description = '<LOC WAL0305_desc>Advanced Rapid Assault Bot',
     Display = {
         Abilities = {
             '<LOC ability_personalshield>Personal Shield',

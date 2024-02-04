@@ -113,7 +113,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 4,
     },
-    Description = 'Воздушный штурмовик T2',
+    Description = '<LOC uaa0206_desc>Воздушный штурмовик T2',
     Display = {
         Abilities = {
             'Ion Beam',

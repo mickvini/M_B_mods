@@ -68,7 +68,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
             dontOKControl = true,
     },
-    Description = 'Тяжёлый бот T2',
+    Description = '<LOC BSL0310_desc>Тяжёлый бот T2',
     Display = {
     	Abilities = {
             '<LOC ability_lam>Lambda Field',

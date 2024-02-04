@@ -1,4 +1,4 @@
-UnitBlueprint {    
+UnitBlueprint {
     Merge = true,
     AI = {
         GuardReturnRadius = 130,
@@ -79,7 +79,7 @@ UnitBlueprint {
         'PRODUCTSC1',
         'SELECTABLE',
         'BUILTBYTIER2FACTORY',
-        'BUILTBYTIER3FACTORY',        
+        'BUILTBYTIER3FACTORY',
         'MOBILE',
         'NAVAL',
         'TECH2',
@@ -106,7 +106,7 @@ UnitBlueprint {
         SubThreatLevel = 21,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской эсминец T2',
+    Description = '<LOC URS0201_desc>Морской эсминец T2',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',            
@@ -552,7 +552,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

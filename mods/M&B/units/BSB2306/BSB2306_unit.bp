@@ -55,7 +55,7 @@ UnitBlueprint {
         RegenRate = 3,
         SurfaceThreatLevel = 57.4,
     },
-    Description = 'Легкое орудие T2',
+    Description = '<LOC BSB2306_desc>Легкое орудие T2',
     Display = {
 		Abilities = {
 			'Aquatic',

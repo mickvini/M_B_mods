@@ -62,7 +62,7 @@ UnitBlueprint {
         },
         EconomyThreatLevel = 2,
     },
-    Description = 'Кибран Мобильный T4 стелс~щит',
+    Description = '<LOC SRL0316_desc>Кибран Мобильный T4 стелс~щит',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',

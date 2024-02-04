@@ -51,7 +51,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Гидрокарбонка T1',
+    Description = '<LOC UEB1102_desc>Гидрокарбонка T1',
     Display = {
         AnimationOpen = '/units/UEB1102/ueb1102_Aopen.sca',
         Mesh = {

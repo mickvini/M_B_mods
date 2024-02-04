@@ -1,19 +1,4 @@
 UnitBlueprint {
-    Air = {
-        BankFactor = 0,
-        BankForward = false,
-        CanFly = true,
-        HoverOverAttack = false,
-        KLift = 1,
-        KLiftDamping = 10,
-        KMove = 1,
-        KMoveDamping = 10,
-        KTurn = 1,
-        KTurnDamping = 10,
-        LiftFactor = 10,
-        MaxAirspeed = 6,
-        StartTurnDistance = 50,
-    },
     Audio = {
         AirUnitWaterImpact = Sound {
             Bank = 'Explosions',
@@ -56,6 +41,21 @@ UnitBlueprint {
             LodCutoff = 'UnitMove_LodCutoff',
         },
     },
+    Air = {
+        BankFactor = 0,
+        BuildIconSortPriority = false,
+        CanFly = true,
+        HoverOverAttack = false,
+        KLift = 1,
+        KLiftDamping = 10,
+        KMove = 1,
+        KMoveDamping = 10,
+        KTurn = 1,
+        KTurnDamping = 10,
+        LiftFactor = 10,
+        MaxAirspeed = 6,
+        StartTurnDistance = 50,
+    },
     BuildIconSortPriority = 10,
     Categories = {
         'PRODUCTFA',
@@ -73,16 +73,15 @@ UnitBlueprint {
         'OVERLAYOMNI',
         'OVERLAYRADAR',
     },
-    CollisionOffsetY = -0.65,
     Defense = {
-        AirThreatLevel = 0,
         ArmorType = 'Normal',
-        EconomyThreatLevel = 0,
         Health = 1000,
         MaxHealth = 1000,
         RegenRate = 0,
-        SubThreatLevel = 0,
+        AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
+        SubThreatLevel = 0,
+        EconomyThreatLevel = 0,
     },
     Description = '<LOC EEA0002_desc>Spy Satellite',
     Display = {
@@ -108,11 +107,6 @@ UnitBlueprint {
         BuildCostMass = 800,
         BuildTime = 400,
     },
-    Footprint = {
-        MaxSlope = 0.25,
-        SizeX = 1,
-        SizeZ = 1,
-    },
     General = {
         Category = 'Experimental',
         Classification = 'RULEUC_MilitaryAircraft',
@@ -137,7 +131,7 @@ UnitBlueprint {
     },
     Intel = {
         OmniRadius = 30,
-		RadarRadius = 100,
+        RadarRadius = 100,
         VisionRadius = 25,
     },
     Interface = {
@@ -182,6 +176,12 @@ UnitBlueprint {
     SizeZ = 2,
     StrategicIconName = 'icon_experimental_generic',
     StrategicIconSortPriority = 55,
+    CollisionOffsetY = -0.65,
+    Footprint = {
+        MaxSlope = 0.25,
+        SizeX = 1,
+        SizeZ = 1,
+    },
     Veteran = {
         Level1 = 25,
         Level2 = 50,

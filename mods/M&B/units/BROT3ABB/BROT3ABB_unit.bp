@@ -103,7 +103,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Средний бот T3',
+    Description = '<LOC BROT3ABB_desc>Средний бот T3',
     Display = {
         Abilities = {
             'Personal Shield',

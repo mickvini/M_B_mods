@@ -123,7 +123,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный транспорт T2',
+    Description = '<LOC URA0104_desc>Воздушный транспорт T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -353,7 +353,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,       UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,        UNTARGETABLE',
             TrackingRadius = 1.4,
             WeaponCategory = 'Direct Fire',
             ChargeDelay = 1,
@@ -422,7 +422,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      LAND,      STRUCTURE,      NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,       LAND,       STRUCTURE,       NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',

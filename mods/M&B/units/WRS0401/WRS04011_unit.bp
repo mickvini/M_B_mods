@@ -70,7 +70,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской дредноут T4',
+    Description = '<LOC WRS04011_desc>Морской дредноут T4',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

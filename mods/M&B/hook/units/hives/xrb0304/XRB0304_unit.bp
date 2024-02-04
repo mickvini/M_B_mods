@@ -95,7 +95,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 18,
     },
-    Description = 'Инженерная станция T3',
+    Description = '<LOC XRB0304_desc>Инженерная станция T3',
     Display = {
         Abilities = {
             '<LOC ability_engineeringsuite>Engineering Suite',

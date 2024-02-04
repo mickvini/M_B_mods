@@ -99,7 +99,7 @@ UnitBlueprint {
         MaxHealth = 540,
         AirThreatLevel = 0.1,
     },
-    Description = 'Воздушный разведчик T2',
+    Description = '<LOC SRA0201_desc>Воздушный разведчик T2',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',

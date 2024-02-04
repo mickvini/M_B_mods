@@ -63,7 +63,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Heavy Sniper Bot',
+    Description = '<LOC XAL0305_desc>Heavy Sniper Bot',
     Display = {
         Abilities = {
             'Damage - 1300',

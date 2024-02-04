@@ -36,7 +36,7 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'SHOWQUEUE',
-        'SORTECONOMY',        
+        'SORTECONOMY',
     },
     Defense = {
         ArmorType = 'Structure',
@@ -62,7 +62,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 50,
     },
-    Description = 'Щитовая Гидрокарбонка T3',
+    Description = '<LOC RHYDRO4_desc>Щитовая Гидрокарбонка T3',
     Display = {
 	Abilities = {            
             '<LOC ability_shielddome>Shield Dome',            
@@ -137,7 +137,7 @@ UnitBlueprint {
         TechLevel = 'RULEUTL_Basic',
         UnitWeight = 1,
         UpgradesFrom = 'rhydro3',
-    },    
+    },
     Interface = {
         HelpText = '<LOC urb1102_help>Hydrocarbon Power Plant',
     },

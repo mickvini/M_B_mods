@@ -77,7 +77,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжёлый бот T3',
+    Description = '<LOC XEL0305_desc>Тяжёлый бот T3',
     Display = {
         Abilities = {
             'Armor - 15%',

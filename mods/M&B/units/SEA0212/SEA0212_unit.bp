@@ -109,7 +109,7 @@ UnitBlueprint {
         MaxHealth = 920,
         AirThreatLevel = 4,
     },
-    Description = 'Легкий истребитель T2',
+    Description = '<LOC SEA0212_desc>Легкий истребитель T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -288,7 +288,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

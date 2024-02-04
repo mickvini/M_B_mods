@@ -57,7 +57,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 26,
     },
-    Description = 'Скорострельная арта T2',
+    Description = '<LOC GMRB302_desc>Скорострельная арта T2',
     Display = {
         Abilities = {
             '<LOC ability_deathaoe>Volatile',

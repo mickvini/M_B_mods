@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 9,
         EconomyThreatLevel = 0,
     },
-    Description = 'Тяжёлый бот T3',
+    Description = '<LOC XRL0305_desc>Тяжёлый бот T3',
     Display = {
         Abilities = {
             'Armor - 22.5%',
@@ -362,7 +362,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
             Turreted = false,

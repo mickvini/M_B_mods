@@ -104,7 +104,7 @@ UnitBlueprint {
         MaxHealth = 1440,
         SurfaceThreatLevel = 1,
     },
-    Description = 'Воздушный штурмовик T1',
+    Description = '<LOC SAA0105_desc>Воздушный штурмовик T1',
     Display = {
         LayerChangeEffects = {
             AirLand = {
@@ -268,7 +268,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,           UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',

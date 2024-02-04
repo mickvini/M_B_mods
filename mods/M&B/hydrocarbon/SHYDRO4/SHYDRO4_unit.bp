@@ -68,7 +68,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 2,
     },
-    Description = 'Щитовая Гидрокарбонка T3',
+    Description = '<LOC SHYDRO4_desc>Щитовая Гидрокарбонка T3',
     Display = {
         LoopingAnimation = '/units/XSB1102/XSB1102_aloop.sca',
 	Abilities = {

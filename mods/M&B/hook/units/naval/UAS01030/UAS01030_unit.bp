@@ -75,7 +75,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской фрегат T1',
+    Description = '<LOC UAS01030_desc>Морской фрегат T1',
     Display = {
         Abilities = {
             '<LOC ability_torpedodef>Torpedo Defense',

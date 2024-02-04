@@ -80,7 +80,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Морской артшип T2',
+    Description = '<LOC BRNST1ARTILLERY_desc>Морской артшип T2',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',

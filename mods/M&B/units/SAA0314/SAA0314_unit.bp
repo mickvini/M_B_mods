@@ -448,7 +448,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             EffectiveRadius = 19,

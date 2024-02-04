@@ -69,7 +69,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 4667,
     },
-    Description = 'Экспериментальная дальнобойная арта',
+    Description = '<LOC UEB2401_desc>Экспериментальная дальнобойная арта',
     Display = {
         AnimationOpen = '/units/ueb2401/ueb2401_aopen.sca',
         Mesh = {

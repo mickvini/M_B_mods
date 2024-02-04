@@ -130,21 +130,7 @@ UnitBlueprint {
         BuildRate = 20,
         BuildTime = 2880,
         MaintenanceConsumptionPerSecondEnergy = 960,
-        EngineeringPods = {
-            {
-                CreateWithUnit = true,
-                PodAttachpoint = 'AttachSpecial01',
-                PodName = 'PodOne',
-                PodUnitID = 'XEA3204',
-            },
-            {
-                CreateWithUnit = true,
-                PodAttachpoint = 'AttachSpecial02',
-                PodName = 'PodTwo',
-                PodUnitID = 'XEA3204',
-            },
-        },
-    },
+        EngineeringPods = {            {                CreateWithUnit = true,                PodAttachpoint = 'AttachSpecial01',                PodName = 'PodOne',                PodUnitID = 'XEA3204',            },            {                CreateWithUnit = true,                PodAttachpoint = 'AttachSpecial02',                PodName = 'PodTwo',                PodUnitID = 'XEA3204',            },        },    },
     General = {
         OrderOverrides = {
             DroneL = {

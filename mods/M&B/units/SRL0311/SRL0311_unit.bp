@@ -63,7 +63,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 6,
         EconomyThreatLevel = 42,
     },
-    Description = 'Мобильная ракетница T4',
+    Description = '<LOC SRL0311_desc>Мобильная ракетница T4',
     Display = {
         AnimationDeath = {
             {

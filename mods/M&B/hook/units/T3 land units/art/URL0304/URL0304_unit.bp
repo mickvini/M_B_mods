@@ -71,7 +71,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Мобильная арта T3',
+    Description = '<LOC URL0304_desc>Мобильная арта T3',
     Display = {
         Abilities = {
             'Damage - 1800',

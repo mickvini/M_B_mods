@@ -62,7 +62,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 34,
     },
-    Description = 'Воздушный завод T3',
+    Description = '<LOC UAB0302_desc>Воздушный завод T3',
     Display = {
         BlinkingLights = {
             {

@@ -69,7 +69,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 100,
         EconomyThreatLevel = 1667,
     },
-    Description = 'Экспериментальная скорострельная арта',
+    Description = '<LOC SSB2404_desc>Экспериментальная скорострельная арта',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,
@@ -262,7 +262,7 @@ UnitBlueprint {
                 'DEFENSE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,         WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,          WALL',
             ArtilleryShieldBlocks = true,
             RangeCategory = 'UWRC_IndirectFire',
             TurretDualManipulators = false,

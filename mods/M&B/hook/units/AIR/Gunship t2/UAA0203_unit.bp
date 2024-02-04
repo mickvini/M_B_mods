@@ -113,7 +113,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Воздушный перехватчик T2',
+    Description = '<LOC UAA0203_desc>Воздушный перехватчик T2',
     Display = {
         LayerChangeEffects = {
             AirLand = {
@@ -305,7 +305,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       LAND,       STRUCTURE,       NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,        LAND,        STRUCTURE,        NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,

@@ -114,7 +114,7 @@ UnitBlueprint {
             AttachBone = 'MissileDetector'
         },
     },
-    Description = 'Тяжелый истребитель T3',
+    Description = '<LOC SSA0313_desc>Тяжелый истребитель T3',
     Display = {
         Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -310,7 +310,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Air',
@@ -388,7 +388,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire Experimental',

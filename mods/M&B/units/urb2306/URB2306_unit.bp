@@ -54,7 +54,7 @@ UnitBlueprint {
         RegenRate = 1,
         SurfaceThreatLevel = 27,
     },
-    Description = 'Тяжелое орудие T4',
+    Description = '<LOC URB2306_desc>Тяжелое орудие T4',
     Display = {
         Mesh = {
             IconFadeInZoom = 130,
