@@ -191,7 +191,7 @@ UnitBlueprint {
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 32,
-            ProjectileId = '/mods/M&B/projectiles/SeraHeavyLightningCannon01/SeraHeavyLightningCannon01_proj.bp',
+            ProjectileId = '/projectiles/SDFHeavyQuarnonCannon01/SDFHeavyQuarnonCannon01_proj.bp',
             ProjectileLifetime = 2,
             RackBones = {
                 {

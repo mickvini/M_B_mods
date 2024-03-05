@@ -191,7 +191,7 @@ UnitBlueprint {
             BeamCollisionDelay = 0.2,
             BeamLifetime = 0.6,
             CollideFriendly = false,
-            Damage = 88,
+            Damage = 14,
             DamageFriendly = false,
             DamageRadius = 1.4,
             DamageType = 'Normal',
