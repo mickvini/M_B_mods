@@ -24,6 +24,7 @@ ProjectileBlueprint {
     Display = {
         ImpactEffects = {
             Type = 'Medium02',
+            Scale = 0.15,
         },
         StrategicIconSize = 3,
     },

@@ -409,7 +409,7 @@ UnitBlueprint {
             FiringRandomness = 0.5,
             FiringTolerance = 1,
             Label = 'autoattack',
-            MaxRadius = 70,
+            MaxRadius = 66,
             MinRadius = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

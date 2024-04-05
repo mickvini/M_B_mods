@@ -1170,6 +1170,27 @@ CybBRMT2BEETLEproj = Class(MultiPolyTrailProjectile) {
     FxTrailOffset = 0,
 }
 
+CybBRMT3ADVBOTproj = Class(MultiPolyTrailProjectile) {
+    PolyTrails = {
+        ModEffectTemplate.CybProtonCannonPolyTrail02,
+        '/effects/emitters/default_polytrail_01_emit.bp',
+    },
+    PolyTrailOffset = {0,0}, 
+
+    FxTrails = ModEffectTemplate.CybProtonCannonFXTrail01,
+    #PolyTrail = EffectTemplate.CHvyProtonCannonPolyTrail,
+    #PolyTrail = EffectTemplate.CHvyProtonCannonPolyTrail,
+    FxImpactUnit = ModEffectTemplate.CybranT2BeetleHit01,
+    FxUnitHitScale = 0.7,
+    FxImpactProp = ModEffectTemplate.CybranT2BeetleHit01,
+    FxPropHitScale = 0.7,
+    FxImpactLand = ModEffectTemplate.CybranT2BeetleHit01,
+    FxLandHitScale = 0.7,
+    FxImpactUnderWater = ModEffectTemplate.CybranT2BeetleHit01,
+    FxImpactWater = ModEffectTemplate.CybranT2BeetleHit01,
+    FxTrailOffset = 0,
+}
+
 #----------------
 # Cybran Tech 2 Experimental Point Defense Laser
 #----------------
