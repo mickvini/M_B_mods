@@ -112,7 +112,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 8500,
+        BuildCostMass = 16000,
         BuildRate = 1080,
         BuildTime = 5000,
     },
@@ -198,7 +198,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 30,
+            Damage = 3000,
             DamageType = 'Normal',
             DisplayName = 'AntiNuke',
             FireTargetLayerCapsTable = {

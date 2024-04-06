@@ -39,7 +39,6 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'BUILTBYTIER3FACTORY',
-        'UEF',
         'MOBILE',
         'LAND',
         'EXPERIMENTAL',
