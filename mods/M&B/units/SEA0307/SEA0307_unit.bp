@@ -72,7 +72,7 @@ UnitBlueprint {
         KTurn = 1,
         KTurnDamping = 1,
         LiftFactor = 7,
-        MaxAirspeed = 16,
+        MaxAirspeed = 14,
         MinAirspeed = 10,
         StartTurnDistance = 5,
         TightTurnMultiplier = 0,
@@ -183,7 +183,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 560,
-        BuildTime = 4800,
+        BuildTime = 14400,
     },
     General = {
         CommandCaps = {
@@ -304,7 +304,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             TurretDualManipulators = false,
@@ -369,7 +369,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           STRUCTURE',
+            TargetRestrictDisallow = 'UNTARGETABLE,            STRUCTURE',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',
@@ -439,7 +439,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           LAND,           STRUCTURE,           NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,            LAND,            STRUCTURE,            NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',
@@ -454,7 +454,7 @@ UnitBlueprint {
         },
         {
             AboveWaterTargetsOnly = true,
-            Damage = 150,
+            Damage = 100,
             DamageFriendly = true,
             DamageRadius = 1,
             DamageType = 'Normal',

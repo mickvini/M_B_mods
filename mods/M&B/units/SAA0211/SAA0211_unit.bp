@@ -72,7 +72,7 @@ UnitBlueprint {
         KTurn = 0.9,
         KTurnDamping = 1.3,
         LiftFactor = 7,
-        MaxAirspeed = 14,
+        MaxAirspeed = 12,
         MinAirspeed = 10,
         PredictAheadForBombDrop = 2,
         StartTurnDistance = 5,
@@ -109,8 +109,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Light',
-        Health = 1200,
-        MaxHealth = 1200,
+        Health = 1600,
+        MaxHealth = 1600,
         SurfaceThreatLevel = 13,
         EconomyThreatLevel = 1,
     },
@@ -147,8 +147,8 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 240,
-        BuildTime = 4000,
+        BuildCostMass = 480,
+        BuildTime = 12000,
     },
     General = {
         CommandCaps = {
@@ -274,7 +274,7 @@ UnitBlueprint {
         },
         {
             AboveWaterTargetsOnly = true,
-            Damage = 115,
+            Damage = 80,
             DamageFriendly = true,
             DamageRadius = 1,
             DamageType = 'Normal',

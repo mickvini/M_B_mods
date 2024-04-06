@@ -202,7 +202,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 520,
-        BuildTime = 9000,
+        BuildTime = 36000,
     },
     General = {
         Category = 'Transport',
@@ -353,7 +353,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,        UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,         UNTARGETABLE',
             TrackingRadius = 1.4,
             WeaponCategory = 'Direct Fire',
             ChargeDelay = 1,
@@ -422,7 +422,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       LAND,       STRUCTURE,       NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,        LAND,        STRUCTURE,        NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.4,
             WeaponCategory = 'Anti Air',

@@ -73,7 +73,7 @@ UnitBlueprint {
         KTurn = 0.7,
         KTurnDamping = 1,
         LiftFactor = 15,
-        MaxAirspeed = 12,
+        MaxAirspeed = 10,
         MinAirspeed = 8,
         PredictAheadForBombDrop = 3,
         StartTurnDistance = 5,
@@ -177,8 +177,8 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 160,
-        BuildTime = 3200,
+        BuildCostMass = 240,
+        BuildTime = 9600,
         ResearchMultTime = 2,
         ResearchMultEnergy = 38,
         ResearchMultMass = 1.9,
@@ -334,7 +334,7 @@ UnitBlueprint {
         },
         {
             AboveWaterTargetsOnly = true,
-            Damage = 80,
+            Damage = 60,
             DamageFriendly = true,
             DamageRadius = 3,
             DamageType = 'Normal',

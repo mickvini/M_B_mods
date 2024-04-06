@@ -196,7 +196,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 360,
-        BuildTime = 7200,
+        BuildTime = 28800,
     },
     General = {
         Category = 'Transport',
@@ -276,7 +276,7 @@ UnitBlueprint {
     Weapon = {
         {
             AboveWaterTargetsOnly = true,
-            Damage = 105,
+            Damage = 420,
             DamageFriendly = true,
             DamageRadius = 1,
             DamageType = 'Normal',

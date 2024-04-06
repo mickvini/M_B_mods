@@ -68,7 +68,7 @@ UnitBlueprint {
         KTurn = 0.8,
         KTurnDamping = 1.5,
         LiftFactor = 7,
-        MaxAirspeed = 6,
+        MaxAirspeed = 4,
         MinAirspeed = 1,
         StartTurnDistance = 5,
         TransportHoverHeight = 1.75,
@@ -101,8 +101,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Light',
-        Health = 1440,
-        MaxHealth = 1440,
+        Health = 1140,
+        MaxHealth = 1140,
         SurfaceThreatLevel = 5,
     },
     Description = '<LOC SEA0105_desc>Воздушный штурмовик T1',
@@ -156,7 +156,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 120,
-        BuildTime = 3200,
+        BuildTime = 6400,
     },
     General = {
         CommandCaps = {
@@ -283,7 +283,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,             UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
@@ -349,7 +349,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,             UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
@@ -358,7 +358,7 @@ UnitBlueprint {
         },
         {
             AboveWaterTargetsOnly = true,
-            Damage = 75,
+            Damage = 40,
             DamageFriendly = true,
             DamageRadius = 1,
             DamageType = 'Normal',
