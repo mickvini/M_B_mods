@@ -223,7 +223,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 37.6,
+            Damage = 18.8,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Oh Spectra Cannon',

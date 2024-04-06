@@ -207,7 +207,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 139.5,
+            Damage = 69.75,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
@@ -285,7 +285,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 10,
+            Damage = 5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -365,7 +365,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 10,
+            Damage = 5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',
             FireTargetLayerCapsTable = {

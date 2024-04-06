@@ -270,7 +270,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 79.2,
+            Damage = 39.6,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Heavy Quarnon Cannon',

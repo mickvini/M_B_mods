@@ -262,7 +262,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 50,
+            Damage = 25,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',

@@ -253,7 +253,7 @@ UnitBlueprint {
                 },
             },
             CollideFriendly = false,
-            Damage = 16,
+            Damage = 8,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Shield Disruptor Cannon',

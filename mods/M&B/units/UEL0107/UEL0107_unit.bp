@@ -299,7 +299,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 18,
+            Damage = 9,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Heavy Fragmentation Grenade Launcher',

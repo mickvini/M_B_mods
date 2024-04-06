@@ -221,7 +221,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 625,
+            Damage = 312.5,
             DamageRadius = 5,
             DamageType = 'Normal',
             DisplayName = 'Laanse Tactical Missile Launcher',

@@ -223,7 +223,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 740,
+            Damage = 370,
             DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Loa Tactical Missile',

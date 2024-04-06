@@ -239,7 +239,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 90,
+            Damage = 45,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
@@ -319,7 +319,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 3,
+            Damage = 1.5,
             DamageType = 'Normal',
             DisplayName = 'Ele-athrun Tactical Missile Defense',
             FireTargetLayerCapsTable = {

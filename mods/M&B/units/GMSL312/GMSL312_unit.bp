@@ -308,7 +308,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 234,
+            Damage = 117,
             DamageType = 'Normal',
             DisplayName = 'Thau Cannon',
             FireTargetLayerCapsTable = {
@@ -382,7 +382,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3.25,
+            Damage = 1.625,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -453,7 +453,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3.25,
+            Damage = 1.625,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -523,7 +523,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 1,
+            Damage = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Ele-athrun Tactical Missile Defense',
             FireTargetLayerCapsTable = {
@@ -587,7 +587,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 1,
+            Damage = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Ele-athrun Tactical Missile Defense',
             FireTargetLayerCapsTable = {

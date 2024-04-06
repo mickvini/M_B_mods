@@ -242,7 +242,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 40,
+            Damage = 20,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Disruptor Cannon',

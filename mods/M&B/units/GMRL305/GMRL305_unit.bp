@@ -235,7 +235,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 30,
+            Damage = 15,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -311,7 +311,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 16,
+            Damage = 8,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -387,7 +387,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 16,
+            Damage = 8,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -458,7 +458,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3,
+            Damage = 1.5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Electron Bolter',
             FireTargetLayerCapsTable = {
@@ -529,7 +529,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3,
+            Damage = 1.5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Electron Bolter',
             FireTargetLayerCapsTable = {

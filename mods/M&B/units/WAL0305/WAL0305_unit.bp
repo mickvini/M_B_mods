@@ -232,7 +232,7 @@ UnitBlueprint {
         {
             AboveWaterFireOnly = true,
             AboveWaterTargetsOnly = true,
-            AutoInitiateAttackCommand = 'true',
+            AutoInitiateAttackCommand = true,
             Audio = {
                 Fire = Sound {
                     Bank = 'UALWeapon',

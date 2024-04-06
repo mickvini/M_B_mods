@@ -229,7 +229,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 1200,
+            Damage = 600,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Serpentine Missile',

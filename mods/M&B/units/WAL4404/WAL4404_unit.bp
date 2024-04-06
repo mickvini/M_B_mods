@@ -70,7 +70,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC WAL4404_desc>Тяжелый бот T4',
-    Display = {       
+    Display = {
         AnimationDeath = {
             {
                 Animation = '/mods/M&B/units/WAL4404/WAL4404_Death.sca',
@@ -217,7 +217,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 218,
+            Damage = 109,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'High Intensity Laser',
@@ -294,7 +294,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 72,
+            Damage = 36,
             DamageFriendly = false,
             DamageRadius = 1,
             DamageType = 'Normal',
@@ -374,7 +374,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 72,
+            Damage = 36,
             DamageFriendly = false,
             DamageRadius = 1,
             DamageType = 'Normal',
@@ -448,7 +448,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 1,
+            Damage = 0.5,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Quantum Autoguns',
@@ -523,7 +523,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 360,
+            Damage = 180,
             DamageType = 'Normal',
             DisplayName = 'Zealot AA Missile',
             FireTargetLayerCapsTable = {

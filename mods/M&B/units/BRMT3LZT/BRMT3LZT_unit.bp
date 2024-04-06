@@ -254,7 +254,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 32.4,
+            Damage = 16.2,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Ionized Plasma Cannon',

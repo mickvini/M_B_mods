@@ -257,7 +257,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 120,
+            Damage = 60,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Tau Cannon',

@@ -215,7 +215,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 1000,
+            Damage = 500,
             DamageRadius = 0.2,
             DamageType = 'Normal',
             DisplayName = 'Sniper Disruptor',

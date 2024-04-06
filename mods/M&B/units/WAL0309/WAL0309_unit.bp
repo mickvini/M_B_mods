@@ -255,7 +255,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 19,
+            Damage = 9.5,
             DamageType = 'Normal',
             DisplayName = 'Reacton Cannon',
             FireTargetLayerCapsTable = {
@@ -334,7 +334,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 50,
+            Damage = 25,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

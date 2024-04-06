@@ -350,7 +350,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20,
+            Damage = 10,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -432,7 +432,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 20,
+            Damage = 10,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Flayer SAM Launcher',
@@ -516,7 +516,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 25,
+            Damage = 12.5,
             DamageType = 'Normal',
             DisplayName = 'Linked Railgun',
             FireTargetLayerCapsTable = {

@@ -220,7 +220,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 188,
+            Damage = 94,
             DamageRadius = 0.2,
             DamageType = 'Normal',
             DisplayName = 'Fragmentation Artillery',
