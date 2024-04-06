@@ -99,7 +99,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 1120,
         BuildTime = 2820,
-        MaintenanceConsumptionPerSecondEnergy = 340,
+        MaintenanceConsumptionPerSecondEnergy = 290,
         RebuildBonusIds = {
             'uab2306',
         },
@@ -217,7 +217,7 @@ UnitBlueprint {
             CameraShakeMin = 0.75,
             CameraShakeRadius = 10,
             CollideFriendly = false,
-            Damage = 720,
+            Damage = 360,
             DamageFriendly = true,
             DamageRadius = 3,
             DamageType = 'Normal',

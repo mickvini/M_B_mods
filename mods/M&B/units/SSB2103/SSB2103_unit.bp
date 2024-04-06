@@ -43,8 +43,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 560,
-        MaxHealth = 560,
+        Health = 448,
+        MaxHealth = 448,
         RegenRate = 1,
         SurfaceThreatLevel = 12.8,
     },
@@ -86,9 +86,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 400,
-        BuildTime = 2000,
-        MaintenanceConsumptionPerSecondEnergy = 160,
+        BuildCostMass = 320,
+        BuildTime = 1600,
+        MaintenanceConsumptionPerSecondEnergy = 120,
         RebuildBonusIds = {
             'ssb2103',
         },
@@ -179,7 +179,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 400,
+            Damage = 240,
             DamageFriendly = true,
             DamageRadius = 2,
             DamageType = 'ShieldMult1,3',
@@ -225,7 +225,7 @@ UnitBlueprint {
             TurretPitchSpeed = 40,
             TurretPitchRange = 80,
             TurretYawRange = 180,
-            TurretYawSpeed = 20,
+            TurretYawSpeed = 40,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

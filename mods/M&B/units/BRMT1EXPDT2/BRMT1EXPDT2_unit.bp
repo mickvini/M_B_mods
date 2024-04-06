@@ -96,7 +96,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 780,
         BuildTime = 1988,
-        MaintenanceConsumptionPerSecondEnergy = 220,
+        MaintenanceConsumptionPerSecondEnergy = 180,
         RebuildBonusIds = {
             'BRMT1EXPD',
             'BRMT1EXPDT2',
@@ -212,7 +212,7 @@ UnitBlueprint {
             BeamLifetime = 0.3,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 43.4,
+            Damage = 18,
             DamageFriendly = false,
             DamageRadius = 2.5,
             DamageType = 'Normal',
@@ -253,7 +253,7 @@ UnitBlueprint {
             TurretPitchSpeed = 60,
             TurretPitchRange = 70,
             TurretYawRange = 180,
-            TurretYawSpeed = 15,
+            TurretYawSpeed = 60,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

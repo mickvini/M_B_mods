@@ -90,8 +90,8 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 1340,
-        BuildTime = 6700,
+        BuildCostMass = 1180,
+        BuildTime = 5900,
         MaintenanceConsumptionPerSecondEnergy = 460,
         RebuildBonusIds = {
             'BROT3PDRO',
@@ -215,7 +215,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 100,
+            Damage = 48,
             DamageFriendly = false,
             DamageRadius = 3,
             DamageType = 'Normal',
@@ -270,7 +270,7 @@ UnitBlueprint {
             TurretPitchSpeed = 32,
             TurretPitchRange = 45,
             TurretYawRange = 180,
-            TurretYawSpeed = 10,
+            TurretYawSpeed = 32,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

@@ -106,8 +106,8 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 1120,
-        BuildTime = 5600,
+        BuildCostMass = 890,
+        BuildTime = 4450,
         MaintenanceConsumptionPerSecondEnergy = 380,
         RebuildBonusIds = {
             'sab2311',
@@ -222,7 +222,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 960,
+            Damage = 576,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Oblivion Cannon',
@@ -267,7 +267,7 @@ UnitBlueprint {
             TurretPitchSpeed = 36,
             TurretPitchRange = 50,
             TurretYawRange = 360,
-            TurretYawSpeed = 5,
+            TurretYawSpeed = 36,
             TurretPitch = 40,
             TurretYaw = 0,
             TargetPriorities = {

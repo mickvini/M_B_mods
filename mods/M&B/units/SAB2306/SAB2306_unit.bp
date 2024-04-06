@@ -137,7 +137,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 510,
         BuildTime = 1260,
-        MaintenanceConsumptionPerSecondEnergy = 200,
+        MaintenanceConsumptionPerSecondEnergy = 160,
         RebuildBonusIds = {
             'sab2306',
         },
@@ -254,7 +254,7 @@ UnitBlueprint {
             BeamLifetime = 1,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 18,
+            Damage = 9,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',
@@ -307,7 +307,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HIGHALTAIR',
             WeaponCategory = 'Direct Fire',
             DoNotCollideList = {
                 'MISSILE',

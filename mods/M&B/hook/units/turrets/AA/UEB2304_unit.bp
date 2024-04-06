@@ -98,9 +98,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 900,
+        BuildCostMass = 576,
         BuildTime = 1700,
-        MaintenanceConsumptionPerSecondEnergy = 440,
+        MaintenanceConsumptionPerSecondEnergy = 180,
         RebuildBonusIds = {
             'ueb2304',
         },
@@ -192,7 +192,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 220,
+            Damage = 153,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Flayer SAM Launcher',

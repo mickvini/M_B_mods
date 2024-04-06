@@ -96,7 +96,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 360,
         BuildTime = 900,
-        MaintenanceConsumptionPerSecondEnergy = 140,
+        MaintenanceConsumptionPerSecondEnergy = 90,
         RebuildBonusIds = {
             'xeb2306',
         },
@@ -190,7 +190,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 124,
+            Damage = 62,
             DamageRadius = 1.8,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Gatling Cannon',
@@ -230,7 +230,7 @@ UnitBlueprint {
             TurretPitchSpeed = 70,
             TurretPitchRange = 60,
             TurretYawRange = 180,
-            TurretYawSpeed = 35,
+            TurretYawSpeed = 70,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

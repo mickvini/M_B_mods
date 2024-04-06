@@ -110,9 +110,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 280,
+        BuildCostMass = 180,
         BuildTime = 520,
-        MaintenanceConsumptionPerSecondEnergy = 140,
+        MaintenanceConsumptionPerSecondEnergy = 80,
         RebuildBonusIds = {
             'uab2104',
         },
@@ -203,7 +203,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 24,
+            Damage = 16,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

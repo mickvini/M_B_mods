@@ -91,7 +91,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 360,
         BuildTime = 900,
-        MaintenanceConsumptionPerSecondEnergy = 140,
+        MaintenanceConsumptionPerSecondEnergy = 90,
         RebuildBonusIds = {
             'BROT1HPD',
         },
@@ -203,7 +203,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 124,
+            Damage = 62,
             DamageFriendly = false,
             DamageRadius = 1.8,
             DamageType = 'Normal',
@@ -253,7 +253,7 @@ UnitBlueprint {
             TurretPitchSpeed = 70,
             TurretPitchRange = 45,
             TurretYawRange = 180,
-            TurretYawSpeed = 42,
+            TurretYawSpeed = 70,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

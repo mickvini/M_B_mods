@@ -90,9 +90,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 396,
+        BuildCostMass = 260,
         BuildTime = 1012,
-        MaintenanceConsumptionPerSecondEnergy = 120,
+        MaintenanceConsumptionPerSecondEnergy = 80,
         RebuildBonusIds = {
             'BRMT1PD',
             'BRMT1PDT2',
@@ -200,7 +200,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 300,
+            Damage = 120,
             DamageFriendly = false,
             DamageRadius = 1.8,
             DamageType = 'Normal',
@@ -242,7 +242,7 @@ UnitBlueprint {
             TurretPitchSpeed = 80,
             TurretPitchRange = 45,
             TurretYawRange = 180,
-            TurretYawSpeed = 70,
+            TurretYawSpeed = 80,
             TurretPitch = 0,
             TurretYaw = 0,
             TargetPriorities = {

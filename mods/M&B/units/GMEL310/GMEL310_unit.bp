@@ -217,7 +217,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'Projectile_01',
                         'Projectile_02',
@@ -226,7 +226,7 @@ UnitBlueprint {
                     RackBone = 'B05_Launcher',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'Projectile_04',
                         'Projectile_05',

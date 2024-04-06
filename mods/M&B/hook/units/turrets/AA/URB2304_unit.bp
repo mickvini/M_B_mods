@@ -103,9 +103,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 900,
+        BuildCostMass = 576,
         BuildTime = 1700,
-        MaintenanceConsumptionPerSecondEnergy = 440,
+        MaintenanceConsumptionPerSecondEnergy = 180,
         RebuildBonusIds = {
             'urb2304',
         },
@@ -194,7 +194,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 330,
+            Damage = 230,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Nanite Missile System',

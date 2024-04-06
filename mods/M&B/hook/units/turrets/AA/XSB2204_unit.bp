@@ -128,9 +128,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 500,
+        BuildCostMass = 320,
         BuildTime = 940,
-        MaintenanceConsumptionPerSecondEnergy = 250,
+        MaintenanceConsumptionPerSecondEnergy = 120,
         RebuildBonusIds = {
             'xsb2204',
         },
@@ -222,7 +222,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 81.6,
+            Damage = 54.4,
             DamageFriendly = false,
             DamageRadius = 4,
             DamageType = 'Normal',

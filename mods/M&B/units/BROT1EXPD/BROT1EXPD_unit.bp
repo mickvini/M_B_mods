@@ -94,9 +94,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 560,
+        BuildCostMass = 390,
         BuildTime = 1420,
-        MaintenanceConsumptionPerSecondEnergy = 160,
+        MaintenanceConsumptionPerSecondEnergy = 120,
         RebuildBonusIds = {
             'BROT1EXPD',
         },
@@ -211,7 +211,7 @@ UnitBlueprint {
             BeamLifetime = 0.2,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 45,
+            Damage = 20,
             DamageFriendly = false,
             DamageRadius = 1,
             DamageType = 'Normal',
