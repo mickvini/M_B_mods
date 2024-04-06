@@ -267,8 +267,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 1800,
-                    BuildTime = 900,
+                    BuildCostMass = 1200,
+                    BuildTime = 1800,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
@@ -279,8 +279,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 6000,
-                    BuildTime = 1500,
+                    BuildCostMass = 7800,
+                    BuildTime = 2400,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
@@ -291,8 +291,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 13500,
-                    BuildTime = 1500,
+                    BuildCostMass = 16400,
+                    BuildTime = 3000,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
@@ -303,8 +303,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 36000,
-                    BuildTime = 1500,
+                    BuildCostMass = 42400,
+                    BuildTime = 3600,
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},

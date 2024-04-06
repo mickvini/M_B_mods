@@ -66,8 +66,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 19200,
-        MaxHealth = 19200,
+        Health = 15200,
+        MaxHealth = 15200,
         RegenRate = 5,
         AirThreatLevel = 16,
         SurfaceThreatLevel = 12,

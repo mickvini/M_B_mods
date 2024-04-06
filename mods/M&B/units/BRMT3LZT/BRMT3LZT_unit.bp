@@ -259,7 +259,7 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Ionized Plasma Cannon',
             FireTargetLayerCapsTable = {
-                Land = 'Land|Water|Seabed|Air',
+                Land = 'Land|Water|Seabed',
                 Seabed = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },

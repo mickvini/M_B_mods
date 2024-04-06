@@ -280,9 +280,8 @@ UnitBlueprint {
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
-            FireTargetLayerCapsTable = {
-                Land = 'Land|Water|Air',
-                Air = 'Land|Water|Air',
+            FireTargetLayerCapsTable = {                
+                Air = 'Air',
             },
             FiringTolerance = 1,
             Label = 'MainGun',

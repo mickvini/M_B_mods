@@ -1,5 +1,4 @@
-UnitBlueprint {
-    Merge = true,
+UnitBlueprint {   
     AI = {
         TargetBones = {
             'UEB0201',
@@ -137,6 +136,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
+        MaintenanceConsumptionPerSecondEnergy = 1060,
         BuildCostMass = 1600,
         BuildRate = 100,
         BuildTime = 1820,
@@ -144,8 +144,7 @@ UnitBlueprint {
             'BUILTBYTIER2FACTORY UEF MOBILE CONSTRUCTION',
             'BUILTBYTIER2FACTORY UEF STRUCTURE LAND',
             'BUILTBYTIER2FACTORY UEF MOBILE LAND',
-        },
-        MaintenanceConsumptionPerSecondEnergy = 1060,
+        },        
     },
     General = {
         CapCost = 20,
@@ -205,6 +204,149 @@ UnitBlueprint {
         MaxSteerForce = 0,
         MinSpeedPercent = 0,
         MotionType = 'RULEUMT_None', 
+        RaisedPlatforms = {
+            # Platform 1
+            # TopLeft Offset From Center
+            -1.1,
+
+            # x
+            -1.6,
+
+            # z
+            0.5,
+
+            # height
+            # TopRight Offset From Center
+            1.1,
+
+            # x
+            -1.6,
+
+            # z
+            0.5,
+
+            # height
+            # BottomLeft Offset From Center
+            -1.1,
+
+            # x
+            1.9,
+
+            # z
+            0.5,
+
+            # height
+            # BottomRight Offset From Center
+            1.1,
+
+            # x
+            1.9,
+
+            # z
+            0.5,
+
+            # height
+            # Platform 2
+            # TopLeft Offset From Center
+            -2,
+
+            # x
+            -1.6,
+
+            # z
+            0,
+
+            # height
+            # TopRight Offset From Center
+            -1.1,
+
+            # x
+            -1.6,
+
+            # z
+            0.5,
+
+            # height
+            # BottomLeft Offset From Center
+            -2,
+
+            # x
+            1.9,
+
+            # z
+            0,
+
+            # height
+            # BottomRight Offset From Center
+            -1.1,
+
+            # x
+            1.9,
+
+            # z
+            0.5,
+
+            # height
+            # Platform 3
+            # TopLeft Offset From Center
+            1.1,
+
+            # x
+            -1.6,
+
+            # z
+            0.5,
+
+            # height
+            # TopRight Offset From Center
+            2,
+
+            # x
+            -1.6,
+
+            # z
+            0,
+
+            # height
+            # BottomLeft Offset From Center
+            1.1,
+
+            # x
+            1.9,
+
+            # z
+            0.5,
+
+            # height
+            # BottomRight Offset From Center
+            2,
+
+            # x
+            1.9,
+
+            # z
+            0,
+        },
+        RollOffPoints = {
+            {
+                UnitSpin = 90,
+                X = 3,
+                Y = 0,
+                Z = 0,
+            },
+            {
+                UnitSpin = -90,
+                X = -3,
+                Y = 0,
+                Z = 0,
+            },
+        },
+
+        SkirtOffsetX = -1.5,
+        SkirtOffsetZ = -1.5,
+        SkirtSizeX = 8,
+        SkirtSizeZ = 8,
+        TurnRate = 0,
     },   
     SelectionSizeX = 3.2,
     SelectionSizeZ = 3.3,

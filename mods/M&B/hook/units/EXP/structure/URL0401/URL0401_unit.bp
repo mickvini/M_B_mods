@@ -1,5 +1,4 @@
-UnitBlueprint {
-    Merge = true,
+UnitBlueprint {   
     AI = {
         GuardScanRadius = 30,
         NeedUnpack = true,

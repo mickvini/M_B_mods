@@ -70,18 +70,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC WAL4404_desc>Тяжелый бот T4',
-    Display = {
-        Abilities = {
-            'Armor - 15%',
-            'Oblivion Cannon - 360 DPS / R - 55 / S - 2',
-            'Second Weapon - 90 DPS / R - 40 / S - 1',  
-            'Small Cannon - 120 DPS / R - 30 / S - 0',              
-            'AA Missle - 60 DPS / R - 70 / S - 0',                  
-            'Speed - 2.0',      
-            'Vision - 45',  
-            'Regen - 15',               
-            '<LOC ability_massive>Massive',     
-        },
+    Display = {       
         AnimationDeath = {
             {
                 Animation = '/mods/M&B/units/WAL4404/WAL4404_Death.sca',
@@ -534,7 +523,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 600,
+            Damage = 360,
             DamageType = 'Normal',
             DisplayName = 'Zealot AA Missile',
             FireTargetLayerCapsTable = {
