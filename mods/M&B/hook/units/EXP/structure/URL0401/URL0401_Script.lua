@@ -18,12 +18,59 @@ local muzzleBones = { 'Turret_Barrel_F_B03', 'Turret_Barrel_E_B03', 'Turret_Barr
 
 URL0401 = Class(CLandUnit) {
 
-   OnStopBeingBuilt = function(self,builder,layer)
+    OnCreate = function(self)
+        CLandUnit.OnCreate(self)
+        local unitBp = self:GetBlueprint()  
+        self.BaseRateOfFire = {}
+        for i = 1, self:GetWeaponCount() do   
+            local wep = self:GetWeapon(i)
+            local wepbp = wep:GetBlueprint()
+            local weprof = wepbp.RateOfFire     
+            table.insert(self.BaseRateOfFire, weprof)
+        end
+        local ReduceTurretsRateOfFireThread = ForkThread(self.ReduceTurretsRateOfFire, self)
+        self.Trash:Add(ReduceTurretsRateOfFireThread)    
+    end,
+
+    OnStopBeingBuilt = function(self,builder,layer)
         CLandUnit.OnStopBeingBuilt(self, builder, layer)
         local bp = self:GetBlueprint()
         LOG(bp.Economy.MaintenanceConsumptionPerSecondEnergy)
         self:SetEnergyMaintenanceConsumptionOverride(bp.Economy.MaintenanceConsumptionPerSecondEnergy or 0)
         self:SetMaintenanceConsumptionActive()
+    end,
+
+    ReduceTurretsRateOfFire = function (self)
+        local aiBrain = GetArmyBrain(self:GetArmy())        
+        
+        while not self.Dead do          
+            local EconomyRate = aiBrain:GetEconomyIncome('ENERGY') / aiBrain:GetEconomyRequested('ENERGY')
+            --LOG(EconomyRate)
+            --LOG()
+            if aiBrain:GetEconomyStored('ENERGY') <= 0.00001 then
+                if EconomyRate < 1 then
+                    --LOG('<1')
+                    for i = 1, self:GetWeaponCount() do  
+                         
+                        local wep = self:GetWeapon(i)        
+                        if(EconomyRate == 0 or EconomyRate < 0.2)   then    
+                            wep:SetWeaponEnabled(false)
+                        else                                        
+                            wep:SetWeaponEnabled(true)
+                            wep:ChangeRateOfFire( self.BaseRateOfFire[i] * EconomyRate)
+                        end
+                    end
+                end
+            else
+                for i = 1, self:GetWeaponCount() do
+                        --LOG('==1')  
+                        local wep = self:GetWeapon(i)          
+                        wep:SetWeaponEnabled(true)                  
+                        wep:ChangeRateOfFire(self.BaseRateOfFire[i])                     
+                end                                
+            end
+            WaitSeconds(5)
+        end
     end,
 
     Weapons = {

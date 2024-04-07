@@ -53,7 +53,7 @@ UnitBlueprint {
         KTurn = 1,
         KTurnDamping = 10,
         LiftFactor = 10,
-        MaxAirspeed = 12,
+        MaxAirspeed = 3,
         StartTurnDistance = 50,
         BuildIconSortPriority = false,
     },
@@ -70,6 +70,9 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'UNTARGETABLE',
+        'OVERLAYRADAR',
+        'OVERLAYSONAR',
+        'SORTINTEL',
     },
     Defense = {
         ArmorType = 'Normal',
@@ -206,7 +209,7 @@ UnitBlueprint {
             CollideFriendly = false,
             Damage = 680,
             DamageFriendly = true,
-            DamageRadius = 4,
+            DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Orbital Death Laser',
             FireTargetLayerCapsTable = {

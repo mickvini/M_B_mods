@@ -253,7 +253,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 620,
+        BuildCostMass = 420,
         BuildTime = 3200,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -342,7 +342,7 @@ UnitBlueprint {
         TransportClass = 4,
     },
     Weapon = {
-    {
+        {
             AboveWaterTargetsOnly = true,
             AimsStraightOnDisable = true,
             Audio = {
@@ -354,7 +354,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 100,
+            Damage = 70,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
@@ -426,7 +426,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 11,
+            Damage = 9,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

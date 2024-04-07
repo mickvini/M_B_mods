@@ -209,7 +209,7 @@ UAL0001 = Class(AWalkingLandUnit) {
                     if IsAlly(army, unit:GetArmy()) then
                         local unitBp = unit:GetBlueprint()
                         local factionCat = unitBp.General.FactionName
-                        if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER')then
+                        if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER') and (unitBp.General.UnitName ~= '<LOC url0401_name>Scathis')then
                             if table.find(unitBp.Categories, 'LAND') then
                                 if MK[army][4][factionCat] > 0 and MK[army][4][factionCat] ~= unit.MarkLevel[4]  then
                                     Buff.ApplyBuff(unit ,  'MobileBuffLand' .. MK[army][4][factionCat])

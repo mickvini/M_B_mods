@@ -52,8 +52,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 41600,
-        MaxHealth = 41600,
+        Health = 21600,
+        MaxHealth = 21600,
         RegenRate = 1,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -99,7 +99,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 91200,
         BuildTime = 164000,
-        MaintenanceConsumptionPerSecondEnergy = 5000,
+        MaintenanceConsumptionPerSecondEnergy = 10000,
         RebuildBonusIds = {
             'UEB2310',
         },
@@ -211,7 +211,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 1030,
+            Damage = 850,
             DamageFriendly = true,
             DamageRadius = 6,
             DamageType = 'Normal',

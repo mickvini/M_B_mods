@@ -32,7 +32,7 @@ countingResearchsToUnlockTECH = function(unit, army, tech)
             if IsAlly(army, units:GetArmy()) then
                 local unitsBp = units:GetBlueprint()
                 local factionCat = unitsBp.General.FactionName
-                if table.find(unitsBp.Categories, 'STRUCTURE') then
+                if table.find(unitsBp.Categories, 'STRUCTURE') or (unitsBp.General.UnitName == '<LOC url0401_name>Scathis') then
                     if MK[army][1][factionCat] > 0 and not table.find(unitsBp.Categories, 'DEFENSE') and not table.find(unitsBp.Categories, 'ARTILLERY') and not table.find(unitsBp.Categories, 'ENGINEERSTATION') then
                         SetMarkLevel(units, 'StructureHealthMod' .. MK[army][1][factionCat], 1, MK[army][1][factionCat])
                     end                    
@@ -383,16 +383,27 @@ LandUnit = Class(MobileUnit) {
     OnStopBeingBuilt = function(self, builder, layer)
         MobileUnit.OnStopBeingBuilt(self, builder, layer)
         local army = self:GetArmy()    
-        local factionCat = self:GetBlueprint().General.FactionName
-        if MK[army][4][factionCat] > 0 then
-            SetMarkLevel(self, 'MobileBuffLand' .. MK[army][4][factionCat], 4, MK[army][4][factionCat])
+        local general = self:GetBlueprint().General
+        local factionCat = general.FactionName
+        if general.UnitName == '<LOC url0401_name>Scathis' then
+            if MK[army][13][factionCat] > 0 then
+                SetMarkLevel(self, 'WeaponBuffTurret' .. MK[army][13][factionCat], 13, MK[army][13][factionCat])
+            end
+            if MK[army][14][factionCat] > 0 then
+                SetMarkLevel(self, 'HealthBuffTurret' .. MK[army][14][factionCat], 14, MK[army][14][factionCat])
+            end
+        else
+            if MK[army][4][factionCat] > 0 then
+                SetMarkLevel(self, 'MobileBuffLand' .. MK[army][4][factionCat], 4, MK[army][4][factionCat])
+            end
+            if MK[army][5][factionCat] > 0 then
+                SetMarkLevel(self, 'HealthBuffLand' .. MK[army][5][factionCat], 5, MK[army][5][factionCat])
+            end        
+            if MK[army][6][factionCat] > 0 then
+                SetMarkLevel(self, 'WeaponBuffLand' .. MK[army][6][factionCat], 6, MK[army][6][factionCat])
+            end
         end
-        if MK[army][5][factionCat] > 0 then
-            SetMarkLevel(self, 'HealthBuffLand' .. MK[army][5][factionCat], 5, MK[army][5][factionCat])
-        end        
-        if MK[army][6][factionCat] > 0 then
-            SetMarkLevel(self, 'WeaponBuffLand' .. MK[army][6][factionCat], 6, MK[army][6][factionCat])
-        end
+
     end,
 }
 
@@ -593,7 +604,7 @@ if not string.sub(GetVersion(),1,3) == '1.1' or string.sub(GetVersion(),1,3) == 
 
 ResearchFactoryUnit = Class(FactoryUnit) {	
 	
-    -- Prevents LOUD factory manager errors.
+    
 	
     SetupComplete = true,
 

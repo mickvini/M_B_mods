@@ -124,8 +124,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 13500,
-        MaxHealth = 13500,
+        Health = 26200,
+        MaxHealth = 26200,
         RegenRate = 10,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',
@@ -1135,7 +1135,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
