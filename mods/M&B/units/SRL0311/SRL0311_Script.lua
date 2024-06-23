@@ -34,9 +34,9 @@ SRL0311 = Class(CLandUnit) {
                 table.insert( self.RecoilManipulatorThreads,
                     self:ForkThread(
                         function(self, no)
-                            coroutine.yield((8*no)+1)
+                            coroutine.yield((2*no)+1)
                             if self.RecoilManipulators[missile] then
-                                self.RecoilManipulators[missile]:SetSpeed(12):SetGoal(0, 0, 0)
+                                self.RecoilManipulators[missile]:SetSpeed(6):SetGoal(0, 0, 0)
                             end
                         end,
                         self.MissileNo
