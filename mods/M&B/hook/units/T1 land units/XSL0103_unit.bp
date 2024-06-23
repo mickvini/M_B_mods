@@ -66,11 +66,7 @@ UnitBlueprint {
     },
     Description = '<LOC XSL0103_desc>Мобильная арта T1',
     Display = {
-        Abilities = {
-            'Damage - 450 (x2 Vs Shield)',
-            'Main Weapon - 22.5 DPS / R - 80 / S - 1.5',		
-            'Speed - 2.7',		
-            'Vision - 10',			
+        Abilities = {            		
             '<LOC ability_hover>Hover',
         },
         IdleEffects = {
@@ -291,7 +287,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 66,
+            Damage = 13.2,
             DamageFriendly = false,
             DamageRadius = 0.2,
             DamageType = 'Normal',

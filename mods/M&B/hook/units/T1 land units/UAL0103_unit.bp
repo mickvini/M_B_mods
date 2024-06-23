@@ -65,13 +65,7 @@ UnitBlueprint {
     },
     Description = '<LOC UAL0103_desc>Мобильная арта T1',
     Display = {
-        Mesh = {
-        Abilities = {
-            'Damage - 400 (x2 Vs Shield)',
-            'Main Weapon - 20 DPS / R - 90 / S - 0.75',		
-            'Speed - 2.7',		
-            'Vision - 10',			
-        },			
+        Mesh = {        	
             IconFadeInZoom = 130,
             LODs = {
                 {

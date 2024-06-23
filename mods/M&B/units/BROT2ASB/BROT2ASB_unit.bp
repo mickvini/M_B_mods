@@ -262,7 +262,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 49,
+            Damage = 40,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Microwave Laser',

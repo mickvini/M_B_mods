@@ -65,11 +65,7 @@ UnitBlueprint {
     },
     Description = '<LOC URL0103_desc>Мобильная арта T1',
     Display = {
-        Abilities = {
-            'Damage - 195 (x2 Vs Shield)',
-            'Main Weapon - 19.5 DPS / R - 85 / S - 2',		
-            'Speed - 2.9',		
-            'Vision - 10',				
+        Abilities = {            				
             '<LOC ability_stun>EMP Weapon',
         },
         AnimationDeath = {

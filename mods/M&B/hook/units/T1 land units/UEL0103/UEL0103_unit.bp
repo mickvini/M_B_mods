@@ -65,13 +65,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC UEL0103_desc>Мобильная арта T1',
-    Display = {
-        Abilities = {
-            'Damage - 240 (x2 Vs Shield)',
-            'Main Weapon - 75 DPS / R - 95 / S - 2',		
-            'Speed - 2.5',		
-            'Vision - 10',			
-        },	
+    Display = {        
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {
@@ -220,7 +214,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 66,
+            Damage = 13.2,
             DamageRadius = 0.2,
             DamageType = 'Normal',
             DisplayName = 'Fragmentation Artillery',
@@ -235,8 +229,8 @@ UnitBlueprint {
             MinRadius = 10,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 28.5,
-            MuzzleVelocityReduceDistance = 20,
+            MuzzleVelocity = 20,
+            MuzzleVelocityReduceDistance = 28,
             ProjectileId = '/projectiles/TIFFragmentationSensorShell01/TIFFragmentationSensorShell01_proj.bp',
             RackBones = {
                 {
@@ -275,7 +269,7 @@ UnitBlueprint {
             ArtilleryShieldBlocks = true,
             CameraLifetime = 5,
             CameraVisionRadius = 5,
-            DamageToShields = 480,
+            DamageToShields = 44,
             RangeCategory = 'UWRC_IndirectFire',
             RenderFireClock = true,
             TurretDualManipulators = false,
