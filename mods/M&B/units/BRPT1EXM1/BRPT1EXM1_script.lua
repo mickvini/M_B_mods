@@ -11,8 +11,7 @@ local SWalkingLandUnit = import('/lua/seraphimunits.lua').SWalkingLandUnit
 local SDFThauCannon = import('/lua/seraphimweapons.lua').SDFThauCannon
 local WeaponsFileAutoAttack = import('/lua/terranweapons.lua')
 local AutoAttackWeapon = WeaponsFileAutoAttack.TDFLandGaussCannonWeapon
-local EffectTemplate = import('/lua/EffectTemplates.lua')
-local EffectUtils = import('/lua/effectutilities.lua')
+
 
 BRPT1EXM1 = Class(SWalkingLandUnit) {
     Weapons = {
@@ -33,16 +32,6 @@ OnStopBeingBuilt = function(self,builder,layer)
       end      
     end,
 
-OnKilled = function(self,builder,layer)
-        SWalkingLandUnit.OnKilled(self,builder,layer)
-        self:CreatTheEffectsDeath()  
-    end,
 
-CreatTheEffectsDeath = function(self)
-	local army =  self:GetArmy()
-	for k, v in EffectTemplate['SDFExperimentalPhasonProjHit01'] do
-		CreateAttachedEmitter(self, 'Turreta', army, v):ScaleEmitter(0.65)
-	end
-end,
 }
 TypeClass = BRPT1EXM1
