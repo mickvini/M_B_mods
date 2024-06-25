@@ -289,7 +289,7 @@ UnitBlueprint {
             BeamLifetime = 2.5,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 21,
+            Damage = 10.5,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Ion Beam',

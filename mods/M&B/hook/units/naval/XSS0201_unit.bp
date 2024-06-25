@@ -320,7 +320,7 @@ UnitBlueprint {
             RackSalvoSize = 1,
             TargetCheckInterval = 4,
             TurretPitchSpeed = 30,
-            TurretPitchRange = 20,
+            TurretPitchRange = 40,
             TurretYawRange = 140,
             TurretYawSpeed = 90,
             TurretPitch = 10,

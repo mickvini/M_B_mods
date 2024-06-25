@@ -284,7 +284,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 9,
+            Damage = 4.5,
             DamageType = 'Normal',
             DisplayName = 'Hells Fury Riot Gun',
             FireTargetLayerCapsTable = {
@@ -331,7 +331,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,             UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,              UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
