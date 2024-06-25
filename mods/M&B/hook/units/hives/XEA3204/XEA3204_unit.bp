@@ -109,8 +109,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Light',
-        Health = 3000,
-        MaxHealth = 3000,
+        Health = 500,
+        MaxHealth = 500,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
