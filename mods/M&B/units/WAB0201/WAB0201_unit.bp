@@ -29,9 +29,7 @@ UnitBlueprint {
     },
     BuildIconSortPriority = 200,
     Categories = {
-        'SELECTABLE',
-        'FUCKTHISSUPRIM',
-        'BUILTBYTIER3COMMANDER',
+        'SELECTABLE',          
         'AEON',
         'STRUCTURE',
         'CONSTRUCTION',
@@ -140,6 +138,7 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Basic',
+        UpgradesFrom = 'wab02012',
         UnitWeight = 1,
         UnitName = '<LOC wab0201_name>Saviour',
     },
@@ -177,7 +176,7 @@ UnitBlueprint {
     SizeX = 1.2,
     SizeY = 1.6,
     SizeZ = 1.2,
-    StrategicIconName = 'icon_structure2_engineer',
+    StrategicIconName = 'icon_structure3_engineer',
     StrategicIconSortPriority = 225,
     Footprint = {
         SizeX = 1,

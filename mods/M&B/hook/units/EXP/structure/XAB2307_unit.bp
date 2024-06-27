@@ -234,7 +234,7 @@ UnitBlueprint {
             MuzzleVelocity = 160,
             MuzzleVelocityReduceDistance = 3200,
             ProjectileId = '/projectiles/AIFFragmentationSensorShell01/AIFFragmentationSensorShell01_proj.bp',
-            ProjectileLifetime = 50,
+            ProjectileLifetime = 1000,
             ProjectilesPerOnFire = 25,
             RackBones = {
                 {

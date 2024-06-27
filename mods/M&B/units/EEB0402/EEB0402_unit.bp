@@ -128,6 +128,7 @@ UnitBlueprint {
         },
         FactionName = 'UEF',
         Icon = 'amph',
+        SelectionPriority = 5,
         TechLevel = 'RULEUTL_Experimental',
         UnitWeight = 1,
         UnitName = '<LOC eeb0402_name>Stellar Generator',

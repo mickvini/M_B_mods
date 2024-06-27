@@ -6,7 +6,7 @@ local EffectUtil = import('/lua/EffectUtilities.lua')
 WAB0201 = Class(AConstructionStructureUnit) {
 
     OnStopBeingBuilt = function(self,builder,layer)
-        AEnergyCreationUnit.OnStopBeingBuilt(self,builder,layer)
+        AConstructionStructureUnit.OnStopBeingBuilt(self,builder,layer)
         self.Trash:Add(CreateRotator(self, 'Ring01', 'x', nil, 0, 15, 80 + Random(0, 20)))
         self.Trash:Add(CreateRotator(self, 'Ring01', 'y', nil, 0, 15, 80 + Random(0, 20)))
         self.Trash:Add(CreateRotator(self, 'Ring01', 'z', nil, 0, 15, 80 + Random(0, 20)))
