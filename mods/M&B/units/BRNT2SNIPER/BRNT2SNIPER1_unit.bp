@@ -99,7 +99,7 @@ UnitBlueprint {
                     },
                 },
                 Treads = {
-                    ScrollMultiplier = 0.75,
+                    ScrollMultiplier = 0.15,
                     ScrollTreads = true,
                     TreadMarks = {
                         {
@@ -308,8 +308,8 @@ UnitBlueprint {
             TurretBoneMuzzle = 'muzzle',
             RackFireTogether = false,
             RackSlavedToTurret = false,
-            RackRecoilDistance = -5,
-            RackReloadTimeout = 10,
+            RackRecoilDistance = -20,
+            RackReloadTimeout = 5,
             RateOfFire = 0.15,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,

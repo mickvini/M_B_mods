@@ -38,6 +38,7 @@ UnitBlueprint {
         'STRUCTURE',
         'DEFENSE',
         'TECH1',
+        'RESEARCHLOCKEDTECH1',
         'DIRECTFIRE',
         'DRAGBUILD',
         'SIZE4',
