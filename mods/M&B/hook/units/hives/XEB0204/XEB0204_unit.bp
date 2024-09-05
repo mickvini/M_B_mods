@@ -47,7 +47,7 @@ UnitBlueprint {
     Categories = {
         'PRODUCTFA',
         'SELECTABLE',
-        'UEF',
+        --'UEF',
         'STRUCTURE',
         'CONSTRUCTION',
         'TECH3',

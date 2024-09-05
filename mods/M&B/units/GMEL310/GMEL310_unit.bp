@@ -44,7 +44,7 @@ UnitBlueprint {
         'PRODUCTSC1',
         'SELECTABLE',
         'BUILTBYTIER3FACTORY',
-        'UEF',
+        --'UEF',
         'MOBILE',
         'LAND',
         'DEFENSE',

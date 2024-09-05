@@ -51,7 +51,7 @@ UnitBlueprint {
         'BUILTBYTIER3COMMANDER',
         'BUILTBYTIER2ENGINEER',
         'BUILTBYTIER2COMMANDER',
-        'UEF',
+        --'UEF',
         'STRUCTURE',
         'CONSTRUCTION',
         'TECH2',

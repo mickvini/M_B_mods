@@ -65,7 +65,7 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'BUILTBYTIER3FACTORY',
-        'AEON',
+        --'AEON',
         'MOBILE',
         'LAND',
         'EXPERIMENTAL',
