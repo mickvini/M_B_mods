@@ -127,6 +127,9 @@ UnitBlueprint {
         BuildRate = 10,
         BuildTime = 1920,
         MaintenanceConsumptionPerSecondEnergy = 380,
+        BuildableCategory = {
+            'uab4301',
+        },
         RebuildBonusIds = {
             'uab4202',
             'uab4301',
@@ -162,6 +165,7 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Advanced',
+        UpgradesTo = 'uab4301',
         UnitWeight = 1,
         UnitName = '<LOC uab4202_name>Shield of Light',
     },

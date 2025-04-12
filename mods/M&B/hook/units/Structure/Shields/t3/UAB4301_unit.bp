@@ -163,6 +163,7 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Secret',
+        UpgradesFrom = 'uab4202',
         UnitWeight = 1,
         UnitName = '<LOC uab4301_name>Radiance',
     },

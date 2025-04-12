@@ -1,10 +1,10 @@
 UnitBlueprint {
     Merge = true,
     AI = {
-        GuardScanRadius = 15,
+        GuardScanRadius = 40,
         InitialAutoMode = true,
         ShowAssistRangeOnSelect = true,
-        StagingPlatformScanRadius = 15,
+        StagingPlatformScanRadius = 40,
     },
     Audio = {
         Close = Sound {

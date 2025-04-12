@@ -1,9 +1,9 @@
 UnitBlueprint {
     AI = {
-        GuardScanRadius = 15,
+        GuardScanRadius = 40,
         InitialAutoMode = true,
         ShowAssistRangeOnSelect = true,
-        StagingPlatformScanRadius = 15,
+        StagingPlatformScanRadius = 40,
     },
     Audio = {
         Close = Sound {
@@ -152,6 +152,7 @@ UnitBlueprint {
         BuildCostMass = 550,
         BuildRate = 20,
         BuildTime = 1100,
+        MaxBuildDistance = 40,
         BuildableCategory = {
             'xeb0214',
         },        

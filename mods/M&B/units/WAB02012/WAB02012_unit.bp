@@ -1,9 +1,9 @@
 UnitBlueprint {
     AI = {
-        GuardScanRadius = 20,
+        GuardScanRadius = 40,
         InitialAutoMode = true,
         ShowAssistRangeOnSelect = true,
-        StagingPlatformScanRadius = 20,
+        StagingPlatformScanRadius = 40,
     },
     Audio = {
         Construct = Sound {
