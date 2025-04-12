@@ -125,31 +125,7 @@ UnitBlueprint {
                                 0,
                                 0,
                             },
-                        },
-                        {
-                            BoneName = 'tracks03',
-                            TreadMarks = 'tank_treads07_albedo',
-                            TreadMarksInterval = 0.2,
-                            TreadMarksSizeX = 0.3,
-                            TreadMarksSizeZ = 0.5,
-                            TreadOffset = {
-                                0,
-                                0,
-                                0,
-                            },
-                        },
-                        {
-                            BoneName = 'tracks04',
-                            TreadMarks = 'tank_treads07_albedo',
-                            TreadMarksInterval = 0.2,
-                            TreadMarksSizeX = 0.3,
-                            TreadMarksSizeZ = 0.5,
-                            TreadOffset = {
-                                0,
-                                0,
-                                0,
-                            },
-                        },
+                        },                       
                     },
                 },
             },
@@ -163,10 +139,7 @@ UnitBlueprint {
         BuildCostMass = 3200,
         BuildTime = 7500,
     },
-    General = {
-        ToggleCaps = {
-            RULEUTC_IntelToggle = true,
-        },
+    General = {        
         Category = 'Direct Fire',
         Classification = 'RULEUC_MilitaryVehicle',
         CommandCaps = {
