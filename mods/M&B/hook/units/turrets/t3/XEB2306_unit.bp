@@ -205,6 +205,8 @@ UnitBlueprint {
             MuzzleSalvoDelay = 0.33,
             MuzzleSalvoSize = 15,
             MuzzleVelocity = 32,
+            EnergyDrainPerSecond = 0,
+            EnergyRequired = 0,
             ProjectileId = '/projectiles/TDFHeavyPlasmaGatlingCannon01/TDFHeavyPlasmaGatlingCannon01_proj.bp',
             ProjectilesPerOnFire = 1,
             RackBones = {

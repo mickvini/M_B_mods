@@ -1,0 +1,13 @@
+UnitBlueprint {
+    Merge = true,    
+    Defense = {
+        AirThreatLevel = 0,
+        ArmorType = 'Light',
+        EconomyThreatLevel = 1,
+        Health = 1400,
+        MaxHealth = 1400,
+        RegenRate = 0,
+        SubThreatLevel = 0,
+        SurfaceThreatLevel = 0,
+    },   
+}
