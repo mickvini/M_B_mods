@@ -207,7 +207,7 @@ UnitBlueprint {
             MinRadius = 10,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 37,
+            MuzzleVelocity = 29,
             ProjectileId = '/projectiles/TIFArtillery01/TIFArtillery01_proj.bp',
             ProjectilesPerOnFire = 2,
             RackBones = {

@@ -219,7 +219,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 4,
+            Damage = 12,
             DamageType = 'Normal',
             DisplayName = 'Dual Light Lasers',
             FireTargetLayerCapsTable = {
@@ -268,7 +268,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,              UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,               UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
