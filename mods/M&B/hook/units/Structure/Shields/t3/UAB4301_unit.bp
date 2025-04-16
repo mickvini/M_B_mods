@@ -62,7 +62,7 @@ UnitBlueprint {
             ShieldRechargeTime = 40,
             ShieldRegenRate = 68,
             ShieldRegenStartTime = 1,
-            ShieldSize = 25,
+            ShieldSize = 32,
             ShieldVerticalOffset = -5,
             ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
             Mesh = '/effects/entities/AeonShield01/AeonShield01_mesh',
@@ -163,8 +163,8 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Secret',
-        UpgradesFrom = 'uab4202',
         UnitWeight = 1,
+        UpgradesFrom = 'uab4202',
         UnitName = '<LOC uab4301_name>Radiance',
     },
     Intel = {

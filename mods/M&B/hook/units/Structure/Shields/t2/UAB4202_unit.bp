@@ -59,7 +59,7 @@ UnitBlueprint {
             ShieldRechargeTime = 20,
             ShieldRegenRate = 48,
             ShieldRegenStartTime = 1,
-            ShieldSize = 18,
+            ShieldSize = 23,
             ShieldVerticalOffset = -3,
             ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
             Mesh = '/effects/entities/AeonShield01/AeonShield01_mesh',
@@ -126,10 +126,10 @@ UnitBlueprint {
         BuildCostMass = 1320,
         BuildRate = 10,
         BuildTime = 1920,
-        MaintenanceConsumptionPerSecondEnergy = 380,
         BuildableCategory = {
             'uab4301',
         },
+        MaintenanceConsumptionPerSecondEnergy = 380,
         RebuildBonusIds = {
             'uab4202',
             'uab4301',
@@ -165,8 +165,8 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Advanced',
-        UpgradesTo = 'uab4301',
         UnitWeight = 1,
+        UpgradesTo = 'uab4301',
         UnitName = '<LOC uab4202_name>Shield of Light',
     },
     Intel = {

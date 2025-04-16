@@ -57,7 +57,7 @@ UnitBlueprint {
             ShieldRechargeTime = 60,
             ShieldRegenRate = 130,
             ShieldRegenStartTime = 1,
-            ShieldSize = 38,
+            ShieldSize = 46,
             ShieldVerticalOffset = -6,
             ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01b_mesh',
             Mesh = '/effects/entities/CybranShield01/CybranShield01_mesh',

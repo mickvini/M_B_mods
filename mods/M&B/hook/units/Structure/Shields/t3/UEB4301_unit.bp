@@ -53,7 +53,7 @@ UnitBlueprint {
             ShieldRechargeTime = 40,
             ShieldRegenRate = 68,
             ShieldRegenStartTime = 1,
-            ShieldSize = 30,
+            ShieldSize = 38,
             ShieldVerticalOffset = -6,
             ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
             Mesh = '/effects/entities/Shield01/Shield01_mesh',

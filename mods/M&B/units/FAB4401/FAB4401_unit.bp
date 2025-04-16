@@ -62,7 +62,7 @@ UnitBlueprint {
             ShieldRechargeTime = 60,
             ShieldRegenRate = 94,
             ShieldRegenStartTime = 1,
-            ShieldSize = 30,
+            ShieldSize = 50,
             ShieldVerticalOffset = -8,
             ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01_mesh',
             Mesh = '/effects/entities/AeonShield01/AeonShield01_mesh',
