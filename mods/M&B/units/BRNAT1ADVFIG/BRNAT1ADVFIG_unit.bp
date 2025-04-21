@@ -268,8 +268,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 61,
-            DamageFriendly = false,
+            Damage = 120,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -286,42 +285,42 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer09',
                     },
                     RackBone = 'TAAMissileFlayer09',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer10',
                     },
                     RackBone = 'TAAMissileFlayer10',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer02',
                     },
                     RackBone = 'TAAMissileFlayer02',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer01',
                     },
                     RackBone = 'TAAMissileFlayer01',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer07',
                     },
                     RackBone = 'TAAMissileFlayer07',
                 },
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'TAAMissileFlayer05',
                     },
@@ -335,7 +334,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = 0,
             RackReloadTimeout = 10,
-            RateOfFire = 0.25,
+            RateOfFire = 1.6,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
@@ -353,7 +352,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',
