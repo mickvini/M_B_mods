@@ -219,7 +219,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 180,
+            Damage = 30,
             DamageType = 'Normal',
             DisplayName = 'Electron Autocannon',
             FireTargetLayerCapsTable = {
@@ -267,7 +267,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

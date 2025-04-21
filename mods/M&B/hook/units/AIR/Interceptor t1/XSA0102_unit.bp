@@ -289,7 +289,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 80,
+            Damage = 27,
             DamageType = 'Normal',
             DisplayName = 'Shleo AA AutoGun',
             FireTargetLayerCapsTable = {
@@ -342,7 +342,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,             LAND,             STRUCTURE,             NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,              LAND,              STRUCTURE,              NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',
