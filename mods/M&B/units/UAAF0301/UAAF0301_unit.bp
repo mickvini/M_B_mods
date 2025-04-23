@@ -288,7 +288,7 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Zealot AA Missile',
             FireTargetLayerCapsTable = {
-                Air = 'Air|Land|Water',
+                Air = 'Air',
                 Land = 'Air|Land|Water',
             },
             FiringTolerance = 2,
@@ -359,7 +359,7 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Displacement Cannon',
             FireTargetLayerCapsTable = {
-                Air = 'Air|Land|Water',
+                Air = 'Air',
                 Land = 'Air|Land|Water',
             },
             FiringTolerance = 0.2,
@@ -427,7 +427,7 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Zealot AA Missile',
             FireTargetLayerCapsTable = {
-                Air = 'Air|Land|Water',
+                Air = 'Air',
                 Land = 'Air|Land|Water',
             },
             FiringTolerance = 2,
