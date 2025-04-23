@@ -13,6 +13,10 @@ function NotDeathNukeWeapon(weapon)
     return weapon.DisplayName ~= 'Death Nuke'
 end
 
+function NotDeath(weapon)
+    return weapon.WeaponCategory ~= 'Death'
+end
+
 function IsTank(bp)
     if bp.Description ~= nil then
         return string.find(bp.Description, 'танк')          
@@ -25,11 +29,17 @@ function IsBot(bp)
     end
 end
 
+function IsHover(bp)
+    if bp.Description ~= nil then
+        return string.find(bp.Description, 'ховер')          
+    end
+end
+
 function ChangeWeaponDamage(bp, damageMod)
-    if IsBot(bp) or IsTank(bp) then
+    if IsBot(bp) or IsTank(bp) or IsHover(bp) then
         if bp.Weapon ~= nil then
             for _, weapon in bp.Weapon do
-                if NotAirCrashWeapon(weapon) or NotDeathNukeWeapon(weapon) then
+                if NotDeath(weapon) or NotAirCrashWeapon(weapon) or NotDeathNukeWeapon(weapon) then
                     weapon.Damage = weapon.Damage * damageMod
                 end
             end
