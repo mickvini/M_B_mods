@@ -5,10 +5,46 @@
 --------------------------------------------------------------------------------
 do
 
+function NotAirCrashWeapon(weapon)
+    return weapon.DisplayName ~= 'Air Crash'
+end
+
+function NotDeathNukeWeapon(weapon)
+    return weapon.DisplayName ~= 'Death Nuke'
+end
+
+function IsTank(bp)
+    if bp.Description ~= nil then
+        return string.find(bp.Description, 'танк')          
+    end
+end
+
+function IsBot(bp)
+    if bp.Description ~= nil then
+        return string.find(bp.Description, 'бот')          
+    end
+end
+
+function ChangeWeaponDamage(bp, damageMod)
+    if IsBot(bp) or IsTank(bp) then
+        if bp.Weapon ~= nil then
+            for _, weapon in bp.Weapon do
+                if NotAirCrashWeapon(weapon) or NotDeathNukeWeapon(weapon) then
+                    weapon.Damage = weapon.Damage * damageMod
+                end
+            end
+        end
+    end
+end
+
 local OldModBlueprints = ModBlueprints
 
 function ModBlueprints(all_blueprints)
     OldModBlueprints(all_blueprints)
+    local damageMod = 1.2
+    for _, bp in all_blueprints.Unit do
+        ChangeWeaponDamage(bp, damageMod)
+    end
     RNDPrepareScript(all_blueprints.Unit)
     -- RNDPrepareScriptFORTECH4(all_blueprints.Unit)
     -- RestrictExistingBlueprints(all_blueprints.Unit)
@@ -24,6 +60,7 @@ function ModBlueprints(all_blueprints)
         
     -- end
     GenerateNavalWreckage(all_blueprints)
+    
 end
 function GenerateNavalWreckage(all_blueprints)
     for id, bp in pairs(all_blueprints.Unit) do             
