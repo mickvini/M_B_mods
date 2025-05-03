@@ -1,5 +1,7 @@
 local ResearchFactoryUnit = import('/lua/defaultunits.lua').ResearchFactoryUnit
 
+local OldCConstructionStructureUnit = CConstructionStructureUnit
+
 CResearchFactoryUnit = Class(ResearchFactoryUnit) {
 
     StartBuildFx = function(self, unitBeingBuilt)
@@ -13,3 +15,18 @@ CResearchFactoryUnit = Class(ResearchFactoryUnit) {
     end,
 
 }
+
+CConstructionStructureUnit = Class(OldCConstructionStructureUnit) {
+
+    OnProductionPaused = function(self)
+        --self:SetMaintenanceConsumptionInactive()
+        self:SetProductionActive(false)
+    end,
+
+    OnProductionUnpaused = function(self)
+        --self:SetMaintenanceConsumptionActive()
+        self:SetProductionActive(true)
+    end,
+    
+}
+

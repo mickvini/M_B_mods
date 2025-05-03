@@ -30,6 +30,16 @@ TConstructionStructureUnit = Class(ConstructionStructureUnit) {
             EffectUtil.CreateUEFBuildSliceBeams( self, unitBeingBuilt, self.BuildEffectBones, self.BuildEffectsBag )
         end
     end,
+    
+    OnProductionPaused = function(self)
+        --self:SetMaintenanceConsumptionInactive()
+        self:SetProductionActive(false)
+    end,
+
+    OnProductionUnpaused = function(self)
+        --self:SetMaintenanceConsumptionActive()
+        self:SetProductionActive(true)
+    end,
 }
 
 TEngineeringResourceStructureUnit = Class(TConstructionStructureUnit) {
