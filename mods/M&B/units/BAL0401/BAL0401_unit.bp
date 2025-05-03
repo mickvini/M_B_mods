@@ -288,7 +288,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 120,
-            DamageRadius = 2,
+            DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Head weapon',
             EnergyDrainPerSecond = 0,
