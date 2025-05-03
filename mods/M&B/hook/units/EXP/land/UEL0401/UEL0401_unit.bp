@@ -103,7 +103,7 @@ UnitBlueprint {
         'UEF',
         'MOBILE',
         'LAND',
-        'EXPERIMENTAL',
+        'TECH3',
         'INDIRECTFIRE',
         'ARTILLERY',
         'CONSTRUCTION',

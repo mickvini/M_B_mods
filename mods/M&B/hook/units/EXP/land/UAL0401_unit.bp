@@ -60,7 +60,7 @@ UnitBlueprint {
         'MOBILE',
         'LAND',
         'DIRECTFIRE',
-        'EXPERIMENTAL',
+        'TECH3',
         'NEEDMOBILEBUILD',
         'VISIBLETORECON',
         'RECLAIMABLE',

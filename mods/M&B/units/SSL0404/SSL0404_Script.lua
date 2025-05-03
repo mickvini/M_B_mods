@@ -70,7 +70,7 @@ SSL0404 = Class(SWalkingLandUnit) {
         self:DisableUnitIntel('RadarStealth')
 		self:DisableUnitIntel('Cloak')
 		self.Cloaked = false
-        ChangeState( self, self.InvisState ) -- If spawned in we want the unit to be invis, normally the unit will immediately start moving
+        --ChangeState( self, self.InvisState ) -- If spawned in we want the unit to be invis, normally the unit will immediately start moving
 		
 
         self.ShieldEffectsBag = {}
