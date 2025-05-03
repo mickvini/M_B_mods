@@ -6,6 +6,35 @@ local EffectTemplate = import('/lua/EffectTemplates.lua')
 local Beams = import('/mods/M&B/lua/collisionbeams.lua')
 local ModEffectTemplate = import('/mods/M&B/lua/EffectTemplates.lua')
 
+NapalmMissileProjectile = Class(DefaultProjectileWeapon) {
+    #FxMuzzleFlash = EffectTemplate.TAAMissileLaunchNoBackSmoke,
+
+    CreateProjectileForWeapon = function(self, bone)
+        local projectile = self:CreateProjectile(bone)
+        local damageTable = self:GetDamageTable()
+        local blueprint = self:GetBlueprint()
+        local data = {
+            Instigator = self.unit,
+            Damage = blueprint.DoTDamage,
+            Duration = blueprint.DoTDuration,
+            Frequency = blueprint.DoTFrequency,
+            Radius = blueprint.DamageRadius,
+            Type = 'Normal',
+            DamageFriendly = blueprint.DamageFriendly,
+        }
+        if projectile and not projectile:BeenDestroyed() then
+            projectile:PassData(data)
+            projectile:PassDamageData(damageTable)
+        end
+        return projectile
+    end,
+
+}
+
+Over_ChargeProjectile = Class(DefaultProjectileWeapon) {}
+
+Rapid_PlasmaProjectile = Class(DefaultProjectileWeapon) {}
+
 ADFAlchemistPhason2 = Class(DefaultBeamWeapon) {
     BeamType = Beams.AlchemistPhasonLaserCollisionBeam,
     FxMuzzleFlash = {},

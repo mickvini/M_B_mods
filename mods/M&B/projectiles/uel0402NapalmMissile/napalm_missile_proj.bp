@@ -1,0 +1,73 @@
+ProjectileBlueprint {
+    Audio = {
+        Impact = Sound {
+            Bank = 'Explosions',
+            Cue = 'Explosion_Bomb',
+            LodCutoff = 'Weapon_LodCutoff',
+        },
+        ImpactTerrain = Sound {
+            Bank = 'Explosions',
+            Cue = 'Explosion_Bomb',
+            LodCutoff = 'Weapon_LodCutoff',
+        },
+        ImpactWater = Sound {
+            Bank = 'Impacts',
+            Cue = 'Impact_Water_Splash_UEF',
+            LodCutoff = 'Weapon_LodCutoff',
+        },
+    },
+    Categories = {
+        'UEF',
+        'INDIRECTFIRE',
+        'PROJECTILE',
+        'MISSILE',
+    },
+    Display = {
+        ImpactEffects = {
+            Type = 'Medium02',
+        },
+        Mesh = {
+            LODs = {
+                {
+                    AlbedoName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_albedo.dds',
+                    LODCutoff = 150,
+                    MeshName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_lod0.scm',
+                    ShaderName = 'TMeshAlpha',
+                },
+            },
+        },
+        StrategicIconSize = 1,
+        UniformScale = 0.15,
+    },
+    General = {
+        Category = 'Direct Fire',
+        EntityCategory = {
+            'UEF',
+            'INDIRECTFIRE',
+            'PROJECTILE',
+            'MISSILE',
+        },
+        Faction = 'UEF',
+        Weapon = 'Napalm Rocket',
+    },
+    Interface = {
+        HelpText = 0,
+    },
+    Physics = {
+        Acceleration = 10,
+        AccelerationRange = 0,
+        DestroyOnWater = true,
+        InitialSpeed = 10,
+        InitialSpeedRange = 0,
+        LeadTarget = true,
+        Lifetime = 4,
+        MaxSpeed = 30,
+        ProjectileLifetime = 4,
+        RotationalVelocity = 500,
+        RotationalVelocityRange = 0,
+        TrackTarget = true,
+        TurnRate = 0,
+        UseGravity = false,
+        VelocityAlign = true,
+    },
+}
