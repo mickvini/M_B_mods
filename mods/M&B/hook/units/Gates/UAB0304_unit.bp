@@ -196,6 +196,7 @@ UnitBlueprint {
         BuildableCategory = {
             'BUILTBYQUANTUMGATE AEON',
         },
+        MaintenanceConsumptionPerSecondEnergy = 2800,
         RebuildBonusIds = {
             'uab0304',
         },

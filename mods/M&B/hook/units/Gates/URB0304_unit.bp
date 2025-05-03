@@ -158,6 +158,7 @@ UnitBlueprint {
         BuildableCategory = {
             'BUILTBYQUANTUMGATE CYBRAN',
         },
+        MaintenanceConsumptionPerSecondEnergy = 2800,
         RebuildBonusIds = {
             'urb0304',
         },

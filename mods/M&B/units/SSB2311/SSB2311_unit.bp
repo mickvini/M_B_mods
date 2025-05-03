@@ -89,7 +89,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 2480,
-        BuildTime = 6200,
+        BuildTime = 48000,
         MaintenanceConsumptionPerSecondEnergy = 420,
         RebuildBonusIds = {
             'ssb2311',
@@ -231,7 +231,7 @@ UnitBlueprint {
                 'DEFENSE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,        WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,         WALL',
             RangeCategory = 'UWRC_DirectFire',
             TurretDualManipulators = false,
             Turreted = true,

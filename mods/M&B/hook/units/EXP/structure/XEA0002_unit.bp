@@ -53,7 +53,7 @@ UnitBlueprint {
         KTurn = 1,
         KTurnDamping = 10,
         LiftFactor = 10,
-        MaxAirspeed = 3,
+        MaxAirspeed = 6,
         StartTurnDistance = 50,
         BuildIconSortPriority = false,
     },

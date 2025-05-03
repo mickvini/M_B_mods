@@ -108,7 +108,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 76400,
-        BuildTime = 138000,
+        BuildTime = 194000,
         MaintenanceConsumptionPerSecondEnergy = 10000,
         RebuildBonusIds = {
             'grad2307',
@@ -223,7 +223,7 @@ UnitBlueprint {
                 Land = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.2,
+            FiringRandomness = 0.4,
             FiringTolerance = 0.01,
             Label = 'MainGun',
             MaxRadius = 3200,

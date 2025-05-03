@@ -157,6 +157,7 @@ UnitBlueprint {
         BuildableCategory = {
             'BUILTBYQUANTUMGATE UEF',
         },
+        MaintenanceConsumptionPerSecondEnergy = 2800,
         RebuildBonusIds = {
             'ueb0304',
         },

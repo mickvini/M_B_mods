@@ -196,6 +196,7 @@ UnitBlueprint {
         BuildableCategory = {
             'BUILTBYQUANTUMGATE SERAPHIM',
         },
+        MaintenanceConsumptionPerSecondEnergy = 2800,
         RebuildBonusIds = {
             'xsb0304',
         },
