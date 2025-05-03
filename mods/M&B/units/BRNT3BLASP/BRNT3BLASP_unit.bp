@@ -900,14 +900,7 @@ UnitBlueprint {
             WeaponUnpacks = false,
  	   },
 {
-            AboveWaterTargetsOnly = true,
-            Audio = {
-                Fire = Sound {
-                    Bank = 'TM_UEFWEAPONS',
-                    Cue = 'ROBOTTALK1FX',
-                    LodCutoff = 'Weapon_LodCutoff',
-                },
-            },
+            AboveWaterTargetsOnly = true,            
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
             Damage = 0,

@@ -51,24 +51,12 @@ NapalmMissileProjectile = Class(SingleCompositeEmitterProjectile) {
     BeamName = '/effects/emitters/rocket_iridium_exhaust_beam_01_emit.bp',
 
     # Hit Effects
-    FxImpactUnit = {
-    #EmtBpPath .. 'napalm_flash_emit.bp',
-    #EmtBpPath .. 'napalm_thick_smoke_emit.bp',
-    '/M&B/effects/emitters/napalm_fire_emit_2.bp',
-    '/effects/emitters/napalm_01_emit.bp',
-    },
-    FxImpactProp = {
-    #EmtBpPath .. 'napalm_flash_emit.bp',
-    #EmtBpPath .. 'napalm_thick_smoke_emit.bp',
-    '/M&B/effects/emitters/napalm_fire_emit_2.bp',
-    '/effects/emitters/napalm_01_emit.bp',
-    },
-    FxImpactLand = {
-    #EmtBpPath .. 'napalm_flash_emit.bp',
-    #EmtBpPath .. 'napalm_thick_smoke_emit.bp',
-    '/M&B/effects/emitters/napalm_fire_emit_2.bp',
-    '/effects/emitters/napalm_01_emit.bp',
-    },
+    FxImpactUnit = ModEffectTemplate.NapalmMissile,    
+    
+    FxImpactProp =  ModEffectTemplate.NapalmMissile,
+    
+    FxImpactLand =  ModEffectTemplate.NapalmMissile,  
+    
     FxImpactUnderWater = EffectTemplate.WaterSplash01,
 }
 

@@ -1,8 +1,8 @@
 MeshBlueprint {
     LODs = {
         {
-            MeshName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_Unpacked01_lod0.scm',
-            AlbedoName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_Unpacked01_albedo.dds',
+            MeshName = '/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_Unpacked01_lod0.scm',
+            AlbedoName = '/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_Unpacked01_albedo.dds',
             ShaderName = 'TMeshAlpha',
             LODCutoff = 150,
         },

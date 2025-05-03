@@ -398,7 +398,7 @@ UnitBlueprint {
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 10,
-            ProjectileId = '/mods/M&B/hook/projectiles/uel0402NapalmMissile/napalm_missile_proj.bp',
+            ProjectileId = '/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_proj.bp',
             ProjectileLifetime = 4,
             RackBones = {
                 {

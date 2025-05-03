@@ -29,9 +29,9 @@ ProjectileBlueprint {
         Mesh = {
             LODs = {
                 {
-                    AlbedoName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_albedo.dds',
+                    AlbedoName = '/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_albedo.dds',
                     LODCutoff = 150,
-                    MeshName = '/mods/M&B/projectiles/napalm_missile/napalm_missile_lod0.scm',
+                    MeshName = '/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_lod0.scm',
                     ShaderName = 'TMeshAlpha',
                 },
             },

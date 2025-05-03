@@ -9,6 +9,8 @@ EmitterTempEmtBpPath = '/effects/emitters/temp/'
 # Test weapon
 #---------------------------------------------------------------
 
+NapalmMissile = {	EmtBpPathAlt .. 'napalm_fire_emit_2.bp' }
+
 AlchemistPhasonLaserBeam = { EmtBpPathAlt .. 'alchemist_phason_laser_beam_01_emit.bp' }
 
 CybProtonCannonFXTrail01 =  { EmtBpPathAlt .. 'proton_cannon_fxtrail_01_emit.bp' }

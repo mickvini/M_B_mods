@@ -23,7 +23,7 @@ Napalm_Missile = Class(NapalmMissileProjectile) {
 
     UpdateThread = function(self)
         WaitSeconds(0.5)
-        self:SetMesh('/mods/M&B/projectiles/napalm_missile/napalm_missile_UnPacked01_mesh')
+        self:SetMesh('/mods/M&B/projectiles/uel0402NapalmMissile/napalm_missile_UnPacked01_mesh', true)
         local army = self:GetArmy()
 
         # Polytrails offset to wing tips
