@@ -286,7 +286,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 16900,
-        BuildRate = 60,
+        BuildRate = 90,
         BuildTime = 51840,
         BuildableCategory = {
             'BUILTBYTIER3FACTORY UEF LAND MOBILE',
@@ -1135,7 +1135,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,         HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,          HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

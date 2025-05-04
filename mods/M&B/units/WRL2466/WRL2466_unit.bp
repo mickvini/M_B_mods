@@ -245,7 +245,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 8160,
-        BuildRate = 10,
+        BuildRate = 15,
         BuildTime = 43200,
         BuildableCategory = {
             'brb2306',
@@ -253,6 +253,7 @@ UnitBlueprint {
         },
         MaintenanceConsumptionPerSecondEnergy = 520,
         MaxBuildDistance = 10,
+        ProductionPerSecondMass = 10,
     },
     General = {
         BuildBones = {

@@ -109,7 +109,7 @@ UnitBlueprint {
             },
         },
         AnimationWalk = '/mods/M&B/units/BRNT3BLASP/BRNT3BLASP_Walk.sca',
-        AnimationWalkRate = 1.9,
+        AnimationWalkRate = 2.2,
         Mesh = {
             IconFadeInZoom = 200,
             LODs = {
