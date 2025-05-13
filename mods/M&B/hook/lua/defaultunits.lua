@@ -59,9 +59,14 @@ end
 
 SetMarkLevel = function(self, buffName, tech, techLevel)
     local army = self:GetArmy() 
-    if MK[army][tech][self:GetBlueprint().General.FactionName] ~= self.MarkLevel[tech] then        
-        Buff.ApplyBuff(self ,  buffName) 
-        self.MarkLevel[tech] = techLevel                      
+    if MK[army][tech][self:GetBlueprint().General.FactionName] ~= self.MarkLevel[tech] then  
+        if not self:IsBeingBuilt() then
+            LOG('1')
+            Buff.ApplyBuff(self ,  buffName) 
+            self.MarkLevel[tech] = techLevel   
+        else
+            LOG('2')
+        end                   
     end      
 end
 
