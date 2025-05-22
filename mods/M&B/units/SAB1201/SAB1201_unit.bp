@@ -135,7 +135,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         AdjacentStructureEnergyMod = -4,
         BuildCostMass = 920,
-        BuildTime = 480,
+        BuildTime = 720,
         ProductionPerSecondEnergy = 760,
         RebuildBonusIds = {
             'sab1201',

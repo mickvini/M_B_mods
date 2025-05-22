@@ -769,7 +769,7 @@ UnitBlueprint {
             TargetRestrictDisallow = 'UNTARGETABLE',
             WeaponCategory = 'Direct Fire Experimental',
             AimsStraightOnDisable = true,
-            MaxRadiusTall = 140,
+            MaxRadiusTall = 120,
             NotExclusive = true,
             PrefersPrimaryWeaponTarget = false,
             RangeCategory = 'UWRC_DirectFire',

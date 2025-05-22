@@ -205,7 +205,7 @@ UnitBlueprint {
         RadarRadius = 420,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
-        VisionRadius = 150,
+        VisionRadius = 120,
     },
     Interface = {
         HelpText = '<LOC xsb3201_help>Radar System',

@@ -161,7 +161,7 @@ UnitBlueprint {
         OmniRadius = 60,
         RadarRadius = 640,
         ShowIntelOnSelect = true,
-        VisionRadius = 250,
+        VisionRadius = 150,
     },
     Interface = {
         HelpText = '<LOC urb3104_help>Omni Sensor Array',

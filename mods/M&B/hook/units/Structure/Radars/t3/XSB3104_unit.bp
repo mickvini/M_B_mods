@@ -210,7 +210,7 @@ UnitBlueprint {
         RadarRadius = 640,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
-        VisionRadius = 250,
+        VisionRadius = 150,
     },
     Interface = {
         HelpText = '<LOC xsb3104_help>Omni Sensor Suite',
