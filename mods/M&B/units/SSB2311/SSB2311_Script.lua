@@ -18,6 +18,7 @@ SSB2311 = Class(SStructureUnit) {
     Weapons = {
         RightArm = Class(SDFSinnuntheWeapon)
         {
+            --[[
             PlayFxMuzzleChargeSequence = function(self, muzzle)
 
                 if not self.ClawTopRotator then 
@@ -39,7 +40,7 @@ SSB2311 = Class(SStructureUnit) {
                     self.ClawTopRotator:SetGoal(0):SetSpeed(50)
                     self.ClawBottomRotator:SetGoal(0):SetSpeed(50)
                 end)
-            end,
+            end,]]
         },
     }, 
 }

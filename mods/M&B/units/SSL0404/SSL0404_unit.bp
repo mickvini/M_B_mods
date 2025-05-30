@@ -245,8 +245,8 @@ UnitBlueprint {
         UnitName = '<LOC ssl0404_name>Sisha-Ah',
     },
     Intel = {
-        Cloak = true,
-        RadarStealth = true,
+        Cloak = false,
+        RadarStealth = false,
         VisionRadius = 40,
         WaterVisionRadius = 10,
         StealthWaitTime = 2,

@@ -13,14 +13,14 @@ SSL0404 = Class(SWalkingLandUnit) {
         MainTracer = Class(SDFUltraChromaticBeamGenerator) {
 			OnWeaponFired = function(self, target)
 				SDFUltraChromaticBeamGenerator.OnWeaponFired(self, target)
-				ChangeState( self.unit, self.unit.VisibleState )
+				--ChangeState( self.unit, self.unit.VisibleState )
 			end,
 
 			OnLostTarget = function(self)
 				SDFUltraChromaticBeamGenerator.OnLostTarget(self)
-				if not self.unit:IsUnitState('Busy') then
-				    ChangeState( self.unit, self.unit.InvisState )
-				end
+				--if not self.unit:IsUnitState('Busy') then
+				    --ChangeState( self.unit, self.unit.InvisState )
+				--end
 			end,
         },
     },
@@ -50,7 +50,7 @@ SSL0404 = Class(SWalkingLandUnit) {
                 Buff.ApplyBuff(unit, buff)
                 unit:RequestRefreshUI()
             end
-            WaitSeconds(5)
+            WaitSeconds(50)
         end
     end,
 
@@ -115,48 +115,7 @@ SSL0404 = Class(SWalkingLandUnit) {
         self.RegenThreadHandle = self:ForkThread(self.RegenBuffThread)
     end,
 
-    InvisState = State() {
-        Main = function(self)
-            self.Cloaked = false
-            local bp = self:GetBlueprint()
-            if bp.Intel.StealthWaitTime then
-                WaitSeconds( bp.Intel.StealthWaitTime )
-            end
-			self:EnableUnitIntel('RadarStealth')
-			self:EnableUnitIntel('Cloak')
-			self.Cloaked = true
-            if bp.Display.CloakMeshBlueprint then
-                self:SetMesh(bp.Display.CloakMeshBlueprint, true)
-            end
-        end,
-
-        OnMotionHorzEventChange = function(self, new, old)
-            if new != 'Stopped' then
-                ChangeState( self, self.VisibleState )
-            end
-            SWalkingLandUnit.OnMotionHorzEventChange(self, new, old)
-        end,
-    },
-
-    VisibleState = State() {
-        Main = function(self)
-            if self.Cloaked then
-                self:DisableUnitIntel('RadarStealth')
-			    self:DisableUnitIntel('Cloak')
-                local bp = self:GetBlueprint()
-                if bp.Display.CloakMeshBlueprint then
-                    self:SetMesh(bp.Display.MeshBlueprint, true)
-                end
-    			self.Cloaked = false
-			end
-        end,
-
-        OnMotionHorzEventChange = function(self, new, old)
-            if new == 'Stopped' then
-                ChangeState( self, self.InvisState )
-            end
-            SWalkingLandUnit.OnMotionHorzEventChange(self, new, old)
-        end,
+    
     },
 }
 

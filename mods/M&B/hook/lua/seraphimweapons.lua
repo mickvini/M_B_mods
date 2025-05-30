@@ -13,7 +13,7 @@ SDFGapingMaw = Class(DefaultBeamWeapon) {
             local max = bp.MaxEdibleSize or {3, 5, 3}
             local targetbp = target:GetBlueprint()
             if targetbp.SizeX > max[1] or targetbp.SizeZ > max[2] or targetbp.SizeY > max[3] then
-                --LOG(targetbp.Description .. " is too big to eat")
+                LOG(targetbp.Description .. " is too big to eat")
                 return
             end
         end

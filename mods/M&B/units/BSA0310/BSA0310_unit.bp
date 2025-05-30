@@ -165,7 +165,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 170,
+        BuildCostMass = 1,
         BuildTime = 8000,
         ResearchMultTime = 2,
         ResearchMultEnergy = 900,
@@ -338,7 +338,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,                UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,                 UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             SlavedToBody = true,
