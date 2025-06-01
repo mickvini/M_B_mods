@@ -103,7 +103,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         AdjacentStructureEnergyMod = -5,
         BuildCostMass = 58800,
-        BuildTime = 128600,
+        BuildTime = 228600,
         MaintenanceConsumptionPerSecondEnergy = 1,
         ProductionPerSecondEnergy = 22000,
         ProductionPerSecondMass = 140,

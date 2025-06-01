@@ -41,8 +41,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 13600,
-        MaxHealth = 13600,
+        Health = 2240,
+        MaxHealth = 2240,
         RegenRate = 1,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -100,9 +100,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 3400,
-        BuildTime = 8200,
-        MaintenanceConsumptionPerSecondEnergy = 2420,
+        BuildCostMass = 3200,
+        BuildTime = 6720,
+        MaintenanceConsumptionPerSecondEnergy = 2880,
         ProductionPerSecondMass = 16,
         RebuildBonusIds = {
             'urb1303',

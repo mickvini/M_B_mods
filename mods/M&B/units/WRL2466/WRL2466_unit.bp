@@ -246,7 +246,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 8160,
         BuildRate = 15,
-        BuildTime = 43200,
+        BuildTime = 83200,
         BuildableCategory = {
             'brb2306',
             'srb2222',

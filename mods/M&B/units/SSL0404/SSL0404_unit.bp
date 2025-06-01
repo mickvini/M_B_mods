@@ -223,7 +223,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 13680,
-        BuildTime = 43200,
+        BuildTime = 83200,
     },
     General = {
         CommandCaps = {
@@ -246,7 +246,6 @@ UnitBlueprint {
     },
     Intel = {
         Cloak = false,
-        RadarStealth = false,
         VisionRadius = 40,
         WaterVisionRadius = 10,
         StealthWaitTime = 2,

@@ -91,7 +91,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 38200,
         BuildRate = 270,
-        BuildTime = 72800,
+        BuildTime = 142800,
         BuildableCategory = {
             'BUILTBYRIFTGATE SERAPHIM',
         },

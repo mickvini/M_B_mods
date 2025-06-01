@@ -168,7 +168,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 24200,
-        BuildTime = 51840,
+        BuildTime = 101840,
     },
     General = {
         Category = 'Direct Fire',

@@ -135,7 +135,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 10600,
         BuildRate = 80,
-        BuildTime = 43200,
+        BuildTime = 83200,
         BuildableCategory = {
             'FACTORYUEFLL',
         },

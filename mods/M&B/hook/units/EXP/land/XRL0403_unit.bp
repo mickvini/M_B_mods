@@ -219,7 +219,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 26800,
         BuildRate = 80,
-        BuildTime = 51840,
+        BuildTime = 101840,
         BuildableCategory = {
             'xrl0002',
             'xrl0003',
@@ -558,7 +558,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
             Turreted = false,

@@ -253,7 +253,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 26200,
         BuildRate = 100,
-        BuildTime = 54800,
+        BuildTime = 104800,
         BuildableCategory = {
             'BUILTBYTIER3FACTORY AEON MOBILE CONSTRUCTION',
             'BUILTBYTIER2FACTORY AEON MOBILE CONSTRUCTION',
@@ -500,7 +500,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,       HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

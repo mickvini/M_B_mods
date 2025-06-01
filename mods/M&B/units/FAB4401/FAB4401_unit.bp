@@ -58,8 +58,8 @@ UnitBlueprint {
             ImpactEffects = 'AeonShieldHit01',
             RegenAssistMult = 1200,
             ShieldEnergyDrainRechargeTime = 30,
-            ShieldMaxHealth = 16500,
-            ShieldRechargeTime = 60,
+            ShieldMaxHealth = 18500,
+            ShieldRechargeTime = 45,
             ShieldRegenRate = 94,
             ShieldRegenStartTime = 1,
             ShieldSize = 50,
@@ -127,7 +127,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 4060,
-        BuildTime = 6200,
+        BuildTime = 12200,
         MaintenanceConsumptionPerSecondEnergy = 1320,
         RebuildBonusIds = {
             'FAB4401',

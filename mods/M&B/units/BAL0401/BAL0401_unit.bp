@@ -192,7 +192,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 11800,
-        BuildTime = 43200,
+        BuildTime = 83200,
         MaintenanceConsumptionPerSecondEnergy = 320,
         ResearchMultTime = 0.25,
         ResearchMultEnergy = 2.6,
@@ -286,8 +286,7 @@ UnitBlueprint {
             AboveWaterTargetsOnly = true,
             AutoInitiateAttackCommand = false,
             BallisticArc = 'RULEUBA_None',
-            CollideFriendly = false,
-            Damage = 120,
+            Damage = 220,
             DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Head weapon',

@@ -220,7 +220,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 12400,
-        BuildTime = 51840,
+        BuildTime = 101840,
         MaintenanceConsumptionPerSecondEnergy = 250,
     },
     General = {
@@ -758,7 +758,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,     HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',
