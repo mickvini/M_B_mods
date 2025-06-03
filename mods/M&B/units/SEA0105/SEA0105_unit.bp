@@ -156,7 +156,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 120,
-        BuildTime = 6400,
+        BuildTime = 4800,
     },
     General = {
         CommandCaps = {
@@ -283,7 +283,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,               UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,                UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
@@ -349,7 +349,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,               UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,                UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             ProjectileLifetimeUsesMultiplier = 1.15,
             RangeCategory = 'UWRC_DirectFire',
