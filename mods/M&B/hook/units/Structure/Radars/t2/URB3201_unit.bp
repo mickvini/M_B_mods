@@ -167,10 +167,10 @@ UnitBlueprint {
         UnitName = '<LOC urb3201_name>Magno XR',
     },
     Intel = {
-        OmniRadius = 40,
+        OmniRadius = 105,
         RadarRadius = 420,
         ShowIntelOnSelect = true,
-        VisionRadius = 120,
+        VisionRadius = 60,
     },
     Interface = {
         HelpText = '<LOC urb3201_help>Radar System',

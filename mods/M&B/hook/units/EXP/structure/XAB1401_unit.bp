@@ -42,8 +42,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 12400,
-        MaxHealth = 12400,
+        Health = 6200,
+        MaxHealth = 6200,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -155,7 +155,7 @@ UnitBlueprint {
         RebuildBonusIds = {
             'xab1401',
         },
-        MaxEnergy = 140000,
+        MaxEnergy = 10000,
         MaxMass = 4000,
     },
     General = {

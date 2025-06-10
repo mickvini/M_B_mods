@@ -201,11 +201,11 @@ UnitBlueprint {
         UnitName = '<LOC xsb3201_name>Sele-esel',
     },
     Intel = {
-        OmniRadius = 40,
+        OmniRadius = 105,
         RadarRadius = 420,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
-        VisionRadius = 120,
+        VisionRadius = 60,
     },
     Interface = {
         HelpText = '<LOC xsb3201_help>Radar System',

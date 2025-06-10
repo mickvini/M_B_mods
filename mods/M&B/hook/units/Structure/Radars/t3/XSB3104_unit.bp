@@ -206,11 +206,11 @@ UnitBlueprint {
         UnitName = '<LOC xsb3104_name>Aezesel',
     },
     Intel = {
-        OmniRadius = 60,
+        OmniRadius = 160,
         RadarRadius = 640,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
-        VisionRadius = 150,
+        VisionRadius = 75,
     },
     Interface = {
         HelpText = '<LOC xsb3104_help>Omni Sensor Suite',

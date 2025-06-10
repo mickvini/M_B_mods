@@ -158,11 +158,11 @@ UnitBlueprint {
         UnitName = '<LOC ueb3104_name>SA3 - Omni',
     },
     Intel = {
-        OmniRadius = 60,
+        OmniRadius = 160,
         RadarRadius = 640,
         ReactivateTime = 10,
         ShowIntelOnSelect = true,
-        VisionRadius = 150,
+        VisionRadius = 75,
     },
     Interface = {
         HelpText = '<LOC ueb3104_help>Omni Sensor Array',

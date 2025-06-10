@@ -11,17 +11,7 @@ SSL0404 = Class(SWalkingLandUnit) {
     Weapons = {
         MainGun = Class(SDFUltraChromaticBeamGenerator) {},
         MainTracer = Class(SDFUltraChromaticBeamGenerator) {
-			OnWeaponFired = function(self, target)
-				SDFUltraChromaticBeamGenerator.OnWeaponFired(self, target)
-				--ChangeState( self.unit, self.unit.VisibleState )
-			end,
-
-			OnLostTarget = function(self)
-				SDFUltraChromaticBeamGenerator.OnLostTarget(self)
-				--if not self.unit:IsUnitState('Busy') then
-				    --ChangeState( self.unit, self.unit.InvisState )
-				--end
-			end,
+			
         },
     },
 
@@ -113,10 +103,7 @@ SSL0404 = Class(SWalkingLandUnit) {
 
         table.insert( self.ShieldEffectsBag, CreateAttachedEmitter( self, 'Body', self:GetArmy(), '/effects/emitters/seraphim_regenerative_aura_01_emit.bp' ) )
         self.RegenThreadHandle = self:ForkThread(self.RegenBuffThread)
-    end,
-
-    
-    },
+    end,    
+        
 }
-
 TypeClass = SSL0404

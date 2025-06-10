@@ -66,8 +66,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 14200,
-        MaxHealth = 14200,
+        Health = 15200,
+        MaxHealth = 15200,
         RegenRate = 5,
         AirThreatLevel = 16,
         SurfaceThreatLevel = 12,
@@ -223,7 +223,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 13680,
-        BuildTime = 83200,
+        BuildTime = 43200,
     },
     General = {
         CommandCaps = {
@@ -246,9 +246,9 @@ UnitBlueprint {
     },
     Intel = {
         Cloak = false,
+        RadarStealth = false,
         VisionRadius = 40,
-        WaterVisionRadius = 10,
-        StealthWaitTime = 2,
+        WaterVisionRadius = 10,        
         WaterVisionradius = 40,
     },
     LifeBarHeight = 0.075,
@@ -353,7 +353,7 @@ UnitBlueprint {
             },
             FiringTolerance = 0,
             Label = 'MainGun',
-            MaxRadius = 120,
+            MaxRadius = 140,
             MinRadius = 30,
             MuzzleChargeDelay = 2.5,
             MuzzleSalvoDelay = 0,

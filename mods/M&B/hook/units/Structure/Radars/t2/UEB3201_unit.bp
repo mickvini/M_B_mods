@@ -167,11 +167,11 @@ UnitBlueprint {
         UnitName = '<LOC ueb3201_name>SA2 - 2000',
     },
     Intel = {
-        OmniRadius = 40,
+        OmniRadius = 105,
         RadarRadius = 420,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
-        VisionRadius = 120,
+        VisionRadius = 60,
     },
     Interface = {
         HelpText = '<LOC ueb3201_help>Radar System',
