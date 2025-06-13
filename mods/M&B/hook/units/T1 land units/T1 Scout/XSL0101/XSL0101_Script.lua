@@ -45,7 +45,7 @@ XSL0101 = Class(SWalkingLandUnit) {
             if bp.Intel.StealthWaitTime then
                 WaitSeconds( bp.Intel.StealthWaitTime )
             end
-			self:EnableUnitIntel('RadarStealth')
+			--self:EnableUnitIntel('RadarStealth')
 			self:EnableUnitIntel('Cloak')
 			self.Cloaked = true
         end,
@@ -61,7 +61,7 @@ XSL0101 = Class(SWalkingLandUnit) {
     VisibleState = State() {
         Main = function(self)
             if self.Cloaked then
-                self:DisableUnitIntel('RadarStealth')
+                --self:DisableUnitIntel('RadarStealth')
 			    self:DisableUnitIntel('Cloak')
 			end
         end,
