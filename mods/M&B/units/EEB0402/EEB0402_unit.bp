@@ -106,7 +106,7 @@ UnitBlueprint {
         BuildTime = 228600,
         MaintenanceConsumptionPerSecondEnergy = 1,
         ProductionPerSecondEnergy = 8000,
-        ProductionPerSecondMass = 360,
+        ProductionPerSecondMass = 240,
         StorageMass = 20000,
 		StorageEnergy = 80000,
     },

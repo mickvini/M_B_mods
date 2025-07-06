@@ -156,7 +156,7 @@ UnitBlueprint {
             'xab1401',
         },
         MaxEnergy = 10000,
-        MaxMass = 4000,
+        MaxMass = 1000,
     },
     General = {
         ToggleCaps = {
