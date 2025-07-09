@@ -229,7 +229,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 124,
-            DamageFriendly = false,
+            DamageFriendly = true,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Long Range Cruise Missile',
@@ -252,7 +252,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'Missile',
                     },
