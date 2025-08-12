@@ -63,13 +63,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC DRL0204_desc>Мобильная ракетная арта T2',
-    Display = {
-        Abilities = {
-            'Armor - 10.5%',
-            'Main Weapon - 45 DPS / R - 70 / S - 1.5',
-            'Speed - 3.6',		
-            'Vision - 25',				
-        },		
+    Display = {        
         AnimationDeath = {
             {
                 Animation = '/units/drl0204/drl0204_adeath.sca',

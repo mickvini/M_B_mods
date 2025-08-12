@@ -65,12 +65,6 @@ UnitBlueprint {
     },
     Description = '<LOC XSL0202_desc>Легкий бот T2',
     Display = {
-        Abilities = {
-            'Armor - 12.5%',
-            'Main Weapon - 140 DPS / R - 37.5 / S - 0.25',					
-            'Speed - 2.5',		
-            'Vision - 30',				
-        },	
         AnimationDeath = {
             {
                 Animation = '/units/XSL0202/XSL0202_ADeath.sca',
@@ -257,7 +251,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3.1,
+            Damage = 1.8,
             DamageRadius = 0.25,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',

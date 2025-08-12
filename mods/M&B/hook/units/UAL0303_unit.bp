@@ -88,11 +88,7 @@ UnitBlueprint {
     },
     Description = '<LOC UAL0303_desc>Assault Shield QuadBot',
     Display = {
-        Abilities = {
-            'Armor - 15.0%',
-            'Main Weapon - 120 DPS / R - 42.5 / S - 0',
-            'Speed - 3.0',		
-            'Vision - 35',			
+        Abilities = {            			
             '<LOC ability_personalshield>Personal Shield',
             '<LOC ability_reclaim>Reclaims',
             '<LOC ability_repairs>Repairs',

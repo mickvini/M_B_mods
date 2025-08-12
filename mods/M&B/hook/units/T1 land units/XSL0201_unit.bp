@@ -65,13 +65,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC XSL0201_desc>Легкий танк T1',
-    Display = {
-        Abilities = {	
-            'Armor - 15.0%',
-            'Main Weapon - 31.25 DPS / R - 32.5 / S - 0.25',			
-            'Speed - 3.5',		
-            'Vision - 15',	
-        },			
+    Display = {        
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {

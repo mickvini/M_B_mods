@@ -258,7 +258,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 75,
+            Damage = 80,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Heavy Proton Cannon',

@@ -65,13 +65,6 @@ UnitBlueprint {
     },
     Description = '<LOC DEL0204_desc>Легкий бот T2',
     Display = {
-        Abilities = {
-            'Armor - 7%',
-            'Gatling - 200 DPS / R - 30 / S - 0',
-            'Mortar - 26 DPS / R - 55 / S - 4',				
-            'Speed - 3.6',		
-            'Vision - 30',				
-        },		
         AnimationDeath = {
             {
                 Animation = '/units/del0204/del0204_ADeath.sca',
@@ -231,7 +224,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 3.1,
+            Damage = 4.35,
             DamageType = 'Normal',
             DisplayName = 'Gatling Plasma Cannon',
             EnergyDrainPerSecond = 0,
@@ -245,7 +238,7 @@ UnitBlueprint {
             Label = 'GatlingCannon',
             MaxRadius = 30,
             MuzzleSalvoDelay = 0.1,
-            MuzzleSalvoSize = 40,
+            MuzzleSalvoSize = 20,
             MuzzleVelocity = 35,
             ProjectileId = '/projectiles/TDFPlasma02/TDFPlasma02_proj.bp',
             ProjectilesPerOnFire = 1,

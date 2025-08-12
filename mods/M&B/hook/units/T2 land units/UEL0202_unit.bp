@@ -62,13 +62,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC UEL0202_desc>Легкий танк T2',
-    Display = {
-        Abilities = {
-            'Armor - 23%',
-            'Main Weapon - 66 DPS / R - 32.5 / S - 0.25',
-            'Speed - 2.7',		
-            'Vision - 20',			
-        },			
+    Display = {        		
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {

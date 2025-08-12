@@ -68,11 +68,7 @@ UnitBlueprint {
     },
     Description = '<LOC UEL0101_desc>Легкий разведчик T0',
     Display = {
-        Abilities = {
-            'Armor - 5%',
-            'Main Weapon - 20 DPS / R - 15 / S - 0',
-            'Speed - 4.5',		
-            'Vision - 50',				
+        Abilities = {            			
             '<LOC ability_radar>Radar',
         },
         Mesh = {

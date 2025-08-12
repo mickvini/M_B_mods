@@ -217,7 +217,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 109,
+            Damage = 88,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'High Intensity Laser',

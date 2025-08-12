@@ -262,7 +262,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 15,
+            Damage = 21,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Chronotron Cannon',

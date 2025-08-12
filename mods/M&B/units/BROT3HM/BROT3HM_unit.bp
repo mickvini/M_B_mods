@@ -353,7 +353,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 12.5,
+            Damage = 17,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

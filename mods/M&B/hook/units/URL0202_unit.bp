@@ -61,13 +61,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC URL0202_desc>Heavy Laser Tank',
-    Display = {
-        Abilities = {
-            'Armor - 23%',
-            'Main Weapon - 72 DPS / R - 40 / S - 0',					
-            'Speed - 2.7',		
-            'Vision - 20',			
-        },			
+    Display = {        
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {

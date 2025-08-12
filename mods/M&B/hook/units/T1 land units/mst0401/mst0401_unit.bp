@@ -62,13 +62,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC mst0401_desc>Light Bot',
-    Display = {
-        Abilities = {
-            'Armor - 10%',
-            'Main Weapon - 70 DPS / R - 32.5 / S - 0.25',					
-            'Speed - 3.0',		
-            'Vision - 25',				
-        },		
+    Display = {        	
         AnimationDeath = {
             {
                 Animation = '/units/XSL0202/XSL0202_ADeath.sca',

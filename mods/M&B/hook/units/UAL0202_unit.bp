@@ -95,11 +95,7 @@ UnitBlueprint {
     },
     Description = '<LOC UAL0202_desc>Heavy Tank',
     Display = {
-        Abilities = {
-            'Armor - 24%',
-            'Main Weapon - 60 DPS / R - 35 / S - 0.5',			
-            'Speed - 2.6',		
-            'Vision - 20',			
+        Abilities = {            	
             '<LOC ability_personalshield>Personal Shield',
         },
         Mesh = {

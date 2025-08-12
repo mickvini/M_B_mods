@@ -88,11 +88,7 @@ UnitBlueprint {
     },
     Description = '<LOC UEL0303_desc>Легкий бот T3',
     Display = {
-        Abilities = {
-            'Armor - 5%',
-            'Main Weapon - 187.5 DPS / R - 35 / S - 0.5',
-            'Speed - 4.0',		
-            'Vision - 35',				
+        Abilities = {            				
             '<LOC ability_personalshield>Personal Shield',
         },
         AnimationDeath = {
@@ -262,7 +258,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 25,
+            Damage = 30,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',

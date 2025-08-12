@@ -79,11 +79,7 @@ UnitBlueprint {
     },
     Description = '<LOC XEL0305_desc>Тяжёлый бот T3',
     Display = {
-        Abilities = {
-            'Armor - 15%',
-            'Main Weapon - 120 DPS / R - 52.5 / S - 1',
-            'Speed - 2.0',		
-            'Vision - 40',				
+        Abilities = {           
             '<LOC ability_amphibious>Amphibious',
         },
         AnimationDeath = {

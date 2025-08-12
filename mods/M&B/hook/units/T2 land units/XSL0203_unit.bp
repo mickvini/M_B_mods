@@ -86,11 +86,7 @@ UnitBlueprint {
     },
     Description = '<LOC XSL0203_desc>Мобильная арта T2',
     Display = {
-        Abilities = {
-            'Armor - 3.25%',		
-            'Main Weapon - 37 DPS / R - 47.5 / S - 2',				
-            'Speed - 3.7',		
-            'Vision - 35',				
+        Abilities = {            	
             '<LOC ability_hover>Hover',
         },
         AnimationDeath = {

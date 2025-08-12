@@ -85,11 +85,7 @@ UnitBlueprint {
     },
     Description = '<LOC UEL0203_desc>Легкий ховер T3',
     Display = {
-        Abilities = {
-            'Armor - 3.25%',
-            'Main Weapon - 84 DPS / R - 17.5 / S - 0.0',		
-            'Speed - 3.7',		
-            'Vision - 30',			
+        Abilities = {            			
             '<LOC ability_hover>Hover',
         },
         IdleEffects = {

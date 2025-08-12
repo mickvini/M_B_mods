@@ -71,14 +71,8 @@ UnitBlueprint {
     },
     Description = '<LOC URL0303_desc>Средний бот T3',
     Display = {
-        Abilities = {
-            'Armor - 5%',
-            'Main Weapon - 105 DPS / R - 50.0 / S - 0.0',
-            'Secondary - 90 DPS / R - 22.5 / S - 0.0',			
-            'Speed - 4.0',		
-            'Vision - 35',			
-            '<LOC ability_tacticalmissledeflect>Tactical Missile Deflection',
-            '<LOC ability_deathaoe>Volatile',
+        Abilities = {            		
+            '<LOC ability_tacticalmissledeflect>Tactical Missile Deflection',            
         },
         AnimationDeath = {
             {
@@ -252,7 +246,7 @@ UnitBlueprint {
                 },
             },			
             CollideFriendly = false,
-            Damage = 51.5,
+            Damage = 16.2,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
@@ -286,7 +280,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = 0,
             RackReloadTimeout = 0,
-            RateOfFire = 0.1,
+            RateOfFire = 0.4,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
@@ -420,7 +414,7 @@ UnitBlueprint {
             },
             RateOfFire = 0.5,
             TargetCheckInterval = 1,
-            TargetRestrictDisallow = 'UNTARGETABLE,        AIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,         AIR',
             WeaponCategory = 'Direct Fire',
             Accurate = true,
             IgnoreIfDisabled = true,

@@ -77,11 +77,7 @@ UnitBlueprint {
     },
     Description = '<LOC XRL0305_desc>Тяжёлый бот T3',
     Display = {
-        Abilities = {
-            'Armor - 22.5%',
-            'Main Weapon - 120 DPS / R - 37.5 / S - 1',
-            'Speed - 2.0',		
-            'Vision - 35',				
+        Abilities = {            			
             '<LOC ability_amphibious>Amphibious',
             '<LOC ability_torpedo>Torpedoes',
             '<LOC ability_torpedodef>Torpedo Defense',

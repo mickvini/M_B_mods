@@ -64,12 +64,7 @@ UnitBlueprint {
     },
     Description = '<LOC XSL0303_desc>Средний танк T3',
     Display = {
-        Abilities = {
-            'Armor - 25%',
-            'Main Weapon - 120 DPS / R - 50 / S - 2',	
-            'Second - 70 DPS / R - 22.5 / S - 0',				
-            'Speed - 2.5',		
-            'Vision - 40',				
+        Abilities = {            			
             '<LOC ability_amphibious>Amphibious',
             '<LOC ability_torpedo>Torpedoes',
         },

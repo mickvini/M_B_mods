@@ -76,12 +76,7 @@ UnitBlueprint {
     },
     Description = '<LOC URL0203_desc>Легкий ховер T2',
     Display = {
-        Abilities = {
-            'Armor - 13%',
-            'Main Weapon - 100 DPS / R - 27.5 / S - 0',		
-            'Missle - 20 DPS / R - 50 / S - 1.5',				
-            'Speed - 3.7',		
-            'Vision - 35',			
+        Abilities = {            			
             '<LOC ability_torpedo>Torpedoes',
         },
         Mesh = {
