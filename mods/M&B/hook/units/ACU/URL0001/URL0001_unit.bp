@@ -998,7 +998,7 @@ UnitBlueprint {
         {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 250,
+            Damage = 125,
             DamageType = 'Normal',
             DisplayName = 'Nanite Torpedo',
             FireTargetLayerCapsTable = {
@@ -1006,7 +1006,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'Torpedo',
-            MaxRadius = 60,
+            MaxRadius = 40,
             MuzzleSalvoDelay = 0.8,
             MuzzleSalvoSize = 4,
             MuzzleVelocity = 5,
@@ -1025,7 +1025,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = 0,
             RackReloadTimeout = 10,
-            RateOfFire = 0.25,
+            RateOfFire = 0.3,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

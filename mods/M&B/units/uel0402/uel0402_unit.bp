@@ -701,19 +701,6 @@ UnitBlueprint {
                 },
             },
             BallisticArc = 'RULEUBA_LowArc',
-            Buffs = {
-                {
-                    Add = {
-                        OnImpact = true,
-                    },
-                    AppliedToTarget = true,
-                    BuffType = 'STUN',
-                    Duration = 2.0,
-                    Radius = 3,
-                    TargetAllow = 'ALLUNITS',
-                    TargetDisallow = 'EXPERIMENTAL, COMMAND',
-                },
-            },
             CollideFriendly = false,
             Damage = 300,
             DamageFriendly = false,
@@ -800,20 +787,7 @@ UnitBlueprint {
                     LodCutoff = 'Weapon_LodCutoff',
                 },
             },
-            BallisticArc = 'RULEUBA_LowArc',
-            Buffs = {
-                {
-                    Add = {
-                        OnImpact = true,
-                    },
-                    AppliedToTarget = true,
-                    BuffType = 'STUN',
-                    Duration = 2.0,
-                    Radius = 3,
-                    TargetAllow = 'ALLUNITS',
-                    TargetDisallow = 'EXPERIMENTAL, COMMAND',
-                },
-            },
+            BallisticArc = 'RULEUBA_LowArc',            
             CollideFriendly = false,
             Damage = 300,
             DamageFriendly = false,
