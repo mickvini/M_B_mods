@@ -9,7 +9,7 @@ GMSB403 = Class(SStructureUnit) {
 		CreateProjectileAtMuzzle = function(self, muzzle)
 		numProjectiles = 1
 		for i = 0, (numProjectiles -1) do
-		local proj = SIFSuthanusArtilleryCannon.CreateProjectileAtMuzzle(self, muzzle)
+			local proj = SIFSuthanusArtilleryCannon.CreateProjectileAtMuzzle(self, muzzle)
 		end
 	end,
         },

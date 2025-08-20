@@ -195,7 +195,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 230,
-            DamageRadius = 0,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Nanite Missile System',
             FireTargetLayerCapsTable = {
@@ -204,7 +204,7 @@ UnitBlueprint {
             },
             FiringTolerance = 50,
             Label = 'Missile01',
-            MaxRadius = 56,
+            MaxRadius = 64,
             MuzzleSalvoDelay = 0.3,
             MuzzleSalvoSize = 4,
             MuzzleVelocity = 30,

@@ -72,7 +72,7 @@ UnitBlueprint {
         KTurn = 0.8,
         KTurnDamping = 1,
         LiftFactor = 7,
-        MaxAirspeed = 14,
+        MaxAirspeed = 12.6,
         MinAirspeed = 12,
         PredictAheadForBombDrop = 3,
         StartTurnDistance = 5,
@@ -106,8 +106,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Light',
-        Health = 3200,
-        MaxHealth = 3200,
+        Health = 2240,
+        MaxHealth = 2240,
         RegenRate = 5,
         SurfaceThreatLevel = 75,
         SubThreatLevel = 30,
@@ -231,7 +231,7 @@ UnitBlueprint {
     LifeBarOffset = 1.25,
     LifeBarSize = 3,
     Physics = {
-        Elevation = 20,
+        Elevation = 22,
         FuelRechargeRate = 20,
         FuelUseTime = 500,
         MaxSpeed = 0.5,

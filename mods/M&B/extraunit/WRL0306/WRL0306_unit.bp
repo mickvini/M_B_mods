@@ -177,7 +177,7 @@ UnitBlueprint {
         UnitName = 'Ragnarok',
     },
     Intel = {
-        OmniRadius = 36,
+        OmniRadius = 0,
         RadarRadius = 48,
         SonarRadius = 36,
         VisionRadius = 60,

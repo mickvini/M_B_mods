@@ -222,7 +222,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 460,
-            DamageRadius = 0,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Losaare AA Autocannon',
             FireTargetLayerCapsTable = {
@@ -231,7 +231,7 @@ UnitBlueprint {
             },
             FiringTolerance = 0,
             Label = 'AntiAirMissiles',
-            MaxRadius = 56,
+            MaxRadius = 64,
             MuzzleSalvoDelay = 0.6,
             MuzzleSalvoSize = 2,
             MuzzleVelocity = 100,

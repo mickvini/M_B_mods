@@ -193,7 +193,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 153,
-            DamageRadius = 0,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Flayer SAM Launcher',
             FireTargetLayerCapsTable = {
@@ -203,7 +203,7 @@ UnitBlueprint {
             },
             FiringTolerance = 10,
             Label = 'MissileRack01',
-            MaxRadius = 56,
+            MaxRadius = 64,
             MuzzleSalvoDelay = 0.2,
             MuzzleSalvoSize = 6,
             MuzzleVelocity = 30,
