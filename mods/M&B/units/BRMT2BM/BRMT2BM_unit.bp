@@ -261,7 +261,7 @@ UnitBlueprint {
             TurretBonePitch = 'arm01b02',
             TurretBoneYaw = 'Turret03',
             TurretBoneMuzzle = 'Muzzle02',
-            RackFireTogether = true,
+            RackFireTogether = false,
             RackSlavedToTurret = true,
             RackRecoilDistance = -1,
             RackReloadTimeout = 10,
