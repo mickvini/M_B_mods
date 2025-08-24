@@ -605,7 +605,7 @@ ERL0001 = Class(CWalkingLandUnit) {
     DefaultGunBuffThread = function(self)
 		if not self.DefaultGunBuffApplied then
             local wepRipper = self:GetWeaponByLabel('RightRipper')
-			wepRipper:ChangeRateOfFire(2)
+			wepRipper:ChangeRateOfFire(0.6)
 			local wepOvercharge = self:GetWeaponByLabel('OverCharge')
             wepOvercharge:ChangeMaxRadius(30)
 			self:ShowBone('Right_Upgrade', true)
@@ -734,7 +734,7 @@ ERL0001 = Class(CWalkingLandUnit) {
 			if self.wcRocket01 then
 				self:SetWeaponEnabledByLabel('EXRocketPack01', true)
 				local wepFlamer01 = self:GetWeaponByLabel('EXRocketPack01')
-				wepFlamer01:ChangeMaxRadius(22)
+				wepFlamer01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXRocketPack01', false)
 			end
@@ -748,14 +748,14 @@ ERL0001 = Class(CWalkingLandUnit) {
 			if self.wcTorp01 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', true)
 				local wepTorpedo01 = self:GetWeaponByLabel('EXTorpedoLauncher01')
-				wepTorpedo01:ChangeMaxRadius(60)
+				wepTorpedo01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', false)
 			end
 			if self.wcTorp02 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', true)
 				local wepTorpedo02 = self:GetWeaponByLabel('EXTorpedoLauncher02')
-				wepTorpedo02:ChangeMaxRadius(60)
+				wepTorpedo02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', false)
 			end
@@ -767,22 +767,6 @@ ERL0001 = Class(CWalkingLandUnit) {
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher03', false)
 			end
 			if self.wcEMP01 then
-				self:SetWeaponEnabledByLabel('EXEMPArray01', true)
-				local wepAntiMatter01 = self:GetWeaponByLabel('EXEMPArray01')
-				wepAntiMatter01:ChangeMaxRadius(35)
-				local wepAntiMatter02 = self:GetWeaponByLabel('EXEMPArray02')
-				wepAntiMatter02:ChangeMaxRadius(35)
-				local wepAntiMatter03 = self:GetWeaponByLabel('EXEMPArray03')
-				wepAntiMatter03:ChangeMaxRadius(35)
-				local wepAntiMatter04 = self:GetWeaponByLabel('EXEMPArray04')
-				wepAntiMatter04:ChangeMaxRadius(35)
-				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot01')
-				wepAntiMatter06:ChangeMaxRadius(35)
-				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot02')
-				wepAntiMatter06:ChangeMaxRadius(35)
-				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot03')
-				wepAntiMatter06:ChangeMaxRadius(35)
-			elseif self.wcEMP02 then
 				self:SetWeaponEnabledByLabel('EXEMPArray01', true)
 				local wepAntiMatter01 = self:GetWeaponByLabel('EXEMPArray01')
 				wepAntiMatter01:ChangeMaxRadius(40)
@@ -798,7 +782,7 @@ ERL0001 = Class(CWalkingLandUnit) {
 				wepAntiMatter06:ChangeMaxRadius(40)
 				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot03')
 				wepAntiMatter06:ChangeMaxRadius(40)
-			elseif self.wcEMP03 then
+			elseif self.wcEMP02 then
 				self:SetWeaponEnabledByLabel('EXEMPArray01', true)
 				local wepAntiMatter01 = self:GetWeaponByLabel('EXEMPArray01')
 				wepAntiMatter01:ChangeMaxRadius(45)
@@ -814,6 +798,22 @@ ERL0001 = Class(CWalkingLandUnit) {
 				wepAntiMatter06:ChangeMaxRadius(45)
 				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot03')
 				wepAntiMatter06:ChangeMaxRadius(45)
+			elseif self.wcEMP03 then
+				self:SetWeaponEnabledByLabel('EXEMPArray01', true)
+				local wepAntiMatter01 = self:GetWeaponByLabel('EXEMPArray01')
+				wepAntiMatter01:ChangeMaxRadius(50)
+				local wepAntiMatter02 = self:GetWeaponByLabel('EXEMPArray02')
+				wepAntiMatter02:ChangeMaxRadius(50)
+				local wepAntiMatter03 = self:GetWeaponByLabel('EXEMPArray03')
+				wepAntiMatter03:ChangeMaxRadius(50)
+				local wepAntiMatter04 = self:GetWeaponByLabel('EXEMPArray04')
+				wepAntiMatter04:ChangeMaxRadius(50)
+				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot01')
+				wepAntiMatter06:ChangeMaxRadius(50)
+				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot02')
+				wepAntiMatter06:ChangeMaxRadius(50)
+				local wepAntiMatter06 = self:GetWeaponByLabel('EXEMPShot03')
+				wepAntiMatter06:ChangeMaxRadius(50)
 			elseif not self.wcEMP01 and not self.wcEMP01 and not self.wcEMP01 then
 				self:SetWeaponEnabledByLabel('EXEMPArray01', false)
 			end
@@ -841,10 +841,10 @@ ERL0001 = Class(CWalkingLandUnit) {
 			if self.wcAA01 then
 				self:SetWeaponEnabledByLabel('EXAA01', true)
 				local wepLance01 = self:GetWeaponByLabel('EXAA01')
-				wepLance01:ChangeMaxRadius(35)
+				wepLance01:ChangeMaxRadius(60)
 				self:SetWeaponEnabledByLabel('EXAA02', true)
 				local wepLance02 = self:GetWeaponByLabel('EXAA02')
-				wepLance02:ChangeMaxRadius(35)
+				wepLance02:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXAA01', false)
 				self:SetWeaponEnabledByLabel('EXAA02', false)
@@ -852,10 +852,10 @@ ERL0001 = Class(CWalkingLandUnit) {
 			if self.wcAA02 then
 				self:SetWeaponEnabledByLabel('EXAA03', true)
 				local wepLance03 = self:GetWeaponByLabel('EXAA03')
-				wepLance03:ChangeMaxRadius(35)
+				wepLance03:ChangeMaxRadius(60)
 				self:SetWeaponEnabledByLabel('EXAA04', true)
 				local wepLance04 = self:GetWeaponByLabel('EXAA04')
-				wepLance04:ChangeMaxRadius(35)
+				wepLance04:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXAA03', false)
 				self:SetWeaponEnabledByLabel('EXAA04', false)
@@ -1407,7 +1407,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXCybranHealthBoost9')
 			local wepRipper = self:GetWeaponByLabel('RightRipper')
-            wepRipper:AddDamageMod(100)
+            wepRipper:AddDamageMod(64)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = true
@@ -1426,8 +1426,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
-			wepRipper:AddDamageMod(-150)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
+			wepRipper:AddDamageMod(-64)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1465,7 +1465,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcEMP01 = false
 			self.wcEMP02 = false
 			self.wcEMP03 = false
@@ -1507,7 +1507,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcEMP01 = false
 			self.wcEMP02 = false
 			self.wcEMP03 = false
@@ -1532,7 +1532,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXCybranHealthBoost12')
 			local wepRipper = self:GetWeaponByLabel('RightRipper')
-            wepRipper:ChangeMaxRadius(45)
+            wepRipper:ChangeMaxRadius(30)
             self.wcEMP01 = false
 			self.wcEMP02 = false
 			self.wcEMP03 = true
@@ -1552,7 +1552,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcEMP01 = false
 			self.wcEMP02 = false
 			self.wcEMP03 = false
@@ -1590,7 +1590,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcMasor01 = false
 			self.wcMasor02 = false
 			self.wcMasor03 = false
@@ -1615,7 +1615,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXCybranHealthBoost14')
 			local wepRipper = self:GetWeaponByLabel('RightRipper')
-            wepRipper:ChangeMaxRadius(30)
+            wepRipper:ChangeMaxRadius(40)
 			self.wcMasor01 = false
 			self.wcMasor02 = true
 			self.wcMasor03 = false
@@ -1632,7 +1632,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcMasor01 = false
 			self.wcMasor02 = false
 			self.wcMasor03 = false
@@ -1657,7 +1657,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXCybranHealthBoost15')
 			local wepRipper = self:GetWeaponByLabel('RightRipper')
-            wepRipper:ChangeMaxRadius(30)
+            wepRipper:ChangeMaxRadius(40)
 			self.wcMasor01 = false
 			self.wcMasor02 = false
 			self.wcMasor03 = true
@@ -1676,7 +1676,7 @@ ERL0001 = Class(CWalkingLandUnit) {
             end
             local wepRipper = self:GetWeaponByLabel('RightRipper')
             local bpDisruptRipperRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 22)
+            wepRipper:ChangeMaxRadius(bpDisruptRipperRadius or 30)
 			self.wcMasor01 = false
 			self.wcMasor02 = false
 			self.wcMasor03 = false
@@ -1800,8 +1800,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self.RBDefTier3 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancment' then
-            self:SetIntelRadius('Vision', bp.NewVisionRadius or 50)
-            self:SetIntelRadius('Omni', bp.NewOmniRadius or 50)
+            self:SetIntelRadius('Vision', bp.NewVisionRadius or 85)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 45)
             if not Buffs['EXCybranHealthBoost16'] then
                 BuffBlueprint {
                     Name = 'EXCybranHealthBoost16',
@@ -1824,8 +1824,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancmentRemove' then
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXCybranHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost16' )
             end
@@ -1834,6 +1834,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self.RBIntTier3 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicCountermeasures' then
+		    self:SetIntelRadius('Vision', bp.NewVisionRadius or 120)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 80)
             self:AddToggleCap('RULEUTC_CloakToggle')
             if self.IntelEffectsBag then
                 EffectUtil.CleanupEffectBag(self,'IntelEffectsBag')
@@ -1872,8 +1874,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             self.StealthFieldEffects = false
             self.CloakingEffects = false     
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXCybranHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost16' )
             end
@@ -1887,6 +1889,8 @@ ERL0001 = Class(CWalkingLandUnit) {
         elseif enh == 'EXCloakingSubsystems' then
             local bp = self:GetBlueprint().Enhancements[enh]
             if not bp then return end
+		    self:SetIntelRadius('Vision', bp.NewVisionRadius or 140)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 40)
             self.StealthEnh = false
 			self.CloakEnh = true 
             self:EnableUnitIntel('Cloak')
@@ -1915,8 +1919,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             self:DisableUnitIntel('Cloak')
             self.CloakEnh = false 
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXCybranHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost16' )
             end
@@ -1931,7 +1935,7 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self.RBIntTier3 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXMobilitySubsystems' then
-			self:SetSpeedMult(1.41176)
+			self:SetSpeedMult(1.2)
             if not Buffs['EXCybranHealthBoost19'] then
                 BuffBlueprint {
                     Name = 'EXCybranHealthBoost19',

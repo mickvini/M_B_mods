@@ -846,7 +846,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcFlamer01 then
 				self:SetWeaponEnabledByLabel('EXFlameCannon01', true)
 				local wepFlamer01 = self:GetWeaponByLabel('EXFlameCannon01')
-				wepFlamer01:ChangeMaxRadius(22)
+				wepFlamer01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXFlameCannon01', false)
 			end
@@ -860,14 +860,14 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcTorp01 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', true)
 				local wepTorpedo01 = self:GetWeaponByLabel('EXTorpedoLauncher01')
-				wepTorpedo01:ChangeMaxRadius(60)
+				wepTorpedo01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', false)
 			end
 			if self.wcTorp02 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', true)
 				local wepTorpedo02 = self:GetWeaponByLabel('EXTorpedoLauncher02')
-				wepTorpedo02:ChangeMaxRadius(60)
+				wepTorpedo02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', false)
 			end
@@ -881,21 +881,21 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcAMC01 then
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon01', true)
 				local wepAntiMatter01 = self:GetWeaponByLabel('EXAntiMatterCannon01')
-				wepAntiMatter01:ChangeMaxRadius(30)
+				wepAntiMatter01:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon01', false)
 			end
 			if self.wcAMC02 then
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon02', true)
 				local wepAntiMatter02 = self:GetWeaponByLabel('EXAntiMatterCannon02')
-				wepAntiMatter02:ChangeMaxRadius(30)
+				wepAntiMatter02:ChangeMaxRadius(50)
 			else
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon02', false)
 			end
 			if self.wcAMC03 then
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon03', true)
 				local wepAntiMatter03 = self:GetWeaponByLabel('EXAntiMatterCannon03')
-				wepAntiMatter03:ChangeMaxRadius(35)
+				wepAntiMatter03:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon03', false)
 			end
@@ -916,56 +916,56 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcGatling03 then
 				self:SetWeaponEnabledByLabel('EXGattlingEnergyCannon03', true)
 				local wepGattling03 = self:GetWeaponByLabel('EXGattlingEnergyCannon03')
-				wepGattling03:ChangeMaxRadius(45)
+				wepGattling03:ChangeMaxRadius(50)
 			else
 				self:SetWeaponEnabledByLabel('EXGattlingEnergyCannon03', false)
 			end
 			if self.wcLance01 then
 				self:SetWeaponEnabledByLabel('EXEnergyLance01', true)
 				local wepLance01 = self:GetWeaponByLabel('EXEnergyLance01')
-				wepLance01:ChangeMaxRadius(22)
+				wepLance01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXEnergyLance01', false)
 			end
 			if self.wcLance02 then
 				self:SetWeaponEnabledByLabel('EXEnergyLance02', true)
 				local wepLance02 = self:GetWeaponByLabel('EXEnergyLance02')
-				wepLance02:ChangeMaxRadius(22)
+				wepLance02:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXEnergyLance02', false)
 			end
 			if self.wcCMissiles01 then
 				self:SetWeaponEnabledByLabel('EXClusterMissles01', true)
 				local wepClusterMiss01 = self:GetWeaponByLabel('EXClusterMissles01')
-				wepClusterMiss01:ChangeMaxRadius(90)
+				wepClusterMiss01:ChangeMaxRadius(45)
 			else
 				self:SetWeaponEnabledByLabel('EXClusterMissles01', false)
 			end
 			if self.wcCMissiles02 then
 				self:SetWeaponEnabledByLabel('EXClusterMissles02', true)
 				local wepClusterMiss02 = self:GetWeaponByLabel('EXClusterMissles02')
-				wepClusterMiss02:ChangeMaxRadius(90)
+				wepClusterMiss02:ChangeMaxRadius(150)
 			else
 				self:SetWeaponEnabledByLabel('EXClusterMissles02', false)
 			end
 			if self.wcCMissiles03 then
 				self:SetWeaponEnabledByLabel('EXClusterMissles03', true)
 				local wepClusterMiss03 = self:GetWeaponByLabel('EXClusterMissles03')
-				wepClusterMiss03:ChangeMaxRadius(90)
+				wepClusterMiss03:ChangeMaxRadius(240)
 			else
 				self:SetWeaponEnabledByLabel('EXClusterMissles03', false)
 			end
 			if self.wcTMissiles01 then
 				self:SetWeaponEnabledByLabel('TacMissile', true)
 				local wepTacMiss = self:GetWeaponByLabel('TacMissile')
-				wepTacMiss:ChangeMaxRadius(256)
+				wepTacMiss:ChangeMaxRadius(150)
 			else
 				self:SetWeaponEnabledByLabel('TacMissile', false)
 			end
 			if self.wcNMissiles01 then
 				self:SetWeaponEnabledByLabel('TacNukeMissile', true)
 				local wepNukeMiss = self:GetWeaponByLabel('TacNukeMissile')
-				wepNukeMiss:ChangeMaxRadius(256)
+				wepNukeMiss:ChangeMaxRadius(240)
 			else
 				self:SetWeaponEnabledByLabel('TacNukeMissile', false)
 			end
@@ -1421,13 +1421,13 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXZephyrBooster' then
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(30)
+            wepZephyr:ChangeMaxRadius(40)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXZephyrBoosterRemove' then
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
             if not Buffs['EXUEFHealthBoost7'] then
@@ -1460,7 +1460,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1485,7 +1485,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost8')
 			local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:AddDamageMod(100)
+            wepZephyr:AddDamageMod(600)
 			self.wcTorp01 = false
 			self.wcTorp02 = true
 			self.wcTorp03 = false
@@ -1502,8 +1502,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
-            wepZephyr:AddDamageMod(-100)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+            wepZephyr:AddDamageMod(-600)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1528,7 +1528,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost9')
 			local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:AddDamageMod(200)
+            wepZephyr:AddDamageMod(900)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = true
@@ -1547,8 +1547,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
-            wepZephyr:AddDamageMod(-300)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 40)
+            wepZephyr:AddDamageMod(-900)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1573,7 +1573,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost10')
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(30)
+            wepZephyr:ChangeMaxRadius(40)
 			self.wcAMC01 = true
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1586,7 +1586,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1611,7 +1611,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost11')
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(30)
+            wepZephyr:ChangeMaxRadius(40)
 			self.wcAMC01 = false
 			self.wcAMC02 = true
 			self.wcAMC03 = false
@@ -1628,7 +1628,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1653,7 +1653,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost12')
 			local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(35)
+            wepZephyr:ChangeMaxRadius(60)
             self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = true
@@ -1672,7 +1672,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1710,7 +1710,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false
@@ -1752,7 +1752,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false
@@ -1796,7 +1796,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false
@@ -1910,8 +1910,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancment' then
-            self:SetIntelRadius('Vision', bp.NewVisionRadius or 50)
-            self:SetIntelRadius('Omni', bp.NewOmniRadius or 50)
+            self:SetIntelRadius('Vision', bp.NewVisionRadius or 85)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 45)
 			self.RadarDish1:SetTargetSpeed(45)
             if not Buffs['EXUEFHealthBoost16'] then
                 BuffBlueprint {
@@ -1939,8 +1939,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancmentRemove' then
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
 			self.RadarDish1:SetTargetSpeed(0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost16' )
@@ -1997,8 +1997,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             self.StealthFieldEffects = false
             self.CloakingEffects = false     
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 120)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 80)
 			self.RadarDish1:SetTargetSpeed(0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost16' )
@@ -2050,8 +2050,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             self.CloakingEffects = false     
             self:RemoveCommandCap('RULEUCC_Teleport')
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
 			self.RadarDish1:SetTargetSpeed(0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost16' )

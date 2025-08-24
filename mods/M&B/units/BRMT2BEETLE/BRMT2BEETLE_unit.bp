@@ -79,8 +79,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 3360,
-        MaxHealth = 3360,
+        Health = 5380,
+        MaxHealth = 5380,
         RegenRate = 5,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 330,
@@ -273,7 +273,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 3000,
+        BuildCostMass = 4800,
         BuildTime = 7500,
     },
     General = {
@@ -388,7 +388,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 30,
             CollideFriendly = false,
-            Damage = 396,
+            Damage = 560,
             DamageFriendly = true,
             DamageRadius = 3,
             DamageType = 'Normal',

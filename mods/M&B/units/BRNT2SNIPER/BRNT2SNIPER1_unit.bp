@@ -64,8 +64,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 5400,
-        MaxHealth = 5400,
+        Health = 8640,
+        MaxHealth = 8640,
         RegenRate = 5,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 1,
@@ -136,10 +136,10 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 3200,
+        BuildCostMass = 5120,
         BuildTime = 7500,
     },
-    General = {        
+    General = {
         Category = 'Direct Fire',
         Classification = 'RULEUC_MilitaryVehicle',
         CommandCaps = {
@@ -250,7 +250,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 390,
+            Damage = 540,
             DamageRadius = 1.5,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

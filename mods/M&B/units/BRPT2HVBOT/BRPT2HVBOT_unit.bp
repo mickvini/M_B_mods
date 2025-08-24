@@ -73,8 +73,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 2,8',
-        Health = 18600,
-        MaxHealth = 18600,
+        Health = 29760,
+        MaxHealth = 29760,
         RegenRate = 5,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 75,
@@ -182,7 +182,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 11200,
+        BuildCostMass = 14400,
         BuildTime = 83200,
         ResearchMultTime = 1,
         ResearchMultEnergy = 2.4,

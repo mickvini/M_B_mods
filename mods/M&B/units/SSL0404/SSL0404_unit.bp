@@ -66,8 +66,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 15200,
-        MaxHealth = 15200,
+        Health = 23400,
+        MaxHealth = 23400,
         RegenRate = 5,
         AirThreatLevel = 16,
         SurfaceThreatLevel = 12,
@@ -222,7 +222,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 13680,
+        BuildCostMass = 17440,
         BuildTime = 43200,
     },
     General = {
@@ -246,9 +246,8 @@ UnitBlueprint {
     },
     Intel = {
         Cloak = false,
-        RadarStealth = false,
         VisionRadius = 40,
-        WaterVisionRadius = 10,        
+        WaterVisionRadius = 10,
         WaterVisionradius = 40,
     },
     LifeBarHeight = 0.075,

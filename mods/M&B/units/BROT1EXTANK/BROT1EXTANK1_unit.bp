@@ -83,8 +83,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Land 2,1',
-        Health = 32200,
-        MaxHealth = 32200,
+        Health = 51520,
+        MaxHealth = 51520,
         RegenRate = 3,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 3,
@@ -153,7 +153,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 18400,
+        BuildCostMass = 23520,
         BuildTime = 83200,
         ResearchMultTime = 1,
         ResearchMultEnergy = 2.8,

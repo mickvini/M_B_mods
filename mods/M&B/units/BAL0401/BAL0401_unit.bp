@@ -81,8 +81,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 9400,
-        MaxHealth = 9400,
+        Health = 15040,
+        MaxHealth = 15040,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -191,7 +191,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 11800,
+        BuildCostMass = 15840,
         BuildTime = 83200,
         MaintenanceConsumptionPerSecondEnergy = 320,
         ResearchMultTime = 0.25,
@@ -286,7 +286,7 @@ UnitBlueprint {
             AboveWaterTargetsOnly = true,
             AutoInitiateAttackCommand = false,
             BallisticArc = 'RULEUBA_None',
-            Damage = 220,
+            Damage = 286,
             DamageFriendly = true,
             DamageRadius = 4,
             DamageType = 'Normal',

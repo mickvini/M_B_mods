@@ -84,8 +84,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 28200,
-        MaxHealth = 28200,
+        Health = 45120,
+        MaxHealth = 45120,
         RegenRate = 10,
         AirThreatLevel = 16,
         SurfaceThreatLevel = 330,
@@ -219,7 +219,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 12400,
+        BuildCostMass = 17800,
         BuildTime = 101840,
         MaintenanceConsumptionPerSecondEnergy = 250,
     },
@@ -758,7 +758,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,      HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,        HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

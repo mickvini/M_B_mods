@@ -70,8 +70,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Experimental',
-        Health = 42200,
-        MaxHealth = 42200,
+        Health = 67520,
+        MaxHealth = 67520,
         RegenRate = 10,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 500,
@@ -176,7 +176,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 19200,
+        BuildCostMass = 24580,
         BuildTime = 101840,
     },
     General = {

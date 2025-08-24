@@ -81,8 +81,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 22400,
-        MaxHealth = 22400,
+        Health = 35840,
+        MaxHealth = 35840,
         RegenRate = 10,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 330,
@@ -183,7 +183,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 13840,
+        BuildCostMass = 18800,
         BuildTime = 83200,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,

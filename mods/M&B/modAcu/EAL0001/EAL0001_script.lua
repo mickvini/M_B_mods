@@ -689,9 +689,9 @@ EAL0001 = Class(AWalkingLandUnit) {
     DefaultGunBuffThread = function(self)
 		if not self.DefaultGunBuffApplied then
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:AddDamageMod(80)
-            wepDisruptor:ChangeMaxRadius(45)
-            wepDisruptor:ChangeDamageRadius(2)
+            wepDisruptor:AddDamageMod(50)
+            wepDisruptor:ChangeMaxRadius(30)
+            wepDisruptor:ChangeDamageRadius(1)
 			self.DefaultGunBuffApplied = true
 		end
 		if not self.wcBeam01 or not self.wcBeam02 or not self.wcBeam03 then
@@ -821,7 +821,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			if self.wcChrono01 then
 				self:SetWeaponEnabledByLabel('EXChronoDampener01', true)
 				local wepFlamer01 = self:GetWeaponByLabel('EXChronoDampener01')
-				wepFlamer01:ChangeMaxRadius(22)
+				wepFlamer01:ChangeMaxRadius(25)
 			else
 				self:SetWeaponEnabledByLabel('EXChronoDampener01', false)
 			end
@@ -836,7 +836,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', true)
 				self:SetWeaponEnabledByLabel('EXAntiTorpedo', true)
 				local wepTorpedo01 = self:GetWeaponByLabel('EXTorpedoLauncher01')
-				wepTorpedo01:ChangeMaxRadius(60)
+				wepTorpedo01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', false)
 				self:SetWeaponEnabledByLabel('EXAntiTorpedo', false)
@@ -845,7 +845,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', true)
 				self:SetWeaponEnabledByLabel('EXAntiTorpedo', true)
 				local wepTorpedo02 = self:GetWeaponByLabel('EXTorpedoLauncher02')
-				wepTorpedo02:ChangeMaxRadius(60)
+				wepTorpedo02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', false)
 				self:SetWeaponEnabledByLabel('EXAntiTorpedo', false)
@@ -861,13 +861,13 @@ EAL0001 = Class(AWalkingLandUnit) {
 			end
 			if self.wcArtillery01 then
 				local wepAntiMatter01 = self:GetWeaponByLabel('EXMiasmaArtillery01')
-				wepAntiMatter01:ChangeMaxRadius(100)
+				wepAntiMatter01:ChangeMaxRadius(60)
 			else
 				
 			end
 			if self.wcArtillery02 then
 				local wepAntiMatter02 = self:GetWeaponByLabel('EXMiasmaArtillery02')
-				wepAntiMatter02:ChangeMaxRadius(100)
+				wepAntiMatter02:ChangeMaxRadius(80)
 			else
 				
 			end
@@ -893,28 +893,28 @@ EAL0001 = Class(AWalkingLandUnit) {
 			if self.wcBeam03 then
 
 				local wepGattling03 = self:GetWeaponByLabel('EXPhasonBeam03')
-				wepGattling03:ChangeMaxRadius(40)
+				wepGattling03:ChangeMaxRadius(45)
 			else
 
 			end
 			if self.wcMaelstrom01 then
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom01', true)
 				local wepClusterMiss01 = self:GetWeaponByLabel('EXQuantumMaelstrom01')
-				wepClusterMiss01:ChangeMaxRadius(90)
+				wepClusterMiss01:ChangeMaxRadius(25)
 			else
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom01', false)
 			end
 			if self.wcMaelstrom02 then
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom02', true)
 				local wepClusterMiss02 = self:GetWeaponByLabel('EXQuantumMaelstrom02')
-				wepClusterMiss02:ChangeMaxRadius(90)
+				wepClusterMiss02:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom02', false)
 			end
 			if self.wcMaelstrom03 then
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom03', true)
 				local wepClusterMiss03 = self:GetWeaponByLabel('EXQuantumMaelstrom03')
-				wepClusterMiss03:ChangeMaxRadius(90)
+				wepClusterMiss03:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXQuantumMaelstrom03', false)
 			end
@@ -1480,9 +1480,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost7')
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(35)
+            wepDisruptor:ChangeMaxRadius(40)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(35)
+			wepTargetPainter:ChangeMaxRadius(40)
 			self.wcTorp01 = true
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1495,9 +1495,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1522,7 +1522,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost8')
 			local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:AddDamageMod(100)
+            wepDisruptor:AddDamageMod(64)
 			self.wcTorp01 = false
 			self.wcTorp02 = true
 			self.wcTorp03 = false
@@ -1540,10 +1540,10 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
-            wepDisruptor:AddDamageMod(-100)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+            wepDisruptor:AddDamageMod(-64)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1568,7 +1568,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost9')
 			local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:AddDamageMod(200)
+            wepDisruptor:AddDamageMod(240)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = true
@@ -1587,10 +1587,10 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
-            wepDisruptor:AddDamageMod(-300)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+            wepDisruptor:AddDamageMod(-240)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1615,7 +1615,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost10')
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(35)
+            wepDisruptor:ChangeMaxRadius(55)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(100)
 			self.wcArtillery01 = true
@@ -1632,9 +1632,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
 			self.wcArtillery02 = false
 			self.wcArtillery03 = false
@@ -1680,9 +1680,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
 			self.wcArtillery02 = false
 			self.wcArtillery03 = false
@@ -1729,9 +1729,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
 			self.wcArtillery02 = false
 			self.wcArtillery03 = false
@@ -1773,9 +1773,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
 			self.wcBeam02 = false
 			self.wcBeam03 = false
@@ -1818,9 +1818,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
 			self.wcBeam02 = false
 			self.wcBeam03 = false
@@ -1845,7 +1845,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost15')
 			local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(40)
+            wepDisruptor:ChangeMaxRadius(45)
             self.wcBeam01 = false
 			self.wcBeam02 = false
 			self.wcBeam03 = true
@@ -1864,9 +1864,9 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(22)
+			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
 			self.wcBeam02 = false
 			self.wcBeam03 = false
@@ -1930,8 +1930,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancment' then
-            self:SetIntelRadius('Vision', bp.NewVisionRadius or 50)
-            self:SetIntelRadius('Omni', bp.NewOmniRadius or 50)
+            self:SetIntelRadius('Vision', bp.NewVisionRadius or 85)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 45)
             if not Buffs['EXAeonHealthBoost16'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost16',
@@ -1955,8 +1955,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancmentRemove' then
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXAeonHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost16' )
             end
@@ -1966,6 +1966,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.RBIntTier3 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicCountermeasures' then
+		    self:SetIntelRadius('Vision', bp.NewVisionRadius or 120)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 80)
             if not Buffs['EXAeonHealthBoost17'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost17',
@@ -1989,8 +1991,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.EnableRemoteViewingButtons)
         elseif enh == 'EXElectronicCountermeasuresRemove' then
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXAeonHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost16' )
             end
@@ -2028,8 +2030,8 @@ EAL0001 = Class(AWalkingLandUnit) {
         elseif enh == 'EXCloakingSubsystemsRemove' then
             self:RemoveCommandCap('RULEUCC_Teleport')
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXAeonHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost16' )
             end

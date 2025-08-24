@@ -646,9 +646,9 @@ ESL0001 = Class( SWalkingLandUnit ) {
     DefaultGunBuffThread = function(self)
 		if not self.DefaultGunBuffApplied then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-			wepChronotron:AddDamageMod(100)
+			wepChronotron:AddDamageMod(64)
 			local wepOvercharge = self:GetWeaponByLabel('OverCharge')
-            wepOvercharge:ChangeMaxRadius(30)
+            wepOvercharge:ChangeMaxRadius(40)
 			self:ShowBone('Basic_Gun_Up', true)
 			self.DefaultGunBuffApplied = true
 		end
@@ -742,14 +742,14 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			if self.wcTorp01 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', true)
 				local wepTorpedo01 = self:GetWeaponByLabel('EXTorpedoLauncher01')
-				wepTorpedo01:ChangeMaxRadius(60)
+				wepTorpedo01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher01', false)
 			end
 			if self.wcTorp02 then
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', true)
 				local wepTorpedo02 = self:GetWeaponByLabel('EXTorpedoLauncher02')
-				wepTorpedo02:ChangeMaxRadius(60)
+				wepTorpedo02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXTorpedoLauncher02', false)
 			end
@@ -763,63 +763,63 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			if self.wcBigBall01 then
 				self:SetWeaponEnabledByLabel('EXBigBallCannon01', true)
 				local wepAntiMatter01 = self:GetWeaponByLabel('EXBigBallCannon01')
-				wepAntiMatter01:ChangeMaxRadius(35)
+				wepAntiMatter01:ChangeMaxRadius(45)
 			else
 				self:SetWeaponEnabledByLabel('EXBigBallCannon01', false)
 			end
 			if self.wcBigBall02 then
 				self:SetWeaponEnabledByLabel('EXBigBallCannon02', true)
 				local wepAntiMatter02 = self:GetWeaponByLabel('EXBigBallCannon02')
-				wepAntiMatter02:ChangeMaxRadius(40)
+				wepAntiMatter02:ChangeMaxRadius(50)
 			else
 				self:SetWeaponEnabledByLabel('EXBigBallCannon02', false)
 			end
 			if self.wcBigBall03 then
 				self:SetWeaponEnabledByLabel('EXBigBallCannon03', true)
 				local wepAntiMatter03 = self:GetWeaponByLabel('EXBigBallCannon03')
-				wepAntiMatter03:ChangeMaxRadius(45)
+				wepAntiMatter03:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXBigBallCannon03', false)
 			end
 			if self.wcRapid01 then
 				self:SetWeaponEnabledByLabel('EXRapidCannon01', true)
 				local wepGattling01 = self:GetWeaponByLabel('EXRapidCannon01')
-				wepGattling01:ChangeMaxRadius(30)
+				wepGattling01:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXRapidCannon01', false)
 			end
 			if self.wcRapid02 then
 				self:SetWeaponEnabledByLabel('EXRapidCannon02', true)
 				local wepGattling02 = self:GetWeaponByLabel('EXRapidCannon02')
-				wepGattling02:ChangeMaxRadius(35)
+				wepGattling02:ChangeMaxRadius(50)
 			else
 				self:SetWeaponEnabledByLabel('EXRapidCannon02', false)
 			end
 			if self.wcRapid03 then
 				self:SetWeaponEnabledByLabel('EXRapidCannon03', true)
 				local wepGattling03 = self:GetWeaponByLabel('EXRapidCannon03')
-				wepGattling03:ChangeMaxRadius(35)
+				wepGattling03:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXRapidCannon03', false)
 			end
 			if self.wcAA01 then
 				self:SetWeaponEnabledByLabel('EXAA01', true)
 				local wepLance01 = self:GetWeaponByLabel('EXAA01')
-				wepLance01:ChangeMaxRadius(22)
+				wepLance01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXAA01', false)
 			end
 			if self.wcAA02 then
 				self:SetWeaponEnabledByLabel('EXAA02', true)
 				local wepLance02 = self:GetWeaponByLabel('EXAA02')
-				wepLance02:ChangeMaxRadius(22)
+				wepLance02:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXAA02', false)
 			end
 			if self.wcTMissiles01 then
 				self:SetWeaponEnabledByLabel('Missile', true)
 				local wepTacMiss = self:GetWeaponByLabel('Missile')
-				wepTacMiss:ChangeMaxRadius(256)
+				wepTacMiss:ChangeMaxRadius(150)
 			else
 				self:SetWeaponEnabledByLabel('Missile', false)
 			end
@@ -1432,13 +1432,13 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXChronotonBooster' then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(30)
+            wepChronotron:ChangeMaxRadius(40)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXChronotonBoosterRemove' then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
             if not Buffs['EXSeraHealthBoost7'] then
@@ -1458,7 +1458,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost7')
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(30)
+            wepChronotron:ChangeMaxRadius(40)
 			self.wcTorp01 = true
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1471,7 +1471,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1496,7 +1496,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost8')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:AddDamageMod(100)
+            wepChronotron:AddDamageMod(64)
 			self.wcTorp01 = false
 			self.wcTorp02 = true
 			self.wcTorp03 = false
@@ -1513,8 +1513,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
-            wepChronotron:AddDamageMod(-100)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+            wepChronotron:AddDamageMod(-64)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = false
@@ -1539,7 +1539,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost9')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:AddDamageMod(200)
+            wepChronotron:AddDamageMod(300)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
 			self.wcTorp03 = true
@@ -1558,7 +1558,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
             wepChronotron:AddDamageMod(-300)
 			self.wcTorp01 = false
 			self.wcTorp02 = false
@@ -1584,7 +1584,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost10')
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(35)
+            wepChronotron:ChangeMaxRadius(45)
 			self.wcBigBall01 = true
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1597,7 +1597,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1622,7 +1622,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost11')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(40)
+            wepChronotron:ChangeMaxRadius(50)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = true
 			self.wcBigBall03 = false
@@ -1639,7 +1639,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1664,7 +1664,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost12')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(45)
+            wepChronotron:ChangeMaxRadius(60)
             self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = true
@@ -1684,7 +1684,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1709,7 +1709,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost13')
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(30)
+            wepChronotron:ChangeMaxRadius(40)
 			self.wcRapid01 = true
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -1722,7 +1722,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -1747,7 +1747,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost14')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(35)
+            wepChronotron:ChangeMaxRadius(50)
             self.wcRapid01 = false
 			self.wcRapid02 = true
 			self.wcRapid03 = false
@@ -1764,7 +1764,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -1789,7 +1789,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost15')
 			local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
-            wepChronotron:ChangeMaxRadius(35)
+            wepChronotron:ChangeMaxRadius(60)
             self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = true
@@ -1808,7 +1808,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
-            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -2092,8 +2092,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             lambdaEmitterLg01:SetCreator(self)
 			self.Trash:Add(lambdaEmitterSm01)
 			self.Trash:Add(lambdaEmitterLg01)
-            self:SetIntelRadius('Vision', bp.NewVisionRadius or 50)
-            self:SetIntelRadius('Omni', bp.NewOmniRadius or 50)
+            self:SetIntelRadius('Vision', bp.NewVisionRadius or 85)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 45)
             if not Buffs['EXSeraHealthBoost16'] then
                 BuffBlueprint {
                     Name = 'EXSeraHealthBoost16',
@@ -2116,8 +2116,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXElectronicsEnhancmentRemove' then
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXSeraHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost16' )
             end
@@ -2154,6 +2154,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             lambdaEmitterLg01:SetCreator(self)
 			self.Trash:Add(lambdaEmitterSm01)
 			self.Trash:Add(lambdaEmitterLg01)
+			self:SetIntelRadius('Vision', bp.NewVisionRadius or 120)
+            self:SetIntelRadius('Omni', bp.NewOmniRadius or 80)
              local platOrientSm02 = self:GetOrientation()
             local platOrientLg02 = self:GetOrientation()
 			local locationSm02 = self:GetPosition('S_Lambda_B02')
@@ -2198,8 +2200,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
         elseif enh == 'EXElectronicCountermeasuresRemove' then
             self:RemoveCommandCap('RULEUCC_Teleport')
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXSeraHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost16' )
             end
@@ -2261,8 +2263,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self.CloakEnh = false 
             self:RemoveCommandCap('RULEUCC_Teleport')
             local bpIntel = self:GetBlueprint().Intel
-            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
-            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+            self:SetIntelRadius('Vision', bpIntel.VisionRadius or 25)
+            self:SetIntelRadius('Omni', bpIntel.OmniRadius or 15)
             if Buff.HasBuff( self, 'EXSeraHealthBoost16' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost16' )
             end
@@ -2344,7 +2346,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 22)
+            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
             wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
 			self:StopSiloBuild()
 			self.RBComTier1 = false
@@ -2402,7 +2404,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 22)
+            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
             wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
             wepOC:AddDamageMod(-bp.OverchargeDamageMod2)        
 			self.wcTMissiles01 = false
@@ -2460,7 +2462,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 22)
+            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
             wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
             wepOC:AddDamageMod(-bp.OverchargeDamageMod2)        
             wepOC:AddDamageMod(-bp.OverchargeDamageMod3)        

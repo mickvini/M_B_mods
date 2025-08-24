@@ -71,8 +71,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 1740,
-        MaxHealth = 1740,
+        Health = 2820,
+        MaxHealth = 2820,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 330,
@@ -253,7 +253,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 420,
+        BuildCostMass = 700,
         BuildTime = 3200,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -353,7 +353,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 70,
+            Damage = 98,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
