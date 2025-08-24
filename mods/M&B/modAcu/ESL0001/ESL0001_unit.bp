@@ -317,7 +317,7 @@ UnitBlueprint {
             NewBuildRate = 32,
             NewHealth = 1000,
             ProductionPerSecondEnergy = 900,
-            ProductionPerSecondMass = 4,
+            ProductionPerSecondMass = 6,
             ShowBones = {
                 'Engineering',
             },

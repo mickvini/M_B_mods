@@ -390,7 +390,7 @@ UnitBlueprint {
 			NewBuildDistance = 21,
             NewHealth = 1500,
             ProductionPerSecondEnergy = 1500,
-            ProductionPerSecondMass = 6,
+            ProductionPerSecondMass = 10,
             ShowBones = {
                 'Engineering_Suite',
             },
