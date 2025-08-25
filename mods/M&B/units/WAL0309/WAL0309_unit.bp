@@ -65,8 +65,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 620,
-        MaxHealth = 620,
+        Health = 760,
+        MaxHealth = 760,
         RegenRate = 3,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -189,7 +189,7 @@ UnitBlueprint {
         UnitName = 'Harvog',
     },
     Intel = {
-        VisionRadius = 60,
+        VisionRadius = 52,
     },
     Interface = {
         HelpText = 'Heavy Assault Bot',
@@ -208,9 +208,9 @@ UnitBlueprint {
             LAYER_Water = false,
         },
         DragCoefficient = 0.2,
-        MaxAcceleration = 3,
-        MaxBrake = 3,
-        MaxSpeed = 3.2,
+        MaxAcceleration = 2.6,
+        MaxBrake = 2.6,
+        MaxSpeed = 2.6,
         MaxSpeedReverse = 0,
         MaxSteerForce = 10,
         MeshExtentsX = 1,
@@ -265,7 +265,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'ReactonCannon',
-            MaxRadius = 60,
+            MaxRadius = 68,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 30,

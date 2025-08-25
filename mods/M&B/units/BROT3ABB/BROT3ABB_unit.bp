@@ -82,8 +82,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 420,
-        MaxHealth = 420,
+        Health = 540,
+        MaxHealth = 540,
         RegenRate = 10,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -204,7 +204,7 @@ UnitBlueprint {
         UnitName = 'Serval',
     },
     Intel = {
-        VisionRadius = 42,
+        VisionRadius = 36,
     },
     Interface = {
         HelpText = 'Armored Battle Bot',
@@ -225,7 +225,7 @@ UnitBlueprint {
         DragCoefficient = 0.2,
         MaxAcceleration = 1,
         MaxBrake = 1,
-        MaxSpeed = 3.8,
+        MaxSpeed = 3,
         MaxSpeedReverse = 1,
         MaxSteerForce = 10,
         MinSpeedPercent = 0,
@@ -296,7 +296,7 @@ UnitBlueprint {
             FiringRandomness = 0.05,
             FiringTolerance = 1,
             Label = 'mainguns',
-            MaxRadius = 42,
+            MaxRadius = 48,
             MuzzleSalvoDelay = 0.01,
             MuzzleSalvoSize = 2,
             MuzzleVelocity = 200,
@@ -370,7 +370,7 @@ UnitBlueprint {
             },
             FiringTolerance = 1,
             Label = 'mgweapon2',
-            MaxRadius = 42,
+            MaxRadius = 48,
             MuzzleSalvoDelay = 0.02,
             MuzzleSalvoSize = 10,
             MuzzleVelocity = 40,

@@ -56,8 +56,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 900,
-        MaxHealth = 900,
+        Health = 1070,
+        MaxHealth = 1070,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 1,
@@ -149,7 +149,7 @@ UnitBlueprint {
     },
     Intel = {
         RadarRadius = 60,
-        VisionRadius = 56,
+        VisionRadius = 48,
     },
     Interface = {
         HelpText = 'Advanced Battle Tank',
@@ -229,7 +229,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'Missiles',
-            MaxRadius = 70,
+            MaxRadius = 84,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0.1,
             MuzzleSalvoSize = 1,
@@ -367,7 +367,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 70,
+            MaxRadius = 84,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

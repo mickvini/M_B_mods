@@ -60,8 +60,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 840,
-        MaxHealth = 840,
+        Health = 940,
+        MaxHealth = 940,
         RegenRate = 1,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 3,
@@ -157,7 +157,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 80,
+        BuildCostMass = 96,
         BuildTime = 1800,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -187,7 +187,7 @@ UnitBlueprint {
         UnitName = 'Delusion mk,3',
     },
     Intel = {
-        VisionRadius = 40,
+        VisionRadius = 28,
     },
     Interface = {
         HelpText = 'Laser Tank',
@@ -254,8 +254,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 16.2,
-            DamageRadius = 1,
+            Damage = 78,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Ionized Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -265,7 +265,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 50,
+            MaxRadius = 42,
             MinRadius = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
@@ -293,7 +293,7 @@ UnitBlueprint {
             RackSlavedToTurret = true,
             RackRecoilDistance = -2.5,
             RackReloadTimeout = 0,
-            RateOfFire = 1.75,
+            RateOfFire = 0.4,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

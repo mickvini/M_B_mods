@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 620,
-        MaxHealth = 620,
+        Health = 760,
+        MaxHealth = 760,
         RegenRate = 10,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
@@ -191,7 +191,7 @@ UnitBlueprint {
         UnitName = 'Trapnichum MkII',
     },
     Intel = {
-        VisionRadius = 60,
+        VisionRadius = 52,
     },
     Interface = {
         HelpText = 'Prototype Heavy Assault Bot',
@@ -212,7 +212,7 @@ UnitBlueprint {
         DragCoefficient = 0.2,
         MaxAcceleration = 2,
         MaxBrake = 2,
-        MaxSpeed = 3.2,
+        MaxSpeed = 2.6,
         MaxSpeedReverse = 0,
         MaxSteerForce = 10,
         MeshExtentsX = 1,
@@ -266,7 +266,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 60,
+            MaxRadius = 68,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

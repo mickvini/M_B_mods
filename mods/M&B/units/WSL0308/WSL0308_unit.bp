@@ -128,7 +128,7 @@ UnitBlueprint {
         UniformScale = 0.05,
     },
     Economy = {
-        BuildCostEnergy = 6850,
+        BuildCostEnergy = 1,
         BuildCostMass = 48,
         BuildTime = 1800,
     },
@@ -239,7 +239,7 @@ UnitBlueprint {
             TurretBoneMuzzle = 'TahuMuzzle01',
             RackRecoilDistance = -1,
             RackReloadTimeout = 10,
-            RateOfFire = 1.5,
+            RateOfFire = 2.1,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             TargetCheckInterval = 0.25,

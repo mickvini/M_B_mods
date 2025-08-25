@@ -76,8 +76,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 600,
-        MaxHealth = 600,
+        Health = 760,
+        MaxHealth = 760,
         RegenRate = 5,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -227,7 +227,7 @@ UnitBlueprint {
         UnitName = 'Rhyolite mk,2',
     },
     Intel = {
-        VisionRadius = 40,
+        VisionRadius = 35,
     },
     Interface = {
         HelpText = 'Battle Tank',
@@ -303,7 +303,7 @@ UnitBlueprint {
             },
             FiringTolerance = 1,
             Label = 'mgweapon2',
-            MaxRadius = 50,
+            MaxRadius = 60,
             MuzzleSalvoDelay = 0.02,
             MuzzleSalvoSize = 10,
             MuzzleVelocity = 75,
@@ -379,7 +379,7 @@ UnitBlueprint {
             FiringRandomness = 0.1,
             FiringTolerance = 1,
             Label = 'rocket',
-            MaxRadius = 50,
+            MaxRadius = 60,
             MuzzleSalvoDelay = 0.2,
             MuzzleSalvoSize = 6,
             MuzzleVelocity = 55,
@@ -464,7 +464,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
             Damage = 35,
-            DamageRadius = 2,
+            DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -473,7 +473,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 50,
+            MaxRadius = 60,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

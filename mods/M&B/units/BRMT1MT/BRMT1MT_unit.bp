@@ -58,8 +58,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 300,
-        MaxHealth = 300,
+        Health = 380,
+        MaxHealth = 380,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 50,
@@ -148,7 +148,7 @@ UnitBlueprint {
         UnitName = 'Razor',
     },
     Intel = {
-        VisionRadius = 20,
+        VisionRadius = 18,
     },
     Interface = {
         HelpText = 'Medium Tank',
@@ -224,7 +224,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 28,
+            MaxRadius = 32,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 40,

@@ -65,7 +65,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC XSL0201_desc>Легкий танк T1',
-    Display = {        
+    Display = {
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {
@@ -249,7 +249,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = -1,
             RackReloadTimeout = 10,
-            RateOfFire = 1,
+            RateOfFire = 1.4,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

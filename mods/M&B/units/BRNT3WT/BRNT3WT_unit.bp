@@ -374,7 +374,7 @@ UnitBlueprint {
             RackSlavedToTurret = true,
             RackRecoilDistance = -3,
             RackReloadTimeout = 0,
-            RateOfFire = 0.5,
+            RateOfFire = 0.7,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

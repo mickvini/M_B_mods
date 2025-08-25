@@ -46,8 +46,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 900,
-        MaxHealth = 900,
+        Health = 1070,
+        MaxHealth = 1070,
         RegenRate = 2,
         SurfaceThreatLevel = 38.7,
     },
@@ -136,7 +136,7 @@ UnitBlueprint {
         UnitName = '<LOC brnt3bt_name>Bull',
     },
     Intel = {
-        VisionRadius = 56,
+        VisionRadius = 48,
     },
     Interface = {
         HelpText = 'Rapid Assault Tank',
@@ -197,8 +197,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 26.25,
-            DamageRadius = 1.5,
+            Damage = 34,
+            DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -206,7 +206,7 @@ UnitBlueprint {
             },
             FiringTolerance = 0.5,
             Label = 'MainGun',
-            MaxRadius = 70,
+            MaxRadius = 84,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 42,
@@ -214,6 +214,7 @@ UnitBlueprint {
             ProjectileLifetime = 1,
             RackBones = {
                 {
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'Turret_Muzzle',
                         'Turret_Muzzle2',

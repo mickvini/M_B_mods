@@ -55,8 +55,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 600,
-        MaxHealth = 600,
+        Health = 760,
+        MaxHealth = 760,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 30,
@@ -143,7 +143,7 @@ UnitBlueprint {
         UnitName = 'Carnage mk,3',
     },
     Intel = {
-        VisionRadius = 40,
+        VisionRadius = 35,
     },
     Interface = {
         HelpText = 'Medium Tank',
@@ -234,7 +234,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 50,
+            MaxRadius = 60,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 70,

@@ -56,8 +56,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 590,
-        MaxHealth = 590,
+        Health = 670,
+        MaxHealth = 670,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 1,
@@ -113,7 +113,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 56,
+        BuildCostMass = 68,
         BuildTime = 1500,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -143,7 +143,7 @@ UnitBlueprint {
         UnitName = 'Boxer',
     },
     Intel = {
-        VisionRadius = 28,
+        VisionRadius = 20,
     },
     Interface = {
         HelpText = 'Battle Tank',
@@ -209,7 +209,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 30.5,
+            Damage = 112,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
@@ -240,7 +240,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = -5,
             RackReloadTimeout = 10,
-            RateOfFire = 0.65,
+            RateOfFire = 0.2,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

@@ -55,8 +55,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Hover 3,7',
-        Health = 306,
-        MaxHealth = 306,
+        Health = 480,
+        MaxHealth = 480,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 3,
@@ -178,7 +178,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 34,
+        BuildCostMass = 38,
         BuildTime = 1500,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -316,7 +316,7 @@ UnitBlueprint {
             RackSlavedToTurret = true,
             RackRecoilDistance = -1,
             RackReloadTimeout = 10,
-            RateOfFire = 2,
+            RateOfFire = 2.8,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

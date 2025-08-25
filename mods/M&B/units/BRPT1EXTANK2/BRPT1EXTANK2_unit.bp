@@ -56,8 +56,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 590,
-        MaxHealth = 590,
+        Health = 670,
+        MaxHealth = 670,
         RegenRate = 0,
         AirThreatLevel = 0.33,
         SurfaceThreatLevel = 0,
@@ -162,7 +162,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 56,
+        BuildCostMass = 68,
         BuildTime = 1500,
     },
     General = {
@@ -189,7 +189,7 @@ UnitBlueprint {
         UnitName = 'Yath-Us',
     },
     Intel = {
-        VisionRadius = 28,
+        VisionRadius = 20,
     },
     Interface = {
         HelpText = 'Advanced Assault Tank',
@@ -270,7 +270,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 39.6,
+            Damage = 75,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Heavy Quarnon Cannon',
@@ -281,7 +281,7 @@ UnitBlueprint {
             FiringRandomness = 0.15,
             FiringTolerance = 2,
             Label = 'BackTurret',
-            MaxRadius = 36,
+            MaxRadius = 30,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
@@ -311,7 +311,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = -4,
             RackReloadTimeout = 10,
-            RateOfFire = 0.5,
+            RateOfFire = 0.3,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

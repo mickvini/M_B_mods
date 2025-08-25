@@ -58,8 +58,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 900,
-        MaxHealth = 900,
+        Health = 1070,
+        MaxHealth = 1070,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 50,
@@ -181,7 +181,7 @@ UnitBlueprint {
         UnitName = 'Talon',
     },
     Intel = {
-        VisionRadius = 56,
+        VisionRadius = 48,
     },
     Interface = {
         HelpText = 'Advanced Battle Tank',
@@ -261,7 +261,7 @@ UnitBlueprint {
             FiringRandomness = 0.1,
             FiringTolerance = 2,
             Label = 'rocket',
-            MaxRadius = 70,
+            MaxRadius = 84,
             MuzzleSalvoDelay = 0.1,
             MuzzleSalvoSize = 8,
             MuzzleVelocity = 5,
@@ -335,7 +335,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 70,
+            MaxRadius = 84,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 55,

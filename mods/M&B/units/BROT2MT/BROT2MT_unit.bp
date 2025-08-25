@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 420,
-        MaxHealth = 420,
+        Health = 540,
+        MaxHealth = 540,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 1,
@@ -141,7 +141,7 @@ UnitBlueprint {
         UnitName = 'Pumice',
     },
     Intel = {
-        VisionRadius = 28,
+        VisionRadius = 25,
     },
     Interface = {
         HelpText = 'Medium Tank',
@@ -217,7 +217,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 36,
+            MaxRadius = 44,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 38,

@@ -58,8 +58,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 300,
-        MaxHealth = 300,
+        Health = 380,
+        MaxHealth = 380,
         RegenRate = 0,
         AirThreatLevel = 0.33,
         SurfaceThreatLevel = 0,
@@ -195,7 +195,7 @@ UnitBlueprint {
         UnitName = 'Yenshavoh',
     },
     Intel = {
-        VisionRadius = 20,
+        VisionRadius = 18,
     },
     Interface = {
         HelpText = 'Heavy Tank',
@@ -272,7 +272,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'TauCannon01',
-            MaxRadius = 28,
+            MaxRadius = 32,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 45,

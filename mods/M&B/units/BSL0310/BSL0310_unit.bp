@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 2,0',
-        Health = 450,
-        MaxHealth = 450,
+        Health = 700,
+        MaxHealth = 700,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 35,
@@ -174,7 +174,7 @@ UnitBlueprint {
         UnitName = '<LOC BSL0310_name>Ilthysathuum',
     },
     Intel = {
-        VisionRadius = 30,
+        VisionRadius = 20,
     },
     Interface = {
         HelpText = '<LOC BSL0310_help>Lambda Equipped Assault Bot',
@@ -195,7 +195,7 @@ UnitBlueprint {
         DragCoefficient = 0.2,
         MaxAcceleration = 0.4,
         MaxBrake = 0.8,
-        MaxSpeed = 3.8,
+        MaxSpeed = 2.4,
         MaxSpeedReverse = 0,
         MaxSteerForce = 3,
         MeshExtentsX = 1,
@@ -250,7 +250,7 @@ UnitBlueprint {
             FiringRandomness = 0.2,
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 30,
+            MaxRadius = 25,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
