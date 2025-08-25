@@ -272,9 +272,9 @@ UnitBlueprint {
         ProductionPerSecondMass = 12,
         StorageEnergy = 5000,
         StorageMass = 1000,
-        TeleportEnergyMod = 2.5,
-        TeleportMassMod = 0,
-        TeleportTimeMod = 0.0001,
+        TeleportEnergyMod = 0.463,
+        TeleportMassMod = 0.463,
+        TeleportTimeMod = 0.006,
     },
     Enhancements = {
         DamageStabilization = {

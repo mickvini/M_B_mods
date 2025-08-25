@@ -262,8 +262,8 @@ UnitBlueprint {
         StorageEnergy = 5000,
         StorageMass = 1000,
         TeleportEnergyMod = 4,
-        TeleportMassMod = 3,
-        TeleportTimeMod = 0.0001,
+        TeleportMassMod = 0.52,
+        TeleportTimeMod = 0.006,
     },
     Enhancements = {
         AdvancedCoolingUpgrade = {
