@@ -820,21 +820,21 @@ ERL0001 = Class(CWalkingLandUnit) {
 			if self.wcMasor01 then
 				self:SetWeaponEnabledByLabel('EXMLG01', true)
 				local wepGattling01 = self:GetWeaponByLabel('EXMLG01')
-				wepGattling01:ChangeMaxRadius(30)
+				wepGattling01:ChangeMaxRadius(35)
 			else
 				self:SetWeaponEnabledByLabel('EXMLG01', false)
 			end
 			if self.wcMasor02 then
 				self:SetWeaponEnabledByLabel('EXMLG02', true)
 				local wepGattling02 = self:GetWeaponByLabel('EXMLG02')
-				wepGattling02:ChangeMaxRadius(30)
+				wepGattling02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXMLG02', false)
 			end
 			if self.wcMasor03 then
 				self:SetWeaponEnabledByLabel('EXMLG03', true)
 				local wepGattling03 = self:GetWeaponByLabel('EXMLG03')
-				wepGattling03:ChangeMaxRadius(30)
+				wepGattling03:ChangeMaxRadius(45)
 			else
 				self:SetWeaponEnabledByLabel('EXMLG03', false)
 			end

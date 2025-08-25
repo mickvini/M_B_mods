@@ -605,8 +605,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 		--	Buff.RemoveBuff( self, 'EXRegenBoost' )
 		--end
 		
-		local EXBP = self:GetBlueprint()
-		self.regenammount = EXBP.Defense.RegenRate
+		local EXBP = self:GetBlueprint()		
 		if self.RBImpEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
 		end
