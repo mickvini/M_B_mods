@@ -151,7 +151,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 5,
             NoTeleDistance = 40,
-            MaxTeleRange = 120,
+            MaxTeleRange = 500,
     },
     Description = '<LOC uel0001_desc>Armored Command Unit',
     Display = {
