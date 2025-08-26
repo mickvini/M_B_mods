@@ -1250,7 +1250,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXAeonHealthBoost4')
 			self.wcChrono01 = true
 			self.wcChrono02 = false
-			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+			local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
@@ -1259,7 +1260,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+        	local bpEcon = self.GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if Buff.HasBuff( self, 'AEONACUT2BuildRate' ) then
                 Buff.RemoveBuff( self, 'AEONACUT2BuildRate' )
             end
@@ -1317,7 +1319,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXAeonHealthBoost5')  
 			self.wcChrono01 = false
 			self.wcChrono02 = true
-			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+			local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
@@ -1326,7 +1329,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXAssaultEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+        	local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'AEONACUT3BuildRate' ) then
@@ -1385,6 +1389,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost6')
+            local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
 			self.RBComEngineering = true
@@ -1392,7 +1397,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.RBApoEngineering = true
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXApocolypticEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+        	local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'AEONACUT4BuildRate' ) then

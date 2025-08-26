@@ -1236,7 +1236,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if Buff.HasBuff( self, 'UEFACUC2BuildRate' ) then
                 Buff.RemoveBuff( self, 'UEFACUC2BuildRate' )
             end
@@ -1252,8 +1253,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 					v:Destroy()
 				end
 				self.FlamerEffectsBag = {}
-			end
-            local bpEcon = self:GetBlueprint().Economy
+			end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcFlamer01 = false
@@ -1311,7 +1311,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXAssaultEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'UEFACUC3BuildRate' ) then
@@ -1330,8 +1331,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 					v:Destroy()
 				end
 				self.FlamerEffectsBag = {}
-			end
-            local bpEcon = self:GetBlueprint().Economy
+			end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcFlamer01 = false
@@ -1385,7 +1385,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.RBApoEngineering = true
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXApocolypticEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'UEFACUC4BuildRate' ) then
@@ -1401,8 +1402,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             if Buff.HasBuff( self, 'EXUEFHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost6' )
-            end
-            local bpEcon = self:GetBlueprint().Economy
+            end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
             self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			if self.FlamerEffectsBag then

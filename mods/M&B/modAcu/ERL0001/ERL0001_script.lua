@@ -1137,7 +1137,10 @@ ERL0001 = Class(CWalkingLandUnit) {
                         },
                     },
                 }
-            end
+            end            
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost4')
 			self.wcRocket01 = true
 			self.wcRocket02 = false
@@ -1148,7 +1151,9 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
+
             if Buff.HasBuff( self, 'CYBRANACUT2BuildRate' ) then
                 Buff.RemoveBuff( self, 'CYBRANACUT2BuildRate' )
             end
@@ -1159,6 +1164,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost4' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost4' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1201,6 +1208,9 @@ ERL0001 = Class(CWalkingLandUnit) {
                     },
                 }
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost5')
             self.wcRocket01 = false
 			self.wcRocket02 = true
@@ -1211,7 +1221,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXAssaultEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon =self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'CYBRANACUT3BuildRate' ) then
@@ -1225,6 +1236,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost5' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost5' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1267,13 +1280,17 @@ ERL0001 = Class(CWalkingLandUnit) {
                     },
                 }
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost6')
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXApocolypticEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'CYBRANACUT4BuildRate' ) then
@@ -1290,6 +1307,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost6' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)

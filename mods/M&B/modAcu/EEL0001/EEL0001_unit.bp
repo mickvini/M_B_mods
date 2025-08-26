@@ -1041,7 +1041,7 @@ UnitBlueprint {
             ShieldMaxHealth = 6000,
             ShieldRechargeTime = 150,
             ShieldRegenRate = 20,
-            ShieldRegenStartTime = 0,
+            ShieldRegenStartTime = 1,
             ShieldSize = 3,
             ShieldVerticalOffset = 0,
             ShowBones = {
@@ -1089,7 +1089,7 @@ UnitBlueprint {
             ShieldMaxHealth = 10000,
             ShieldRechargeTime = 150,
             ShieldRegenRate = 30,
-            ShieldRegenStartTime = 0,
+            ShieldRegenStartTime = 1,
             ShieldSize = 3,
             ShieldVerticalOffset = 0,
             ShowBones = {
@@ -1140,7 +1140,7 @@ UnitBlueprint {
             ShieldMaxHealth = 16000,
             ShieldRechargeTime = 150,
             ShieldRegenRate = 50,
-            ShieldRegenStartTime = 0,
+            ShieldRegenStartTime = 1,
             ShieldSize = 3,
             ShieldVerticalOffset = 0,
             ShowBones = {
@@ -1192,8 +1192,8 @@ UnitBlueprint {
             ShieldEnhancementNumber = 5,
             ShieldMaxHealth = 24000,
             ShieldRechargeTime = 150,
-            ShieldRegenRate = 400,
-            ShieldRegenStartTime = 0,
+            ShieldRegenRate = 80,
+            ShieldRegenStartTime = 1,
             ShieldSize = 16,
             ShieldVerticalOffset = -3,
             Slot = 'Back',

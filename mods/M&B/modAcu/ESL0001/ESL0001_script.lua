@@ -1090,7 +1090,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self.RBExpEngineering = true
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXExperimentalEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'SERAPHIMACUT4BuildRate' ) then
@@ -1110,6 +1111,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost3' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost3' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.RBImpEngineering = false
 			self.RBAdvEngineering = false
 			self.RBExpEngineering = false
@@ -1205,6 +1208,9 @@ ESL0001 = Class( SWalkingLandUnit ) {
                     },
                 }
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost4')
 			self.RBComEngineering = true
 			self.RBAssEngineering = false
@@ -1218,7 +1224,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		        self.ShieldEffectsBag = {}
 		    end
             KillThread(self.RegenThreadHandle)
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if Buff.HasBuff( self, 'SERAPHIMACUT2BuildRate' ) then
                 Buff.RemoveBuff( self, 'SERAPHIMACUT2BuildRate' )
             end
@@ -1229,6 +1236,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost4' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost4' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1331,6 +1340,9 @@ ESL0001 = Class( SWalkingLandUnit ) {
                     },
                 }
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost5')  
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1344,7 +1356,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		        self.ShieldEffectsBag = {}
 		    end
             KillThread(self.AdvancedRegenThreadHandle)
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'SERAPHIMACUT3BuildRate' ) then
@@ -1358,6 +1371,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost5' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost5' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1396,6 +1411,9 @@ ESL0001 = Class( SWalkingLandUnit ) {
                     },
                 }
             end
+            local bpEcon = self:GetBlueprint().Economy
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost6')
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1409,7 +1427,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		        self.ShieldEffectsBag = {}
 		    end
             KillThread(self.AdvancedRegenThreadHandle)
-            local bp = self:GetBlueprint().Economy.BuildRate
+            local bpEcon = self:GetBlueprint().Economy
+            local bp = bpEcon.BuildRate
             if not bp then return end
             self:RestoreBuildRestrictions()
             if Buff.HasBuff( self, 'SERAPHIMACUT4BuildRate' ) then
@@ -1426,6 +1445,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost6' )
             end
+            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
+            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
