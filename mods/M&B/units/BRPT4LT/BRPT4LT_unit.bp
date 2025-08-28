@@ -51,7 +51,7 @@ UnitBlueprint {
         'SERAPHIM',
         'MOBILE',
         'LAND',
-        'TECH3',
+        'EXPERIMENTAL',
         'DIRECTFIRE',
         'VISIBLETORECON',
         'RECLAIMABLE',
