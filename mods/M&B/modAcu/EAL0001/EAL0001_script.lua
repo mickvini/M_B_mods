@@ -688,9 +688,9 @@ EAL0001 = Class(AWalkingLandUnit) {
     DefaultGunBuffThread = function(self)
 		if not self.DefaultGunBuffApplied then
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:AddDamageMod(50)
-            wepDisruptor:ChangeMaxRadius(30)
-            wepDisruptor:ChangeDamageRadius(1)
+            wepDisruptor:ChangeRateOfFire(0.6)
+            wepDisruptor:ChangeMaxRadius(40)
+            wepDisruptor:AddDamageMod(74)
 			self.DefaultGunBuffApplied = true
 		end
 		if not self.wcBeam01 or not self.wcBeam02 or not self.wcBeam03 then
@@ -1441,7 +1441,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                     },
                 }
             end
-            Buff.ApplyBuff(self, 'EXAeonDisruptorrHealthBoost6')
+            Buff.ApplyBuff(self, 'EXAeonDisruptorrHealthBoost')
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXDisruptorrBoosterRemove' then

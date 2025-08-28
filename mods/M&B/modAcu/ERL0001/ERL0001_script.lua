@@ -606,6 +606,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 		if not self.DefaultGunBuffApplied then
             local wepRipper = self:GetWeaponByLabel('RightRipper')
 			wepRipper:ChangeRateOfFire(0.6)
+            wepRipper:ChangeMaxRadius(40)
+            wepRipper:AddDamageMod(64)
 			local wepOvercharge = self:GetWeaponByLabel('OverCharge')
             wepOvercharge:ChangeMaxRadius(30)
 			self:ShowBone('Right_Upgrade', true)
