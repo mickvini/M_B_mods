@@ -1563,7 +1563,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 50,
+            Damage = 64,
             DamageType = 'Normal',
             DisplayName = 'Molecular Ripper Cannon',
             FireTargetLayerCapsTable = {

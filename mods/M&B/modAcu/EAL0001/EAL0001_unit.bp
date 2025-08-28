@@ -1647,7 +1647,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 50,
+            Damage = 64,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Quantum Disruptor',
