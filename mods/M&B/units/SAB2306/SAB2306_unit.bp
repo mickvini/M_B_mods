@@ -137,7 +137,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 510,
         BuildTime = 1260,
-        MaintenanceConsumptionPerSecondEnergy = 160,
+        MaintenanceConsumptionPerSecondEnergy = 240,
         RebuildBonusIds = {
             'sab2306',
         },
@@ -307,7 +307,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,         HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,          HIGHALTAIR',
             WeaponCategory = 'Direct Fire',
             DoNotCollideList = {
                 'MISSILE',

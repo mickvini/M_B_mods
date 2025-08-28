@@ -148,11 +148,11 @@ UnitBlueprint {
         UniformScale = 0.05,
     },
     Economy = {
-        BuildCostEnergy = 2750,
-        BuildCostMass = 550,
-        BuildRate = 20,
-        BuildTime = 1100,
-        MaintenanceConsumptionPerSecondEnergy = 240,
+        BuildCostEnergy = 1,
+        BuildCostMass = 1640,
+        BuildRate = 45,
+        BuildTime = 1800,
+        MaintenanceConsumptionPerSecondEnergy = 480,
         MaxBuildDistance = 40,
         BuildableCategory = {
             'xeb0214',

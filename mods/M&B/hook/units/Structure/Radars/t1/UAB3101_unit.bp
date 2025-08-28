@@ -120,7 +120,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 240,
         BuildRate = 10,
-        BuildTime = 620,
+        BuildTime = 220,
         BuildableCategory = {
             'uab3201',
         },

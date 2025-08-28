@@ -140,13 +140,13 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 1640,
-        BuildRate = 45,
-        BuildTime = 1800,
+        BuildCostMass = 1760,
+        BuildRate = 50,
+        BuildTime = 2420,
         BuildableCategory = {
             'xrb0304',
         },
-        MaintenanceConsumptionPerSecondEnergy = 480,
+        MaintenanceConsumptionPerSecondEnergy = 500,
         MaxBuildDistance = 40,
         RebuildBonusIds = {
             'xrb0104',

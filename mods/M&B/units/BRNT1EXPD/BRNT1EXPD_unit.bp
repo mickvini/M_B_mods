@@ -94,7 +94,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 510,
         BuildTime = 1260,
-        MaintenanceConsumptionPerSecondEnergy = 160,
+        MaintenanceConsumptionPerSecondEnergy = 240,
         RebuildBonusIds = {
             'BRNT1EXPD',
         },

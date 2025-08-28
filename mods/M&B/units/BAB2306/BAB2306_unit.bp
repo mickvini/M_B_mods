@@ -92,7 +92,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 780,
         BuildTime = 1988,
-        MaintenanceConsumptionPerSecondEnergy = 180,
+        MaintenanceConsumptionPerSecondEnergy = 270,
         RebuildBonusIds = {
             'bab2306',
         },

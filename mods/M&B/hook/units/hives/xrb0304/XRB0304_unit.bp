@@ -139,10 +139,10 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 2600,
-        BuildRate = 60,
-        BuildTime = 2880,
-        MaintenanceConsumptionPerSecondEnergy = 960,
+        BuildCostMass = 2240,
+        BuildRate = 80,
+        BuildTime = 3440,
+        MaintenanceConsumptionPerSecondEnergy = 640,
         MaxBuildDistance = 40,
         RebuildBonusIds = {
             'xrb0104',

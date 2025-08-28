@@ -131,12 +131,12 @@ UnitBlueprint {
         UniformScale = 0.05,
     },
     Economy = {
-        BuildCostEnergy = 2500,
-        BuildCostMass = 500,
-        BuildRate = 20,
-        BuildTime = 2000,
+        BuildCostEnergy = 1,
+        BuildCostMass = 1920,
+        BuildRate = 60,
+        BuildTime = 2880,
         MaxBuildDistance = 40,
-        MaintenanceConsumptionPerSecondEnergy = 480,
+        MaintenanceConsumptionPerSecondEnergy = 540,
         RebuildBonusIds = {
             'xeb0114',
         },

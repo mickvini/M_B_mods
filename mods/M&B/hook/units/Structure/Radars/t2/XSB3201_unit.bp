@@ -154,7 +154,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 680,
         BuildRate = 15,
-        BuildTime = 1740,
+        BuildTime = 580,
         BuildableCategory = {
             'xsb3104',
         },
