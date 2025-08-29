@@ -192,9 +192,9 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 1,
+            Damage = 2,
             DamageFriendly = false,
-            DamageRadius = 1.8,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -206,8 +206,8 @@ UnitBlueprint {
             Label = 'gatling1',
             MaxRadius = 72,
             MuzzleSalvoDelay = 0.1,
-            MuzzleSalvoSize = 50,
-            MuzzleVelocity = 50,
+            MuzzleSalvoSize = 25,
+            MuzzleVelocity = 25,
             ProjectileId = '/projectiles/TDPhalanx01/TDPhalanx01_proj.bp',
             ProjectilesPerOnFire = 1,
             RackBones = {

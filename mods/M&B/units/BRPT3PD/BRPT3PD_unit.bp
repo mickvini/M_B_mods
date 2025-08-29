@@ -48,12 +48,12 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 2740,
-        MaxHealth = 2740,
+        Health = 6048,
+        MaxHealth = 6048,
         RegenRate = 4,
         SurfaceThreatLevel = 99.9,
     },
-    Description = '<LOC BRPT3PD_desc>Легкое орудие T3',
+    Description = '<LOC BRPT3PD_desc>Тяжелое орудие T3',
     Display = {
 		Abilities = {
 			'Volatile',
@@ -77,9 +77,9 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 360,
-        BuildTime = 900,
-        MaintenanceConsumptionPerSecondEnergy = 135,
+        BuildCostMass = 780,
+        BuildTime = 1988,
+        MaintenanceConsumptionPerSecondEnergy = 270,
         RebuildBonusIds = {
             'BRPT3PD',
         },
@@ -100,7 +100,7 @@ UnitBlueprint {
         UnitName = '<LOC brpt3pd_name>Athaamla',
     },
     Intel = {
-        VisionRadius = 58,
+        VisionRadius = 60,
     },
     Interface = {
         HelpText = 'Heavy Point Defense',
@@ -157,9 +157,9 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 62,
+            Damage = 360,
             DamageFriendly = false,
-            DamageRadius = 1.8,
+            DamageRadius = 2.5,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -169,7 +169,7 @@ UnitBlueprint {
             FiringRandomness = 0.7,
             FiringTolerance = 1,
             Label = 'MainGun',
-            MaxRadius = 66,
+            MaxRadius = 70,
             MinRadius = 6,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
@@ -189,7 +189,7 @@ UnitBlueprint {
             TurretBoneMuzzle = 'muzzle',
             RackRecoilDistance = -2,
             RackReloadTimeout = 10,
-            RateOfFire = 1.4,
+            RateOfFire = 0.3,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 1,
             TargetCheckInterval = 0.66,

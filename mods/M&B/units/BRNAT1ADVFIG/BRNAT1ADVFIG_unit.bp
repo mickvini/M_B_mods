@@ -268,7 +268,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 120,
+            Damage = 30,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -352,7 +352,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',
