@@ -51,10 +51,10 @@ local OldModBlueprints = ModBlueprints
 
 function ModBlueprints(all_blueprints)
     OldModBlueprints(all_blueprints)
-    local damageMod = 1.2
-    for _, bp in all_blueprints.Unit do
-        ChangeWeaponDamage(bp, damageMod)
-    end
+    -- local damageMod = 1.0
+    -- for _, bp in all_blueprints.Unit do
+    --     ChangeWeaponDamage(bp, damageMod)
+    -- end
     RNDPrepareScript(all_blueprints.Unit)
     -- RNDPrepareScriptFORTECH4(all_blueprints.Unit)
     -- RestrictExistingBlueprints(all_blueprints.Unit)
