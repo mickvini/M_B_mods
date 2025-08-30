@@ -195,7 +195,7 @@ UnitBlueprint {
             BeamCollisionDelay = 0.1,
             BeamLifetime = 1,
             CollideFriendly = false,
-            Damage = 22,
+            Damage = 35,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Ultrachromatic Beam Generator',

@@ -212,7 +212,7 @@ UnitBlueprint {
             BeamLifetime = 2,
             CollideFriendly = false,
             ContinuousBeam = false,
-            Damage = 23,
+            Damage = 28,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Microwave Stun Beam',

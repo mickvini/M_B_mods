@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 2,0',
-        Health = 700,
-        MaxHealth = 700,
+        Health = 580,
+        MaxHealth = 580,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 35,

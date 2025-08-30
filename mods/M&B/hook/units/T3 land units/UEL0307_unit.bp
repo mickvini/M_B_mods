@@ -64,14 +64,14 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 216,
-        MaxHealth = 216,
+        Health = 240,
+        MaxHealth = 240,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 10,
-            ShieldMaxHealth = 2100,
+            ShieldMaxHealth = 3400,
             ShieldRechargeTime = 60,
             ShieldRegenRate = 20,
             ShieldRegenStartTime = 1,

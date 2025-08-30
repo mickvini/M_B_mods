@@ -55,14 +55,14 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 566.2,
-        MaxHealth = 566.2,
+        Health = 650,
+        MaxHealth = 650,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 15,
-            ShieldMaxHealth = 5500,
+            ShieldMaxHealth = 8800,
             ShieldRechargeTime = 80,
             ShieldRegenRate = 58,
             ShieldRegenStartTime = 1,

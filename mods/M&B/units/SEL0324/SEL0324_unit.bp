@@ -197,7 +197,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 76,
-            DamageRadius = 0,
+            DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Flayer SAM Launcher',
             FireTargetLayerCapsTable = {

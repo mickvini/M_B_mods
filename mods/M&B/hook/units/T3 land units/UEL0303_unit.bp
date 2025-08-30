@@ -64,8 +64,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 4,0',
-        Health = 506.6,
-        MaxHealth = 506.6,
+        Health = 490,
+        MaxHealth = 490,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',

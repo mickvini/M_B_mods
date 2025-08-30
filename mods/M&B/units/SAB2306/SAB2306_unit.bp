@@ -254,7 +254,7 @@ UnitBlueprint {
             BeamLifetime = 1,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 9,
+            Damage = 14,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',
@@ -307,7 +307,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,          HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,           HIGHALTAIR',
             WeaponCategory = 'Direct Fire',
             DoNotCollideList = {
                 'MISSILE',

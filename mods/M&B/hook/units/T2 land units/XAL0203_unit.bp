@@ -55,8 +55,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Hover 3,7',
-        Health = 576,
-        MaxHealth = 576,
+        Health = 360,
+        MaxHealth = 360,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 3,

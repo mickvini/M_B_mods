@@ -217,7 +217,7 @@ UnitBlueprint {
             CameraShakeMin = 0.75,
             CameraShakeRadius = 10,
             CollideFriendly = false,
-            Damage = 360,
+            Damage = 576,
             DamageFriendly = true,
             DamageRadius = 3,
             DamageType = 'Normal',
