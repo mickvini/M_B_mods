@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 1320,
-        MaxHealth = 1320,
+        Health = 2402.4,
+        MaxHealth = 2402.4,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
@@ -308,7 +308,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 180,
+            Damage = 324,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Thau Cannon',
@@ -383,7 +383,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20,
+            Damage = 36,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -454,7 +454,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20,
+            Damage = 36,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -524,7 +524,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 0.5,
+            Damage = 0.9,
             DamageType = 'Normal',
             DisplayName = 'Ele-athrun Tactical Missile Defense',
             FireTargetLayerCapsTable = {
@@ -588,7 +588,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 0.5,
+            Damage = 0.9,
             DamageType = 'Normal',
             DisplayName = 'Ele-athrun Tactical Missile Defense',
             FireTargetLayerCapsTable = {

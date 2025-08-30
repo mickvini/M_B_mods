@@ -52,7 +52,6 @@ UnitBlueprint {
         },
     },
     Categories = {
-        --'AEON',
         'ANTIAIR',
         'ANTIMISSILE',
         'BOT',

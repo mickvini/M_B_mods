@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Land 2,7',
-        Health = 340,
-        MaxHealth = 340,
+        Health = 408,
+        MaxHealth = 408,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 3,
@@ -62,7 +62,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC UEL0202_desc>Легкий танк T2',
-    Display = {        		
+    Display = {
         Mesh = {
             IconFadeInZoom = 130,
             LODs = {
@@ -212,7 +212,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 11,
+            Damage = 13.42,
             DamageRadius = 0.25,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

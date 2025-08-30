@@ -52,8 +52,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 340,
-        MaxHealth = 340,
+        Health = 506.6,
+        MaxHealth = 506.6,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
             RegenAssistMult = 60,

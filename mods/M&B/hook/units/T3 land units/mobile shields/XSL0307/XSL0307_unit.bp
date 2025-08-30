@@ -55,8 +55,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 380,
-        MaxHealth = 380,
+        Health = 566.2,
+        MaxHealth = 566.2,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',

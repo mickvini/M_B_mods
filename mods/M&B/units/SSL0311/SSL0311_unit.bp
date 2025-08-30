@@ -50,8 +50,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 720,
-        MaxHealth = 720,
+        Health = 1072.8,
+        MaxHealth = 1072.8,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
             OwnerShieldMesh = '/mods/M&B/units/ssl0311/ssl0311_PersonalShield_mesh',
@@ -237,7 +237,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 23.5,
+            Damage = 35.015,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',

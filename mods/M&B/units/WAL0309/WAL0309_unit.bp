@@ -65,8 +65,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 760,
-        MaxHealth = 760,
+        Health = 1383.2,
+        MaxHealth = 1383.2,
         RegenRate = 3,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -255,7 +255,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 11.6,
+            Damage = 20.88,
             DamageType = 'Normal',
             DisplayName = 'Reacton Cannon',
             FireTargetLayerCapsTable = {
@@ -334,7 +334,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 25,
+            Damage = 45,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

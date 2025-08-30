@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 760,
-        MaxHealth = 760,
+        Health = 1383.2,
+        MaxHealth = 1383.2,
         RegenRate = 10,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
@@ -256,7 +256,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 14,
+            Damage = 25.2,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',

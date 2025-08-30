@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 620,
-        MaxHealth = 620,
+        Health = 1128.4,
+        MaxHealth = 1128.4,
         RegenRate = 4,
         Shield = {
             ImpactEffects = 'CybranShieldHit01',
@@ -235,7 +235,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 15,
+            Damage = 27,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -311,7 +311,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 8,
+            Damage = 14.4,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -387,7 +387,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 8,
+            Damage = 14.4,
             DamageType = 'Normal',
             DisplayName = 'Disintegrator Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -458,7 +458,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 1.5,
+            Damage = 2.7,
             DamageType = 'Normal',
             DisplayName = 'Heavy Electron Bolter',
             FireTargetLayerCapsTable = {
@@ -529,7 +529,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 1.5,
+            Damage = 2.7,
             DamageType = 'Normal',
             DisplayName = 'Heavy Electron Bolter',
             FireTargetLayerCapsTable = {

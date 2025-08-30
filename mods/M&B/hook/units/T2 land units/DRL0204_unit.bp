@@ -54,8 +54,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Quad 3,6',
-        Health = 180,
-        MaxHealth = 180,
+        Health = 216,
+        MaxHealth = 216,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 4.5,
@@ -63,7 +63,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC DRL0204_desc>Мобильная ракетная арта T2',
-    Display = {        
+    Display = {
         AnimationDeath = {
             {
                 Animation = '/units/drl0204/drl0204_adeath.sca',
@@ -227,7 +227,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 31,
+            Damage = 37.82,
             DamageFriendly = true,
             DamageRadius = 1.5,
             DamageType = 'Normal',
@@ -282,7 +282,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,           UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,            UNTARGETABLE',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             LeadTarget = true,

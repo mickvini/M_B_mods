@@ -82,8 +82,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 540,
-        MaxHealth = 540,
+        Health = 804.6,
+        MaxHealth = 804.6,
         RegenRate = 10,
         Shield = {
             ImpactEffects = 'AeonShieldHit01',
@@ -285,7 +285,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 7.2,
+            Damage = 10.728,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
@@ -360,7 +360,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 2,
+            Damage = 2.98,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

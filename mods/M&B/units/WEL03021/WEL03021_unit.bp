@@ -63,8 +63,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 760,
-        MaxHealth = 760,
+        Health = 1383.2,
+        MaxHealth = 1383.2,
         RegenRate = 3,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',
@@ -350,7 +350,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 10,
+            Damage = 18,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -433,7 +433,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 10,
+            Damage = 18,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Flayer SAM Launcher',
@@ -517,7 +517,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 12.5,
+            Damage = 22.5,
             DamageType = 'Normal',
             DisplayName = 'Linked Railgun',
             FireTargetLayerCapsTable = {

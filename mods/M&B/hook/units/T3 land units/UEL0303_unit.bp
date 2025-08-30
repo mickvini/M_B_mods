@@ -64,8 +64,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 4,0',
-        Health = 340,
-        MaxHealth = 340,
+        Health = 506.6,
+        MaxHealth = 506.6,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',
@@ -258,7 +258,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 30,
+            Damage = 44.7,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Heavy Plasma Cannon',

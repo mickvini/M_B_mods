@@ -65,7 +65,6 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'BUILTBYTIER3FACTORY',
-        --'AEON',
         'MOBILE',
         'LAND',
         'EXPERIMENTAL',
@@ -217,7 +216,7 @@ UnitBlueprint {
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
-                    HideMuzzle = true,
+                    HideMuzzle = 'true',
                     MuzzleBones = {
                         'Missile',
                     },

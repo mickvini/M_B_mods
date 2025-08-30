@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 340,
-        MaxHealth = 340,
+        Health = 506.6,
+        MaxHealth = 506.6,
         RegenRate = 0,
         SurfaceThreatLevel = 27,
     },
@@ -208,7 +208,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 7,
+            Damage = 10.43,
             DamageType = 'Normal',
             DisplayName = 'Light Pulse Laser',
             FireTargetLayerCapsTable = {
@@ -280,7 +280,7 @@ UnitBlueprint {
             WeaponRepackTimeout = 15,
         },
         {
-            Damage = 375,
+            Damage = 558.75,
             DamageFriendly = true,
             DamageRadius = 2.5,
             DamageType = 'Normal',

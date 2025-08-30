@@ -45,8 +45,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 340,
-        MaxHealth = 340,
+        Health = 506.6,
+        MaxHealth = 506.6,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'CybranShieldHit01',

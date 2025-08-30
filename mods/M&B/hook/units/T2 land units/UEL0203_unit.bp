@@ -75,8 +75,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Hover 3,7',
-        Health = 432,
-        MaxHealth = 432,
+        Health = 643.68,
+        MaxHealth = 643.68,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 4.5,
@@ -313,7 +313,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 3.4,
+            Damage = 5.066,
             DamageType = 'Normal',
             DisplayName = 'Hells Fury Riot Gun',
             FireTargetLayerCapsTable = {
