@@ -360,7 +360,7 @@ UnitBlueprint {
 			Prerequisite = 'EXImprovedEngineering',
             NewBuildRate = 42,
             NewHealth = 2500,
-            ProductionPerSecondEnergy = 15000,
+            ProductionPerSecondEnergy = 1500,
             ProductionPerSecondMass = 10,
             ShowBones = {
                 'Engineering',
