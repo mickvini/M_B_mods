@@ -19,7 +19,7 @@ local WeaponsFileAutoAttack = import('/lua/terranweapons.lua')
 local AutoAttackWeapon = WeaponsFileAutoAttack.TDFLandGaussCannonWeapon
 local CDFHeavyMicrowaveLaserGeneratorCom = CWeapons.CDFHeavyMicrowaveLaserGeneratorCom
 
-BRMT2ABTT3 = Class(TLandUnit) {
+BRMT2ABL4 = Class(TLandUnit) {
 
     Weapons = {
         autoattack = Class(TDFGaussCannonWeapon) {
@@ -44,4 +44,4 @@ OnStopBeingBuilt = function(self,builder,layer)
 }
 
 
-TypeClass = BRMT2ABTT3
+TypeClass = BRMT2ABL4

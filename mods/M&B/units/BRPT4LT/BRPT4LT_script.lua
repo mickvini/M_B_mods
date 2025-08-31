@@ -17,7 +17,7 @@ local EffectTemplate = import('/lua/EffectTemplates.lua')
 local ModEffectTemplate = import('/mods/M&B/lua/EffectTemplates.lua')
 local EffectUtils = import('/lua/effectutilities.lua')
 
-BRPT3BT = Class(SLandUnit) {
+BRPT4LT = Class(SLandUnit) {
     Weapons = {
         TauCannon01 = Class(SDFOhCannon){
 			FxMuzzleFlashScale = 1.5,
@@ -57,8 +57,8 @@ OnKilled = function(self,builder,layer)
 CreatTheEffectsDeath = function(self)
 	local army =  self:GetArmy()
 	for k, v in EffectTemplate['SDFExperimentalPhasonProjHit01'] do
-		CreateAttachedEmitter(self, 'BRPT3BT', army, v):ScaleEmitter(0.7)
+		CreateAttachedEmitter(self, 'BRPT4LT', army, v):ScaleEmitter(0.7)
 	end
 end,
 }
-TypeClass = BRPT3BT
+TypeClass = BRPT4LT
