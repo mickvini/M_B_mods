@@ -321,7 +321,7 @@ UnitBlueprint {
             Icon = 'exles1',
             Name = '<LOC enhancements_0559>Tech 2 Improved Engineering (T1)',
             NewBuildRate = 32,
-            NewHealth = 1000,
+            NewHealth = 2000,
             ProductionPerSecondEnergy = 900,
             ProductionPerSecondMass = 6,
             ShowBones = {
@@ -362,7 +362,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0561>Tech 3 Advanced Engineering (T2)',
 			Prerequisite = 'EXImprovedEngineering',
             NewBuildRate = 42,
-            NewHealth = 1500,
+            NewHealth = 2500,
             ProductionPerSecondEnergy = 1500,
             ProductionPerSecondMass = 10,
             ShowBones = {
@@ -404,7 +404,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0563>Tech 4 Experimental Engineering (T3)',
 			Prerequisite = 'EXAdvancedEngineering',
             NewBuildRate = 52,
-            NewHealth = 2000,
+            NewHealth = 3000,
             ProductionPerSecondEnergy = 2800,
             ProductionPerSecondMass = 16,
             ShowBones = {
@@ -446,7 +446,7 @@ UnitBlueprint {
             Icon = 'exlce1',
             Name = '<LOC enhancements_0565>Tech 2 Combat Engineering (T1)',
             NewBuildRate = 17,
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ProductionPerSecondEnergy = 500,
             ProductionPerSecondMass = 4,
             ShowBones = {
@@ -489,7 +489,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0567>Tech 3 Assault Engineering (T2)',
 			Prerequisite = 'EXCombatEngineering',
             NewBuildRate = 27,
-            NewHealth = 3000,
+            NewHealth = 4000,
 			ProductionPerSecondEnergy = 1000,
             ProductionPerSecondMass = 6,
             ShowBones = {
@@ -533,7 +533,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0569>Tech 4 Apocolyptic Engineering (T3)',
 			Prerequisite = 'EXAssaultEngineering',
             NewBuildRate = 32,
-            NewHealth = 5000,
+            NewHealth = 6000,
 			ProductionPerSecondEnergy = 2000,
             ProductionPerSecondMass = 10,
             ShowBones = {
@@ -577,6 +577,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0557>Jury Rigged Ripper (T1)',
 			ZephyrDamageMod = 64,
 			ZephyrRangeMod = 40,
+			NewHealth = 3000,
             Slot = 'RCH',
             UpgradeEffectBones = {
                 'Right_Turret',
@@ -608,7 +609,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exrtorp1',
             Name = '<LOC enhancements_0571>Torpedo Launcher (T2)',
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ZephyrDamageMod = 600,
 			ZephyrRangeMod = 30,
             ShowBones = {
@@ -649,7 +650,7 @@ UnitBlueprint {
             Icon = 'exrtorp2',
             Name = '<LOC enhancements_0573>Improved Reloader (T3)',
 			Prerequisite = 'EXTorpedoLauncher',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			ZephyrDamageMod = 900,
 			ZephyrRangeMod = 40,
             ShowBones = {
@@ -691,7 +692,7 @@ UnitBlueprint {
             Icon = 'exrtorp3',
             Name = '<LOC enhancements_0575>Advanced Warheads (T4)',
 			Prerequisite = 'EXTorpedoRapidLoader',
-            NewHealth = 6000,
+            NewHealth = 7000,
 			ZephyrDamageMod = 1800,
 			ZephyrRangeMod = 60,
             ShowBones = {
@@ -733,7 +734,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exramc1',
             Name = '<LOC enhancements_0577>EMP Array (T2)',
-			NewHealth = 4000,
+			NewHealth = 5000,
 			ZephyrDamageMod = 230,
 			ZephyrRangeMod = 45,
             ShowBones = {
@@ -776,7 +777,7 @@ UnitBlueprint {
             Icon = 'exramc2',
             Name = '<LOC enhancements_0579>Adjusted Crystal Matrix (T3)',
 			Prerequisite = 'EXEMPArray',
-            NewHealth = 6000,
+            NewHealth = 7000,
 			ZephyrDamageMod = 280,
 			ZephyrRangeMod = 50,
             ShowBones = {
@@ -823,7 +824,7 @@ UnitBlueprint {
             Icon = 'exramc3',
             Name = '<LOC enhancements_0581>Enhanced Laser Emitters (T4)',
 			Prerequisite = 'EXImprovedCapacitors',
-            NewHealth = 8000,
+            NewHealth = 9000,
 			ZephyrDamageMod = 340,
 			ZephyrRangeMod = 60,
             ShowBones = {
@@ -873,7 +874,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0583>Heavy Microwave Laser (T2)',
 			ZephyrDamageMod = 350,
 			ZephyrRangeMod = 35,
-            NewHealth = 1000,
+            NewHealth = 2000,
             ShowBones = {
                 'Chest_Open',
             },
@@ -918,7 +919,7 @@ UnitBlueprint {
             Icon = 'exrgec2',
             Name = '<LOC enhancements_0585>Alternating Laser Assembly (T3)',
 			Prerequisite = 'EXMasor',
-            NewHealth = 1500,
+            NewHealth = 2500,
 			ZephyrDamageMod = 540,
 			ZephyrRangeMod = 40,
             ShowBones = {
@@ -966,7 +967,7 @@ UnitBlueprint {
             Icon = 'exrgec3',
             Name = '<LOC enhancements_0587>Superconductive Power Conduits (T4)',
 			Prerequisite = 'EXImprovedCoolingSystem',
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ZephyrDamageMod = 890,
 			ZephyrRangeMod = 45,
             ShowBones = {
@@ -1014,7 +1015,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exbsh1',
             Name = '<LOC enhancements_0589>Armor Plating (T2)',
-			NewHealth = 2000,
+			NewHealth = 3000,
             ShowBones = {
                 'Back_CombatPack',
                 'Combat_B02_LLeg',
@@ -1064,7 +1065,7 @@ UnitBlueprint {
             Icon = 'exbsh2',
             Name = '<LOC enhancements_0591>Structural Integrity Fields (T3)',
 			Prerequisite = 'EXArmorPlating',
-			NewHealth = 3000,
+			NewHealth = 4000,
             ShowBones = {
                 'Back_CombatPack',
                 'Combat_B02_LLeg',
@@ -1117,7 +1118,7 @@ UnitBlueprint {
             Icon = 'exbsh3',
             Name = '<LOC enhancements_0593>Composite Materials (T4)',
 			Prerequisite = 'EXStructuralIntegrity',
-			NewHealth = 4000,
+			NewHealth = 5000,
             ShowBones = {
                 'Back_CombatPack',
                 'Combat_B02_LLeg',
@@ -1170,7 +1171,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exbint1',
             Name = '<LOC enhancements_0595>Electronic Enhancment (T2)',
-            NewHealth = 1000,
+            NewHealth = 2000,
 			MaintenanceConsumptionPerSecondEnergy = 140,
 			NewVisionRadius = 85,
 			NewOmniRadius = 45,
@@ -1209,7 +1210,7 @@ UnitBlueprint {
             Icon = 'exbint2',
             Name = '<LOC enhancements_0597>Electronic Countermeasures (T3)',
 			Prerequisite = 'EXElectronicsEnhancment',
-            NewHealth = 3500,
+            NewHealth = 4500,
 			MaintenanceConsumptionPerSecondEnergy = 280,
 			NewVisionRadius = 120,
 			NewOmniRadius = 80,
@@ -1249,7 +1250,7 @@ UnitBlueprint {
             Icon = 'exbint3',
             Name = '<LOC enhancements_0599>Cloaking Subsystems (T4)',
 			Prerequisite = 'EXElectronicCountermeasures',
-            NewHealth = 2000,
+            NewHealth = 3000,
 			NewVisionRadius = 140,
 			NewOmniRadius = 40,
 			MaintenanceConsumptionPerSecondEnergy = 2400,
@@ -1289,7 +1290,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exbbat1',
             Name = '<LOC enhancements_0601>Actuator Replacment (T2)',
-            NewHealth = 4000,
+            NewHealth = 5000,
             ShowBones = {
                 'Back_MobilityPack',
                 'Mobility_LLeg_B01',
@@ -1337,7 +1338,7 @@ UnitBlueprint {
             Icon = 'exbbat2',
             Name = '<LOC enhancements_0603>Anti-Air Subsystem (T3)',
 			Prerequisite = 'EXMobilitySubsystems',
-            NewHealth = 8000,
+            NewHealth = 9000,
 			MaintenanceConsumptionPerSecondEnergy = 6000,
             ShowBones = {
                 'Back_MobilityPack',
@@ -1392,7 +1393,7 @@ UnitBlueprint {
             Icon = 'exbbat3',
             Name = '<LOC enhancements_0605>Nano Regeneration Subsystem (T4)',
 			Prerequisite = 'EXDefensiveSubsystems',
-            NewHealth = 6000,
+            NewHealth = 7000,
             ShowBones = {
                 'Back_MobilityPack',
                 'Back_AA_B02L',

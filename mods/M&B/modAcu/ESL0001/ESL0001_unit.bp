@@ -315,7 +315,7 @@ UnitBlueprint {
             Icon = 'exles1',
             Name = '<LOC enhancements_0661>Tech 2 Improved Engineering (T1)',
             NewBuildRate = 32,
-            NewHealth = 1000,
+            NewHealth = 2000,
             ProductionPerSecondEnergy = 900,
             ProductionPerSecondMass = 6,
             ShowBones = {
@@ -356,7 +356,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0663>Tech 3 Advanced Engineering (T2)',
 			Prerequisite = 'EXImprovedEngineering',
             NewBuildRate = 42,
-            NewHealth = 1500,
+            NewHealth = 2500,
             ProductionPerSecondEnergy = 1500,
             ProductionPerSecondMass = 10,
             ShowBones = {
@@ -398,7 +398,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0665>Tech 4 Experimental Engineering (T3)',
 			Prerequisite = 'EXAdvancedEngineering',
             NewBuildRate = 52,
-            NewHealth = 2000,
+            NewHealth = 3000,
             ProductionPerSecondEnergy = 2800,
             ProductionPerSecondMass = 16,
             ShowBones = {
@@ -440,7 +440,7 @@ UnitBlueprint {
             Icon = 'exlce1',
             Name = '<LOC enhancements_0667>Tech 2 Combat Engineering (T1)',
             NewBuildRate = 17,
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ProductionPerSecondEnergy = 500,
             ProductionPerSecondMass = 3,
             Radius = 17,
@@ -489,7 +489,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0669>Tech 3 Assault Engineering (T2)',
 			Prerequisite = 'EXCombatEngineering',
             NewBuildRate = 27,
-            NewHealth = 3000,
+            NewHealth = 4000,
 			ProductionPerSecondEnergy = 1000,
             ProductionPerSecondMass = 5,
             Radius = 20,
@@ -540,7 +540,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0671>Tech 4 Apocolyptic Engineering (T3)',
 			Prerequisite = 'EXAssaultEngineering',
             NewBuildRate = 32,
-            NewHealth = 5000,
+            NewHealth = 6000,
 			ProductionPerSecondEnergy = 2000,
             ProductionPerSecondMass = 9,
             ShowBones = {
@@ -584,6 +584,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0659>Jury Rigged Chronoton (T1)',
 			ZephyrDamageMod = 64,
 			ZephyrRangeMod = 40,
+			NewHealth = 3000,
             Slot = 'RCH',
             UpgradeEffectBones = {
                 'Right_Arm_B02',
@@ -604,6 +605,7 @@ UnitBlueprint {
             Prerequisite = 'EXChronotonBooster',
 			ZephyrDamageMod = 64,
 			ZephyrRangeMod = 40,
+			NewHealth = 3000,
             RemoveEnhancements = {
                 'EXChronotonBooster',
                 'EXChronotonBoosterRemove',
@@ -657,7 +659,7 @@ UnitBlueprint {
             Icon = 'exrtorp2',
             Name = '<LOC enhancements_0675>Improved Reloader (T3)',
 			Prerequisite = 'EXTorpedoLauncher',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			ZephyrDamageMod = 900,
 			ZephyrRangeMod = 40,
             ShowBones = {
@@ -699,7 +701,7 @@ UnitBlueprint {
             Icon = 'exrtorp3',
             Name = '<LOC enhancements_0677>Advanced Warheads (T4)',
 			Prerequisite = 'EXTorpedoRapidLoader',
-            NewHealth = 5000,
+            NewHealth = 6000,
 			ZephyrDamageMod = 1800,
 			ZephyrRangeMod = 60,
             ShowBones = {
@@ -741,7 +743,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exramc1',
             Name = '<LOC enhancements_0679>Quantum Storm Cannon (T2)',
-			NewHealth = 2000,
+			NewHealth = 3000,
 			ZephyrDamageMod = 270,
 			ZephyrRangeMod = 45,
             ShowBones = {
@@ -788,7 +790,7 @@ UnitBlueprint {
             Icon = 'exramc2',
             Name = '<LOC enhancements_0681>Power Conversion Enhancer (T3)',
 			Prerequisite = 'EXCannonBigBall',
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ZephyrDamageMod = 370,
 			ZephyrRangeMod = 50,
             ShowBones = {
@@ -836,7 +838,7 @@ UnitBlueprint {
             Icon = 'exramc3',
             Name = '<LOC enhancements_0683>Advanced Distortion Algorithms (T4)',
 			Prerequisite = 'EXImprovedContainmentBottle',
-            NewHealth = 2000,
+            NewHealth = 3000,
 			ZephyrDamageMod = 530,
 			ZephyrRangeMod = 60,
             ShowBones = {
@@ -886,7 +888,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0685>Plasma Gatling Cannon (T2)',
 			ZephyrDamageMod = 120,
 			ZephyrRangeMod = 40,
-            NewHealth = 2000,
+            NewHealth = 3000,
             ShowBones = {
                 'Rapid_Cannon',
             },
@@ -925,7 +927,7 @@ UnitBlueprint {
             Icon = 'exrgec2',
             Name = '<LOC enhancements_0687>Phased Energy Fields (T3)',
 			Prerequisite = 'EXCannonRapid',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			ZephyrDamageMod = 260,
 			ZephyrRangeMod = 50,
             ShowBones = {
@@ -967,7 +969,7 @@ UnitBlueprint {
             Icon = 'exrgec3',
             Name = '<LOC enhancements_0689>Secondary Power Feeds (T4)',
 			Prerequisite = 'EXImprovedCoolingSystem',
-            NewHealth = 5000,
+            NewHealth = 6000,
 			ZephyrDamageMod = 320,
 			ZephyrRangeMod = 60,
             ShowBones = {
@@ -1010,7 +1012,7 @@ UnitBlueprint {
             Icon = 'exbsh1',
             Name = '<LOC enhancements_0691>Lambda Field Emitters (T2)',
 			MaintenanceConsumptionPerSecondEnergy = 180,
-			NewHealth = 2000,
+			NewHealth = 3000,
             ShowBones = {
                 'L_Spinner_B01',
                 'S_Spinner_B01',
@@ -1059,7 +1061,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0693>Enhanced Lambda Emitters (T3)',
 			Prerequisite = 'EXL1Lambda',
 			MaintenanceConsumptionPerSecondEnergy = 280,
-			NewHealth = 3000,
+			NewHealth = 4000,
             ShowBones = {
                 'L_Spinner_B01',
                 'S_Spinner_B01',
@@ -1109,7 +1111,7 @@ UnitBlueprint {
             Name = '<LOC enhancements_0695>Controlled Quantum Ruptures (T4)',
 			Prerequisite = 'EXL2Lambda',
 			MaintenanceConsumptionPerSecondEnergy = 360,
-			NewHealth = 5000,
+			NewHealth = 6000,
             ShowBones = {
                 'L_Spinner_B01',
                 'S_Spinner_B01',
@@ -1157,7 +1159,7 @@ UnitBlueprint {
             Icon = 'exbint1',
             Name = '<LOC enhancements_0697>Electronic Enhancment (T2)',
 			MaintenanceConsumptionPerSecondEnergy = 140,
-            NewHealth = 1000,
+            NewHealth = 2000,
 			NewVisionRadius = 85,
 			NewOmniRadius = 45,
             ShowBones = {
@@ -1209,7 +1211,7 @@ UnitBlueprint {
             Icon = 'exbint2',
             Name = '<LOC enhancements_0699>Teleporter Subsystems (T3)',
 			Prerequisite = 'EXElectronicsEnhancment',
-            NewHealth = 8000,
+            NewHealth = 9000,
 			MaintenanceConsumptionPerSecondEnergy = 6000,
             ShowBones = {
                 'IntelPack',
@@ -1265,7 +1267,7 @@ UnitBlueprint {
             Icon = 'exbint3',
             Name = '<LOC enhancements_0701>Phasic Cloaking (T4)',
 			Prerequisite = 'EXElectronicCountermeasures',
-            NewHealth = 3500,
+            NewHealth = 4500,
 			MaintenanceConsumptionPerSecondEnergy = 280,
 			NewVisionRadius = 120,
 			NewOmniRadius = 80,
@@ -1321,7 +1323,7 @@ UnitBlueprint {
             BuildTime = 3000,
             Icon = 'exbbat1',
             Name = '<LOC enhancements_0703>Improved Combat Systems (T2)',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			OverchargeDamageMod = 3600,
 			OverchargeDamageMod2 = 6400,
 			OverchargeDamageMod3 = 12000,
@@ -1379,7 +1381,7 @@ UnitBlueprint {
             Icon = 'exbbat2',
             Name = '<LOC enhancements_0705>Tactical Missile System (T3)',
 			Prerequisite = 'EXBasicDefence',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			OverchargeDamageMod = 3600,
 			OverchargeDamageMod2 = 6400,
 			OverchargeDamageMod3 = 12000,
@@ -1436,7 +1438,7 @@ UnitBlueprint {
             Icon = 'exbbat3',
             Name = '<LOC enhancements_0707>Overcharge Amplifier (T4)',
 			Prerequisite = 'EXTacticalMisslePack',
-            NewHealth = 4000,
+            NewHealth = 5000,
 			OverchargeDamageMod = 3600,
 			OverchargeDamageMod2 = 6400,
 			OverchargeDamageMod3 = 12000,
