@@ -63,8 +63,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 21600,
-        MaxHealth = 21600,
+        Health = 10800,
+        MaxHealth = 10800,
         RegenRate = 3,
         SurfaceThreatLevel = 100,
         EconomyThreatLevel = 1667,
@@ -111,7 +111,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 91200,
+        BuildCostMass = 127680,
         BuildTime = 294000,
         MaintenanceConsumptionPerSecondEnergy = 10000,
         RebuildBonusIds = { 
@@ -211,7 +211,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 6400,
+            Damage = 8960,
             DamageFriendly = true,
             DamageRadius = 6,
             DamageType = 'ShieldMult1,25',
@@ -221,7 +221,7 @@ UnitBlueprint {
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.3,
             FiringTolerance = 0.1,
             Label = 'MainGun',
             MaxRadius = 2600,
@@ -262,7 +262,7 @@ UnitBlueprint {
                 'DEFENSE',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,             WALL',
+            TargetRestrictDisallow = 'UNTARGETABLE,              WALL',
             ArtilleryShieldBlocks = true,
             RangeCategory = 'UWRC_IndirectFire',
             TurretDualManipulators = false,

@@ -61,8 +61,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 14800,
-        MaxHealth = 14800,
+        Health = 7400,
+        MaxHealth = 7400,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -110,7 +110,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 76400,
+        BuildCostMass = 106960,
         BuildTime = 294000,
         MaintenanceConsumptionPerSecondEnergy = 8400,
         RebuildBonusIds = {
@@ -221,7 +221,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 8200,
+            Damage = 11500,
             DamageFriendly = true,
             DamageRadius = 6,
             DamageType = 'Normal',
@@ -232,7 +232,7 @@ UnitBlueprint {
                 Land = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.25,
             FiringTolerance = 0.5,
             Label = 'MainGun',
             MaxRadius = 3200,

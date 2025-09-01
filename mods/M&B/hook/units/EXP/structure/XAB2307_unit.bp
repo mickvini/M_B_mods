@@ -58,8 +58,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 21600,
-        MaxHealth = 21600,
+        Health = 10800,
+        MaxHealth = 10800,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -107,7 +107,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 91200,
+        BuildCostMass = 127680,
         BuildTime = 294000,
         MaintenanceConsumptionPerSecondEnergy = 10000,
         RebuildBonusIds = {
@@ -213,7 +213,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 266,
+            Damage = 375,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Rapid-Fire Artillery Cannon',
@@ -223,7 +223,7 @@ UnitBlueprint {
                 Land = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.3,
             FiringTolerance = 0.01,
             Label = 'MainGun',
             MaxRadius = 3200,
