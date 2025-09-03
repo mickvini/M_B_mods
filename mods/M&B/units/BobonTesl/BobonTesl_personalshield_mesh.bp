@@ -1,0 +1,18 @@
+MeshBlueprint {
+    IconFadeInZoom = 130,
+    LODs = {
+        {
+            MeshName = '/mods/M&B/units/BobonTesl/BobonTesl_lod0.scm',
+            AlbedoName = '/mods/M&B/units/SeraphimTexture/SeraphimTexture_Albedo.dds',
+            NormalsName = '/mods/M&B/units/SeraphimTexture/SeraphimTexture_NormalsTS.dds',
+            SpecularName = '/mods/M&B/units/SeraphimTexture/SeraphimTexture_SpecTeam.dds',
+            LookupName = '/textures/environment/Falloff_seraphim_lookup.dds',
+            SecondaryName = '/effects/entities/PhaseShield/PhaseShieldLookup.dds',
+
+            LODCutoff = 195,
+            
+            Scrolling = true,
+            ShaderName = 'SeraphimPersonalShield',
+        },
+    },
+}

@@ -165,7 +165,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 98200,
-        BuildRate = 9000,
+        BuildRate = 8000,
         BuildTime = 312600,
         MaintenanceConsumptionPerSecondEnergy = 6800,
         RebuildBonusIds = {
@@ -321,11 +321,11 @@ UnitBlueprint {
             ManualFire = 1,
             MaxProjectileStorage = 1,
             NukeInnerRingDamage = 120000,
-            NukeInnerRingRadius = 40,
+            NukeInnerRingRadius = 30,
             NukeInnerRingTicks = 24,
             NukeInnerRingTotalTime = 12,
-            NukeOuterRingDamage = 5000,
-            NukeOuterRingRadius = 60,
+            NukeOuterRingDamage = 2000,
+            NukeOuterRingRadius = 50,
             NukeOuterRingTicks = 20,
             NukeOuterRingTotalTime = 5,
             NukeWeapon = true,

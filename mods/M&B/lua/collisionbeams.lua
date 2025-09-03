@@ -4,7 +4,7 @@ local EffectTemplate = import('/lua/EffectTemplates.lua')
 local ModEffectTemplate = import('/mods/m&b/lua/EffectTemplates.lua')
 local PhasonLaserCollisionBeam = BeamsFile.PhasonLaserCollisionBeam
 local OrbitalDeathLaserCollisionBeam = BeamsFile.OrbitalDeathLaserCollisionBeam
-
+local Util = import('/lua/utilities.lua')
 TMCollisionBeam = Class(CollisionBeam) {
     FxImpactUnit = EffectTemplate.DefaultProjectileLandUnitImpact,
     FxImpactLand = {},#EffectTemplate.DefaultProjectileLandImpact,
@@ -56,6 +56,32 @@ xsl0310a_LightningBeam = Class(SCCollisionBeam) {
         elseif not impactType == 'Unit' then
             KillThread(self.Scorching)
             self.Scorching = nil
+        end
+        if(impactType == 'Unit') then
+            local location = targetEntity:GetPosition()
+            local selfPos = self:GetPosition()
+
+            -- Вычисляем вектор направления
+            local dx = location[1] - selfPos[1]
+            local dy = location[2] - selfPos[2]
+            local dz = location[3] - selfPos[3]
+
+            -- Нормализуем вектор вручную
+            local length = math.sqrt(dx*dx + dy*dy + dz*dz)
+            if length > 0 then
+                dx = dx / length
+                dy = dy / length
+                dz = dz / length
+            end
+
+            -- Вычисляем углы вращения
+            local yaw = math.atan2(dx, dz)  -- Поворот вокруг вертикальной оси
+            local pitch = -math.asin(dy)    -- Наклон вверх/вниз
+            local roll = 0                  -- Обычно 0
+
+            local rotation = {pitch, yaw, roll}
+
+            local AssaultUnit = CreateUnitHPR('GMSB403a', self:GetArmy(), location[1], location[2], location[3], rotation[1], rotation[2], rotation[3])
         end
         SCCollisionBeam.OnImpact(self, impactType, targetEntity)
     end,
