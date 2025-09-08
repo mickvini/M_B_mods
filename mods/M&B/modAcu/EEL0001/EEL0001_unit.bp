@@ -294,7 +294,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 1,
         BuildCostMass = 18000,
-        BuildRate = 12,
+        BuildRate = 16,
         BuildTime = 60000,
         BuildableCategory = {
             'BUILTBYCOMMANDER UEF',
@@ -306,8 +306,8 @@ UnitBlueprint {
         MaxBuildDistance = 15,
         NeedToFaceTargetToBuild = false,
         NaturalProducer = true,
-        ProductionPerSecondEnergy = 500,
-        ProductionPerSecondMass = 1,
+        ProductionPerSecondEnergy = 1000,
+        ProductionPerSecondMass = 2,
         StorageEnergy = 2000,
         StorageMass = 2000,
         TeleportEnergyMod = 0.05978,
@@ -476,7 +476,7 @@ UnitBlueprint {
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER UEF',
             Icon = 'exlce1',
             Name = '<LOC enhancements_0509>Tech 2 Combat Engineering (T1)',
-            NewBuildRate = 17,
+            NewBuildRate = 20,
 			NewBuildDistance = 17,			
             NewHealth = 3000,
             ProductionPerSecondEnergy = 500,

@@ -184,7 +184,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 480,
-        BuildTime = 6000,
+        BuildTime = 3000,
         ResearchMultTime = 2,
         ResearchMultEnergy = 74,
         ResearchMultMass = 3.7,
@@ -334,7 +334,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            AIR,            LAND,            STRUCTURE,            NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,             AIR,             LAND,             STRUCTURE,             NAVAL',
             TargetRestrictOnlyAllow = '',
             TrackingRadius = 2.5,
             WeaponCategory = 'Anti Air',

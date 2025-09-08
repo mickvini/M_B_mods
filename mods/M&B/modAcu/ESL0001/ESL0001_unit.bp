@@ -265,7 +265,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 1,
         BuildCostMass = 18000,
-        BuildRate = 12,
+        BuildRate = 16,
         BuildTime = 60000,
         BuildableCategory = {
             'BUILTBYCOMMANDER SERAPHIM',
@@ -277,8 +277,8 @@ UnitBlueprint {
         MaxBuildDistance = 15,
         NeedToFaceTargetToBuild = false,
         NaturalProducer = true,
-        ProductionPerSecondEnergy = 500,
-        ProductionPerSecondMass = 1,
+        ProductionPerSecondEnergy = 1000,
+        ProductionPerSecondMass = 2,
         StorageEnergy = 2000,
         StorageMass = 2000,
         TeleportEnergyMod = 0.05978,
@@ -443,7 +443,7 @@ UnitBlueprint {
             NewHealth = 3000,
 			ProductionPerSecondEnergy = 500,
             ProductionPerSecondMass = 3,
-            Radius = 17,
+            Radius = 20,
             RegenCeiling = 20,
             RegenFloor = 0,
             RegenPerSecond = 0.05,

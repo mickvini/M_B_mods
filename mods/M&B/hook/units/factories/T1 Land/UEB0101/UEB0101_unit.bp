@@ -65,8 +65,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 4800,
-        MaxHealth = 4800,
+        Health = 3600,
+        MaxHealth = 3600,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -140,7 +140,7 @@ UnitBlueprint {
             'BUILTBYTIER1FACTORY UEF STRUCTURE LAND',
             'BUILTBYTIER1FACTORY UEF MOBILE LAND',
         },
-        MaintenanceConsumptionPerSecondEnergy = 400,
+        MaintenanceConsumptionPerSecondEnergy = 720,
         StorageEnergy = 0,
         StorageMass = 80,
         RebuildBonusIds = {

@@ -352,7 +352,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 LAND,                 STRUCTURE,                 NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',

@@ -181,7 +181,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 85,
-        BuildTime = 4000,
+        BuildTime = 2000,
     },
     General = {
         ToggleCaps = {
@@ -346,7 +346,7 @@ UnitBlueprint {
                 'AIR MOBILE GROUNDATTACK',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

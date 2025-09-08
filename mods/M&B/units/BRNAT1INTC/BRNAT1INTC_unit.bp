@@ -188,7 +188,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 60,
-        BuildTime = 3200,
+        BuildTime = 1600,
     },
     General = {
         Category = 'Fighter',
@@ -330,7 +330,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 LAND,                 STRUCTURE,                 NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.05,
             WeaponCategory = 'Anti Air',
@@ -402,7 +402,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                LAND,                STRUCTURE,                NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 LAND,                 STRUCTURE,                 NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.05,
             WeaponCategory = 'Artillery',

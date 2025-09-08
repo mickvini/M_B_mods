@@ -178,7 +178,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 310,
-        BuildTime = 7200,
+        BuildTime = 3600,
     },
     General = {
         ToggleCaps = {
@@ -337,7 +337,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 HIGHALTAIR',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             RangeCategory = 'UWRC_DirectFire',
@@ -406,7 +406,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 HIGHALTAIR',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             RangeCategory = 'UWRC_DirectFire',
@@ -477,7 +477,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,                HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,                 HIGHALTAIR',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             RangeCategory = 'UWRC_DirectFire',

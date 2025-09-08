@@ -48,8 +48,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 7200,
-        MaxHealth = 7200,
+        Health = 4200,
+        MaxHealth = 4200,
         EconomyThreatLevel = 160,
     },
     Description = '<LOC seb9301_desc>Research Centre',

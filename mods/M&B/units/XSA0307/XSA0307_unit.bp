@@ -58,7 +58,6 @@ UnitBlueprint {
     Air = {
         AutoLandTime = 1,
         BankFactor = 5,
-        BuildIconSortPriority = false,
         BreakOffDistance = 15,
         BreakOffTrigger = 20,
         CanFly = true,
@@ -79,6 +78,7 @@ UnitBlueprint {
         TightTurnMultiplier = 1.02,
         TurnSpeed = 2.4,
         Winged = true,
+        BuildIconSortPriority = false,
     },
     BuildIconSortPriority = 30,
     Buffs = {
@@ -188,7 +188,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 120,
-        BuildTime = 3200,
+        BuildTime = 1600,
     },
     General = {
         Category = 'Fighter',
@@ -334,7 +334,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE, LAND, STRUCTURE, NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,  LAND,  STRUCTURE,  NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 0,
             WeaponCategory = 'Anti Air',

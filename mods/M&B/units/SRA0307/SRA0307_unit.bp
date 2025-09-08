@@ -163,7 +163,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 560,
-        BuildTime = 7200,
+        BuildTime = 3600,
     },
     General = {
         CommandCaps = {
@@ -283,7 +283,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,               HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,                HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             Turreted = false,

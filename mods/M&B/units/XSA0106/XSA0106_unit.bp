@@ -149,7 +149,6 @@ UnitBlueprint {
                     Scrolling = true,
                     ShaderName = 'Seraphim',
                 },
-
             },
         },
         MovementEffects = {
@@ -169,7 +168,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 60,
-        BuildTime = 3200,
+        BuildTime = 1600,
     },
     General = {
         Category = 'Fighter',
@@ -274,7 +273,7 @@ UnitBlueprint {
             MuzzleSalvoDelay = 0.1,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 60,
-			ProjectileId = '/projectiles/SAAShleoAAGatlingGun02/SAAShleoAAGatlingGun02_proj.bp',
+            ProjectileId = '/projectiles/SAAShleoAAGatlingGun02/SAAShleoAAGatlingGun02_proj.bp',
             ProjectilesPerOnFire = 1,
             RackBones = {
                 {
@@ -313,7 +312,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,              LAND,              STRUCTURE,              NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',
@@ -389,7 +388,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,              LAND,              STRUCTURE,              NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,               LAND,               STRUCTURE,               NAVAL',
             TargetRestrictOnlyAllow = 'AIR',
             TrackingRadius = 1.25,
             WeaponCategory = 'Anti Air',

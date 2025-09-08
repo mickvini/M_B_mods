@@ -61,8 +61,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 12200,
-        MaxHealth = 12200,
+        Health = 7200,
+        MaxHealth = 7200,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -144,7 +144,7 @@ UnitBlueprint {
             'BUILTBYTIER2FACTORY CYBRAN STRUCTURE LAND',
             'BUILTBYTIER2FACTORY CYBRAN MOBILE LAND',
         },
-        MaintenanceConsumptionPerSecondEnergy = 1060,
+        MaintenanceConsumptionPerSecondEnergy = 1920,
     },
     General = {
         CapCost = 20,

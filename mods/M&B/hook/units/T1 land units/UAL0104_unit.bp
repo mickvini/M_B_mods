@@ -223,8 +223,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 25,
-            DamageRadius = 0,
+            Damage = 32,
+            DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

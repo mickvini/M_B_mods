@@ -195,7 +195,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 120,
-        BuildTime = 4000,
+        BuildTime = 2000,
     },
     General = {
         Category = 'Fighter',

@@ -314,8 +314,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 1200,
-                    BuildTime = 1800,
+                    BuildCostMass = 2800,
+                    BuildTime = 1400,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
@@ -326,8 +326,8 @@ function GenerateResearchItemBPs(all_bps)
                 BuildIconSortPriority = 0,
                 Economy = {
                     BuildCostEnergy = 0,
-                    BuildCostMass = 7800,
-                    BuildTime = 2400,
+                    BuildCostMass = 4600,
+                    BuildTime = 2000,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
