@@ -332,7 +332,7 @@ UnitBlueprint {
     StrategicIconName = 'icon_experimental_generic',
     StrategicIconSortPriority = 40,
     Transport = {
-        TransportClass = 4,
+        TransportClass = 3,
     },
     Veteran = {
         Level1 = 25,

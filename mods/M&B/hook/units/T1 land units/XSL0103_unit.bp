@@ -268,6 +268,9 @@ UnitBlueprint {
     SizeZ = 0.6,
     StrategicIconName = 'icon_land1_artillery',
     StrategicIconSortPriority = 135,
+    Transport = {
+        TransportClass = 1,
+    },
     Veteran = {
         Level1 = 3,
         Level2 = 6,
@@ -289,14 +292,14 @@ UnitBlueprint {
             CollideFriendly = false,
             Damage = 26.4,
             DamageFriendly = true,
-            DamageRadius = 0.2,
+            DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Thuntho Artillery Cannon',
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.32,
             FiringTolerance = 0,
             Label = 'MainGun',
             MaxRadius = 40,

@@ -186,7 +186,7 @@ UnitBlueprint {
     SizeX = 0.6,
     SizeY = 1.2,
     SizeZ = 0.9,
-    StrategicIconName = 'icon_land3_artillery',
+    StrategicIconName = 'icon_land4_missile',
     StrategicIconSortPriority = 125,
     Transport = {
         TransportClass = 3,
@@ -238,7 +238,7 @@ UnitBlueprint {
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 25,
+            MuzzleVelocity = 26,
             ProjectileId = '/mods/M&B/projectiles/BRPT1EXTANK2proj/BRPT1EXTANK2proj_proj.bp',
             ProjectilesPerOnFire = 1,
             RackBones = {

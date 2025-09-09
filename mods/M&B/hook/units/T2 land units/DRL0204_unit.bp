@@ -202,7 +202,7 @@ UnitBlueprint {
     SizeX = 0.45,
     SizeY = 0.8,
     SizeZ = 0.9,
-    StrategicIconName = 'icon_bot2_directfire',
+    StrategicIconName = 'icon_land2_artillery',
     StrategicIconSortPriority = 135,
     Transport = {
         CanFireFromTransport = false,
@@ -282,7 +282,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'HIGHALTAIR,             UNTARGETABLE',
+            TargetRestrictDisallow = 'HIGHALTAIR,              UNTARGETABLE',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
             LeadTarget = true,

@@ -218,11 +218,11 @@ UnitBlueprint {
     SizeX = 1.1,
     SizeY = 1,
     SizeZ = 0.9,
-    StrategicIconName = 'icon_bot3_directfire',
+    StrategicIconName = 'icon_bot2_directfire',
     StrategicIconSortPriority = 115,
     Transport = {
         CanFireFromTransport = false,
-        TransportClass = 3,
+        TransportClass = 2,
     },
     Veteran = {
         Level1 = 9,

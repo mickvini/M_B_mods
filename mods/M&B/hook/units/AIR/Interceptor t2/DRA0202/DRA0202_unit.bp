@@ -246,7 +246,7 @@ UnitBlueprint {
     SizeX = 2,
     SizeY = 1,
     SizeZ = 3,
-    StrategicIconName = 'icon_fighter2_directfire',
+    StrategicIconName = 'icon_bomber2_directfire',
     StrategicIconSortPriority = 55,
     CollisionOffsetY = -0.5,
     Footprint = {
@@ -334,7 +334,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,             AIR,             LAND,             STRUCTURE,             NAVAL',
+            TargetRestrictDisallow = 'UNTARGETABLE,              AIR,              LAND,              STRUCTURE,              NAVAL',
             TargetRestrictOnlyAllow = '',
             TrackingRadius = 2.5,
             WeaponCategory = 'Anti Air',

@@ -62,7 +62,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
     },
     Description = '<LOC mst0401_desc>Light Bot',
-    Display = {        	
+    Display = {
         AnimationDeath = {
             {
                 Animation = '/units/XSL0202/XSL0202_ADeath.sca',
@@ -225,11 +225,11 @@ UnitBlueprint {
     SizeX = 1,
     SizeY = 1.1,
     SizeZ = 0.9,
-    StrategicIconName = 'icon_land2_directfire',
+    StrategicIconName = 'icon_bot1_directfire',
     StrategicIconSortPriority = 125,
     CollisionOffsetZ = 0,
     Transport = {
-        TransportClass = 2,
+        TransportClass = 1,
     },
     Veteran = {
         Level1 = 7,

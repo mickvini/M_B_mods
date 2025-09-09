@@ -179,10 +179,10 @@ UnitBlueprint {
     SizeX = 1,
     SizeY = 0.4,
     SizeZ = 1.5,
-    StrategicIconName = 'icon_land3_artillery',
+    StrategicIconName = 'icon_land2_artillery',
     StrategicIconSortPriority = 115,
     Transport = {
-        TransportClass = 3,
+        TransportClass = 2,
     },
     Veteran = {
         Level1 = 9,

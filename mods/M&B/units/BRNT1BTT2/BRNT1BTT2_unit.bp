@@ -187,6 +187,9 @@ UnitBlueprint {
     SizeZ = 0.9,
     StrategicIconName = 'icon_land2_directfire',
     StrategicIconSortPriority = 135,
+    Transport = {
+        TransportClass = 2,
+    },
     Veteran = {
         Level1 = 3,
         Level2 = 6,

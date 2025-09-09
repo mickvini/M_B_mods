@@ -199,6 +199,9 @@ UnitBlueprint {
     SizeZ = 0.6,
     StrategicIconName = 'icon_land1_artillery',
     StrategicIconSortPriority = 135,
+    Transport = {
+        TransportClass = 1,
+    },
     Veteran = {
         Level1 = 3,
         Level2 = 6,
@@ -226,7 +229,7 @@ UnitBlueprint {
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.32,
             FiringTolerance = 3,
             Label = 'MainGun',
             MaxRadius = 40,

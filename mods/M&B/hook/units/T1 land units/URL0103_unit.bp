@@ -242,7 +242,7 @@ UnitBlueprint {
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
             },
-            FiringRandomness = 0.4,
+            FiringRandomness = 0.32,
             FiringTolerance = 1,
             Label = 'MainGun',
             MaxRadius = 40,

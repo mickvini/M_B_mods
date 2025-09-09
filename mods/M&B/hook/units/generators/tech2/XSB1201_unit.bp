@@ -246,7 +246,7 @@ UnitBlueprint {
         {
             Damage = 1500,
             DamageFriendly = true,
-            DamageRadius = 5,
+            DamageRadius = 6,
             DamageType = 'Normal',
             DisplayName = 'Death Weapon',
             DummyWeapon = true,

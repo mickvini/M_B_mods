@@ -274,6 +274,9 @@ UnitBlueprint {
         SizeX = 5,
         SizeZ = 5,
     },
+    Transport = {
+        TransportClass = 10,
+    },
     Veteran = {
         Level1 = 30,
         Level2 = 60,

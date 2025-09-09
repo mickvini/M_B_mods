@@ -237,7 +237,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
             Damage = 26,
-            DamageRadius = 1,
+            DamageRadius = 2.4,
             DamageType = 'Normal',
             DisplayName = 'Ionized Plasma Cannon',
             FireTargetLayerCapsTable = {

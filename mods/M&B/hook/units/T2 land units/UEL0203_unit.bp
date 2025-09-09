@@ -289,10 +289,10 @@ UnitBlueprint {
     SizeX = 0.9,
     SizeY = 0.45,
     SizeZ = 1.2,
-    StrategicIconName = 'icon_land1_directfire',
+    StrategicIconName = 'icon_land3_directfire',
     StrategicIconSortPriority = 125,
     Transport = {
-        TransportClass = 1,
+        TransportClass = 3,
     },
     Veteran = {
         Level1 = 3,

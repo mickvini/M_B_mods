@@ -222,7 +222,7 @@ UnitBlueprint {
     CollisionOffsetY = 0.3,
     VeteranMassMult = 0.5,
     Transport = {
-        TransportClass = 3,
+        TransportClass = 4,
     },
     Veteran = {
         Level1 = 25,

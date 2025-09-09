@@ -201,7 +201,7 @@ UnitBlueprint {
     StrategicIconName = 'icon_land2_directfire',
     StrategicIconSortPriority = 125,
     Transport = {
-        TransportClass = 1,
+        TransportClass = 2,
     },
     Veteran = {
         Level1 = 8,
@@ -415,7 +415,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,            HOVER',
+            TargetRestrictDisallow = 'UNTARGETABLE,             HOVER',
             TrackingRadius = 1.15,
             WeaponCategory = 'Anti Navy',
             RangeCategory = 'UWRC_AntiNavy',

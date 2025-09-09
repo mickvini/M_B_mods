@@ -207,7 +207,7 @@ UnitBlueprint {
         Classification = 'RULEUC_MilitaryVehicle',
         CommandCaps = {
             RULEUCC_Attack = true,
-            RULEUCC_CallTransport = true,
+            RULEUCC_CallTransport = false,
             RULEUCC_Capture = false,
             RULEUCC_Guard = true,
             RULEUCC_Move = true,
@@ -273,7 +273,7 @@ UnitBlueprint {
     StrategicIconSortPriority = 125,
     CollisionOffsetY = 0,
     Transport = {
-        TransportClass = 3,
+        TransportClass = 4,
     },
     Veteran = {
         Level1 = 10,
