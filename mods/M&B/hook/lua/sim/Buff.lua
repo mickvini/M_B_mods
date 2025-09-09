@@ -77,14 +77,14 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
         
 
         elseif atype == 'ShieldRegeneration' then            
-                LOG('SHIELDREGEN')
+                --LOG('SHIELDREGEN')
                 local val = BuffCalculate(unit, buffName, 'ShieldRegeneration', 1)                
                 local regenrate = unit:GetBlueprint().Defense.Shield.ShieldRegenRate or 1                
                 unit.MyShield:SetShieldRegenRate(regenrate* val)               
-                LOG(val)
+                --LOG(val)
                 --unit.MyShield:SetStat('SHIELDREGEN', val * regenrate )                       
         elseif atype == 'ShieldSize' then
-            LOG('SHIELDSIZE')
+            --LOG('SHIELDSIZE')
             local val = BuffCalculate(unit, buffName, 'ShieldSize', 1)
             local shieldsize = unit:GetBlueprint().Defense.Shield.ShieldSize or 1
 
@@ -97,12 +97,12 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                     
             end
         elseif atype == 'ShieldHealth' then            
-                LOG('SHIELDHEALTH')
+                --LOG('SHIELDHEALTH')
                 local val = BuffCalculate(unit, buffName, 'ShieldHealth', 1)
                 local shieldhealth = unit:GetBlueprint().Defense.Shield.ShieldMaxHealth or 1
-                LOG(shieldhealth)
+                --LOG(shieldhealth)
                 local shield = unit.MyShield
-                LOG(val)
+                --LOG(val)
                 shield:SetMaxHealth(shieldhealth * val)
 
                 --shield:SetStat('SHIELDHP', val * shieldhealth )                
@@ -127,20 +127,20 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 if wep.Label ~= 'DeathWeapon' and wep.Label ~= 'DeathImpact' then
                     local wepbp = wep:GetBlueprint()
                     local wepdam = wepbp.Damage
-                    LOG(wepdam)
+                    --LOG(wepdam)
                     local val = BuffCalculate(unit, buffName, 'Damage', wepdam)
-                    LOG(val)
+                    --LOG(val)
                     if val >= ( math.abs(val) + 0.5 ) then
                         val = math.ceil(val)
                     else
                         val = math.floor(val)
                     end
-                    LOG(val)
+                    --LOG(val)
                     wep.DamageMod = 0
                     wep:AddDamageMod(val - wepdam) 
                     -- wepdam = val
                     -- LOG(wepbp.Damage)                 
-                    LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed damage to ', (val))
+                    --LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed damage to ', (val))
                 end
             end
         
@@ -185,21 +185,21 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
           local val = BuffCalculate(unit, buffName, 'MoveMult', 1)
           unit:SetSpeedMult(val)
           
-          LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed speed mult to ', repr(val))
+          --LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed speed mult to ', repr(val))
 
         elseif atype == 'AccMult' then
 
           local val = BuffCalculate(unit, buffName, 'AccMult', 1)
           unit:SetAccMult(val)
 
-          LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed accel mult to ', repr(val))
+          --LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed accel mult to ', repr(val))
 
         elseif atype == 'TurnMult' then
 
           local val = BuffCalculate(unit, buffName, 'TurnMult', 1)
           unit:SetTurnMult(val)
 
-          LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed turn mult to ', repr(val))
+          --LOG('*BUFF: Unit ', repr(unit:GetEntityId()), ' buffed turn mult to ', repr(val))
                 
         elseif atype == 'Stun' and not afterRemove then
             
@@ -275,7 +275,7 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
             local val = BuffCalculate(unit, buffName, 'EnergyMaintenance', 1)
             unit.EnergyMaintAdjMod = val
             unit:UpdateConsumptionValues()
-            LOG('*BUFF: EnergyMaintenance = ' ..  val)
+            --LOG('*BUFF: EnergyMaintenance = ' ..  val)
             
         elseif atype == 'MassMaintenance' then
             local val = BuffCalculate(unit, buffName, 'MassMaintenance', 1)
@@ -287,7 +287,7 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
             local val = BuffCalculate(unit, buffName, 'EnergyProduction', 1)
             unit.EnergyProdAdjMod = val
             unit:UpdateProductionValues()
-            LOG('*BUFF: EnergyProduction = ' .. val)
+            --LOG('*BUFF: EnergyProduction = ' .. val)
 
         elseif atype == 'MassProduction' then
             local val = BuffCalculate(unit, buffName, 'MassProduction', 1)
@@ -303,7 +303,7 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                     wep.AdjEnergyMod = val
                 end
             end
-            LOG('*BUFF: EnergyWeapon = ' ..  val)
+            --LOG('*BUFF: EnergyWeapon = ' ..  val)
             
         elseif atype == 'RateOfFire' then
             for i = 1, unit:GetWeaponCount() do
@@ -318,13 +318,13 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 local val = BuffCalculate(unit, buffName, 'RateOfFire', 1)
 
                 local delay = 1 / wepbp.RateOfFire
-                LOG('*BUFF: Old RateOfFire = ' ..  weprof )
+                --LOG('*BUFF: Old RateOfFire = ' ..  weprof )
                 
                 if unit:GetBlueprint().General.Category == 'Defense' then                                        
                     unit.BaseRateOfFire[i] = (1 / ( val * delay ))                    
                 end
                 wep:ChangeRateOfFire( 1 / ( val * delay ) )
-                LOG('*BUFF: New RateOfFire = ' ..  (1 / ( val * delay )) )
+                --LOG('*BUFF: New RateOfFire = ' ..  (1 / ( val * delay )) )
             end
 
 

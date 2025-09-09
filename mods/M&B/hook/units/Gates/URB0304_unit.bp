@@ -68,8 +68,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Structure',
-        Health = 10000,
-        MaxHealth = 10000,
+        Health = 2400,
+        MaxHealth = 2400,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
@@ -152,13 +152,13 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 3000,
+        BuildCostMass = 8400,
         BuildRate = 120,
         BuildTime = 3000,
         BuildableCategory = {
             'BUILTBYQUANTUMGATE CYBRAN',
         },
-        MaintenanceConsumptionPerSecondEnergy = 2800,
+        MaintenanceConsumptionPerSecondEnergy = 3200,
         RebuildBonusIds = {
             'urb0304',
         },

@@ -46,7 +46,7 @@ Unit = Class(oldUnit) {
 
     ShallSink = function(self)
         local layer = self:GetCurrentLayer()
-        LOG(layer)
+        --LOG(layer)
         local shallSink = (
             (layer == 'Water' or layer == 'Sub') and  -- In a layer for which sinking is meaningful
             not EntityCategoryContains(categories.STRUCTURE, self)  -- Exclude structures

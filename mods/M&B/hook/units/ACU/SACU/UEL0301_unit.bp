@@ -747,7 +747,7 @@ UnitBlueprint {
         },
         {
             CollideFriendly = false,
-            Damage = 1000,
+            Damage = 4000,
             DamageFriendly = true,
             DamageRadius = 10,
             DamageType = 'Normal',

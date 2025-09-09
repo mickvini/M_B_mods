@@ -71,7 +71,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         AdjacentMassProductionMod = 0.5,
-        BuildCostMass = 260,
+        BuildCostMass = 160,
         BuildRate = 10,
         BuildTime = 400,
         BuildableCategory = {

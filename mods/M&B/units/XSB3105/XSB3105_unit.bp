@@ -71,7 +71,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         AdjacentEnergyProductionMod = 3,
-        BuildCostMass = 620,
+        BuildCostMass = 300,
         BuildTime = 930,
         StorageEnergy = 7500,
         RebuildBonusIds = {

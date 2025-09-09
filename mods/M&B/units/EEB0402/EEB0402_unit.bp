@@ -107,8 +107,8 @@ UnitBlueprint {
         MaintenanceConsumptionPerSecondEnergy = 1,
         ProductionPerSecondEnergy = 8000,
         ProductionPerSecondMass = 240,
+        StorageEnergy = 80000,
         StorageMass = 20000,
-		StorageEnergy = 80000,
     },
     General = {
         Category = 'Economy',
@@ -179,9 +179,9 @@ UnitBlueprint {
     Weapon = {
         {
             CollideFriendly = false,
-            Damage = 18000,
+            Damage = 24000,
             DamageFriendly = true,
-            DamageRadius = 12,
+            DamageRadius = 18,
             DamageType = 'Normal',
             DisplayName = 'Death Nuke',
             FiringTolerance = 2,
