@@ -61,8 +61,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 4200,
-        MaxHealth = 4200,
+        Health = 6400,
+        MaxHealth = 6400,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
@@ -296,7 +296,7 @@ UnitBlueprint {
             BeamCollisionDelay = 0.0,
             BeamLifetime = 0.1,
             CollideFriendly = false,
-            Damage = 120,
+            Damage = 220,
             DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Thau Cannon',
@@ -307,15 +307,11 @@ UnitBlueprint {
             },
             FiringTolerance = 1,
             Label = 'MainTurret',
-            MaxRadius = 65,
+            MaxRadius = 55,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 30,            
+            MuzzleVelocity = 30,
             ProjectilesPerOnFire = 1,
-            Effects = {
-                ParticalStackIntervalTicks = 30,
-                ParticalStacksMax = 30, --Interval * stacks max = number of ticks to continue making effects for.
-            },
             RackBones = {
                 {
                     MuzzleBones = {
@@ -354,6 +350,10 @@ UnitBlueprint {
             TargetRestrictDisallow = 'UNTARGETABLE',
             TrackingRadius = 1.15,
             WeaponCategory = 'Direct Fire',
+            Effects = {
+                ParticalStackIntervalTicks = 30,
+                ParticalStacksMax = 30, 
+            },
             NoPause = true,
             NotExclusive = true,
             ProjectileLifetimeUsesMultiplier = 1.15,
@@ -374,7 +374,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 80,
+            Damage = 100,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -445,7 +445,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 80,
+            Damage = 100,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {

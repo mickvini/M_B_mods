@@ -289,7 +289,7 @@ UnitBlueprint {
             AboveWaterTargetsOnly = true,
             AutoInitiateAttackCommand = false,
             BallisticArc = 'RULEUBA_None',
-            Damage = 315,
+            Damage = 380,
             DamageFriendly = true,
             DamageRadius = 4,
             DamageType = 'Normal',

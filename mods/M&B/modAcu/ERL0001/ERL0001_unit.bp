@@ -135,8 +135,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Commander',
-        Health = 7500,
-        MaxHealth = 7500,
+        Health = 11000,
+        MaxHealth = 11000,
         RegenRate = 10,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 75,
