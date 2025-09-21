@@ -111,13 +111,13 @@ UALBob01 = Class(ALandUnit) {
             local bp = __blueprints[self.BpId]
             if self.DefenseMode then
 
-                self.DefenseModeAnimator:SetRate(0.2)
+                self.DefenseModeAnimator:SetRate(0.1)
 
                 self:SetSpeedMult(bp.Physics.DefenseModeMaxSpeedMult)
                 self:SetTurnMult(bp.Physics.DefenseModeMaxSpeedMult)
                 -- Do stuff we want to happen at the start of the animation
                 self.DefenseModeForkThread = self:ForkThread(function()
-                    coroutine.yield(50)                                    
+                    coroutine.yield(100)                                    
                     self:EnableShield()
                     -- Large box that coveres top and bottom positions
                     self:SetCollisionShape( 'Box', bp.CollisionOffsetX or 0, (bp.CollisionOffsetY or 0) + bp.SizeY, bp.CollisionOffsetZ or 0,
@@ -129,9 +129,9 @@ UALBob01 = Class(ALandUnit) {
                 end)
                
             else
-                self.DefenseModeAnimator:SetRate(-0.2)
+                self.DefenseModeAnimator:SetRate(-0.1)
                 self.DefenseModeForkThread = self:ForkThread(function()
-                    coroutine.yield(50)
+                    coroutine.yield(100)
                     self:DisableShield()                    
                     self:SetIntelRadius('Vision', bp.Intel.VisionRadius)
                     self:SetSpeedMult(1)
