@@ -195,9 +195,9 @@ UnitBlueprint {
     Physics = {
         BankingSlope = 0.5,
         Elevation = 0.25,
-        MaxAcceleration = 4,
-        MaxBrake = 4,
-        MaxSpeed = 2.2,
+        MaxAcceleration = 3,
+        MaxBrake = 3,
+        MaxSpeed = 3,
         MaxSpeedReverse = 0,
         MaxSteerForce = 1000,
         MeshExtentsX = 0.6,

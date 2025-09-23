@@ -185,9 +185,9 @@ UnitBlueprint {
     LifeBarOffset = 0.3,
     LifeBarSize = 0.7,
     Physics = {
-        MaxAcceleration = 4,
-        MaxBrake = 4,
-        MaxSpeed = 2.2,
+        MaxAcceleration = 2.8,
+        MaxBrake = 2.8,
+        MaxSpeed = 2.8,
         MaxSpeedReverse = 0,
         MaxSteerForce = 10,
         MeshExtentsX = 0.9,

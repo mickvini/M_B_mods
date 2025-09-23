@@ -196,7 +196,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 16,
+            Damage = 24,
             DamageType = 'Normal',
             DisplayName = 'Electron Autocannon',
             FireTargetLayerCapsTable = {

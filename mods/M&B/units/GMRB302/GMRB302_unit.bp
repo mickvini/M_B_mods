@@ -216,7 +216,7 @@ UnitBlueprint {
             FiringRandomness = 0.4,
             FiringTolerance = 2,
             Label = 'QuadCannon',
-            MaxRadius = 160,
+            MaxRadius = 135,
             MinRadius = 30,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

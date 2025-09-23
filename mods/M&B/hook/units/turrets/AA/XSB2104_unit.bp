@@ -211,7 +211,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 22,
+            Damage = 34,
             DamageType = 'Normal',
             DisplayName = 'Shleo AA AutoGun',
             FireTargetLayerCapsTable = {

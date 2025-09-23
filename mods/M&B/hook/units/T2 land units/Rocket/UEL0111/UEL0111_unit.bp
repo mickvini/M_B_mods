@@ -241,7 +241,7 @@ UnitBlueprint {
             },
             FiringTolerance = 5,
             Label = 'MissileWeapon',
-            MaxRadius = 75,
+            MaxRadius = 90,
             MinRadius = 20,
             MuzzleChargeDelay = 0.5,
             MuzzleSalvoDelay = 0,

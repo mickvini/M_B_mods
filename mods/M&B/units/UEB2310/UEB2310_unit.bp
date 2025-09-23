@@ -211,9 +211,9 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 1290,
+            Damage = 775,
             DamageFriendly = true,
-            DamageRadius = 6,
+            DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
