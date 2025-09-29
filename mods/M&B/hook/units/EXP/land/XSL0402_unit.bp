@@ -193,7 +193,7 @@ UnitBlueprint {
     StrategicIconName = 'icon_experimental_generic',
     StrategicIconSortPriority = 105,
     CollisionOffsetY = -0.25,
-    Lifetime = 20,
+    Lifetime = 10,
     MaxMoveRange = 5,
     Weapon = {
         {
@@ -211,7 +211,7 @@ UnitBlueprint {
             BeamLifetime = 0.2,
             CollideFriendly = true,
             ContinuousBeam = false,
-            Damage = 1000,
+            Damage = 600,
             DamageFriendly = true,
             DamageRadius = 0.1,
             DamageType = 'Normal',

@@ -210,7 +210,7 @@ UnitBlueprint {
         UnitName = 'Snakebite mk,2',
     },
     Intel = {
-        RadarStealth = true,
+        RadarStealth = false,
         SonarRadius = 50,
         VisionRadius = 40,
     },
