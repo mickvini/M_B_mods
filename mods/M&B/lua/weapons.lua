@@ -30,6 +30,13 @@ NapalmMissileProjectile = Class(DefaultProjectileWeapon) {
     end,
 
 }
+TMCSpiderLaserweapon = Class(DefaultBeamWeapon) {
+    BeamType = Beams.TMCollisionBeam,
+    FxMuzzleFlash = EffectTemplate.SExperimentalUnstablePhasonLaserMuzzle01,
+    FxChargeMuzzleFlash = {},
+    FxUpackingChargeEffects = EffectTemplate.CMicrowaveLaserCharge01,
+    FxUpackingChargeEffectScale = 2,
+}
 
 Over_ChargeProjectile = Class(DefaultProjectileWeapon) {}
 

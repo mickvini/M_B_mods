@@ -69,7 +69,7 @@ UnitBlueprint {
         'CYBRAN',
         'MOBILE',
         'LAND',
-        'TECH3',
+        'EXPERIMENTAL',
         'DIRECTFIRE',
         'ANTIAIR',
         'NEEDMOBILEBUILD',

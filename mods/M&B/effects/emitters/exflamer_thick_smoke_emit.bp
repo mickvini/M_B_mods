@@ -1,7 +1,7 @@
 EmitterBlueprint {
 	BlueprintId = 'napalm_hvy_thick_smoke',
-	Lifetime = 35.00,
-	Repeattime = 35.00,
+	Lifetime = 70.00,
+	Repeattime = 70.00,
 	TextureFramecount = 1.00,
 	Blendmode = 1.00,
 	LocalVelocity = false,
