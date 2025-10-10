@@ -295,7 +295,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 160,
+            Damage = 180,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',
