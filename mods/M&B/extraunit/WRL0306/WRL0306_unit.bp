@@ -142,7 +142,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 96,
         BuildTime = 1800,
-        MaintenanceConsumptionPerSecondEnergy = 235,
+        MaintenanceConsumptionPerSecondEnergy = 55,
     },
     General = {
         ToggleCaps = {

@@ -124,7 +124,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 11,
-        BuildTime = 400,
+        BuildTime = 700,
     },
     General = {
         Category = 'Direct Fire',
@@ -215,7 +215,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 6,
+            Damage = 3,
             DamageRadius = 0.5,
             DamageType = 'Normal',
             DisplayName = 'Tau Cannon',

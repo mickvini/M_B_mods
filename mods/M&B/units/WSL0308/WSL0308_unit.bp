@@ -203,7 +203,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 15.645,
+            Damage = 12.645,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Thau Cannon',

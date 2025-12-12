@@ -251,7 +251,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 44.1,
-            DamageRadius = 1,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -327,7 +327,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 44.1,
-            DamageRadius = 1,
+            DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
@@ -421,7 +421,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 25,
             CollideFriendly = false,
-            Damage = 363.6,
+            Damage = 308,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

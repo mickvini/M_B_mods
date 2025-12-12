@@ -294,7 +294,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20.13,
+            Damage = 11,
             DamageType = 'Normal',
             DisplayName = 'Heavy Electron Bolter',
             FireTargetLayerCapsTable = {

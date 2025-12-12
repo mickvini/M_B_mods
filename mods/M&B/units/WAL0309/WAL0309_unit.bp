@@ -149,7 +149,7 @@ UnitBlueprint {
         BuildCostMass = 59,
         BuildRate = 4,
         BuildTime = 1800,
-        MaintenanceConsumptionPerSecondEnergy = 155,
+        MaintenanceConsumptionPerSecondEnergy = 40,
     },
     General = {
         BuildBones = {
@@ -334,7 +334,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 45,
+            Damage = 38,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

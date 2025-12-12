@@ -205,7 +205,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 132,
         BuildTime = 1800,
-        MaintenanceConsumptionPerSecondEnergy = 315,
+        MaintenanceConsumptionPerSecondEnergy = 60,
     },
     General = {
         ToggleCaps = {
@@ -308,7 +308,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 324,
+            Damage = 220,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Thau Cannon',
@@ -383,7 +383,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 36,
+            Damage = 12,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {
@@ -454,7 +454,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 36,
+            Damage = 12,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
             FireTargetLayerCapsTable = {

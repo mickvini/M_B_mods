@@ -309,7 +309,7 @@ UnitBlueprint {
             TargetRestrictDisallow = 'UNTARGETABLE',
             TrackingRadius = 1.1,
             WeaponCategory = 'Direct Fire',
-            DamageToShields = 3000,
+            DamageToShields = 300,
             RangeCategory = 'UWRC_DirectFire',
             SlavedToBody = false,
             TurretDualManipulators = false,
