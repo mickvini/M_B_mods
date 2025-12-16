@@ -213,7 +213,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_HighArc',
             CollideFriendly = false,
-            Damage = 11500,
+            Damage = 9400,
             DamageRadius = 6,
             DamageType = 'Normal',
             DisplayName = 'Rapid-Fire Artillery Cannon',

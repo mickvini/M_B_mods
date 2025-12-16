@@ -60,7 +60,7 @@ UnitBlueprint {
             ShieldEnergyDrainRechargeTime = 30,
             ShieldMaxHealth = 12600,
             ShieldRechargeTime = 45,
-            ShieldRegenRate = 280,
+            ShieldRegenRate = 320,
             ShieldRegenStartTime = 1,
             ShieldSize = 46,
             ShieldVerticalOffset = -8,
