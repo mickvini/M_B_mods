@@ -456,17 +456,18 @@ ERL0001 = Class(CWalkingLandUnit) {
     end,
 
     UpdateUnitsInRange = function(self)        
-            while not self.Dead do
-                local MK = import('/lua/defaultunits.lua').MK
-                local pos = self:GetPosition()
-                local army = self:GetArmy()
-                local updateTargets = GetUnitsInRect(pos[1] - 100, pos[3] - 100, pos[1] + 100, pos[3] + 100)
-                for i, unit in updateTargets do
-                    if (unit) then 
-                        if IsAlly(army, unit:GetArmy()) then
+        while not self.Dead do
+            local MK = import('/lua/defaultunits.lua').MK
+            local pos = self:GetPosition()
+            local army = self:GetArmy()
+            local updateTargets = GetUnitsInRect(pos[1] - 100, pos[3] - 100, pos[1] + 100, pos[3] + 100)
+            for i, unit in updateTargets do
+                if (unit) then 
+                    if IsAlly(army, unit:GetArmy()) then
+                        if not unit:IsBeingBuilt() then
                             local unitBp = unit:GetBlueprint()
                             local factionCat = unitBp.General.FactionName
-                            if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER')then
+                            if not table.find(unitBp.Categories, 'COMMAND') and not table.find(unitBp.Categories, 'STRUCTURE')and not table.find(unitBp.Categories, 'ENGINEER') and (unitBp.General.UnitName ~= '<LOC url0401_name>Scathis')then
                                 if table.find(unitBp.Categories, 'LAND') then
                                     if MK[army][4][factionCat] > 0 and MK[army][4][factionCat] ~= unit.MarkLevel[4]  then
                                         Buff.ApplyBuff(unit ,  'MobileBuffLand' .. MK[army][4][factionCat])
@@ -513,9 +514,10 @@ ERL0001 = Class(CWalkingLandUnit) {
                         end
                     end
                 end
-                WaitSeconds(50)
-            end                            
-        end,
+            end
+            WaitSeconds(50)
+        end                            
+    end,
     
     EXRegenBuffThread = function(self)
 		--if Buff.HasBuff( self, 'EXRegenBoost' ) then
