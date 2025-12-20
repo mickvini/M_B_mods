@@ -38,7 +38,7 @@ SRB2306 = Class(CStructureUnit) {
                     end
                     if nrgDrain > self.EnergyMax then   
                         self.ForceCooldown = true
-                        self.unit:Overheat()
+                        --self.unit:Overheat()
                         return false
                     end      
                 end

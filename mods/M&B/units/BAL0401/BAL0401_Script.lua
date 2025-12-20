@@ -36,7 +36,7 @@ BAL0401 = Class(AWalkingLandUnit) {
     Weapons = {
         BoomWeapon = Class(CDFLaserHeavyWeapon){
         	PlayFxWeaponPackSequence = function(self)
-                self.unit:SetWeaponEnabledByLabel('DefenseGun01', false)
+                
 				if self.SpinManip1 then
                     self.SpinManip1:SetTargetSpeed(0)
                 end
@@ -52,7 +52,7 @@ BAL0401 = Class(AWalkingLandUnit) {
             end,
 
 			PlayFxWeaponUnpackSequence = function(self)
-                self.unit:SetWeaponEnabledByLabel('DefenseGun01', true)
+                
 				if not self.SpinManip1 then 
                     self.SpinManip1 = CreateRotator(self.unit, 'Spinner_1', 'y', nil, 270, 180, 60)
                     self.unit.Trash:Add(self.SpinManip1)
@@ -103,7 +103,7 @@ BAL0401 = Class(AWalkingLandUnit) {
         },
 		 DefenseGun01 = Class(GoldenLaserGenerator) {
             PlayFxWeaponPackSequence = function(self)
-                self.unit:SetWeaponEnabledByLabel('DefenseGun01', false)
+               
                 if self.SpinManip1 then
                     self.SpinManip1:SetTargetSpeed(0)
                 end
@@ -119,7 +119,7 @@ BAL0401 = Class(AWalkingLandUnit) {
             end,
 
             PlayFxWeaponUnpackSequence = function(self)
-                self.unit:SetWeaponEnabledByLabel('DefenseGun01', true)
+                
                 if not self.SpinManip1 then 
                     self.SpinManip1 = CreateRotator(self.unit, 'Spinner_1', 'y', nil, 270, 180, 60)
                     self.unit.Trash:Add(self.SpinManip1)
