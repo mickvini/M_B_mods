@@ -154,9 +154,9 @@ UnitBlueprint {
     Intel = {
         Cloak = true,
         RadarStealth = true,
-        RadarStealthFieldRadius = 15,
+        RadarStealthFieldRadius = 10,
         SonarStealth = true,
-        SonarStealthFieldRadius = 15,
+        SonarStealthFieldRadius = 10,
         VisionRadius = 27,
         RadarStealthField = true,
         SonarStealthField = true,
