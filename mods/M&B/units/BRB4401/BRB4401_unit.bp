@@ -132,7 +132,8 @@ UnitBlueprint {
     },
     Intel = {
         Cloak = true,
-        CloakFieldRadius = 45,
+        CloakFieldRadius = 40,
+		RadarStealthFieldRadius = 40,
         ReactivateTime = 5,
         ShowIntelOnSelect = true,
         VisionRadius = 10,
@@ -177,7 +178,19 @@ UnitBlueprint {
 	Footprint = {
         SizeX = 5,
         SizeZ = 6,
-    },
+    },	
+	Weapon = {
+        {
+            Damage = 6200,
+            DamageFriendly = true,
+            DamageRadius = 8,
+            DamageType = 'Normal',
+            DisplayName = 'Death Weapon',
+            DummyWeapon = true,
+            Label = 'DeathWeapon',
+            WeaponCategory = 'Death',
+        },
+	},
     Wreckage = {
         Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',
         EnergyMult = 0,
