@@ -93,7 +93,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 64,
+        BuildCostMass = 68,
         BuildTime = 1800,
         BuildUnit = 'xrl0305',
     },

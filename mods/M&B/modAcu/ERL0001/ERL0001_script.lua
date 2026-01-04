@@ -111,7 +111,7 @@ ERL0001 = Class(CWalkingLandUnit) {
 				end
 			end,
 			ArrayEffectsCleanup = function(self)
-				WaitTicks(20)
+				WaitTicks(15)
 				if self.unit.EMPArrayEffects01 then
 					for k, v in self.unit.EMPArrayEffects01 do
 						v:Destroy()

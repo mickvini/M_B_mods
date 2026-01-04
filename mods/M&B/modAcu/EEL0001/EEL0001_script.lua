@@ -946,14 +946,14 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcCMissiles02 then
 				self:SetWeaponEnabledByLabel('EXClusterMissles02', true)
 				local wepClusterMiss02 = self:GetWeaponByLabel('EXClusterMissles02')
-				wepClusterMiss02:ChangeMaxRadius(150)
+				wepClusterMiss02:ChangeMaxRadius(100)
 			else
 				self:SetWeaponEnabledByLabel('EXClusterMissles02', false)
 			end
 			if self.wcCMissiles03 then
 				self:SetWeaponEnabledByLabel('EXClusterMissles03', true)
 				local wepClusterMiss03 = self:GetWeaponByLabel('EXClusterMissles03')
-				wepClusterMiss03:ChangeMaxRadius(240)
+				wepClusterMiss03:ChangeMaxRadius(100)
 			else
 				self:SetWeaponEnabledByLabel('EXClusterMissles03', false)
 			end
@@ -967,7 +967,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcNMissiles01 then
 				self:SetWeaponEnabledByLabel('TacNukeMissile', true)
 				local wepNukeMiss = self:GetWeaponByLabel('TacNukeMissile')
-				wepNukeMiss:ChangeMaxRadius(240)
+				wepNukeMiss:ChangeMaxRadius(320)
 			else
 				self:SetWeaponEnabledByLabel('TacNukeMissile', false)
 			end

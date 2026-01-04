@@ -117,7 +117,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 168,
-        BuildTime = 3000,
+        BuildTime = 3700,
         BuildableCategory = {
             'CYBRANMOBILEMISSILE',
         },
