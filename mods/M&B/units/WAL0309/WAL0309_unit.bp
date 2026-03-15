@@ -255,7 +255,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 20.88,
+            Damage = 42,
             DamageType = 'Normal',
             DisplayName = 'Reacton Cannon',
             FireTargetLayerCapsTable = {
@@ -294,7 +294,7 @@ UnitBlueprint {
             RackSlavedToTurret = false,
             RackRecoilDistance = 0,
             RackReloadTimeout = 10,
-            RateOfFire = 3,
+            RateOfFire = 1.5,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,

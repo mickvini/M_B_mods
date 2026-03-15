@@ -313,7 +313,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 5.066,
+            Damage = 11,
             DamageType = 'Normal',
             DisplayName = 'Hells Fury Riot Gun',
             FireTargetLayerCapsTable = {
@@ -345,7 +345,7 @@ UnitBlueprint {
             RackSlavedToTurret = true,
             RackRecoilDistance = 0.1,
             RackReloadTimeout = 10,
-            RateOfFire = 6.2,
+            RateOfFire = 3.1,
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
