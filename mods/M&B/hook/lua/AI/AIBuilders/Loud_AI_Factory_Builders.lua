@@ -5,8 +5,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'Engineer Research',
         PlatoonTemplate = 'EngineerBuilderGeneral',
-        Priority = 900,
-        InstanceCount = 1,
+        Priority = 980,
+        InstanceCount = 5,
         BuilderConditions = {
             { MIBC, 'RNDResearchIsNotComplete', {} },
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.2} },

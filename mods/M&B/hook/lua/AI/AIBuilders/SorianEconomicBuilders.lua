@@ -108,13 +108,13 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderEnhance',
 		Priority = 1000,
         BuilderConditions = {
-				{ SBC, 'CmdrHasUpgrade', { 'AdvancedEngineering', true }},
+				{ SBC, 'CmdrHasUpgrade', { 'EXImprovedEngineering', true }},
                 { MIBC, 'FactionIndex', {1, 1}},
             },
         PlatoonAddFunctions = { {SAI, 'BuildOnce'}, },
         BuilderType = 'Any',
         BuilderData = {
-            Enhancement = { 'LeftPod', 'RightPod', 'AdvancedEngineering' },
+            Enhancement = { 'LeftPod', 'RightPod', 'EXImprovedEngineering' },
         },
     },
 	# Aeon
@@ -123,14 +123,14 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderEnhance',
 		Priority = 1000,
         BuilderConditions = {
-				{ SBC, 'CmdrHasUpgrade', { 'AdvancedEngineering', true }},
+				{ SBC, 'CmdrHasUpgrade', { 'EXImprovedEngineering', true }},
 				{ SBC, 'CmdrHasUpgrade', { 'CrysalisBeam', true }},
                 { MIBC, 'FactionIndex', {2, 2}},
             },
         BuilderType = 'Any',
 		PlatoonAddFunctions = { {SAI, 'BuildOnce'}, },
         BuilderData = {
-            Enhancement = { 'CrysalisBeamRemove', 'AdvancedEngineering'},
+            Enhancement = { 'CrysalisBeamRemove', 'EXImprovedEngineering'},
         },
         
     },
@@ -139,14 +139,14 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderEnhance',
 		Priority = 1000,
         BuilderConditions = {
-				{ SBC, 'CmdrHasUpgrade', { 'AdvancedEngineering', true }},
+				{ SBC, 'CmdrHasUpgrade', { 'EXImprovedEngineering', true }},
 				{ SBC, 'CmdrHasUpgrade', { 'CrysalisBeam', false }},
                 { MIBC, 'FactionIndex', {2, 2}},
             },
         BuilderType = 'Any',
 		PlatoonAddFunctions = { {SAI, 'BuildOnce'}, },
         BuilderData = {
-            Enhancement = { 'AdvancedEngineering'},
+            Enhancement = { 'EXImprovedEngineering'},
         },
         
     },
@@ -156,14 +156,14 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderEnhance',
 		Priority = 1000,
         BuilderConditions = {
-				{ SBC, 'CmdrHasUpgrade', { 'AdvancedEngineering', true }},
+				{ SBC, 'CmdrHasUpgrade', { 'EXImprovedEngineering', true }},
 				{ SBC, 'CmdrHasUpgrade', { 'CoolingUpgrade', true}},
                 { MIBC, 'FactionIndex', {3, 3}},
             },
         BuilderType = 'Any',
 		PlatoonAddFunctions = { {SAI, 'BuildOnce'}, },
         BuilderData = {
-            Enhancement = { 'CoolingUpgradeRemove','AdvancedEngineering'},
+            Enhancement = { 'CoolingUpgradeRemove','EXImprovedEngineering'},
         },
         
     },

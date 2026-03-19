@@ -306,7 +306,8 @@ UnitBlueprint {
             MinRadius = 6,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 45,
+            MuzzleVelocity = 18,
+            MuzzleVelocityReduceDistance = 20,
             ProjectileId = '/projectiles/SIFThunthoArtilleryShell01/SIFThunthoArtilleryShell01_proj.bp',
             ProjectilesPerOnFire = 5,
             RackBones = {
