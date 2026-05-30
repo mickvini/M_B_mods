@@ -211,7 +211,7 @@ UnitBlueprint {
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 42,
             ProjectileId = '/mods/M&B/projectiles/BRNT3BTproj/BRNT3BTproj_proj.bp',
-            ProjectileLifetime = 1,
+            ProjectileLifetime = 15,
             RackBones = {
                 {
                     HideMuzzle = 'true',

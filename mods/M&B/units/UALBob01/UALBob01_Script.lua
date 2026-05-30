@@ -31,6 +31,9 @@ UALBob01 = Class(ALandUnit) {
 
      OnStopBeingBuilt = function(self, builder, layer)
         ALandUnit.OnStopBeingBuilt(self, builder, layer)
+        local bp = __blueprints[self.BpId]
+        self:SetCollisionShape( 'Box', bp.CollisionOffsetX or 0, (bp.CollisionOffsetY or 0) + bp.SizeY, bp.CollisionOffsetZ or 0,
+                    bp.SizeX * 0.5, (bp.SizeY + (bp.CollisionOffsetYTall or 0) - (bp.CollisionOffsetY or 0) ) * 0.5, bp.SizeZ * 0.5)
         self:DisableShield()
         self:ToggleAAGuns(false)
     end,
