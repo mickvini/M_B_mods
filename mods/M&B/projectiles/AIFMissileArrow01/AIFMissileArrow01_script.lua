@@ -2,7 +2,7 @@
 # Aeon Arrow Missile
 # Author Resin_Smoker
 #
-local AMissileArrowProjectile = import('/lua/aeonprojectiles.lua').AMissileArrowProjectile
+local AMissileArrowProjectile = import('/mods/M&B/lua/projectiles.lua').AMissileArrowProjectile
 
 ### defined constants
 local waitTime = 0.1

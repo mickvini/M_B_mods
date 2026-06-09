@@ -6,6 +6,27 @@ local EffectTemplate = import('/lua/EffectTemplates.lua')
 local Beams = import('/mods/M&B/lua/collisionbeams.lua')
 local ModEffectTemplate = import('/mods/M&B/lua/EffectTemplates.lua')
 
+ADFGreenLaserBeamWeapon = Class(DefaultBeamWeapon) {
+    BeamType = Beams.LightGreenCollisionBeam,
+    FxMuzzleFlash = {},
+    FxChargeMuzzleFlash = {},
+    FxUpackingChargeEffects = {},
+    FxUpackingChargeEffectScale = 1,
+
+    PlayFxWeaponUnpackSequence = function( self )
+        if not self.ContBeamOn then
+            local army = self.unit:GetArmy()
+            local bp = self:GetBlueprint()
+            for k, v in self.FxUpackingChargeEffects do
+                for ek, ev in bp.RackBones[self.CurrentRackSalvoNumber].MuzzleBones do
+                    CreateAttachedEmitter(self.unit, ev, army, v):ScaleEmitter(self.FxUpackingChargeEffectScale)
+                end
+            end
+            DefaultBeamWeapon.PlayFxWeaponUnpackSequence(self)
+        end
+    end,
+}
+
 NapalmMissileProjectile = Class(DefaultProjectileWeapon) {
     #FxMuzzleFlash = EffectTemplate.TAAMissileLaunchNoBackSmoke,
 
