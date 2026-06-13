@@ -11,11 +11,7 @@
 local TStructureUnit = import('/lua/terranunits.lua').TStructureUnit
 local AWeapons = import('/lua/aeonweapons.lua')
 local TDFGaussCannonWeapon = import('/lua/terranweapons.lua').TDFGaussCannonWeapon
-local WeaponsFile = import('/lua/terranweapons.lua')
-local TIFCommanderDeathWeapon = WeaponsFile.TIFCommanderDeathWeapon
-local AAAZealotMissileWeapon = AWeapons.AAAZealotMissileWeapon
 local EffectTemplate = import('/lua/EffectTemplates.lua')
-local EffectUtils = import('/lua/effectutilities.lua')
 
 BROT0HPD = Class(TStructureUnit) {
     Weapons = {
@@ -26,4 +22,4 @@ BROT0HPD = Class(TStructureUnit) {
     },
 }
 
-TypeClass = BROT1HPD
+TypeClass = BROT0HPD

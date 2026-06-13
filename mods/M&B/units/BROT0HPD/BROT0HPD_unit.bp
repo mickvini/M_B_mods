@@ -266,7 +266,7 @@ UnitBlueprint {
             AimsStraightOnDisable = true,
             ProjectileLifetimeUsesMultiplier = 3.15,
             RangeCategory = 'UWRC_DirectFire',
-            TurretDualManipulators = true,
+            TurretDualManipulators = false,
             Turreted = true,
             WeaponRepackTimeout = 0,
             WeaponUnpacks = false,
