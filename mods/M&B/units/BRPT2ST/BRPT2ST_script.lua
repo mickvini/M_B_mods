@@ -57,7 +57,7 @@ OnKilled = function(self,builder,layer)
 CreatTheEffectsDeath = function(self)
 	local army =  self:GetArmy()
 	for k, v in EffectTemplate['SDFExperimentalPhasonProjHit01'] do
-		CreateAttachedEmitter(self, 'BRPT4LT', army, v):ScaleEmitter(0.7)
+		CreateAttachedEmitter(self, 'BRPT2ST', army, v):ScaleEmitter(0.7)
 	end
 end,
 }

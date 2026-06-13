@@ -127,7 +127,7 @@ UnitBlueprint {
                 Effects = {
                     {
                         Bones = {
-                            'XSA0303',
+                            'XSA0304',
                         },
                         Scale = 2.05,
                         Type = 'Landing01',
@@ -138,7 +138,7 @@ UnitBlueprint {
                 Effects = {
                     {
                         Bones = {
-                            'XSA0303',
+                            'XSA0304',
                         },
                         Scale = 2.05,
                         Type = 'TakeOff01',
@@ -156,10 +156,10 @@ UnitBlueprint {
                     ShaderName = 'Seraphim',
                 },
                 {
-                    AlbedoName = 'xsa0303_lod1_albedo.dds',
+                    AlbedoName = 'xsa0307_lod1_albedo.dds',
                     LODCutoff = 215,
                     ShaderName = 'Seraphim',
-                    SpecularName = 'xsa0303_lod1_specteam.dds',
+                    SpecularName = 'xsa0307_lod1_specteam.dds',
                 },
             },
         },
@@ -174,9 +174,9 @@ UnitBlueprint {
                 Effects = {
                     {
                         Bones = {
-                            'Exhaust_03',
+                            'Exhaust_02',
                         },
-                        Type = 'AirMoveExhaust03',
+                        Type = 'AirMoveExhaust02',
                     },
                 },
             },
