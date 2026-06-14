@@ -270,7 +270,7 @@ UnitBlueprint {
             FiringRandomness = 0.4,
             FiringTolerance = 2,
             Label = 'HeavyPlasma01',
-            MaxRadius = 42,
+            MaxRadius = 46,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 40,

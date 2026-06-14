@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 2400,
-        MaxHealth = 2400,
+        Health = 3480,
+        MaxHealth = 3480,
         RegenRate = 0,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
@@ -261,9 +261,9 @@ UnitBlueprint {
             LAYER_Water = false,
         },
         DragCoefficient = 0.2,
-        MaxAcceleration = 1,
+        MaxAcceleration = 2,
         MaxBrake = 1.2,
-        MaxSpeed = 1.2,
+        MaxSpeed = 2,
         MaxSpeedReverse = 1.5,
         MaxSteerForce = 1000,
         MeshExtentsX = 1,

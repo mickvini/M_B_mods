@@ -50,8 +50,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 990,
-        MaxHealth = 990,
+        Health = 1180,
+        MaxHealth = 1180,
         Shield = {
             ImpactEffects = 'SeraphimShieldHit01',
             OwnerShieldMesh = '/mods/M&B/units/ssl0311/ssl0311_PersonalShield_mesh',
@@ -193,9 +193,9 @@ UnitBlueprint {
     LifeBarOffset = 0.2,
     LifeBarSize = 1,
     Physics = {
-        MaxAcceleration = 2,
+        MaxAcceleration = 2.6,
         MaxBrake = 2,
-        MaxSpeed = 2,
+        MaxSpeed = 2.6,
         MaxSpeedReverse = 0,
         MaxSteerForce = 3,
         MeshExtentsX = 1,

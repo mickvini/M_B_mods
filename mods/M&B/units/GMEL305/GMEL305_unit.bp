@@ -53,8 +53,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 450,
-        MaxHealth = 450,
+        Health = 700,
+        MaxHealth = 700,
         RegenRate = 2,
         Shield = {
             ImpactEffects = 'UEFShieldHit01',

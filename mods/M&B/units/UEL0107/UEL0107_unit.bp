@@ -310,7 +310,7 @@ UnitBlueprint {
             FiringRandomness = 0.6,
             FiringTolerance = 1,
             Label = 'Grenade',
-            MaxRadius = 36,
+            MaxRadius = 42,
             MinRadius = 5,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

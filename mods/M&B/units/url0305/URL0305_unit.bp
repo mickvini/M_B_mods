@@ -220,7 +220,7 @@ UnitBlueprint {
             HeadingArcCenter = 0,
             HeadingArcRange = 180,
             Label = 'MainGun',
-            MaxRadius = 42,
+            MaxRadius = 46,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 55,
