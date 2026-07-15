@@ -1840,21 +1840,10 @@ function GetUpgradePathForACU(oACU, bWantToDoTeleSnipe)
         end
     end
 
-    --M&B: vanilla preferred-upgrades (HeavyAntiMatterCannon, Shield, CrysalisBeam, CoolingUpgrade, etc.) DONT EXIST in M&B ACUs, so after the forced first upgrade the bot stops upgrading entirely (doesnt know what else it can get). Replace the path with a combat-focused sequence built from enhancements that ACTUALLY exist in this M&B ACU: additive slots first (power/cooling/weapon/shield/armor - these are separate slots so they stack), then the combat tiers (Assault/Apocolyptic). M28 skips any that are invalid/already-have, so a generous list is safe. Faction-specific weapons auto-filter (only this ACU's exist).
-    if M28Utilities.IsMBModActive() then
-        local tMNBUpg = {}
-        local tMNBPriority = {'EXPowerBooster','EXImprovedCoolingSystem','EXChronotonBooster','EXCannonBigBall','EXDisruptorrBooster','EXRipperBooster','EXZephyrBooster','EXAntiMatterCannon','EXArtilleryMiasma','EXMasor','EXGattlingEnergyCannon','EXEMPArray','EXShieldBattery','EXArmorPlating','EXActiveShielding','EXEnergyShellHardener','EXStructuralIntegrity','EXAssaultEngineering','EXApocolypticEngineering'}
-        for iName = 1, table.getn(tMNBPriority) do
-            local sName = tMNBPriority[iName]
-            local tEnh = oBP.Enhancements[sName]
-            --M&B: only BASE enhancements (no Prerequisite). Tiered upgrades (Assault/Apocolyptic req Combat/Assault; PowerBooster req ImprovedContainmentBottle req CannonBigBall; etc.) cause '*ERROR: Ordered enhancement does not have the proper prereq!' if queued out of chain order. Base enhancements fill the ACU's slots directly (weapon arms, back booster, cooling, shield).
-            if tEnh and not tEnh.Prerequisite then table.insert(tMNBUpg, sName) end
-        end
-        if table.getn(tMNBUpg) > 0 then oACU[reftPreferredUpgrades] = tMNBUpg end
-    end
+    --M&B REMOVED sequence-builder (the "list of many ACU upgrades"). It was added so the com would keep upgrading past the first one, but the user only wants the single forced first upgrade then stop. Vanilla preferred-upgrade names (HeavyAntiMatterCannon, Shield, etc. set above) dont exist in M&B ACUs, so they get filtered out below - after the forced first upgrade the com does nothing further, as intended.
 
     --M&B: prepend EXCombatEngineering as the first ACU upgrade so the combat ACU gets HP/regen early and doesnt fight bare (it was losing fights it should win). Only triggers in M&B (this enhancement doesnt exist in vanilla bps) and only on the first upgrade, so the rest of M28's upgrade path is preserved after.
-    if oBP.Enhancements['EXCombatEngineering'] and oACU[refiUpgradeCount] == 0 and not(oACU:HasEnhancement('EXCombatEngineering')) then
+    if oBP.Enhancements['EXCombatEngineering'] and oACU[refiUpgradeCount] == 0 and not(oACU.MNB_FirstUpgradeIssued) and not(oACU:HasEnhancement('EXCombatEngineering')) then
         table.insert(oACU[reftPreferredUpgrades], 1, 'EXCombatEngineering')
         if bDebugMessages == true then LOG(sFunctionRef..': M&B - prepended EXCombatEngineering as first ACU upgrade for combat') end
     end
@@ -2064,7 +2053,7 @@ function GetACUUpgradeWanted(oACU, bWantToDoTeleSnipe, tLZOrWZData, tLZOrWZTeamD
         local iTeam = aiBrain.M28Team
         local bDontConsiderAnyUpgrades = false
         --M&B: force the first ACU upgrade (EXCombatEngineering) past ALL norush/safe-spot/eco gates, but only after the opening (factory + nearby mex built, ~90s). In M&B the AI never upgrades on its own; the combat boost (HP/regen) means it survives fights instead of dying bare. Only in M&B (sab9101 lab bp exists); only on the first upgrade; the rest of M28's path runs after.
-        if __blueprints['sab9101'] and GetGameTimeSeconds() >= 90 and oACU[refiUpgradeCount] == 0 and oACU:GetBlueprint().Enhancements['EXCombatEngineering'] and not(oACU:HasEnhancement('EXCombatEngineering')) then
+        if __blueprints['sab9101'] and GetGameTimeSeconds() >= 90 and oACU[refiUpgradeCount] == 0 and not(oACU.MNB_FirstUpgradeIssued) and oACU:GetBlueprint().Enhancements['EXCombatEngineering'] and not(oACU:HasEnhancement('EXCombatEngineering')) then
             --M&B: event-driven kickstart - grant mass when the bot starts its first ACU upgrade. The upgrade costs ~2400 mass at 21/s (~114s); a single 2000 grant either overflows storage (~2000 cap, wasted) or drains to -50 mid-upgrade as engineers keep building. Stagger instead: 1000 now, +1000@30s, +1000@60s (total 3000) so mass arrives in step with the upgrade's burn rate and avoids a multi-minute -50 stall.
             if not aiBrain.MNB_ACUUpgradeMass then
                 aiBrain.MNB_ACUUpgradeMass = true
@@ -2078,6 +2067,7 @@ function GetACUUpgradeWanted(oACU, bWantToDoTeleSnipe, tLZOrWZData, tLZOrWZTeamD
                 end)
             end
             if bDebugMessages == true then LOG(sFunctionRef..': M&B - forcing first ACU upgrade EXCombatEngineering past all gates') end
+            oACU.MNB_FirstUpgradeIssued = true --M&B: one-shot. Once weve issued the first upgrade, never force it again - even if M28 cancels it mid-build (count stays 0). Stops the com re-attempting the first upgrade forever.
             return 'EXCombatEngineering', true
         end
         --M&B REMOVED 2nd/3rd forced ACU upgrades (Assault/Apocolyptic) per user - they were causing issues and the user is done tuning. Only the first upgrade (EXCombatEngineering) remains forced. The gate-relaxation below was also removed so the bot does NOT try to upgrade further via M28's main logic (keeps it to just the one forced upgrade).

@@ -7857,9 +7857,10 @@ function GetBlueprintToBuildForResearchCentre(aiBrain, oFactory)
             end
         end
     end
-    --M&B: follow the mod author's intended research order - tiers interleaved with the 3 land-unit boosts after each tier (cheaper than the next tier, so mass can go to the parallel mex upgrades instead of the lab chaining expensive tiers). Boost bps are generated in hook/lua/system/Blueprints.lua as {ser/sar/srr/ssr}9{techid}00, so strip the 3-letter faction prefix from each buildable research bp and rank it against the order; pick the earliest-ranked buildable one. CanBuild already enforces prerequisites + faction + one-shot (a started research restricts itself), so this only sets precedence. Once all 13 ordered items are done, fall through to the default.
+    --M&B: follow the mod author's intended research order - tiers interleaved with land-unit boosts after each tier (cheaper than the next tier, so mass can go to the parallel mex upgrades instead of the lab chaining expensive tiers). Boost bps are generated in hook/lua/system/Blueprints.lua as {ser/sar/srr/ssr}9{techid}00, so strip the 3-letter faction prefix from each buildable research bp and rank it against the order; pick the earliest-ranked buildable one. CanBuild already enforces prerequisites + faction + one-shot (a started research restricts itself), so this only sets precedence. Once all 10 ordered items are done, fall through to the default.
     if M28Utilities.IsMBModActive() and tBlueprints then
-        local tMNBOrder = {['9100']=1, ['9200']=2, ['910600']=3, ['910500']=4, ['910400']=5, ['9300']=6, ['920600']=7, ['920500']=8, ['920400']=9, ['9400']=10, ['930600']=11, ['930500']=12, ['930400']=13}
+        --M&B: user removed the *400 land boosts (910400/920400/930400) from the queue so the bot reaches T4 (9400) faster. 10 ordered items now; *400 bps fall through to default (researched only after T4 if at all).
+        local tMNBOrder = {['9100']=1, ['9200']=2, ['910600']=3, ['910500']=4, ['9300']=5, ['920600']=6, ['920500']=7, ['9400']=8, ['930600']=9, ['930500']=10}
         local sMNBChosen
         local iMNBChosenRank = 99
         for _, sBPID in tBlueprints do
