@@ -1985,12 +1985,12 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 13.5,
+            Damage = 60,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Quantum Storm Cannon',
-            DoTPulses = 20,
-            DoTTime = 2,
+            DoTPulses = 5,
+            DoTTime = 1,
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
                 Seabed = 'Land|Water|Seabed',
@@ -2003,7 +2003,7 @@ UnitBlueprint {
             MuzzleChargeDelay = 2.5,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 15,
+            MuzzleVelocity = 30,
             ProjectileId = '/mods/M&B/projectiles/SeraACUBigBall01/SeraACUBigBall01_proj.bp',
             RackBones = {
                 {
@@ -2065,12 +2065,12 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 18.5,
+            Damage = 68,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Quantum Storm Cannon',
-            DoTPulses = 20,
-            DoTTime = 2,
+            DoTPulses = 5,
+            DoTTime = 1,
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
                 Seabed = 'Land|Water|Seabed',
@@ -2083,7 +2083,7 @@ UnitBlueprint {
             MuzzleChargeDelay = 2.5,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 15,
+            MuzzleVelocity = 30,
             ProjectileId = '/mods/M&B/projectiles/SeraACUBigBall02/SeraACUBigBall02_proj.bp',
             RackBones = {
                 {
@@ -2145,12 +2145,12 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 26.5,
+            Damage = 82,
             DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Quantum Storm Cannon',
-            DoTPulses = 20,
-            DoTTime = 2,
+            DoTPulses = 5,
+            DoTTime = 1,
             FireTargetLayerCapsTable = {
                 Land = 'Land|Water|Seabed',
                 Seabed = 'Land|Water|Seabed',
@@ -2163,7 +2163,7 @@ UnitBlueprint {
             MuzzleChargeDelay = 2.5,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 15,
+            MuzzleVelocity = 30,
             ProjectileId = '/mods/M&B/projectiles/SeraACUBigBall03/SeraACUBigBall03_proj.bp',
             RackBones = {
                 {
@@ -2220,8 +2220,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 48,
-			DamageRadius = 2,
+            Damage = 86,
+			DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gatling Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -2294,8 +2294,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 120,
-			DamageRadius = 2,
+            Damage = 160,
+			DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gatling Plasma Cannon',
             FireTargetLayerCapsTable = {
@@ -2368,8 +2368,8 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 150,
-			DamageRadius = 2,
+            Damage = 240,
+			DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Gatling Plasma Cannon',
             FireTargetLayerCapsTable = {

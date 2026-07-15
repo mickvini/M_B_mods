@@ -108,7 +108,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 17400,
-        BuildTime = 84600,
+        BuildTime = 42300,
         MaintenanceConsumptionPerSecondEnergy = 850,
         RebuildBonusIds = {
             'uab2302',
@@ -223,12 +223,12 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 745,
+            Damage = 300,
             DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Sonance Artillery',
-            DoTPulses = 2,
-            DoTTime = 2,
+            DoTPulses = 5,
+            DoTTime = 1,
             EnergyDrainPerSecond = 0,
             EnergyRequired = 0,
             FireTargetLayerCapsTable = {

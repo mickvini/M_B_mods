@@ -4,7 +4,7 @@
 #**
 #**  Summary  :  BlackOps: Adv Command Unit - Serephim ACU
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
 local SWalkingLandUnit = import('/lua/seraphimunits.lua').SWalkingLandUnit
@@ -235,6 +235,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
         # Restrict what enhancements will enable later
         self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
+        --M&B: bot ACU produces 15 mass/s (player 2); mass income is on the ACU (not mexes) so adjacency cant wipe it. Enhancement handlers also use 15 as the bot base.
+        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -329,6 +331,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		self.wcAA01 = false
 		self.wcAA02 = false
 		self.wcTMissiles01 = false
+		self.wcDisruptor01 = false
 		self:ForkThread(self.WeaponRangeReset)
 		self:ForkThread(self.WeaponConfigCheck)
 		self.RBImpEngineering = false
@@ -480,8 +483,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
                                         Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
                                         unit.MarkLevel[7] = MK[army][7][factionCat] 
                                     end
-                                    LOG(MK[army][8][factionCat])
-                                    LOG(unit.MarkLevel[8])
+--                                    LOG(MK[army][8][factionCat])
+--                                    LOG(unit.MarkLevel[8])
                                     if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
                                         Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
                                         unit.MarkLevel[8] = MK[army][8][factionCat] 
@@ -518,73 +521,74 @@ ESL0001 = Class( SWalkingLandUnit ) {
     end,
 
     EXRegenBuffThread = function(self)
-		--if Buff.HasBuff( self, 'EXRegenBoost' ) then
-		--	Buff.RemoveBuff( self, 'EXRegenBoost' )
-		--end
 		self.regenammount = 0
 		local EXBP = self:GetBlueprint()
-		if self.RBImpEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
-		end
-		if self.RBAdvEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
-		end
+		-- Engineering line: only highest tier contributes
 		if self.RBExpEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXExperimentalEngineering.NewRegenRate
+		elseif self.RBAdvEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
+		elseif self.RBImpEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
 		end
-		if self.RBComEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
-		end
-		if self.RBAssEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
-		end
+		-- Combat Engineering line: only highest tier contributes
 		if self.RBApoEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXApocolypticEngineering.NewRegenRate
+		elseif self.RBAssEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
+		elseif self.RBComEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
 		end
-		if self.RBDefTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXL1Lambda.NewRegenRate
-		end
-		if self.RBDefTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXL2Lambda.NewRegenRate
-		end
+		-- Lambda / Shield line: only highest tier contributes
 		if self.RBDefTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXL3Lambda.NewRegenRate
+		elseif self.RBDefTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXL2Lambda.NewRegenRate
+		elseif self.RBDefTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXL1Lambda.NewRegenRate
 		end
-		if self.RBComTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXBasicDefence.NewRegenRate
-		end
-		if self.RBComTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXTacticalMisslePack.NewRegenRate
-		end
+		-- Combat tier (Overcharge / Missile) line: only highest tier contributes
 		if self.RBComTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXOverchargeOverdrive.NewRegenRate
+		elseif self.RBComTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTacticalMisslePack.NewRegenRate
+		elseif self.RBComTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXBasicDefence.NewRegenRate
 		end
-		if self.RBIntTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicsEnhancment.NewRegenRate
-		end
-		if self.RBIntTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
-		end
+		-- Intel line: only highest tier contributes (EXElectronicsEnhancment has NewRegenRate 0, skipped)
 		if self.RBIntTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXCloakingSubsystems.NewRegenRate
-		end		
-		--if not Buffs['EXRegenBoost'] then
-        --    BuffBlueprint {
-        --        Name = 'EXRegenBoost',
-        --        DisplayName = 'EXRegenBoost',
-        --        BuffType = 'EXRegenBoost',
-        --        Stacks = 'REPLACE',
-        --        Duration = -1,
-        --        Affects = {
-        --            Regen = {
-        --                Add = self.regenammount,
-        --                Mult = 1.0,
-        --            },
-        --        },
-        --    }
-        --end
-        --Buff.ApplyBuff(self, 'EXRegenBoost')
-		--LOG('xxxxxxxxxxxx Sera Applied Regen', self.regenammount)
+		elseif self.RBIntTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
+		end
+		-- Torpedo line: only highest tier contributes
+		if self.wcTorp03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoClusterLauncher.NewRegenRate
+		elseif self.wcTorp02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoRapidLoader.NewRegenRate
+		elseif self.wcTorp01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoLauncher.NewRegenRate
+		end
+		-- Quantum Storm Cannon (Big Ball) line: only highest tier contributes
+		if self.wcBigBall03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXPowerBooster.NewRegenRate
+		elseif self.wcBigBall02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedContainmentBottle.NewRegenRate
+		elseif self.wcBigBall01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXCannonBigBall.NewRegenRate
+		end
+		-- Plasma Gatling (Rapid) line: only highest tier contributes
+		if self.wcRapid03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXEnergyShellHardener.NewRegenRate
+		elseif self.wcRapid02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedCoolingSystem.NewRegenRate
+		elseif self.wcRapid01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXCannonRapid.NewRegenRate
+		end
+		-- Chronoton booster line: single tier
+		if self.wcDisruptor01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXChronotonBooster.NewRegenRate
+		end
     end,
 
 	EXRegenHeartbeat = function(self)
@@ -807,14 +811,14 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			if self.wcAA01 then
 				self:SetWeaponEnabledByLabel('EXAA01', true)
 				local wepLance01 = self:GetWeaponByLabel('EXAA01')
-				wepLance01:ChangeMaxRadius(30)
+				wepLance01:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXAA01', false)
 			end
 			if self.wcAA02 then
 				self:SetWeaponEnabledByLabel('EXAA02', true)
 				local wepLance02 = self:GetWeaponByLabel('EXAA02')
-				wepLance02:ChangeMaxRadius(30)
+				wepLance02:ChangeMaxRadius(60)
 			else
 				self:SetWeaponEnabledByLabel('EXAA02', false)
 			end
@@ -941,7 +945,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXSeraHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXSeraHealthBoost1',
@@ -973,7 +977,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1004,7 +1008,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXSeraHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXSeraHealthBoost2',
@@ -1036,7 +1040,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1054,7 +1058,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['SERAPHIMACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'SERAPHIMACUT4BuildRate',
@@ -1103,7 +1107,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
 			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1114,7 +1118,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost3' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBImpEngineering = false
 			self.RBAdvEngineering = false
 			self.RBExpEngineering = false
@@ -1212,7 +1216,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost4')
 			self.RBComEngineering = true
 			self.RBAssEngineering = false
@@ -1239,7 +1243,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost4' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1344,7 +1348,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost5')  
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1374,7 +1378,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost5' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1415,7 +1419,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost6')
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1448,7 +1452,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost6' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1456,12 +1460,14 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		elseif enh =='EXChronotonBooster' then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             wepChronotron:ChangeMaxRadius(40)
+			self.wcDisruptor01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXChronotonBoosterRemove' then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self.wcDisruptor01 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
             if not Buffs['EXSeraHealthBoost7'] then

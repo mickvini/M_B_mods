@@ -658,7 +658,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 60,
+            Damage = 150,
             DamageType = 'Normal',
             DisplayName = 'Reacton Cannon',
             FireTargetLayerCapsTable = {
@@ -668,7 +668,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'RightReactonCannon',
-            MaxRadius = 28,
+            MaxRadius = 50,
             MinRadius = 1,
             MuzzleChargeDelay = 0.1,
             MuzzleSalvoDelay = 0,

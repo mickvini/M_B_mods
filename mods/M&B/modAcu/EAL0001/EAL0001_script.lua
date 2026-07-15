@@ -4,7 +4,7 @@
 #**
 #**  Summary  :  BlackOps: Adv Command Unit - Aeon ACU
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
 local AWalkingLandUnit = import('/lua/aeonunits.lua').AWalkingLandUnit
@@ -32,9 +32,18 @@ local VizMarker = import('/lua/sim/VizMarker.lua').VizMarker
 local EXQuantumMaelstromWeapon = Class(Weapon) {
 
     OnFire = function(self)
-        local blueprint = self:GetBlueprint()
-        DamageArea(self.unit, self.unit:GetPosition(), blueprint.DamageRadius,
-                   blueprint.Damage, blueprint.DamageType, blueprint.DamageFriendly)
+        -- Damage is applied by EAL0001:MaelstromAuraThread (5 Hz DoT aura).
+    end,
+}
+
+local EXChronoDampenerWeapon = Class(ADFChronoDampener) {
+    CreateProjectileAtMuzzle = function(self, muzzle)
+        local unit = self.unit
+        local pos = unit:GetPosition()
+        local dtype = self:GetBlueprint().DamageType
+        for _, ring in self.Rings do
+            DamageArea(unit, pos, ring[1], ring[2], dtype, false)
+        end
     end,
 }
 EAL0001 = Class(AWalkingLandUnit) {
@@ -114,8 +123,12 @@ EAL0001 = Class(AWalkingLandUnit) {
             end,	
 		},
         RightDisruptor = Class(ADFDisruptorCannonWeapon) {},
-        EXChronoDampener01 = Class(ADFChronoDampener) {},
-        EXChronoDampener02 = Class(ADFChronoDampener) {},
+        EXChronoDampener01 = Class(EXChronoDampenerWeapon) {
+            Rings = { {30, 50}, {20, 50}, {10, 50} },
+        },
+        EXChronoDampener02 = Class(EXChronoDampenerWeapon) {
+            Rings = { {40, 100}, {30, 100}, {20, 150}, {10, 150} },
+        },
         EXTorpedoLauncher01 = Class(AANChronoTorpedoWeapon) {},
         EXTorpedoLauncher02 = Class(AANChronoTorpedoWeapon) {},
         EXTorpedoLauncher03 = Class(AANChronoTorpedoWeapon) {},
@@ -216,6 +229,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             self.RemoteViewingData.RemoteViewingFunctions = {}
             self.RemoteViewingData.DisableCounter = 0
             self.RemoteViewingData.IntelButton = true
+        --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
+        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -508,8 +523,8 @@ EAL0001 = Class(AWalkingLandUnit) {
                                         Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
                                         unit.MarkLevel[7] = MK[army][7][factionCat] 
                                     end
-                                    LOG(MK[army][8][factionCat])
-                                    LOG(unit.MarkLevel[8])
+--                                    LOG(MK[army][8][factionCat])
+--                                    LOG(unit.MarkLevel[8])
                                     if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
                                         Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
                                         unit.MarkLevel[8] = MK[army][8][factionCat] 
@@ -603,73 +618,62 @@ EAL0001 = Class(AWalkingLandUnit) {
     end,
 
     EXRegenBuffThread = function(self)
-		--if Buff.HasBuff( self, 'EXRegenBoost' ) then
-		--	Buff.RemoveBuff( self, 'EXRegenBoost' )
-		--end
-		
-		local EXBP = self:GetBlueprint()		
-		if self.RBImpEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
-		end
-		if self.RBAdvEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
-		end
+		self.regenammount = 0
+		local EXBP = self:GetBlueprint()
 		if self.RBExpEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXExperimentalEngineering.NewRegenRate
-		end
-		if self.RBComEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
-		end
-		if self.RBAssEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
+		elseif self.RBAdvEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
+		elseif self.RBImpEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
 		end
 		if self.RBApoEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXApocolypticEngineering.NewRegenRate
-		end
-		if self.RBDefTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXShieldBattery.NewRegenRate
-		end
-		if self.RBDefTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXActiveShielding.NewRegenRate
+		elseif self.RBAssEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
+		elseif self.RBComEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
 		end
 		if self.RBDefTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedShieldBattery.NewRegenRate
-		end
-		if self.RBComTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXMaelstromQuantum.NewRegenRate
-		end
-		if self.RBComTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXFieldExpander.NewRegenRate
+		elseif self.RBDefTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXActiveShielding.NewRegenRate
+		elseif self.RBDefTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXShieldBattery.NewRegenRate
 		end
 		if self.RBComTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXQuantumInstability.NewRegenRate
-		end
-		if self.RBIntTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicsEnhancment.NewRegenRate
-		end
-		if self.RBIntTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
+		elseif self.RBComTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXFieldExpander.NewRegenRate
+		elseif self.RBComTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXMaelstromQuantum.NewRegenRate
 		end
 		if self.RBIntTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXCloakingSubsystems.NewRegenRate
-		end		
-		--if not Buffs['EXRegenBoost'] then
-        --    BuffBlueprint {
-        --        Name = 'EXRegenBoost',
-        --        DisplayName = 'EXRegenBoost',
-        --        BuffType = 'EXRegenBoost',
-        --        Stacks = 'REPLACE',
-        --        Duration = -1,
-        --        Affects = {
-        --            Regen = {
-        --                Add = self.regenammount,
-        --                Mult = 1.0,
-        --            },
-        --        },
-        --    }
-        --end
-        --Buff.ApplyBuff(self, 'EXRegenBoost')
-		--LOG('xxxxxxxxxxxx Aeon Applied Regen', self.regenammount)
+		elseif self.RBIntTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
+		elseif self.RBIntTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicsEnhancment.NewRegenRate
+		end
+		if self.wcTorp03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoClusterLauncher.NewRegenRate
+		elseif self.wcTorp02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoRapidLoader.NewRegenRate
+		elseif self.wcTorp01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoLauncher.NewRegenRate
+		end
+		if self.wcBeam03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXPowerBooster.NewRegenRate
+		elseif self.wcBeam02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedCoolingSystem.NewRegenRate
+		elseif self.wcBeam01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXBeamPhason.NewRegenRate
+		end
+		if self.wcDisruptor02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXDisruptorrEnhancer.NewRegenRate
+		elseif self.wcDisruptor01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXDisruptorrBooster.NewRegenRate
+		end
     end,
 
 	EXRegenHeartbeat = function(self)
@@ -774,6 +778,21 @@ EAL0001 = Class(AWalkingLandUnit) {
 		end
     end,
 	
+    MaelstromAuraThread = function(self)
+        while self.wcMaelstrom01 or self.wcMaelstrom02 or self.wcMaelstrom03 do
+            local radius, dmg
+            if self.wcMaelstrom03 then
+                radius, dmg = 40, 20
+            elseif self.wcMaelstrom02 then
+                radius, dmg = 35, 10
+            else
+                radius, dmg = 30, 5
+            end
+            DamageArea(self, self:GetPosition(), radius, dmg, 'OverCharge', false)
+            WaitSeconds(0.2)
+        end
+    end,
+
     WeaponConfigCheck = function(self)
 		if self.wcBuildMode then
 			self:SetWeaponEnabledByLabel('EXTargetPainter', false)
@@ -822,14 +841,14 @@ EAL0001 = Class(AWalkingLandUnit) {
 			if self.wcChrono01 then
 				self:SetWeaponEnabledByLabel('EXChronoDampener01', true)
 				local wepFlamer01 = self:GetWeaponByLabel('EXChronoDampener01')
-				wepFlamer01:ChangeMaxRadius(25)
+				wepFlamer01:ChangeMaxRadius(30)
 			else
 				self:SetWeaponEnabledByLabel('EXChronoDampener01', false)
 			end
 			if self.wcChrono02 then
 				self:SetWeaponEnabledByLabel('EXChronoDampener02', true)
 				local wepFlamer02 = self:GetWeaponByLabel('EXChronoDampener02')
-				wepFlamer02:ChangeMaxRadius(30)
+				wepFlamer02:ChangeMaxRadius(40)
 			else
 				self:SetWeaponEnabledByLabel('EXChronoDampener02', false)
 			end
@@ -1040,7 +1059,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXAeonHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost1',
@@ -1072,7 +1091,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1103,7 +1122,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXAeonHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost2',
@@ -1135,7 +1154,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1153,7 +1172,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
 			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['AEONACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'AEONACUT4BuildRate',
@@ -1201,7 +1220,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
 			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1254,7 +1273,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcChrono02 = false
 			local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = true
@@ -1262,7 +1281,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineeringRemove' then
-        	local bpEcon = self.GetBlueprint().Economy
+        	local bpEcon = self:GetBlueprint().Economy
             local bp = bpEcon.BuildRate
             if Buff.HasBuff( self, 'AEONACUT2BuildRate' ) then
                 Buff.RemoveBuff( self, 'AEONACUT2BuildRate' )
@@ -1277,7 +1296,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcChrono01 = false
 			self.wcChrono02 = false
 			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = false
@@ -1323,7 +1342,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcChrono02 = true
 			local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = true
@@ -1347,7 +1366,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost5' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcChrono01 = false
 			self.wcChrono02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1393,7 +1412,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXAeonHealthBoost6')
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
@@ -1418,7 +1437,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost6' )
             end
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcChrono01 = false
 			self.wcChrono02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1444,6 +1463,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonDisruptorrHealthBoost')
+			self.wcDisruptor01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXDisruptorrBoosterRemove' then
@@ -1452,22 +1472,28 @@ EAL0001 = Class(AWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXAeonDisruptorrHealthBoost' )
             end
 			wepTargetPainter:ChangeMaxRadius(22)
+			self.wcDisruptor01 = false
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXDisruptorrEnhancer' then
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(35)
+            wepDisruptor:AddDamageMod(-74)
+            wepDisruptor:AddDamageMod(240)
+            wepDisruptor:ChangeMaxRadius(45)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(35)
 			self.DisruptorRange = true
+			self.wcDisruptor02 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
         elseif enh =='EXDisruptorrEnhancerRemove' then
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 22)
+            wepDisruptor:AddDamageMod(74)
+            wepDisruptor:AddDamageMod(-240)
+            wepDisruptor:ChangeMaxRadius(40)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(22)
 			self.DisruptorRange = false
+			self.wcDisruptor02 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
             if not Buffs['EXAeonHealthBoost7'] then
@@ -1500,9 +1526,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost7' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost7' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcTorp01 = false
@@ -1546,8 +1569,6 @@ EAL0001 = Class(AWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost8' )
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
             wepDisruptor:AddDamageMod(-64)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
@@ -1593,8 +1614,6 @@ EAL0001 = Class(AWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost9' )
             end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
             wepDisruptor:AddDamageMod(-240)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
@@ -1637,9 +1656,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost10' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
@@ -1685,9 +1701,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost11' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost11' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
@@ -1734,9 +1747,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost12' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost12' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcArtillery01 = false
@@ -1778,9 +1788,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost13' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
@@ -1806,8 +1813,6 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost14')
-			local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(40)
             self.wcBeam01 = false
 			self.wcBeam02 = true
 			self.wcBeam03 = false
@@ -1823,9 +1828,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost14' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost14' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
@@ -1869,9 +1871,6 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost15' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost15' )
             end
-            local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepDisruptor:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(30)
 			self.wcBeam01 = false
@@ -1881,14 +1880,37 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXShieldBattery' then
+            if not Buffs['EXAeonShieldHealth1'] then
+                BuffBlueprint {
+                    Name = 'EXAeonShieldHealth1',
+                    DisplayName = 'EXAeonShieldHealth1',
+                    BuffType = 'EXAeonShieldHealth1',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXAeonShieldHealth1')
             self:AddToggleCap('RULEUTC_ShieldToggle')
             self:CreatePersonalShield(bp)
             self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
             self:SetMaintenanceConsumptionActive()
 			self.ccShield = true
+			self.RBDefTier1 = true
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh == 'EXShieldBatteryRemove' then
+            if Buff.HasBuff(self, 'EXAeonShieldHealth1') then
+                Buff.RemoveBuff(self, 'EXAeonShieldHealth1')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXShieldBatteryRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -1897,6 +1919,22 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXActiveShielding' then
+            if not Buffs['EXAeonShieldHealth2'] then
+                BuffBlueprint {
+                    Name = 'EXAeonShieldHealth2',
+                    DisplayName = 'EXAeonShieldHealth2',
+                    BuffType = 'EXAeonShieldHealth2',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXAeonShieldHealth2')
             self:DestroyShield()
             ForkThread(function()
                 WaitTicks(1)
@@ -1905,9 +1943,17 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
             self:SetMaintenanceConsumptionActive()
 			self.ccShield = true
+			self.RBDefTier1 = true
+			self.RBDefTier2 = true
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXActiveShieldingRemove' then
+            if Buff.HasBuff(self, 'EXAeonShieldHealth2') then
+                Buff.RemoveBuff(self, 'EXAeonShieldHealth2')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXActiveShieldingRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -1916,6 +1962,22 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXImprovedShieldBattery' then
+            if not Buffs['EXAeonShieldHealth3'] then
+                BuffBlueprint {
+                    Name = 'EXAeonShieldHealth3',
+                    DisplayName = 'EXAeonShieldHealth3',
+                    BuffType = 'EXAeonShieldHealth3',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXAeonShieldHealth3')
             self:DestroyShield()
             ForkThread(function()
                 WaitTicks(1)
@@ -1925,9 +1987,18 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:SetMaintenanceConsumptionActive()
 			self:SetWeaponEnabledByLabel('EXAntiMissile', true)
 			self.ccShield = true
+			self.RBDefTier1 = true
+			self.RBDefTier2 = true
+			self.RBDefTier3 = true
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXImprovedShieldBatteryRemove' then
+            if Buff.HasBuff(self, 'EXAeonShieldHealth3') then
+                Buff.RemoveBuff(self, 'EXAeonShieldHealth3')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXImprovedShieldBatteryRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -2102,6 +2173,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcMaelstrom03 = false
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
+			self:ForkThread(self.MaelstromAuraThread)
 			self.RBComTier1 = true
 			self.RBComTier2 = false
 			self.RBComTier3 = false

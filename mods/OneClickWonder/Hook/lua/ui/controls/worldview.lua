@@ -59,7 +59,7 @@ do
 			local availableOrders, availableToggles, buildableCategories = GetUnitCommandData(selectedUnits or {})
 			
 			--	if we mouse-over any of our structures, add it.
-			if rollOver and rollOver.userUnit:GetArmy() == GetFocusArmy() and rollOver.userUnit:IsInCategory('STRUCTURE') then
+			if rollOver and rollOver.userUnit and rollOver.userUnit.GetArmy and rollOver.userUnit:GetArmy() == GetFocusArmy() and rollOver.userUnit:IsInCategory('STRUCTURE') then
 				--SPEW('added a moused-over structure.')
 				CM.AddAliveStruct(rollOver.userUnit)
 			end

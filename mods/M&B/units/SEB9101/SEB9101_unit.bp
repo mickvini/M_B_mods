@@ -147,7 +147,7 @@ UnitBlueprint {
         FactionName = 'UEF',
         Icon = 'land',
         SelectionPriority = 5,
-        UpgradesTo = 'seb9201',
+        --UpgradesTo 'seb9201' removed: T2 lab blueprint never existed (dangling); it made M28 treat the lab as upgradeable and refuse to build a 2nd lab.
         UnitName = '<LOC seb9101_name>Tyson Campus',
         ConstructionBar = true,
     },

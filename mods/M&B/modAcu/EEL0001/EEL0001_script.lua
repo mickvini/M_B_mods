@@ -4,7 +4,7 @@
 #**
 #**  Summary  :  BlackOps: Adv Command Unit - UEF ACU
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 local Shield = import('/lua/shield.lua').Shield
 
@@ -240,6 +240,8 @@ EEL0001 = Class(TWalkingLandUnit) {
         # Restrict what enhancements will enable later
         self:AddBuildRestriction( categories.UEF * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         self:AddBuildRestriction( categories.UEF * (categories.BUILTBYTIER4COMMANDER) )
+        --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
+        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -318,8 +320,8 @@ EEL0001 = Class(TWalkingLandUnit) {
                                         Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
                                         unit.MarkLevel[7] = MK[army][7][factionCat] 
                                     end
-                                    LOG(MK[army][8][factionCat])
-                                    LOG(unit.MarkLevel[8])
+--                                    LOG(MK[army][8][factionCat])
+--                                    LOG(unit.MarkLevel[8])
                                     if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
                                         Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
                                         unit.MarkLevel[8] = MK[army][8][factionCat] 
@@ -399,6 +401,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 		self.wcCMissiles03 = false
 		self.wcTMissiles01 = false
 		self.wcNMissiles01 = false
+		self.wcZephyr01 = false
 		self:ForkThread(self.WeaponConfigCheck)
 		self:ForkThread(self.WeaponRangeReset)
         self:ForkThread(self.GiveInitialResources)
@@ -411,6 +414,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 		self.RBDefTier1 = false
 		self.RBDefTier2 = false
 		self.RBDefTier3 = false
+		self.RBDefTier4 = false
 		self.RBComTier1 = false
 		self.RBComTier2 = false
 		self.RBComTier3 = false
@@ -633,73 +637,69 @@ EEL0001 = Class(TWalkingLandUnit) {
     end,
 	
     EXRegenBuffThread = function(self)
-		--if Buff.HasBuff( self, 'EXRegenBoost' ) then
-		--	Buff.RemoveBuff( self, 'EXRegenBoost' )
-		--end
 		self.regenammount = 0
 		local EXBP = self:GetBlueprint()
-		if self.RBImpEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
-		end
-		if self.RBAdvEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
-		end
 		if self.RBExpEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXExperimentalEngineering.NewRegenRate
-		end
-		if self.RBComEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
-		end
-		if self.RBAssEngineering then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
+		elseif self.RBAdvEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAdvancedEngineering.NewRegenRate
+		elseif self.RBImpEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedEngineering.NewRegenRate
 		end
 		if self.RBApoEngineering then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXApocolypticEngineering.NewRegenRate
+		elseif self.RBAssEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAssaultEngineering.NewRegenRate
+		elseif self.RBComEngineering then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXCombatEngineering.NewRegenRate
 		end
-		if self.RBDefTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXShieldBattery.NewRegenRate
-		end
-		if self.RBDefTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXActiveShielding.NewRegenRate
-		end
-		if self.RBDefTier3 then
+		if self.RBDefTier4 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXShieldExpander.NewRegenRate
+		elseif self.RBDefTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedShieldBattery.NewRegenRate
-		end
-		if self.RBComTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXClusterMisslePack.NewRegenRate
-		end
-		if self.RBComTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXTacticalMisslePack.NewRegenRate
+		elseif self.RBDefTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXActiveShielding.NewRegenRate
+		elseif self.RBDefTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXShieldBattery.NewRegenRate
 		end
 		if self.RBComTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXTacticalNukeSubstitution.NewRegenRate
-		end
-		if self.RBIntTier1 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicsEnhancment.NewRegenRate
-		end
-		if self.RBIntTier2 then
-			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
+		elseif self.RBComTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTacticalMisslePack.NewRegenRate
+		elseif self.RBComTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXClusterMisslePack.NewRegenRate
 		end
 		if self.RBIntTier3 then
 			self.regenammount = self.regenammount + EXBP.Enhancements.EXCloakingSubsystems.NewRegenRate
-		end		
-		--if not Buffs['EXRegenBoost'] then
-        --    BuffBlueprint {
-        --        Name = 'EXRegenBoost',
-        --        DisplayName = 'EXRegenBoost',
-        --        BuffType = 'EXRegenBoost',
-        --        Stacks = 'REPLACE',
-        --        Duration = -1,
-        --        Affects = {
-        --            Regen = {
-        --                Add = self.regenammount,
-        --                Mult = 1.0,
-        --            },
-        --        },
-        --    }
-        --end
-        --Buff.ApplyBuff(self, 'EXRegenBoost')
-		--LOG('xxxxxxxxxxxx UEF Applied Regen', self.regenammount)
+		elseif self.RBIntTier2 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicCountermeasures.NewRegenRate
+		elseif self.RBIntTier1 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXElectronicsEnhancment.NewRegenRate
+		end
+		if self.wcTorp03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoClusterLauncher.NewRegenRate
+		elseif self.wcTorp02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoRapidLoader.NewRegenRate
+		elseif self.wcTorp01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXTorpedoLauncher.NewRegenRate
+		end
+		if self.wcAMC03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXPowerBooster.NewRegenRate
+		elseif self.wcAMC02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedContainmentBottle.NewRegenRate
+		elseif self.wcAMC01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXAntiMatterCannon.NewRegenRate
+		end
+		if self.wcGatling03 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXEnergyShellHardener.NewRegenRate
+		elseif self.wcGatling02 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXImprovedCoolingSystem.NewRegenRate
+		elseif self.wcGatling01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXGattlingEnergyCannon.NewRegenRate
+		end
+		if self.wcZephyr01 then
+			self.regenammount = self.regenammount + EXBP.Enhancements.EXZephyrBooster.NewRegenRate
+		end
     end,
 	
 	EXRegenHeartbeat = function(self)
@@ -897,7 +897,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcAMC03 then
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon03', true)
 				local wepAntiMatter03 = self:GetWeaponByLabel('EXAntiMatterCannon03')
-				wepAntiMatter03:ChangeMaxRadius(60)
+				wepAntiMatter03:ChangeMaxRadius(55)
 			else
 				self:SetWeaponEnabledByLabel('EXAntiMatterCannon03', false)
 			end
@@ -925,14 +925,14 @@ EEL0001 = Class(TWalkingLandUnit) {
 			if self.wcLance01 then
 				self:SetWeaponEnabledByLabel('EXEnergyLance01', true)
 				local wepLance01 = self:GetWeaponByLabel('EXEnergyLance01')
-				wepLance01:ChangeMaxRadius(30)
+				wepLance01:ChangeMaxRadius(22)
 			else
 				self:SetWeaponEnabledByLabel('EXEnergyLance01', false)
 			end
 			if self.wcLance02 then
 				self:SetWeaponEnabledByLabel('EXEnergyLance02', true)
 				local wepLance02 = self:GetWeaponByLabel('EXEnergyLance02')
-				wepLance02:ChangeMaxRadius(30)
+				wepLance02:ChangeMaxRadius(22)
 			else
 				self:SetWeaponEnabledByLabel('EXEnergyLance02', false)
 			end
@@ -1007,7 +1007,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXUEFHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost1',
@@ -1039,7 +1039,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1070,7 +1070,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXUEFHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost2',
@@ -1102,7 +1102,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1120,7 +1120,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
 			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['UEFACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'UEFACUT4BuildRate',
@@ -1168,7 +1168,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
 			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1219,7 +1219,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXUEFHealthBoost4')
             local bpEcon = self:GetBlueprint().Economy            
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()
@@ -1257,7 +1257,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 				self.FlamerEffectsBag = {}
 			end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1303,7 +1303,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXUEFHealthBoost5')
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
             self.wcFlamer02 = true
 			self:ForkThread(self.WeaponRangeReset)
@@ -1335,7 +1335,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 				self.FlamerEffectsBag = {}
 			end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1381,7 +1381,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             Buff.ApplyBuff(self, 'EXUEFHealthBoost6')
             local bpEcon = self:GetBlueprint().Economy
             self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
@@ -1406,7 +1406,7 @@ EEL0001 = Class(TWalkingLandUnit) {
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost6' )
             end            
             self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()
@@ -1424,12 +1424,14 @@ EEL0001 = Class(TWalkingLandUnit) {
 		elseif enh =='EXZephyrBooster' then
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             wepZephyr:ChangeMaxRadius(40)
+			self.wcZephyr01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXZephyrBoosterRemove' then
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self.wcZephyr01 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
             if not Buffs['EXUEFHealthBoost7'] then
@@ -1806,14 +1808,38 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXShieldBattery' then
+            if not Buffs['EXUEFShieldHealth1'] then
+                BuffBlueprint {
+                    Name = 'EXUEFShieldHealth1',
+                    DisplayName = 'EXUEFShieldHealth1',
+                    BuffType = 'EXUEFShieldHealth1',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXUEFShieldHealth1')
             self:AddToggleCap('RULEUTC_ShieldToggle')
             self:CreatePersonalShield(bp)
             self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
             self:SetMaintenanceConsumptionActive()
 			self.Rotator1:SetTargetSpeed(90)
 			self.Rotator2:SetTargetSpeed(-180)
+			self.RBDefTier1 = true
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh == 'EXShieldBatteryRemove' then
+            if Buff.HasBuff(self, 'EXUEFShieldHealth1') then
+                Buff.RemoveBuff(self, 'EXUEFShieldHealth1')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
+            self.RBDefTier4 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXShieldBatteryRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -1828,6 +1854,22 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.Rotator2:SetTargetSpeed(0)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXActiveShielding' then
+            if not Buffs['EXUEFShieldHealth2'] then
+                BuffBlueprint {
+                    Name = 'EXUEFShieldHealth2',
+                    DisplayName = 'EXUEFShieldHealth2',
+                    BuffType = 'EXUEFShieldHealth2',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXUEFShieldHealth2')
             self:DestroyShield()
             ForkThread(function()
                 WaitTicks(1)
@@ -1837,10 +1879,19 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:SetMaintenanceConsumptionActive()
 			self.wcLance01 = true
 			self.wcLance02 = false
+			self.RBDefTier1 = true
+			self.RBDefTier2 = true
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXActiveShieldingRemove' then
+            if Buff.HasBuff(self, 'EXUEFShieldHealth2') then
+                Buff.RemoveBuff(self, 'EXUEFShieldHealth2')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
+            self.RBDefTier4 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXActiveShieldingRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -1859,6 +1910,22 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXImprovedShieldBattery' then
+            if not Buffs['EXUEFShieldHealth3'] then
+                BuffBlueprint {
+                    Name = 'EXUEFShieldHealth3',
+                    DisplayName = 'EXUEFShieldHealth3',
+                    BuffType = 'EXUEFShieldHealth3',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXUEFShieldHealth3')
             self:DestroyShield()
             ForkThread(function()
                 WaitTicks(1)
@@ -1866,8 +1933,18 @@ EEL0001 = Class(TWalkingLandUnit) {
             end)
             self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
             self:SetMaintenanceConsumptionActive()
+			self.RBDefTier1 = true
+			self.RBDefTier2 = true
+			self.RBDefTier3 = true
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXImprovedShieldBatteryRemove' then
+            if Buff.HasBuff(self, 'EXUEFShieldHealth3') then
+                Buff.RemoveBuff(self, 'EXUEFShieldHealth3')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
+            self.RBDefTier4 = false
             self:DestroyShield()
             RemoveUnitEnhancement(self, 'EXImprovedShieldBatteryRemove')
             self:SetMaintenanceConsumptionInactive()
@@ -1886,6 +1963,22 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXShieldExpander' then
+            if not Buffs['EXUEFShieldHealth4'] then
+                BuffBlueprint {
+                    Name = 'EXUEFShieldHealth4',
+                    DisplayName = 'EXUEFShieldHealth4',
+                    BuffType = 'EXUEFShieldHealth4',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXUEFShieldHealth4')
             self:DestroyShield()
             ForkThread(function()
                 WaitTicks(1)
@@ -1893,8 +1986,19 @@ EEL0001 = Class(TWalkingLandUnit) {
             end)
             self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
             self:SetMaintenanceConsumptionActive()
+			self.RBDefTier1 = true
+			self.RBDefTier2 = true
+			self.RBDefTier3 = true
+			self.RBDefTier4 = true
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXShieldExpanderRemove' then
+            if Buff.HasBuff(self, 'EXUEFShieldHealth4') then
+                Buff.RemoveBuff(self, 'EXUEFShieldHealth4')
+            end
+            self.RBDefTier1 = false
+            self.RBDefTier2 = false
+            self.RBDefTier3 = false
+            self.RBDefTier4 = false
             self:DestroyShield()
             self:SetMaintenanceConsumptionInactive()
             self:RemoveToggleCap('RULEUTC_ShieldToggle')

@@ -35,7 +35,7 @@ URL0401 = Class(CLandUnit) {
     OnStopBeingBuilt = function(self,builder,layer)
         CLandUnit.OnStopBeingBuilt(self, builder, layer)
         local bp = self:GetBlueprint()
-        LOG(bp.Economy.MaintenanceConsumptionPerSecondEnergy)
+--        LOG(bp.Economy.MaintenanceConsumptionPerSecondEnergy)
         self:SetEnergyMaintenanceConsumptionOverride(bp.Economy.MaintenanceConsumptionPerSecondEnergy or 0)
         self:SetMaintenanceConsumptionActive()
     end,

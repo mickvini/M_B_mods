@@ -133,7 +133,7 @@ UnitBlueprint {
         FactionName = 'Aeon',
         Icon = 'land',
         SelectionPriority = 5,
-        UpgradesTo = 'sab9201',
+        --UpgradesTo 'sab9201' removed: T2 lab blueprint never existed (dangling); it made M28 treat the lab as upgradeable and refuse to build a 2nd lab.
         UnitName = '<LOC sab9101_name>Insight',
         ConstructionBar = true,
     },

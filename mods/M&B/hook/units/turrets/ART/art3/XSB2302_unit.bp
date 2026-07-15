@@ -117,7 +117,7 @@ UnitBlueprint {
     Economy = {
         BuildCostEnergy = 0,
         BuildCostMass = 17400,
-        BuildTime = 84600,
+        BuildTime = 42300,
         MaintenanceConsumptionPerSecondEnergy = 850,
         RebuildBonusIds = {
             'xsb2302',
@@ -233,7 +233,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 2980,
+            Damage = 1490,
             DamageFriendly = true,
             DamageRadius = 4,
             DamageType = 'Normal',

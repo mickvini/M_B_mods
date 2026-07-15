@@ -93,6 +93,17 @@ StructureUnit = Class(oldStructureUint) {
 	OnCreate = function(self)
 		oldStructureUint.OnCreate(self)
 		local unitBp = self:GetBlueprint()  
+		--M&B: boost the bot's power generators PROPORTIONALLY across tiers (T0 280->500, T1 760->1400, T2 1780->3000) so the bot needs far fewer pgens (energy is maintenance-only in M&B). Boost ALL tiers (not just T0) so each upgrade is a BIG jump — otherwise the smart bot dismantles cheap pgens to rebuild marginally-better ones for almost no gain, wasting mass. Player pgens unchanged; bot only; hydrocarbons excluded (separate).
+		if self:GetAIBrain().BrainType ~= 'Human' and not table.find(unitBp.Categories, 'HYDROCARBON') then
+			local iMNBProd = unitBp.Economy.ProductionPerSecondEnergy or 0
+			local iMNBBoost = nil
+			if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = 500
+			elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = 1400
+			elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = 3000
+			elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = 7800
+			elseif iMNBProd > 5000 then iMNBBoost = 15000 end
+			if iMNBBoost then self:SetProductionPerSecondEnergy(iMNBBoost) end
+		end
 		if (unitBp.General.Category == 'Defense' or table.find(unitBp.Categories, 'ARTILLERY')) and unitBp.General.Classification ~= 'RULEUC_MiscSupport' and not table.find(unitBp.Economy.BuildableCategory, 'FACTORYUEFLL') then
         	self.BaseRateOfFire = {}
         	for i = 1, self:GetWeaponCount() do   
@@ -162,6 +173,25 @@ StructureUnit = Class(oldStructureUint) {
     end,
 
 }
+--M&B: hook EnergyCreationUnit (the class pgens/hydro use; StructureUnit.OnCreate doesnt fire for them, which is why the earlier StructureUnit boost gave no effect) to boost the bot's power generators proportionally: T0 280->500, T1 760->1400, T2 1780->3000. Bot only; hydrocarbons excluded. So the bot needs far fewer pgens and each tier-up is a big jump (no wasteful dismantle-and-rebuild for marginal gain). Player pgens unchanged.
+local oldEnergyCreationUnit = EnergyCreationUnit
+EnergyCreationUnit = Class(oldEnergyCreationUnit) {
+    OnCreate = function(self)
+        oldEnergyCreationUnit.OnCreate(self)
+        local unitBp = self:GetBlueprint()
+        if self:GetAIBrain().BrainType ~= 'Human' and not table.find(unitBp.Categories, 'HYDROCARBON') then
+            local iMNBProd = unitBp.Economy.ProductionPerSecondEnergy or 0
+            local iMNBBoost = nil
+            if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = 500
+            elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = 1400
+            elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = 3000
+            elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = 7800
+            elseif iMNBProd > 5000 then iMNBBoost = 15000 end
+            if iMNBBoost then self:SetProductionPerSecondEnergy(iMNBBoost) end
+        end
+    end,
+}
+
 local oldFactoryUnit = FactoryUnit
 FactoryUnit = Class(oldFactoryUnit)
 {
@@ -170,7 +200,16 @@ FactoryUnit = Class(oldFactoryUnit)
         local unitBp = self:GetBlueprint()  
         
         self.BaseBuildRate = self:GetBuildRate()
-        
+
+        -- M&B: boost ONLY the AI bot's research lab (50 -> 75) so research/tiers unlock a bit faster for the bot. 75 (not 100) so the lab doesnt hoard all the mass and starve army/factory/exp construction - the game is about war, not a science contest. Player labs stay at 50. Gate on RESEARCHCENTRE so land/air/naval factories are unaffected; BrainType~='Human' targets only the bot (this mod is M28-only). ReduceFactoryBuildRate still throttles this on mass/energy stall, so the boost self-limits to whatever the bot can mass-feed.
+        local bIsLab = false
+        for iCat, sCat in unitBp.Categories or {} do
+            if sCat == 'RESEARCHCENTRE' then bIsLab = true; break end
+        end
+        if bIsLab and self:GetAIBrain().BrainType ~= 'Human' then
+            self.BaseBuildRate = 75
+        end
+
         -- LOG(self.BaseBuildRate)
         -- LOG(self:GetBlueprint().BlueprintId)
         --if(not table.find(self:GetBlueprint().Economy.BuildableCategory, 'FACTORYUEFLL')) then
@@ -542,6 +581,49 @@ ResearchItem = Class(DummyUnit) {
             RemoveBuildRestriction(army, categories[bp.ResearchId] * factionCat - categories.BUILTBYRESEARCH - categories.MASSEXTRACTION * categories.EXPERIMENTALMEX - categories.CONSTRUCTIONSORTDOWN - categories.RESEARCHLOCKED - categories.MOD - categories[bp.BlueprintId])
         end
 
+        --M&B: expose the unlocked tech tier on our brain so the AI (M28) can see what's researched. M28's IsUnitRestricted is blind to per-army AddBuildRestriction, so it needs this explicit signal to know which tiers are available (otherwise it spams 'Dont have a valid upgrade ID').
+        do
+            local oMNBBrain = self:GetAIBrain()
+            if oMNBBrain then
+                oMNBBrain.MNB_TechUnlocked = oMNBBrain.MNB_TechUnlocked or {}
+                local iMNBTier = ({RESEARCHLOCKEDTECH1=2, TECH2=3, TECH3=4, EXPERIMENTAL=5})[bp.ResearchId]
+                if iMNBTier then
+                    --Research is sequential, so unlocking tier N implies all lower tiers are also unlocked; carry them forward.
+                    for iMNB = 2, iMNBTier do oMNBBrain.MNB_TechUnlocked[iMNB] = true end
+                    --A tier unlock also unlocks that tier's MK boost-research (UnlockMKResearchForTech), so flag that boosts are now studyable. M28 uses this to decide a 2nd lab is worth building (for boosts), instead of a tier milestone.
+                    oMNBBrain.MNB_BoostsAvailable = true
+                    LOG('M&B: tech tier '..iMNBTier..' unlocked for army '..tostring(army)..' ('..tostring(bp.General.FactionName)..')')
+                    --M&B: the instant a tier unlocks, put EVERY extractor on upgrade in parallel (mass-first economy; mexes self-upgrade so no one-at-a-time throttle). AI brains only - a human controls their own mexes. M28Economy isnt a global, its only reachable via import, so lazy-import it here and run the sweep after a tiny delay so RemoveBuildRestriction has settled.
+                    if oMNBBrain.BrainType ~= 'Human' then
+                        --M&B: event-driven mass kickstart. 9200 (tier 3) flat 2000; 9300 (tier 4) STAGGERED 5x2000 over 30s = 10000 total (user: the 9300->9400 push is mass-heavy - 9400 research + T3 generators + factory upgrades all at once - a flat grant overflows the ~2000 mass storage or drains mid-build, so stagger to arrive in step); 9400 (tier 5) flat 5000.
+                        if iMNBTier == 4 then
+                            oMNBBrain:GiveResource('Mass', 2000)
+                            LOG('M&B: gave 2000 mass (1/5) on tier 4 (9300) unlock to '..tostring(army))
+                            ForkThread(function()
+                                for iKick = 2, 5 do
+                                    WaitSeconds(30)
+                                    if oMNBBrain and not(oMNBBrain:IsDefeated()) then oMNBBrain:GiveResource('Mass', 2000); LOG('M&B: gave 2000 mass ('..iKick..'/5) for tier 4 (9300) at GameTime '..GetGameTimeSeconds()) end
+                                end
+                            end)
+                        else
+                            local iMNBKick = ({[3]=2000, [5]=5000})[iMNBTier]
+                            if iMNBKick then
+                                oMNBBrain:GiveResource('Mass', iMNBKick)
+                                LOG('M&B: gave '..iMNBKick..' mass on tier '..iMNBTier..' unlock to '..tostring(army))
+                            end
+                        end
+                        ForkThread(function()
+                            WaitSeconds(3)
+                            local M28Economy = import('/mods/M28AI/lua/AI/M28Economy.lua')
+                            if M28Economy and M28Economy.MNBSweepMexUpgrades and oMNBBrain and not(oMNBBrain.Dead) then
+                                M28Economy.MNBSweepMexUpgrades(oMNBBrain)
+                            end
+                        end)
+                    end
+                end
+            end
+        end
+
         -- Tell the manager this is done if we're an AI and presumably have a manager.
        
 
@@ -763,6 +845,8 @@ ResearchFactoryUnit = Class(FactoryUnit) {
         -- then research
     ResearchThread = function(self)
         local AIBrain = self:GetAIBrain()
+        -- BrewRND (LOUD-AI research manager) was removed from the mod; M28 drives the lab via M28Factory.lua instead.
+        if not AIBrain.BrewRND then return end
         while not self.Dead and not AIBrain.BrewResearchIsComplete and AIBrain.BrewRND and AIBrain.BrewRND.IsResearchRemaining(AIBrain) do
             if self:IsIdleState() and AIBrain.BrewRND.IsAbleToResearch(AIBrain) then
                 self:Research()

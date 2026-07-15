@@ -78,7 +78,7 @@ UnitBlueprint {
                     TreadMarks = {
                         {
                             BoneName = 'BRNT2MT',
-                            TreadMarks = 'BRNT2MT_Albedo',
+                            TreadMarks = 'tank_treads_albedo',
                             TreadMarksInterval = 0.1,
                             TreadMarksSizeX = 0.64,
                             TreadMarksSizeZ = 3.00,

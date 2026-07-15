@@ -229,8 +229,8 @@ UAL0001 = Class(AWalkingLandUnit) {
                                         Buff.ApplyBuff(unit ,  'MobileBuffAir' .. MK[army][7][factionCat])
                                         unit.MarkLevel[7] = MK[army][7][factionCat] 
                                     end
-                                    LOG(MK[army][8][factionCat])
-                                    LOG(unit.MarkLevel[8])
+--                                    LOG(MK[army][8][factionCat])
+--                                    LOG(unit.MarkLevel[8])
                                     if MK[army][8][factionCat] > 0 and MK[army][8][factionCat] ~= unit.MarkLevel[8] then
                                         Buff.ApplyBuff(unit ,  'HealthBuffAir' .. MK[army][8][factionCat])
                                         unit.MarkLevel[8] = MK[army][8][factionCat] 
