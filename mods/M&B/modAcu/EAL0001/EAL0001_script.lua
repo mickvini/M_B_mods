@@ -230,7 +230,13 @@ EAL0001 = Class(AWalkingLandUnit) {
             self.RemoteViewingData.DisableCounter = 0
             self.RemoteViewingData.IntelButton = true
         --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
-        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
+        local oBrainACU = self:GetAIBrain()
+        self.MNB_AcuMass = ({normal=5, hard=15, impossible=50})[oBrainACU.MNBDifficulty]
+        if oBrainACU.BrainType ~= 'Human' and self.MNB_AcuMass then
+            self:SetProductionPerSecondMass(self.MNB_AcuMass)
+            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=11000})[oBrainACU.MNBDifficulty]
+            if self.MNB_AcuEnergy then self:SetProductionPerSecondEnergy(self.MNB_AcuEnergy) end
+        end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -1058,8 +1064,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXAeonHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost1',
@@ -1090,8 +1096,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1121,8 +1127,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXAeonHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXAeonHealthBoost2',
@@ -1153,8 +1159,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1171,8 +1177,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['AEONACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'AEONACUT4BuildRate',
@@ -1219,8 +1225,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.AEON * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
-			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXAeonHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost1' )
             end
@@ -1272,8 +1278,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcChrono01 = true
 			self.wcChrono02 = false
 			local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = true
@@ -1295,8 +1301,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
 			self.wcChrono01 = false
 			self.wcChrono02 = false
-			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = false
@@ -1341,8 +1347,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcChrono01 = false
 			self.wcChrono02 = true
 			local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self.RBComEngineering = true
@@ -1365,8 +1371,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost5' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost5' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcChrono01 = false
 			self.wcChrono02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1411,8 +1417,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost6')
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
@@ -1436,8 +1442,8 @@ EAL0001 = Class(AWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXAeonHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost6' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcChrono01 = false
 			self.wcChrono02 = false
 			self:ForkThread(self.WeaponRangeReset)

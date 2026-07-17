@@ -241,7 +241,13 @@ EEL0001 = Class(TWalkingLandUnit) {
         self:AddBuildRestriction( categories.UEF * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         self:AddBuildRestriction( categories.UEF * (categories.BUILTBYTIER4COMMANDER) )
         --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
-        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
+        local oBrainACU = self:GetAIBrain()
+        self.MNB_AcuMass = ({normal=5, hard=15, impossible=50})[oBrainACU.MNBDifficulty]
+        if oBrainACU.BrainType ~= 'Human' and self.MNB_AcuMass then
+            self:SetProductionPerSecondMass(self.MNB_AcuMass)
+            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=11000})[oBrainACU.MNBDifficulty]
+            if self.MNB_AcuEnergy then self:SetProductionPerSecondEnergy(self.MNB_AcuEnergy) end
+        end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -1006,8 +1012,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXUEFHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost1',
@@ -1038,8 +1044,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1069,8 +1075,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXUEFHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXUEFHealthBoost2',
@@ -1101,8 +1107,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1119,8 +1125,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['UEFACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'UEFACUT4BuildRate',
@@ -1167,8 +1173,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.UEF * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
-			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXUEFHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost1' )
             end
@@ -1218,8 +1224,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost4')
             local bpEcon = self:GetBlueprint().Economy            
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()
@@ -1256,8 +1262,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 				end
 				self.FlamerEffectsBag = {}
 			end            
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1302,8 +1308,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost5')
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
             self.wcFlamer02 = true
 			self:ForkThread(self.WeaponRangeReset)
@@ -1334,8 +1340,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 				end
 				self.FlamerEffectsBag = {}
 			end            
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcFlamer01 = false
 			self.wcFlamer02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1380,8 +1386,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost6')
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
 			self.RBApoEngineering = true
@@ -1405,8 +1411,8 @@ EEL0001 = Class(TWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXUEFHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost6' )
             end            
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			if self.FlamerEffectsBag then
 				for k, v in self.FlamerEffectsBag do
 					v:Destroy()

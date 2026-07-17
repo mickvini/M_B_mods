@@ -81,6 +81,42 @@ end
 --Update existing defaultunits classes   
 
 
+--M&B: when a mex is (re)built or recaptured, re-upgrade it through every unlocked tier. The tier-unlock
+-- sweep (MNBSweepMexUpgrades) only fires when research completes and only steps one tier, so a mex rebuilt
+-- AFTER all tiers are unlocked would sit at T1 forever. This hooks the mex's OnStopBeingBuilt to chain-upgrade
+-- (T1->T2->T3..., waiting for each step to finish) until CanBuild says the next tier isnt unlocked / it's maxed.
+-- Bot only; one self-terminating thread per mex (no fork-bomb: it exits when the mex is maxed/dead).
+if MassCollectionUnit then
+    local oldMassCollectionUnit = MassCollectionUnit
+    MassCollectionUnit = Class(oldMassCollectionUnit) {
+        OnStopBeingBuilt = function(self, builder, layer)
+            oldMassCollectionUnit.OnStopBeingBuilt(self, builder, layer)
+            local oBrain = self:GetAIBrain()
+            if oBrain and oBrain.BrainType ~= 'Human' and __blueprints and __blueprints['sab9101'] then
+                ForkThread(function()
+                    WaitSeconds(3)
+                    local M28UnitInfoL = import('/mods/M&B/lua/AI/M28UnitInfo.lua')
+                    local M28ConditionsL = import('/mods/M&B/lua/AI/M28Conditions.lua')
+                    local M28EconomyL = import('/mods/M&B/lua/AI/M28Economy.lua')
+                    while not(self.Dead) and M28UnitInfoL.IsUnitValid(self) do
+                        if self:IsUnitState('Upgrading') or self:IsUnitState('BeingUpgraded') then
+                            WaitSeconds(5)
+                        else
+                            local sUpg = self:GetBlueprint().General.UpgradesTo
+                            if sUpg and sUpg ~= '' and self:CanBuild(sUpg) and M28ConditionsL.SafeToUpgradeUnit(self) then
+                                M28EconomyL.UpgradeUnit(self, true)
+                                WaitSeconds(12)
+                            else
+                                break
+                            end
+                        end
+                    end
+                end)
+            end
+        end,
+    }
+end
+
 local oldStructureUint = StructureUnit
 local oldConstructionUnit = ConstructionUnit
 local oldWalkingLandUnit = WalkingLandUnit
@@ -96,13 +132,15 @@ StructureUnit = Class(oldStructureUint) {
 		--M&B: boost the bot's power generators PROPORTIONALLY across tiers (T0 280->500, T1 760->1400, T2 1780->3000) so the bot needs far fewer pgens (energy is maintenance-only in M&B). Boost ALL tiers (not just T0) so each upgrade is a BIG jump — otherwise the smart bot dismantles cheap pgens to rebuild marginally-better ones for almost no gain, wasting mass. Player pgens unchanged; bot only; hydrocarbons excluded (separate).
 		if self:GetAIBrain().BrainType ~= 'Human' and not table.find(unitBp.Categories, 'HYDROCARBON') then
 			local iMNBProd = unitBp.Economy.ProductionPerSecondEnergy or 0
+			local sD = self:GetAIBrain().MNBDifficulty or 'hard'
+			local tB = ({easy={[0]=280,[1]=760,[2]=1780,[3]=4200,[4]=9200}, normal={[0]=350,[1]=1000,[2]=2200,[3]=5500,[4]=10500}, hard={[0]=500,[1]=2000,[2]=3000,[3]=8000,[4]=15000}, impossible={[0]=1000,[1]=3000,[2]=5000,[3]=15000,[4]=30000}})[sD]
 			local iMNBBoost = nil
-			if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = 500
-			elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = 1400
-			elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = 3000
-			elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = 7800
-			elseif iMNBProd > 5000 then iMNBBoost = 15000 end
-			if iMNBBoost then self:SetProductionPerSecondEnergy(iMNBBoost) end
+			if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = tB[0]
+			elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = tB[1]
+			elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = tB[2]
+			elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = tB[3]
+			elseif iMNBProd > 5000 then iMNBBoost = tB[4] end
+			if iMNBBoost and iMNBBoost > iMNBProd then self:SetProductionPerSecondEnergy(iMNBBoost) end
 		end
 		if (unitBp.General.Category == 'Defense' or table.find(unitBp.Categories, 'ARTILLERY')) and unitBp.General.Classification ~= 'RULEUC_MiscSupport' and not table.find(unitBp.Economy.BuildableCategory, 'FACTORYUEFLL') then
         	self.BaseRateOfFire = {}
@@ -181,13 +219,15 @@ EnergyCreationUnit = Class(oldEnergyCreationUnit) {
         local unitBp = self:GetBlueprint()
         if self:GetAIBrain().BrainType ~= 'Human' and not table.find(unitBp.Categories, 'HYDROCARBON') then
             local iMNBProd = unitBp.Economy.ProductionPerSecondEnergy or 0
+            local sD = self:GetAIBrain().MNBDifficulty or 'hard'
+            local tB = ({easy={[0]=280,[1]=760,[2]=1780,[3]=4200,[4]=9200}, normal={[0]=350,[1]=1000,[2]=2200,[3]=5500,[4]=10500}, hard={[0]=500,[1]=2000,[2]=3000,[3]=8000,[4]=15000}, impossible={[0]=1000,[1]=3000,[2]=5000,[3]=15000,[4]=30000}})[sD]
             local iMNBBoost = nil
-            if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = 500
-            elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = 1400
-            elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = 3000
-            elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = 7800
-            elseif iMNBProd > 5000 then iMNBBoost = 15000 end
-            if iMNBBoost then self:SetProductionPerSecondEnergy(iMNBBoost) end
+            if iMNBProd > 0 and iMNBProd <= 300 then iMNBBoost = tB[0]
+            elseif iMNBProd > 300 and iMNBProd <= 800 then iMNBBoost = tB[1]
+            elseif iMNBProd > 800 and iMNBProd <= 1800 then iMNBBoost = tB[2]
+            elseif iMNBProd > 1800 and iMNBProd <= 5000 then iMNBBoost = tB[3]
+            elseif iMNBProd > 5000 then iMNBBoost = tB[4] end
+            if iMNBBoost and iMNBBoost > iMNBProd then self:SetProductionPerSecondEnergy(iMNBBoost) end
         end
     end,
 }
@@ -207,7 +247,8 @@ FactoryUnit = Class(oldFactoryUnit)
             if sCat == 'RESEARCHCENTRE' then bIsLab = true; break end
         end
         if bIsLab and self:GetAIBrain().BrainType ~= 'Human' then
-            self.BaseBuildRate = 100
+            local oBrainLab = self:GetAIBrain()
+            self.BaseBuildRate = ({easy=50, normal=65, hard=100, impossible=150})[oBrainLab.MNBDifficulty] or 100
         end
 
         -- LOG(self.BaseBuildRate)
@@ -595,22 +636,25 @@ ResearchItem = Class(DummyUnit) {
                     LOG('M&B: tech tier '..iMNBTier..' unlocked for army '..tostring(army)..' ('..tostring(bp.General.FactionName)..')')
                     --M&B: the instant a tier unlocks, put EVERY extractor on upgrade in parallel (mass-first economy; mexes self-upgrade so no one-at-a-time throttle). AI brains only - a human controls their own mexes. M28Economy isnt a global, its only reachable via import, so lazy-import it here and run the sweep after a tiny delay so RemoveBuildRestriction has settled.
                     if oMNBBrain.BrainType ~= 'Human' then
-                        --M&B: event-driven mass kickstart. 9200 (tier 3) flat 2000; 9300 (tier 4) STAGGERED 5x2000 over 30s = 10000 total (user: the 9300->9400 push is mass-heavy - 9400 research + T3 generators + factory upgrades all at once - a flat grant overflows the ~2000 mass storage or drains mid-build, so stagger to arrive in step); 9400 (tier 5) flat 5000.
-                        if iMNBTier == 4 then
-                            oMNBBrain:GiveResource('Mass', 2000)
-                            LOG('M&B: gave 2000 mass (1/5) on tier 4 (9300) unlock to '..tostring(army))
+                        --M&B: difficulty-based mass kickstart on tier unlock. Each entry = {amount, delaySeconds}.
+                        --easy = no kickstart; normal = flat; hard = current staggered; impossible = heavy staggered.
+                        local sMND = oMNBBrain.MNBDifficulty or 'hard'
+                        local tMNBKS = {
+                            normal = {[3]={{2000,0}}, [4]={{3000,0}}, [5]={{4000,0}}},
+                            hard = {[3]={{2000,0},{2000,60}}, [4]={{2000,0},{2000,30},{2000,60},{2000,90},{2000,120}}, [5]={{5000,0}}},
+                            impossible = {[3]={{2000,0},{2000,30},{2000,60},{2000,90},{2000,120}}, [4]={{4000,0},{4000,30},{4000,60},{4000,90},{4000,120}}, [5]={{5000,0},{5000,30},{5000,60},{5000,90},{5000,120}}},
+                        }
+                        local tMNBKicks = (tMNBKS[sMND] or {})[iMNBTier]
+                        if tMNBKicks then
                             ForkThread(function()
-                                for iKick = 2, 5 do
-                                    WaitSeconds(30)
-                                    if oMNBBrain and not(oMNBBrain:IsDefeated()) then oMNBBrain:GiveResource('Mass', 2000); LOG('M&B: gave 2000 mass ('..iKick..'/5) for tier 4 (9300) at GameTime '..GetGameTimeSeconds()) end
+                                local iPrev = 0
+                                for iK, tK in tMNBKicks do
+                                    local iDelta = tK[2] - iPrev
+                                    if iDelta > 0 then WaitSeconds(iDelta) end
+                                    iPrev = tK[2]
+                                    if oMNBBrain and not(oMNBBrain:IsDefeated()) then oMNBBrain:GiveResource('Mass', tK[1]) end
                                 end
                             end)
-                        else
-                            local iMNBKick = ({[3]=2000, [5]=5000})[iMNBTier]
-                            if iMNBKick then
-                                oMNBBrain:GiveResource('Mass', iMNBKick)
-                                LOG('M&B: gave '..iMNBKick..' mass on tier '..iMNBTier..' unlock to '..tostring(army))
-                            end
                         end
                         ForkThread(function()
                             WaitSeconds(3)

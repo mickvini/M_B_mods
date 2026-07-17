@@ -236,7 +236,13 @@ ESL0001 = Class( SWalkingLandUnit ) {
         self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
         --M&B: bot ACU produces 15 mass/s (player 2); mass income is on the ACU (not mexes) so adjacency cant wipe it. Enhancement handlers also use 15 as the bot base.
-        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
+        local oBrainACU = self:GetAIBrain()
+        self.MNB_AcuMass = ({normal=5, hard=15, impossible=50})[oBrainACU.MNBDifficulty]
+        if oBrainACU.BrainType ~= 'Human' and self.MNB_AcuMass then
+            self:SetProductionPerSecondMass(self.MNB_AcuMass)
+            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=11000})[oBrainACU.MNBDifficulty]
+            if self.MNB_AcuEnergy then self:SetProductionPerSecondEnergy(self.MNB_AcuEnergy) end
+        end
     end,
 
     OnPrepareArmToBuild = function(self)
@@ -944,8 +950,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXSeraHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXSeraHealthBoost1',
@@ -976,8 +982,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1007,8 +1013,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXSeraHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXSeraHealthBoost2',
@@ -1039,8 +1045,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1057,8 +1063,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['SERAPHIMACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'SERAPHIMACUT4BuildRate',
@@ -1106,8 +1112,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
-			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXSeraHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost1' )
             end
@@ -1117,8 +1123,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost3' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost3' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBImpEngineering = false
 			self.RBAdvEngineering = false
 			self.RBExpEngineering = false
@@ -1215,8 +1221,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 }
             end
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost4')
 			self.RBComEngineering = true
 			self.RBAssEngineering = false
@@ -1242,8 +1248,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost4' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost4' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1347,8 +1353,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 }
             end
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost5')  
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1377,8 +1383,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost5' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost5' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false
@@ -1418,8 +1424,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 }
             end
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXSeraHealthBoost6')
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1451,8 +1457,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
             if Buff.HasBuff( self, 'EXSeraHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost6' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.RBComEngineering = false
 			self.RBAssEngineering = false
 			self.RBApoEngineering = false

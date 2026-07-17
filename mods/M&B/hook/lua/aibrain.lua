@@ -204,9 +204,16 @@ AIBrain = Class(M28AIBrainClass) {
             --Apply M28 to any m28* personality (the M&B lobby only offers M28 variants), plus easy/normal as a fallback (e.g. campaign forces them)
             LOG('Brain OnCreateAI for brain'..self.Nickname..' with personality '..(self.Personality or ScenarioInfo.ArmySetup[self.Name].AIPersonality or 'nil'))
             local sPersonality = self.Personality or ScenarioInfo.ArmySetup[self.Name].AIPersonality
-            if not(M28Conditions.IsCivilianBrain(self)) and (string.sub(sPersonality, 1, 3) == 'm28' or sPersonality == 'easy' or sPersonality == 'medium') then
+            --M&B: catch ALL non-civilian AI personalities (vanilla lobby has easy/normal/adaptive/etc. — all map to M28).
+            if not(M28Conditions.IsCivilianBrain(self)) and sPersonality and sPersonality ~= '' then
                 self.M28AI = true
-                if sPersonality == 'easy' then self.M28Easy = true end
+                --M&B: difficulty mapped from the lobby personality.
+                --Vanilla: easy=Лёгкий, normal/medium=Нормальный, adaptive=Сложный (current bot), others=Нормальный.
+                if sPersonality == 'easy' or sPersonality == 'm28aie' then self.MNBDifficulty = 'easy'
+                elseif sPersonality == 'normal' or sPersonality == 'medium' or sPersonality == 'm28ai' then self.MNBDifficulty = 'normal'
+                elseif sPersonality == 'adaptive' or sPersonality == 'm28aii' then self.MNBDifficulty = 'impossible'
+                else self.MNBDifficulty = 'hard' end
+                if self.MNBDifficulty == 'easy' then self.M28Easy = true end
                 M28Utilities.bM28AIInGame = true
                 ForkThread(M28Events.OnCreateBrain, self, planName, false)--]]
                 --M&B: role-balanced army roster thread. Forked here (unconditionally for m28 brains) because NewAIBrain.OnCreateAI in M28Brain.lua doesn't fire in this Steam/M&B setup; the thread waits then self-gates on IsMBModActive so __blueprints is populated before the M&B check.

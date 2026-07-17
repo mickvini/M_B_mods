@@ -2054,17 +2054,22 @@ function GetACUUpgradeWanted(oACU, bWantToDoTeleSnipe, tLZOrWZData, tLZOrWZTeamD
         local bDontConsiderAnyUpgrades = false
         --M&B: force the first ACU upgrade (EXCombatEngineering) past ALL norush/safe-spot/eco gates, but only after the opening (factory + nearby mex built, ~90s). In M&B the AI never upgrades on its own; the combat boost (HP/regen) means it survives fights instead of dying bare. Only in M&B (sab9101 lab bp exists); only on the first upgrade; the rest of M28's path runs after.
         if __blueprints['sab9101'] and GetGameTimeSeconds() >= 90 and oACU[refiUpgradeCount] == 0 and not(oACU.MNB_FirstUpgradeIssued) and oACU:GetBlueprint().Enhancements['EXCombatEngineering'] and not(oACU:HasEnhancement('EXCombatEngineering')) then
-            --M&B: event-driven kickstart - grant mass when the bot starts its first ACU upgrade. The upgrade costs ~2400 mass at 21/s (~114s); a single 2000 grant either overflows storage (~2000 cap, wasted) or drains to -50 mid-upgrade as engineers keep building. Stagger instead: 1000 now, +1000@30s, +1000@60s (total 3000) so mass arrives in step with the upgrade's burn rate and avoids a multi-minute -50 stall.
+            --M&B: difficulty-based ACU upgrade kickstart. easy = none; normal = 1000 once; hard = 3x1000; impossible = 3x2000.
             if not aiBrain.MNB_ACUUpgradeMass then
                 aiBrain.MNB_ACUUpgradeMass = true
-                aiBrain:GiveResource('Mass', 1000)
-                LOG('M&B: gave 1000 mass (1/3) for first ACU upgrade to '..(aiBrain.Nickname or 'AI')..' at GameTime '..GetGameTimeSeconds())
-                ForkThread(function()
-                    WaitSeconds(30)
-                    if aiBrain and not(aiBrain:IsDefeated()) then aiBrain:GiveResource('Mass', 1000); LOG('M&B: gave 1000 mass (2/3) for ACU upgrade at GameTime '..GetGameTimeSeconds()) end
-                    WaitSeconds(30)
-                    if aiBrain and not(aiBrain:IsDefeated()) then aiBrain:GiveResource('Mass', 1000); LOG('M&B: gave 1000 mass (3/3) for ACU upgrade at GameTime '..GetGameTimeSeconds()) end
-                end)
+                local sD = aiBrain.MNBDifficulty or 'hard'
+                local tACUKicks = ({normal={{1000,0}}, hard={{1000,0},{1000,30},{1000,60}}, impossible={{2000,0},{2000,30},{2000,60}}})[sD]
+                if tACUKicks then
+                    ForkThread(function()
+                        local iPrev = 0
+                        for iK, tK in tACUKicks do
+                            local iDelta = tK[2] - iPrev
+                            if iDelta > 0 then WaitSeconds(iDelta) end
+                            iPrev = tK[2]
+                            if aiBrain and not(aiBrain:IsDefeated()) then aiBrain:GiveResource('Mass', tK[1]) end
+                        end
+                    end)
+                end
             end
             if bDebugMessages == true then LOG(sFunctionRef..': M&B - forcing first ACU upgrade EXCombatEngineering past all gates') end
             oACU.MNB_FirstUpgradeIssued = true --M&B: one-shot. Once weve issued the first upgrade, never force it again - even if M28 cancels it mid-build (count stays 0). Stops the com re-attempting the first upgrade forever.

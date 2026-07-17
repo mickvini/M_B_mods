@@ -1877,18 +1877,24 @@ function WantMoreFactories(iTeam, iPlateau, iLandZone, bIgnoreMainEcoConditions)
             bWantMoreFactories = true
         end
     end
-    --M&B: vanilla WantMoreFactories is purely mass-income-ratio based, so the bot builds a fixed small number of factories and never reacts if the opponent out-builds it ("builds few factories, sits in defense, doesnt keep up"). For M&B, also want more factories if our (land+air) count is below the enemy's. Enemy factories counted via GetListOfUnits on enemy brains (sim-layer, full count). Buffer -1 avoids oscillation. TUNABLE.
-    if M28Utilities.IsMBModActive() and not(bWantMoreFactories) then
+    --M&B: vanilla WantMoreFactories is purely mass-income-ratio based, so the bot ignores being out-built.
+    -- For M&B we ALSO want more factories whenever we have fewer (land+air) than the enemy. Fixed vs the
+    -- earlier version that was bypassed: (1) the check now runs ALWAYS (was gated on not(bWantMoreFactories),
+    -- i.e. only as a fallback -> the bot never proactively kept up); (2) match EXACTLY (was 'enemyFacs-1',
+    -- so the bot accepted being 1 behind -> 3 vs 4 produced no reaction); (3) count the enemy's land+air
+    -- factories only (categories.FACTORY also counted research/naval factories, skewing the comparison vs our
+    -- land+air count). This also covers rebuild: a lost factory drops our count below the enemy's -> want more.
+    if M28Utilities.IsMBModActive() then
         local iMNBOurFacs = (M28Team.tTeamData[iTeam][M28Team.subrefiTotalFactoryCountByType][M28Factory.refiFactoryTypeLand] or 0) + (M28Team.tTeamData[iTeam][M28Team.subrefiTotalFactoryCountByType][M28Factory.refiFactoryTypeAir] or 0)
         local iMNBEnemyFacs = 0
         for iMNBBrain, oMNBBrain in ArmyBrains do
             if oMNBBrain ~= aiBrain and IsEnemy(aiBrain:GetArmyIndex(), oMNBBrain:GetArmyIndex()) then
-                iMNBEnemyFacs = iMNBEnemyFacs + table.getn(oMNBBrain:GetListOfUnits(categories.FACTORY, false, false))
+                iMNBEnemyFacs = iMNBEnemyFacs + table.getn(oMNBBrain:GetListOfUnits(M28UnitInfo.refCategoryLandFactory + M28UnitInfo.refCategoryAirFactory, false, false))
             end
         end
-        if iMNBOurFacs < iMNBEnemyFacs - 1 then
+        if iMNBOurFacs < iMNBEnemyFacs * ((aiBrain.MNBDifficulty == 'impossible') and 2 or 1) then
             bWantMoreFactories = true
-            if bDebugMessages == true then LOG(sFunctionRef..': M&B: want more factories to match enemy (ours='..iMNBOurFacs..'; enemy='..iMNBEnemyFacs..')') end
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B: want more factories to match enemy (ours='..iMNBOurFacs..'; enemy land+air='..iMNBEnemyFacs..')') end
         end
     end
     if bDebugMessages == true then LOG(sFunctionRef..': End of code, bWantMoreFactories='..tostring(bWantMoreFactories)) end
@@ -1992,7 +1998,13 @@ function HaveEnoughThreatToAttack(iPlateau, iLandZone, tLZData, tLZTeamData, iOu
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerStart)
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
 
-
+    --M&B: REMOVE the threat/fear concept entirely. The mass-based threat evaluation doesn't work for M&B's
+    -- economy (mass-only builds, different unit costs), causing the bot to retreat from 5x numerical advantage.
+    -- Always attack — let unit count and battlefield position decide, not threat ratios.
+    if M28Utilities.IsMBModActive() then
+        M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+        return true
+    end
 
     local iDefaultThreatRatioWanted
     if iOptionalOverrideDefaultThreatRatioWanted then iDefaultThreatRatioWanted = iOptionalOverrideDefaultThreatRatioWanted
@@ -2076,18 +2088,26 @@ function DoWeWantAirFactoryInsteadOfLandFactory(iTeam, tLZData, tLZTeamData, oOp
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerStart)
 
-    --M&B doctrine: keep a 1 air : 2 land factory ratio. If the brain already has too few land factories relative to its air factories, force a LAND factory next (so mass goes into the land army / research instead of air infrastructure the bot cant use aggressively in M&B, where T2/T3 air is research-gated). Exception: if the enemy actually has an air-to-ground threat, still allow air so the bot can make interceptors/AA cover. Only counts this brain's own factories. Gated on M&B; vanilla M28 untouched.
+    --M&B doctrine: keep a 2 land : 1 air factory ratio, BUT never have fewer air factories than the strongest
+    -- enemy (caveat per user: if the opponent goes heavy air — e.g. 10 air factories — we MUST match their air
+    -- production or lose the air war; the 2:1 ratio must not cap us below the enemy's air count). So force LAND
+    -- only when the 2:1 ratio is unmet AND we already have >= the enemy's max air-factory count. ASF production
+    -- stays top priority regardless. Counts this brain's own factories + enemy air factories. Gated on M&B.
     if M28Utilities.IsMBModActive() then
         local oMNBRatioBrain = oOptionalBrainOverride or ArmyBrains[tLZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]]
         if oMNBRatioBrain then
             local iMNBLandFacs = oMNBRatioBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandFactory)
             local iMNBAirFacs = oMNBRatioBrain:GetCurrentUnits(M28UnitInfo.refCategoryAirFactory)
-            if iMNBLandFacs < (iMNBAirFacs + 1) * 2 then
-                local iMNBEnemyAirThreat = (M28Team.tTeamData[iTeam] and M28Team.tTeamData[iTeam][M28Team.refiEnemyAirToGroundThreat]) or 0
-                if iMNBEnemyAirThreat <= 0 then
-                    M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
-                    return false
+            local iMNBMaxEnemyAirFacs = 0
+            for iMNBEB, oMNBEB in ArmyBrains do
+                if oMNBEB ~= oMNBRatioBrain and IsEnemy(oMNBRatioBrain:GetArmyIndex(), oMNBEB:GetArmyIndex()) then
+                    local iEBAir = table.getn(oMNBEB:GetListOfUnits(M28UnitInfo.refCategoryAirFactory, false, false))
+                    if iEBAir > iMNBMaxEnemyAirFacs then iMNBMaxEnemyAirFacs = iEBAir end
                 end
+            end
+            if iMNBLandFacs < (iMNBAirFacs + 1) * 2 and iMNBAirFacs >= iMNBMaxEnemyAirFacs then
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return false
             end
         end
     end

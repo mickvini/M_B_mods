@@ -1466,17 +1466,53 @@ function GetBlueprintToBuildForLandFactory(aiBrain, oFactory)
         elseif iFactoryTechLevel == 2 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH3 end
         local iMNBTargetMex = 0
         if iMNBTargetMexCat then iMNBTargetMex = (aiBrain:GetCurrentUnits(iMNBTargetMexCat) or 0) end
-        local iMNBMexNeeded = math.max(3, math.floor(iMNBTotalMex * 0.5))
+        local iMNBMexNeeded = math.max(6, math.floor(iMNBTotalMex * 0.5))
         if iMNBMexNeeded > iMNBTotalMex then iMNBMexNeeded = iMNBTotalMex end
         local iMNBNow = GetGameTimeSeconds()
-        local iMNBFacCd = 60 --TUNABLE: seconds between factory upgrades so they stagger instead of all-at-once (user: was 30s, raised to 60s so T2/T3 factory upgrades are more spread out and dont tank the eco)
-        if iMNBTargetMex >= iMNBMexNeeded and (not(aiBrain.MNB_LastFacUpgradeTime) or (iMNBNow - aiBrain.MNB_LastFacUpgradeTime) >= iMNBFacCd) and not(M28Conditions.CheckIfNeedMoreEngineersOrSnipeUnitsBeforeUpgrading(oFactory)) then
+        local iMNBFacCd = 60 --TUNABLE: seconds between factory upgrades so they stagger instead of all-at-once
+        if iFactoryTechLevel >= 2 then iMNBFacCd = 120 end --M&B: T2->T3 upgrades are mass-heavy; 60s let the 2nd fac start before the 1st finishes -> mass cascade. User: raise to 2 min for T3.
+        --M&B: don't start a factory upgrade if another factory is ALREADY upgrading (prevents stacking mass drain).
+        local bMNBFactoryUpgrading = false
+        local tMNBAllFacs = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandFactory, false, false)
+        if tMNBAllFacs then
+            for iFac, oFac in tMNBAllFacs do
+                if oFac and not(oFac.Dead) and (oFac:IsUnitState('Upgrading') or oFac:IsUnitState('BeingUpgraded')) then bMNBFactoryUpgrading = true break end
+            end
+        end
+        if iMNBTargetMex >= iMNBMexNeeded and not bMNBFactoryUpgrading and (not(aiBrain.MNB_LastFacUpgradeTime) or (iMNBNow - aiBrain.MNB_LastFacUpgradeTime) >= iMNBFacCd) and not(M28Conditions.CheckIfNeedMoreEngineersOrSnipeUnitsBeforeUpgrading(oFactory)) then
             local sMNBLandUpg = M28UnitInfo.GetUnitUpgradeBlueprint(oFactory, true)
             if sMNBLandUpg then
                 aiBrain.MNB_LastFacUpgradeTime = iMNBNow
                 if bDebugMessages == true then LOG(sFunctionRef..': M&B upgrading land factory (staggered; target-tier mex='..iMNBTargetMex..'/'..iMNBMexNeeded..' of '..iMNBTotalMex..'; fac tech '..iFactoryTechLevel..'; cd '..iMNBFacCd..'s); bp='..sMNBLandUpg) end
                 M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
                 return sMNBLandUpg
+            end
+        end
+    end
+
+    --M&B: T4 curated roster (user 2026-07-17). When the factory is T3+ and T4 is unlocked, build from a specific
+    -- ratio list per faction (5:2:1:1) instead of the generic EXPERIMENTAL rotation. CanBuild gates each pick.
+    if M28Utilities.IsMBModActive() and iFactoryTechLevel >= 3 and aiBrain.MNB_TechUnlocked and aiBrain.MNB_TechUnlocked[5] then
+        local sMNBFaction
+        if EntityCategoryContains(categories.UEF, oFactory.UnitId) then sMNBFaction = 'UEF'
+        elseif EntityCategoryContains(categories.CYBRAN, oFactory.UnitId) then sMNBFaction = 'CYBRAN'
+        elseif EntityCategoryContains(categories.AEON, oFactory.UnitId) then sMNBFaction = 'AEON'
+        elseif EntityCategoryContains(categories.SERAPHIM, oFactory.UnitId) then sMNBFaction = 'SERAPHIM' end
+        local tMNBT4Rosters = {
+            UEF = {'brnt3bt','brnt3bt','brnt3bt','brnt3bt','brnt3bt','brnt3ml','brnt3ml','wel0305','sel0322'},
+            CYBRAN = {'brmt1extank','brmt1extank','brmt1extank','brmt1extank','brmt1extank','srl0311','srl0311','wrl0306','srl0316'},
+            AEON = {'brot2exm2','brot2exm2','brot2exm2','brot2exm2','brot2exm2','brot3ml','brot3ml','wal4404','sal0322'},
+            SERAPHIM = {'xsl04st','xsl04st','xsl04st','xsl04st','xsl04st','brpt3ml','brpt3ml','brpt1btbot','xsl0307'},
+        }
+        local tMNBRoster = sMNBFaction and tMNBT4Rosters[sMNBFaction]
+        if tMNBRoster then
+            local iMNBRTotal = table.getn(tMNBRoster)
+            local iMNBRSlot = math.mod(oFactory[refiTotalBuildCount] or 0, iMNBRTotal) + 1
+            local sMNBRWanted = tMNBRoster[iMNBRSlot]
+            if sMNBRWanted and oFactory:CanBuild(sMNBRWanted) then
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B T4 roster: '..sMNBRWanted..' (slot '..iMNBRSlot..'/'..iMNBRTotal..'; faction='..sMNBFaction..')') end
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return sMNBRWanted
             end
         end
     end
@@ -5453,6 +5489,20 @@ function GetBlueprintToBuildForAirFactory(aiBrain, oFactory)
         if ConsiderBuildingCategory(M28UnitInfo.refCategoryBomber) then return sBPIDToBuild end
     end
 
+    --M&B: force a gunship:bomber mix (>=2 gunships per 1 bomber). Otherwise the bot spams gunships and never
+    -- builds bombers; gunships alone get chewed up by AA, while bombers do the damaging bombing runs (and the
+    -- bomber energy-sniping patches #39/#43 need bombers to exist). Only affects air-to-ground units; ASF
+    -- (interceptors) are decided in their own conditions below and stay top priority. Self-limits: when the bot
+    -- is focused on ASF it isnt accumulating gunships, so this rarely fires then. TUNABLE (the *2 ratio).
+    if M28Utilities.IsMBModActive() then
+        local iMNBGunships = aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryGunship)
+        local iMNBBombers = aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryBomber)
+        if iMNBGunships >= 2 and iMNBBombers * 2 < iMNBGunships then
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B forcing bomber for gunship:bomber mix (gunships='..iMNBGunships..'; bombers='..iMNBBombers..')') end
+            if ConsiderBuildingCategory(M28UnitInfo.refCategoryBomber) then return sBPIDToBuild end
+        end
+    end
+
     --Engineers for start of game (e.g. relevant for if gone first bomber)
     iCurrentConditionToTry = iCurrentConditionToTry + 1
     if iFactoryTechLevel == 1 and M28UnitInfo.GetUnitLifetimeCount(oFactory) == 1 and M28Conditions.GetLifetimeBuildCount(aiBrain, M28UnitInfo.refCategoryEngineer) < 7 and tLZTeamData[M28Map.subrefTbWantBP] then
@@ -7982,8 +8032,8 @@ function GetBlueprintToBuildForResearchCentre(aiBrain, oFactory)
     end
     --M&B: follow the mod author's intended research order - tiers interleaved with land-unit boosts after each tier (cheaper than the next tier, so mass can go to the parallel mex upgrades instead of the lab chaining expensive tiers). Boost bps are generated in hook/lua/system/Blueprints.lua as {ser/sar/srr/ssr}9{techid}00, so strip the 3-letter faction prefix from each buildable research bp and rank it against the order; pick the earliest-ranked buildable one. CanBuild already enforces prerequisites + faction + one-shot (a started research restricts itself), so this only sets precedence. Once all 10 ordered items are done, fall through to the default.
     if M28Utilities.IsMBModActive() and tBlueprints then
-        --M&B: user removed the *400 land boosts (910400/920400/930400) from the queue so the bot reaches T4 (9400) faster. 10 ordered items now; *400 bps fall through to default (researched only after T4 if at all).
-        local tMNBOrder = {['9100']=1, ['9200']=2, ['910600']=3, ['910500']=4, ['9300']=5, ['920600']=6, ['920500']=7, ['9400']=8, ['930600']=9, ['930500']=10}
+        --M&B: user removed the *400 land boosts (910400/920400/930400) from the queue so the bot reaches T4 (9400) faster. After 9400 + its existing followers (930600/930500), user wants the T4/T5 type-06/05 boosts prioritised: 940600, 940500, 950600, 950500 (ranks 11-14). 14 ordered items now; other bps fall through to default. CanBuild still gates availability (a boost is only picked once its tier + predecessor are unlocked).
+        local tMNBOrder = {['9100']=1, ['9200']=2, ['910600']=3, ['910500']=4, ['9300']=5, ['920600']=6, ['920500']=7, ['9400']=8, ['930600']=9, ['930500']=10, ['940600']=11, ['940500']=12, ['950600']=13, ['950500']=14}
         local sMNBChosen
         local iMNBChosenRank = 99
         for _, sBPID in tBlueprints do

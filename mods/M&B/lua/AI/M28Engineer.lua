@@ -1228,6 +1228,21 @@ function GetBlueprintAndLocationToBuild(aiBrain, oEngineer, iOptionalEngineerAct
     local sBlueprintToBuild = sBlueprintOverride or M28Factory.GetBlueprintThatCanBuildOfCategory(aiBrain, iCategoryToBuild, oEngineer, false,          false,      bBuildCheapestStructure, iOptionalCategoryForStructureToBuild, nil,         nil,                   bGetMostExpensive)
 
 
+    --M&B: fab cluster hint. If building a mass fabricator and fabs already exist (anchor), suggest the next
+    -- 2D-cluster slot (square rings around the anchor, gap left for mass storage adjacency) instead of letting
+    -- M28 scatter/line them. Only used if the suggested slot is still buildable (CanBuildStructureAt); otherwise
+    -- fall through to the normal location search, so this never blocks fab construction. If there are no
+    -- existing fabs (first one, or all destroyed), there's no anchor -> no hint -> bot places freely and that
+    -- fab becomes the new anchor for the next ones.
+    if M28Utilities.IsMBModActive() and sBlueprintToBuild and EntityCategoryContains(M28UnitInfo.refCategoryMassFab, sBlueprintToBuild) then
+        local tMNBFabSlot = M28Economy.MNBGetNextFabSlot(aiBrain)
+        if tMNBFabSlot and aiBrain:CanBuildStructureAt(sBlueprintToBuild, tMNBFabSlot) then
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B fab cluster hint -> using suggested slot '..repru(tMNBFabSlot)) end
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return sBlueprintToBuild, tMNBFabSlot
+        end
+    end
+
     if sBlueprintToBuild == nil then
         --Factory specific - retry but removing any tech restrictions on iCategoryToBuild
         if bDebugMessages == true then LOG(sFunctionRef..': sBlueprintToBuild is nil before factory recheck, oEngineer='..oEngineer.UnitId..M28UnitInfo.GetUnitLifetimeCount(oEngineer)..', bCloseToUnitCap='..tostring(aiBrain[M28Overseer.refbCloseToUnitCap])..'; repru(EntityCategoryGetUnitList(iCategoryToBuild)='..repru(EntityCategoryGetUnitList(iCategoryToBuild))) end

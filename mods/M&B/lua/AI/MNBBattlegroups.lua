@@ -12,6 +12,12 @@ local M28Utilities = import('/mods/M&B/lua/AI/M28Utilities.lua')
 local M28UnitInfo = import('/mods/M&B/lua/AI/M28UnitInfo.lua')
 local M28Orders = import('/mods/M&B/lua/AI/M28Orders.lua')
 local M28Map = import('/mods/M&B/lua/AI/M28Map.lua')
+local M28Team = import('/mods/M&B/lua/AI/M28Team.lua')
+
+--M&B: true field-built experimentals are NEEDMOBILEBUILD (NOT categories.EXPERIMENTAL, which is M&B's T4 factory units).
+--Using refCategoryLandExperimental (EXPERIMENTAL) wrongly treats T4 factory tanks as experimentals -> excludes them
+--from the spare pool and flags them pending-strike -> no escorts for strikes -> army piles at base. This separates them.
+local refCategoryMNBFieldExp = categories.NEEDMOBILEBUILD * categories.MOBILE * categories.LAND
 
 -- ===== Tunables =====
 local TICK = 5              -- seconds between manager ticks
@@ -28,6 +34,7 @@ local MIN_RESERVE = 16      -- min spare land-combat units to leave unassigned (
 local MAX_RAID_GROUPS = 4   -- max concurrent raid parties per brain
 local ROSTER_DEAD_RATIO = 0.3  -- alive ratio below this => group considered wiped
 local EXP_STRIKE_ESCORT_MIN = 10  -- if an exp is waiting, form a strike with at least this many tanks
+local MAX_PENDING_EXPS = 5  -- cap experimentals held 'pending-strike' so they dont ALL pile at base if no strike forms (e.g. bot has 0 tanks)
 local bDebug = true
 
 -- Per-unit flag. Also referenced by M28Land.lua skip; keep the key string in sync.
@@ -62,8 +69,68 @@ local function LaunchedRosterSize(tG)
     return tG.launchedCount or (tG.roster and table.getn(tG.roster)) or 1
 end
 
--- Find the enemy base position. Cached on the brain. Scans team zones for reftClosestEnemyBase.
+-- Mark an enemy base (by rounded position key) as defeated by this brain so it isnt re-targeted.
+local function MarkBaseDefeated(aiBrain, tPos)
+    if not tPos then return end
+    if not aiBrain.tMNBDefeatedBases then aiBrain.tMNBDefeatedBases = {} end
+    aiBrain.tMNBDefeatedBases[(math.floor(tPos[1] or 0)) .. '_' .. (math.floor(tPos[3] or 0))] = true
+end
+
+-- Distinct enemy base start-positions known to the team (deduped by rounded position).
+local function GetDistinctEnemyBases(iTeam)
+    local tDistinct = {}
+    local tSeen = {}
+    if M28Map.tAllPlateaus then
+        for iPlateau, tPlateau in M28Map.tAllPlateaus do
+            local tLandZones = tPlateau and tPlateau[M28Map.subrefPlateauLandZones]
+            if tLandZones then
+                for iLZ, tLZData in tLandZones do
+                    local tLZTeamData = tLZData and tLZData[M28Map.subrefLZTeamData] and tLZData[M28Map.subrefLZTeamData][iTeam]
+                    local tPos = tLZTeamData and tLZTeamData[M28Map.reftClosestEnemyBase]
+                    if tPos then
+                        local sKey = (math.floor(tPos[1] or 0)) .. '_' .. (math.floor(tPos[3] or 0))
+                        if not tSeen[sKey] then tSeen[sKey] = true; table.insert(tDistinct, tPos) end
+                    end
+                end
+            end
+        end
+    end
+    return tDistinct
+end
+
+-- Team-coordinated target SPLIT: each active M28 brain gets a DISTINCT enemy base (round-robin by brain
+-- order), skipping bases THIS brain has already cleared. Recomputed each call (no stale cache) so a cleared
+-- base is dropped immediately and the bot moves to the next opponent. Teammates attack different players
+-- instead of both piling on one.
+local function GetAssignedEnemyBase(aiBrain, iTeam)
+    local tTeamData = M28Team.tTeamData and M28Team.tTeamData[iTeam]
+    if not tTeamData then return nil end
+    local tDistinct = GetDistinctEnemyBases(iTeam)
+    local tDefeated = aiBrain.tMNBDefeatedBases
+    local tAvail = {}
+    for i, tPos in tDistinct do
+        local sKey = (math.floor(tPos[1] or 0)) .. '_' .. (math.floor(tPos[3] or 0))
+        if not(tDefeated and tDefeated[sKey]) then table.insert(tAvail, tPos) end
+    end
+    local iCount = table.getn(tAvail)
+    if iCount == 0 then return nil end
+    local tBrains = tTeamData[M28Team.subreftoFriendlyActiveM28Brains]
+    if not tBrains then return tAvail[1] end
+    local iMyArmy = aiBrain:GetArmyIndex()
+    local iMyIndex, iTotal = 0, 0
+    for iBrain, oBrain in tBrains do
+        iTotal = iTotal + 1
+        if oBrain:GetArmyIndex() == iMyArmy then iMyIndex = iTotal end
+    end
+    if iMyIndex == 0 then return tAvail[1] end
+    return tAvail[math.mod(iMyIndex - 1, iCount) + 1]
+end
+
+-- THIS brain's strike target = its team-assigned (distinct, not-yet-cleared) enemy base, so teammates split
+-- opponents. Falls back to the closest enemy base if no assignment is available.
 local function GetEnemyBasePos(aiBrain, iTeam)
+    local tAssigned = GetAssignedEnemyBase(aiBrain, iTeam)
+    if tAssigned then return tAssigned end
     if aiBrain.MNBEnemyBasePos then return aiBrain.MNBEnemyBasePos end
     if not(M28Map.tAllPlateaus) then return nil end
     for iPlateau, tPlateau in M28Map.tAllPlateaus do
@@ -81,6 +148,25 @@ local function GetEnemyBasePos(aiBrain, iTeam)
     return nil
 end
 
+-- Closest alive enemy ACU to tFromPos (ACU kill = win in M&B). Sourced from M28's team enemy-ACU tracking.
+local function GetClosestEnemyACU(iTeam, tFromPos)
+    local tTeamData = M28Team.tTeamData and M28Team.tTeamData[iTeam]
+    if not tTeamData then return nil end
+    local tACUs = tTeamData[M28Team.reftEnemyACUs]
+    if not tACUs then return nil end
+    local oClosest, iClosestDist = nil, nil
+    for i, oACU in tACUs do
+        if oACU and not(oACU.Dead) and M28UnitInfo.IsUnitValid(oACU) then
+            local iDist = (tFromPos and M28Utilities.GetDistanceBetweenPositions(oACU:GetPosition(), tFromPos)) or 0
+            if (not iClosestDist) or (iDist < iClosestDist) then
+                iClosestDist = iDist
+                oClosest = oACU
+            end
+        end
+    end
+    return oClosest
+end
+
 -- Spare (unassigned, complete, valid) land-combat units owned by the brain. Experimentals excluded (handled separately).
 local function GetSpareCombatUnits(aiBrain)
     local tOut = {}
@@ -90,7 +176,7 @@ local function GetSpareCombatUnits(aiBrain)
             if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
                     and oUnit[refiMNBBGroup] == nil
                     and oUnit:GetFractionComplete() >= 1
-                    and not(EntityCategoryContains(M28UnitInfo.refCategoryLandExperimental, oUnit.UnitId)) then
+                    and not(EntityCategoryContains(refCategoryMNBFieldExp, oUnit.UnitId)) then
                 table.insert(tOut, oUnit)
             end
         end
@@ -101,7 +187,7 @@ end
 -- Idle experimentals flagged 'pending-strike' (waiting for a strike group to escort them).
 local function GetPendingStrikeExps(aiBrain)
     local tOut = {}
-    local tUnits = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandExperimental, false, false)
+    local tUnits = aiBrain:GetListOfUnits(refCategoryMNBFieldExp, false, false)
     if tUnits then
         for i, oUnit in tUnits do
             if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
@@ -113,21 +199,40 @@ local function GetPendingStrikeExps(aiBrain)
     return tOut
 end
 
--- Enemy mexes near the enemy base (intel-limited) not already under raid.
-local function GetRaidableMexes(aiBrain, tEnemyBasePos, tGroups)
-    if not tEnemyBasePos then return {} end
-    local tSeen = {}
+-- Enemy mexes across ALL enemy bases (intel-limited), deduped, not already under raid, and INTERLEAVED
+-- across bases so raid parties spread to different enemies (eco pressure on every player, not piled on one).
+local function GetRaidableMexes(aiBrain, iTeam, tGroups)
+    local tUnderRaid = {}
     for i, tG in tGroups do
         if tG.role == 'raid' and tG.targetUnit and not(tG.targetUnit.Dead) then
-            tSeen[tG.targetUnit.EntityId] = true
+            tUnderRaid[tG.targetUnit.EntityId] = true
         end
     end
+    local tSeenMex = {}
+    local tBases = GetDistinctEnemyBases(iTeam)
+    local tPerBase = {}
+    for iBase, tBasePos in tBases do
+        local tMexes = aiBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex, tBasePos, RAID_RADIUS, 'Enemy')
+        local tFiltered = {}
+        if tMexes then
+            for i, oMex in tMexes do
+                if oMex and not(oMex.Dead) and not(tUnderRaid[oMex.EntityId]) and not(tSeenMex[oMex.EntityId]) then
+                    tSeenMex[oMex.EntityId] = true
+                    table.insert(tFiltered, oMex)
+                end
+            end
+        end
+        if table.getn(tFiltered) > 0 then table.insert(tPerBase, tFiltered) end
+    end
+    -- round-robin across bases so successive raids hit different enemies
     local tOut = {}
-    local tMexes = aiBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex, tEnemyBasePos, RAID_RADIUS, 'Enemy')
-    if tMexes then
-        for i, oMex in tMexes do
-            if oMex and not(oMex.Dead) and not(tSeen[oMex.EntityId]) then
-                table.insert(tOut, oMex)
+    local bAny = true
+    while bAny do
+        bAny = false
+        for iBase, tMexes in tPerBase do
+            if table.getn(tMexes) > 0 then
+                table.insert(tOut, table.remove(tMexes, 1))
+                bAny = true
             end
         end
     end
@@ -224,7 +329,7 @@ local function FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
                 table.insert(tRoster, oExp)
             end
             if table.getn(tRoster) > 0 then
-                local tG = { role = 'strike', targetPos = tEnemyBasePos, roster = tRoster, launchedCount = table.getn(tRoster), launchTime = GetGameTimeSeconds(), state = 'launched' }
+                local tG = { role = 'strike', targetPos = tEnemyBasePos, basePos = tEnemyBasePos, huntingACU = false, roster = tRoster, launchedCount = table.getn(tRoster), launchTime = GetGameTimeSeconds(), state = 'launched' }
                 for i, oUnit in tRoster do
                     oUnit[refiMNBBGroup] = tG
                     M28Orders.IssueTrackedAggressiveMove(oUnit, tEnemyBasePos, 6, false, 'MNBStrike')
@@ -236,7 +341,7 @@ local function FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
     end
 
     -- RAIDS: form parties for unraided enemy mexes while reserve allows
-    local tMexes = GetRaidableMexes(aiBrain, tEnemyBasePos, tGroups)
+    local tMexes = GetRaidableMexes(aiBrain, iTeam, tGroups)
     for i, oMex in tMexes do
         if NumRaidGroups(tGroups) >= MAX_RAID_GROUPS then break end
         if (table.getn(tSpare) - iRaidReq) < MIN_RESERVE then break end
@@ -284,15 +389,87 @@ end
 
 -- Claim idle experimentals (not yet M&B-managed) into the strike system so they don't lone-rush.
 local function ClaimIdleExperimentals(aiBrain)
-    local tUnits = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandExperimental, false, false)
+    local tUnits = aiBrain:GetListOfUnits(refCategoryMNBFieldExp, false, false)
     if not tUnits then return end
+    -- count experimentals already held pending-strike; cap so excess exps go to M28 (prevent pile-up)
+    local iPending = 0
+    for i, oExp in tUnits do
+        if oExp and not(oExp.Dead) and oExp[refiMNBBGroup] == 'pending-strike' then iPending = iPending + 1 end
+    end
     for i, oExp in tUnits do
         if oExp and not(oExp.Dead) and M28UnitInfo.IsUnitValid(oExp)
                 and oExp[refiMNBBGroup] == nil
                 and oExp:GetFractionComplete() >= 1 then
-            AttachExperimentalToStrikeGroup(oExp, aiBrain.M28Team)
+            if iPending < MAX_PENDING_EXPS then
+                AttachExperimentalToStrikeGroup(oExp, aiBrain.M28Team)
+                if oExp[refiMNBBGroup] == 'pending-strike' then iPending = iPending + 1 end
+            end
+            -- else: leave the exp unflagged -> M28 handles it (doesnt pile at base waiting for a strike)
         end
     end
+end
+
+-- Strike doctrine (per user): RAZE THE BASE FIRST. Only once the base point has no remaining targets
+-- (structures/units cleared) does the strike switch to hunting the enemy ACU (to finish the kill) -- so the
+-- base stays under pressure and the enemy cant rebuild. If the ACU is then gone too, free the roster.
+local function UpdateStrikes(aiBrain, iTeam)
+    local tGroups = aiBrain.tMNBBattlegroups
+    if not tGroups then return end
+    local iKeep = {}
+    for i, tG in tGroups do
+        if tG.role ~= 'strike' then
+            table.insert(iKeep, tG)
+        elseif tG.huntingACU then
+            -- already hunting the ACU: keep chasing its current position
+            local oACU = GetClosestEnemyACU(iTeam, tG.targetPos)
+            if oACU then
+                local tNewPos = oACU:GetPosition()
+                if (not tG.targetPos) or (M28Utilities.GetDistanceBetweenPositions(tNewPos, tG.targetPos) > 30) then
+                    tG.targetPos = tNewPos
+                    for j, oUnit in tG.roster do
+                        if oUnit and not(oUnit.Dead) then
+                            M28Orders.IssueTrackedAggressiveMove(oUnit, tNewPos, 6, false, 'MNBStrikeRT')
+                        end
+                    end
+                    DBG('strike hunting ACU -> reposition')
+                end
+                table.insert(iKeep, tG)
+            else
+                -- ACU gone (dead or lost): objective done -> mark this base defeated so the bot moves on to the next opponent
+                MarkBaseDefeated(aiBrain, tG.basePos)
+                FreeRoster(tG.roster)
+                aiBrain.iMNBStrikeRequired = STRIKE_BASE
+                aiBrain.MNBEnemyBasePos = nil
+                DBG('ACU gone after base clear -> freeing roster for next threat')
+            end
+        else
+            -- pressing the BASE: keep going while targets remain; switch to ACU only once it's cleared
+            local tEnemiesNear = aiBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMobileLand + M28UnitInfo.refCategoryStructure, tG.targetPos, 70, 'Enemy')
+            if M28Utilities.IsTableEmpty(tEnemiesNear) then
+                local oACU = GetClosestEnemyACU(iTeam, tG.targetPos)
+                if oACU then
+                    tG.huntingACU = true
+                    tG.targetPos = oACU:GetPosition()
+                    for j, oUnit in tG.roster do
+                        if oUnit and not(oUnit.Dead) then
+                            M28Orders.IssueTrackedAggressiveMove(oUnit, tG.targetPos, 6, false, 'MNBStrikeACU')
+                        end
+                    end
+                    DBG('base cleared -> strike now hunting ACU')
+                    table.insert(iKeep, tG)
+                else
+                    MarkBaseDefeated(aiBrain, tG.basePos)
+                    FreeRoster(tG.roster)
+                    aiBrain.iMNBStrikeRequired = STRIKE_BASE
+                    aiBrain.MNBEnemyBasePos = nil
+                    DBG('base cleared, ACU unknown -> freeing roster for next threat')
+                end
+            else
+                table.insert(iKeep, tG)  -- base still has targets; keep pressing
+            end
+        end
+    end
+    aiBrain.tMNBBattlegroups = iKeep
 end
 
 local function TickSafe(aiBrain)
@@ -303,9 +480,9 @@ local function TickSafe(aiBrain)
     if not aiBrain.iMNBRaidRequired then aiBrain.iMNBRaidRequired = RAID_BASE end
 
     ResolveGroups(aiBrain, aiBrain.tMNBBattlegroups)
-    local tGroups = aiBrain.tMNBBattlegroups
-
     ClaimIdleExperimentals(aiBrain)
+    UpdateStrikes(aiBrain, iTeam)
+    local tGroups = aiBrain.tMNBBattlegroups
     local tEnemyBasePos = GetEnemyBasePos(aiBrain, iTeam)
     local tSpare = GetSpareCombatUnits(aiBrain)
     FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
@@ -319,6 +496,9 @@ function ManageBattlegroups(aiBrain)
             local bOk, sErr = pcall(TickSafe, aiBrain)
             if not bOk then
                 DBG('tick error: ' .. tostring(sErr))
+                --NOTE: do NOT free M&B-flagged units on error. Freeing them = falling back to vanilla M28,
+                --which CANT play the M&B mod (wrong economy/tiers/energy model). Better to leave units in
+                --their groups (with their last orders) and let the manager retry next tick.
             end
         end
         WaitSeconds(TICK)

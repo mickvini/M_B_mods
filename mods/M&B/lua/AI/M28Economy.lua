@@ -3252,6 +3252,47 @@ function MNBSweepRadarUpgrades(aiBrain)
     end
 end
 
+--M&B: suggest the next mass-fabricator build position so fabs form a compact 2D cluster (square rings
+-- around the first/anchor fab, stride = fab footprint + gap so mass storage fits between fabs and gets
+-- adjacency), instead of a line/wall. Returns a position, or nil if there's no anchor (no existing fabs
+-- -> first fab, or all destroyed -> bot places freely and that fab becomes the new anchor). The caller
+-- (GetBlueprintAndLocationToBuild) validates the slot with CanBuildStructureAt and falls back to the normal
+-- location search if it's not buildable, so this never blocks fab construction. Stride 4 = fab(2) + gap(2).
+function MNBGetNextFabSlot(aiBrain)
+    if not M28Utilities.IsMBModActive() then return nil end
+    local tFabs = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryMassFab, false, true)
+    if not tFabs or table.getn(tFabs) == 0 then return nil end
+    local oAnchor = nil
+    for i, oFab in tFabs do
+        if oFab and not(oFab.Dead) and M28UnitInfo.IsUnitValid(oFab) then oAnchor = oFab break end
+    end
+    if not oAnchor then return nil end
+    local tAnchor = oAnchor:GetPosition()
+    if not tAnchor then return nil end
+    local tOccupied = {}
+    for i, oFab in tFabs do
+        if oFab and not(oFab.Dead) then
+            local p = oFab:GetPosition()
+            if p then tOccupied[(math.floor(p[1] + 0.5)) .. '_' .. (math.floor(p[3] + 0.5))] = true end
+        end
+    end
+    local iStride = 4
+    for iR = 1, 6 do
+        for iX = -iR, iR do
+            for iZ = -iR, iR do
+                if iX == -iR or iX == iR or iZ == -iR or iZ == iR then  -- square ring outline only (2D growth, not a line)
+                    local tSlot = { tAnchor[1] + iX * iStride, tAnchor[2] or 0, tAnchor[3] + iZ * iStride }
+                    local sKey = (math.floor(tSlot[1] + 0.5)) .. '_' .. (math.floor(tSlot[3] + 0.5))
+                    if not tOccupied[sKey] then
+                        return tSlot
+                    end
+                end
+            end
+        end
+    end
+    return nil
+end
+
 function ConsiderFutureMexUpgrade(oMex, iOverrideSecondsToWait)
     --Called when we have just constructed a mex - considers upgrading the mex in the future if we have no active upgrades
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end

@@ -272,7 +272,13 @@ ERL0001 = Class(CWalkingLandUnit) {
         self:AddBuildRestriction( categories.CYBRAN * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         self:AddBuildRestriction( categories.CYBRAN * (categories.BUILTBYTIER4COMMANDER) )
         --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
-        if self:GetAIBrain().BrainType ~= 'Human' then self:SetProductionPerSecondMass(15) end
+        local oBrainACU = self:GetAIBrain()
+        self.MNB_AcuMass = ({normal=5, hard=15, impossible=50})[oBrainACU.MNBDifficulty]
+        if oBrainACU.BrainType ~= 'Human' and self.MNB_AcuMass then
+            self:SetProductionPerSecondMass(self.MNB_AcuMass)
+            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=11000})[oBrainACU.MNBDifficulty]
+            if self.MNB_AcuEnergy then self:SetProductionPerSecondEnergy(self.MNB_AcuEnergy) end
+        end
     end,
 
 
@@ -929,8 +935,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXCybranHealthBoost1'] then
                 BuffBlueprint {
                     Name = 'EXCybranHealthBoost1',
@@ -961,8 +967,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             self:AddBuildRestriction( categories.CYBRAN * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.CYBRAN * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXCybranHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost1' )
             end
@@ -992,8 +998,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['EXCybranHealthBoost2'] then
                 BuffBlueprint {
                     Name = 'EXCybranHealthBoost2',
@@ -1024,8 +1030,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             self:AddBuildRestriction( categories.CYBRAN * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.CYBRAN * ( categories.BUILTBYTIER4COMMANDER) )
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXCybranHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost1' )
             end
@@ -1042,8 +1048,8 @@ ERL0001 = Class(CWalkingLandUnit) {
 			local bp = self:GetBlueprint().Enhancements[enh]
             local bpEcon = self:GetBlueprint().Economy
             if not bp then return end
-			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if not Buffs['CYBRANACUT4BuildRate'] then
                 BuffBlueprint {
                     Name = 'CYBRANACUT4BuildRate',
@@ -1090,8 +1096,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             self:AddBuildRestriction( categories.CYBRAN * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
             self:AddBuildRestriction( categories.CYBRAN * ( categories.BUILTBYTIER4COMMANDER) )
 			local bpEcon = self:GetBlueprint().Economy
-			self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+			self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             if Buff.HasBuff( self, 'EXCybranHealthBoost1' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost1' )
             end
@@ -1140,8 +1146,8 @@ ERL0001 = Class(CWalkingLandUnit) {
                 }
             end            
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost4')
 			self.wcRocket01 = true
 			self.wcRocket02 = false
@@ -1165,8 +1171,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost4' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost4' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1210,8 +1216,8 @@ ERL0001 = Class(CWalkingLandUnit) {
                 }
             end
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost5')
             self.wcRocket01 = false
 			self.wcRocket02 = true
@@ -1237,8 +1243,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost5' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost5' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)
@@ -1282,8 +1288,8 @@ ERL0001 = Class(CWalkingLandUnit) {
                 }
             end
             local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + (self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + (self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
             Buff.ApplyBuff(self, 'EXCybranHealthBoost6')
 			self.RBComEngineering = true
 			self.RBAssEngineering = true
@@ -1308,8 +1314,8 @@ ERL0001 = Class(CWalkingLandUnit) {
             if Buff.HasBuff( self, 'EXCybranHealthBoost6' ) then
                 Buff.RemoveBuff( self, 'EXCybranHealthBoost6' )
             end
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and 15 or bpEcon.ProductionPerSecondMass) or 0)
+            self:SetProductionPerSecondEnergy((self.MNB_AcuEnergy or bpEcon.ProductionPerSecondEnergy) or 0)
+            self:SetProductionPerSecondMass((self:GetAIBrain().BrainType ~= 'Human' and self.MNB_AcuMass or bpEcon.ProductionPerSecondMass) or 0)
 			self.wcRocket01 = false
 			self.wcRocket02 = false
 			self:ForkThread(self.WeaponRangeReset)
