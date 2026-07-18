@@ -9886,6 +9886,30 @@ function ConsiderActionToAssign(iActionToAssign, iMinTechWanted, iTotalBuildPowe
         end
     end
     --]]
+    --M&B: naval factory is useless before ser9100 (RESEARCHLOCKEDTECH1) — ships are research-locked until then, so an early factory can only spam engineers. Don't assign engineers to build naval factories until ser9100 is done. oMNBBrain is nil for water-zone calls (where naval factories are built), so fall back to the closest friendly M28 brain for the tech-unlock flag.
+    if M28Utilities.IsMBModActive() and iActionToAssign == refActionBuildNavalFactory then
+        local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])
+        if not (oMNBOwnerBrain and oMNBOwnerBrain.MNB_TechUnlocked and oMNBOwnerBrain.MNB_TechUnlocked[2]) then
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return
+        end
+    end
+    --M&B (user, 2026-07-18): hard-cap LAND factories at 2 ONLY when land-locked (our base != enemy base landmass; no land route — real islands). Covers the engineer build path; the ACU path is capped via DoWeWantAirFactoryInsteadOfLandFactory. If there's a land crossing (same landmass), build factories normally — the old "any water" gate wrongly capped on maps with water + a land route. Mirrors #78.
+    if M28Utilities.IsMBModActive() and (iActionToAssign == refActionBuildLandFactory or iActionToAssign == refActionBuildSecondLandFactory) then
+        local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])
+        if oMNBOwnerBrain and oMNBOwnerBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandFactory) >= 2 then
+            local tMNBEB = tLZOrWZTeamData and tLZOrWZTeamData[M28Map.reftClosestEnemyBase]
+            local bMNBLandLocked = false
+            if tMNBEB then
+                local tMNBOB = M28Map.GetPlayerStartPosition(oMNBOwnerBrain)
+                if tMNBOB then bMNBLandLocked = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBOB) ~= NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBEB) end
+            end
+            if bMNBLandLocked then
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return
+            end
+        end
+    end
     if (M28Utilities.bLoudModActive or M28Utilities.bQuietModActive) and not(bBPIsInAdditionToExisting) and tiActionOrder[iActionToAssign] == M28Orders.refiOrderIssueBuild then iTotalBuildPowerWanted = iTotalBuildPowerWanted * 0.8 end
 
     --Dont try getting any mroe BP for htis action if have run out of buildable locations

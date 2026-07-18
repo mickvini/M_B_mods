@@ -2907,7 +2907,9 @@ function OnConstructed(oEngineer, oJustBuilt)
                             ForkThread(M28Building.ConsiderGiftingPowerToTeammateForAdjacency, oJustBuilt)
                         end
                         --Clear engineers that just built this
-                    elseif EntityCategoryContains(M28UnitInfo.refCategoryIndirect * categories.TECH1, oJustBuilt.UnitId) then
+                    elseif EntityCategoryContains(M28UnitInfo.refCategoryIndirect * categories.TECH1, oJustBuilt.UnitId)
+                        or (M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 and EntityCategoryContains(M28UnitInfo.refCategoryLandCombat - categories.TECH3, oJustBuilt.UnitId)) then
+                        --M&B (user, 2026-07-18): vanilla only loads freshly-built T1 arty onto transports (suicide arti-drop), so naval raid transports carried just arty. For M&B ALSO load freshly-built tanks (T1/T2 land combat) so the dropped force is a real army. WATER-GATED so land maps keep vanilla T1-arty drops. (T3 excluded so T3 tanks keep their own branch + aren't sunk into raids.)
                         --Check if we have transports wanting combat drops
                         local tLZData, tLZTeamData = M28Map.GetLandOrWaterZoneData(oJustBuilt:GetPosition(), true, oJustBuilt:GetAIBrain().M28Team)
                         if M28Utilities.IsTableEmpty(tLZTeamData[M28Map.reftoTransportsWaitingForUnits]) == false then

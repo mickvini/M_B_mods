@@ -248,7 +248,7 @@ FactoryUnit = Class(oldFactoryUnit)
         end
         if bIsLab and self:GetAIBrain().BrainType ~= 'Human' then
             local oBrainLab = self:GetAIBrain()
-            self.BaseBuildRate = ({easy=50, normal=65, hard=100, impossible=150})[oBrainLab.MNBDifficulty] or 100
+            self.BaseBuildRate = ({easy=50, normal=65, hard=100, impossible=120})[oBrainLab.MNBDifficulty] or 100
         end
 
         -- LOG(self.BaseBuildRate)
@@ -520,6 +520,27 @@ HoverLandUnit = Class(MobileUnit) {
 }
 
 AirUnit = Class(oldAirUnit) {
+    OnKilled = function(self, instigator, type, overkillRatio)
+        oldAirUnit.OnKilled(self, instigator, type, overkillRatio)
+        --M&B (user, 2026-07-18): if an AI bomber was shot down by an enemy ground-AA, timestamp it on the bomber's air-subteam so our bombers switch to clearing that AA (the killer) before returning to generators. pcall-wrapped so an error here can never break the kill handling.
+        pcall(function()
+            if instigator and instigator.GetAIBrain then
+                local oBrain = self:GetAIBrain()
+                if oBrain and oBrain.BrainType ~= 'Human' and oBrain.M28AI and oBrain.M28AirSubteam then
+                    local oInstBrain = instigator:GetAIBrain()
+                    if oInstBrain and oInstBrain ~= oBrain and IsEnemy(oBrain:GetArmyIndex(), oInstBrain:GetArmyIndex()) then
+                        local M28UnitInfoX = import('/mods/M&B/lua/AI/M28UnitInfo.lua')
+                        if EntityCategoryContains(M28UnitInfoX.refCategoryBomber, self.UnitId) and EntityCategoryContains(M28UnitInfoX.refCategoryGroundAA, instigator.UnitId) then
+                            local M28TeamX = import('/mods/M&B/lua/AI/M28Team.lua')
+                            if M28TeamX.tAirSubteamData and M28TeamX.tAirSubteamData[oBrain.M28AirSubteam] then
+                                M28TeamX.tAirSubteamData[oBrain.M28AirSubteam]['iMNBLastBomberKilledByAa'] = GetGameTimeSeconds()
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+    end,
     OnStopBeingBuilt = function(self, builder, layer)
         oldAirUnit.OnStopBeingBuilt(self, builder, layer)
         local army = self:GetArmy() 

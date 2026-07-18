@@ -1555,7 +1555,14 @@ function GetBlueprintToBuildForLandFactory(aiBrain, oFactory)
         --M&B: exclude mobile artillery (INDIRECTFIRE) from the combat path so arty is ONLY ever built via the carve-out above (gated on study 9100 + capped at 5). Otherwise T1 mobile arty is part of refCategoryLandCombat (INDIRECTFIRE*TECH1) and leaks into the rotation here - so despite the carve-out's 9100 gate the bot still built arty from turn 1 (user: "the pre-9100 arty block didnt fire").
         local sMNBCombatBP = GetBlueprintThatCanBuildOfCategory(aiBrain, M28UnitInfo.refCategoryLandCombat - categories.INDIRECTFIRE, oFactory)
         if sMNBCombatBP then
-            if bDebugMessages == true then LOG(sFunctionRef..': M&B tank-spam doctrine - forcing land combat '..sMNBCombatBP..'; cur land combat='..aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandCombat)) end
+            --M&B (user, 2026-07-18): on naval maps where LAND-LOCKED units can't reach the enemy (bCanPathToEnemyWithLand false), cap them at 30 (enough for десант + defense; more piles at the shore wasting mass). BUT DON'T cap units that CAN cross water — hover (HOVER category, e.g. BROT1BT) and amphibious (Physics.LayerChangeOffsetHeight; amphibians like XRL0305 have NO category, so detect via the blueprint physics marker) — those are exactly what's wanted on a naval map and must keep building. The count excludes hover so they don't inflate the cap. TUNABLE (30).
+            local bMNBAquatic = EntityCategoryContains(categories.HOVER, sMNBCombatBP) or (__blueprints[sMNBCombatBP] and __blueprints[sMNBCombatBP].Physics and __blueprints[sMNBCombatBP].Physics.LayerChangeOffsetHeight ~= nil)
+            if (not bMNBAquatic) and (not bCanPathToEnemyWithLand) and aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandCombat - categories.HOVER) >= 30 then
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B naval land-cap: '..sMNBCombatBP..' is land-locked, cant path to enemy, land combat(excl hover)='..aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandCombat - categories.HOVER)..' >=30 -> stop, mass to navy/air') end
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return nil
+            end
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B tank-spam doctrine - forcing land combat '..sMNBCombatBP..'; cur land combat='..aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryLandCombat)..'; aquatic='..tostring(bMNBAquatic)) end
             M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
             return sMNBCombatBP
         end
@@ -6316,7 +6323,9 @@ function GetBlueprintToBuildForAirFactory(aiBrain, oFactory)
             --early-game Transport (high priority)
             if bDebugMessages == true then LOG(sFunctionRef..': Considering whether we want transport, is transport island droplist empty='..tostring(M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist]))..'; Is same plateau drop list empty='..tostring(M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportFarAwaySameIslandPlateauLandZoneDropShortlist]))) end
             iCurrentConditionToTry = iCurrentConditionToTry + 1
-            if (M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist]) == false or M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportFarAwaySameIslandPlateauLandZoneDropShortlist]) == false or M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftiHighTechEngiDropPlateauAndZones]) == false) then
+            --M&B: on water maps, prioritise air transports over assault aircraft so the bot can ferry its land army across water to the enemy island. Vanilla only builds transports when it has specific drop-targets (islands with mexes/reclaim); on a naval map where the enemy is on another island those lists can be empty, so the bot never built transports at all.
+            local bMNBNavalMap = M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0
+            if (M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist]) == false or M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftTransportFarAwaySameIslandPlateauLandZoneDropShortlist]) == false or M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.reftiHighTechEngiDropPlateauAndZones]) == false or bMNBNavalMap) then
                 if M28Utilities.IsTableEmpty(tLZTeamData[M28Map.reftoTransportsWaitingForUnits]) == false and iFactoryTechLevel <= 2 then
                     if ConsiderBuildingCategory(M28UnitInfo.refCategoryEngineer) then return sBPIDToBuild end
                 else
@@ -6339,9 +6348,12 @@ function GetBlueprintToBuildForAirFactory(aiBrain, oFactory)
                         end
                     end
 
+                    --M&B: on water maps, raise the transport quota so transports take priority over assault aircraft and a real ferry fleet gets built (tunable floor — raise if the bot still under-fills transports, lower if it over-invests).
+                    if bMNBNavalMap then iTransportsWanted = math.max(iTransportsWanted, 4) end
+
                     if bDebugMessages == true then LOG(sFunctionRef..': iCurTransports='..iCurTransports..'; iDifIslandDropLocations='..iDifIslandDropLocations..'; iSameIslandDropLocations='..iSameIslandDropLocations..'; iTransportsWanted='..iTransportsWanted) end
 
-                    if iCurTransports < iTransportsWanted and ((iFactoryTechLevel <= 2 and M28Conditions.GetLifetimeBuildCount(aiBrain, M28UnitInfo.refCategoryTransport) <= iTransportsWanted + 1) or (M28Team.tAirSubteamData[iAirSubteam][M28Team.refbHaveAirControl] and GetGameTimeSeconds() - (M28Team.tAirSubteamData[aiBrain.M28AirSubteam][M28Team.refiTimeLastTriedBuildingTransport] or -100) >= 180) or (GetGameTimeSeconds() - (M28Team.tAirSubteamData[aiBrain.M28AirSubteam][M28Team.refiTimeLastTriedBuildingTransport] or -100) >= 300) or (iCurTransports == 0 and M28Team.tTeamData[iTeam][M28Team.refbEnemyBaseInCombatDropShortlist] and M28Conditions.GetLifetimeBuildCount(aiBrain, M28UnitInfo.refCategoryTransport) <= 5)) then
+                    if iCurTransports < iTransportsWanted and ((M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0) or (iFactoryTechLevel <= 2 and M28Conditions.GetLifetimeBuildCount(aiBrain, M28UnitInfo.refCategoryTransport) <= iTransportsWanted + 1) or (M28Team.tAirSubteamData[iAirSubteam][M28Team.refbHaveAirControl] and GetGameTimeSeconds() - (M28Team.tAirSubteamData[aiBrain.M28AirSubteam][M28Team.refiTimeLastTriedBuildingTransport] or -100) >= 180) or (GetGameTimeSeconds() - (M28Team.tAirSubteamData[aiBrain.M28AirSubteam][M28Team.refiTimeLastTriedBuildingTransport] or -100) >= 300) or (iCurTransports == 0 and M28Team.tTeamData[iTeam][M28Team.refbEnemyBaseInCombatDropShortlist] and M28Conditions.GetLifetimeBuildCount(aiBrain, M28UnitInfo.refCategoryTransport) <= 5)) then
                         local iAlreadyBuilding = M28Conditions.GetNumberOfUnitsMeetingCategoryUnderConstructionInLandOrWaterZone(tLZTeamData, M28UnitInfo.refCategoryTransport, false)
                         if bDebugMessages == true then LOG(sFunctionRef..': iAlreadyBuilding='..iAlreadyBuilding) end
                         if iAlreadyBuilding == 0 then
@@ -6500,6 +6512,15 @@ function GetBlueprintToBuildForAirFactory(aiBrain, oFactory)
 
 
 
+
+            --M&B (user, 2026-07-18): PROACTIVE torpedo bomber production on naval maps. Vanilla builds torp bombers only reactively (refbNoAvailableTorpsForEnemies needs already-detected enemy navy AND often existing torp bombers — chicken-and-egg, so on naval maps the bot frequently never started building them). On a water map, once we have a naval factory, maintain a standing anti-ship air force (~8 torp bombers alive) so we can contest the sea. Tunable baseline (8).
+            if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0
+                and (aiBrain[M28Economy.refiOurHighestNavalFactoryTech] or 0) > 0
+                and aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryTorpBomber) < 8
+                and not(bHaveLowMass) then
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B naval - proactive torp bomber build (alive torps='..aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryTorpBomber)..')') end
+                if ConsiderBuildingCategory(M28UnitInfo.refCategoryTorpBomber) then return sBPIDToBuild end
+            end
 
             --General production - depends on if we have highest tech level, or if we dont have t3 air yet
             if bDebugMessages == true then
@@ -7300,8 +7321,14 @@ function GetBlueprintToBuildForNavalFactory(aiBrain, oFactory)
             iCombatCategory = M28UnitInfo.refCategoryFrigate
             if bDebugMessages == true then LOG(sFunctionRef..' Combat category is to build frigates instead of destroyers') end
         else
-            iCombatCategory = M28UnitInfo.refCategoryDestroyer
-            if bDebugMessages == true then LOG(sFunctionRef..' Combat category is to build destroyer') end
+            --M&B: rotate the T2 combat mix so bombardment cruisers (e.g. BSS0206 "морской артшип") get built regularly, not just rarely via the situational AA-cruiser block. Every 3rd combat build, swap destroyer for cruiser (~2 destroyers : 1 cruiser) — mirrors the tank rotation (#15). Vanilla untouched (the M&B gate keeps vanilla on pure destroyers). Tunable: raise the 3 to thin out cruisers, lower it to build more.
+            if M28Utilities.IsMBModActive() and math.mod(oFactory[refiTotalBuildCount] or 0, 3) == 2 then
+                iCombatCategory = M28UnitInfo.refCategoryCruiser
+                if bDebugMessages == true then LOG(sFunctionRef..' M&B combat category rotated to cruiser (bombardment)') end
+            else
+                iCombatCategory = M28UnitInfo.refCategoryDestroyer
+                if bDebugMessages == true then LOG(sFunctionRef..' Combat category is to build destroyer') end
+            end
         end
     else
         --T3+

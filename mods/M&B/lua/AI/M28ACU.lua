@@ -153,6 +153,12 @@ function ACUActionBuildFactory(aiBrain, oACU, iPlateauOrZero, iLandOrWaterZone, 
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerStart)
 
+    --M&B: naval factory is useless before ser9100 (RESEARCHLOCKEDTECH1) — ships are research-locked until then, so an early factory can only spam engineers. Don't build a naval factory from the ACU until ser9100 is done.
+    if iFactoryCategoryOverride == M28UnitInfo.refCategoryNavalFactory and M28Utilities.IsMBModActive() and not (aiBrain.MNB_TechUnlocked and aiBrain.MNB_TechUnlocked[2]) then
+        M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+        return
+    end
+
     local iMaxAreaToSearch = 35
     local iCategoryToBuild
     if bDebugMessages == true then LOG(sFunctionRef..': Start of code for aiBrain '..aiBrain.Nickname..' at time '..GetGameTimeSeconds()) end
@@ -6819,7 +6825,7 @@ function GetACUOrder(aiBrain, oACU)
 
                         if bWantMoreFactories and not(M28Conditions.DoesACUHaveValidOrder(oACU)) and (M28Orders.bDontConsiderCombinedArmy or oACU.M28Active) then
                             --Move to WZ to build a naval factory if we have none and are adjacent to water
-                            if M28Utilities.IsTableEmpty(tLZOrWZData[M28Map.subrefAdjacentWaterZones]) == false and aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryNavalFactory) == 0 then
+                            if M28Utilities.IsTableEmpty(tLZOrWZData[M28Map.subrefAdjacentWaterZones]) == false and aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryNavalFactory) == 0 and (not(M28Utilities.IsMBModActive()) or (aiBrain.MNB_TechUnlocked and aiBrain.MNB_TechUnlocked[2])) then
                                 MoveACUToNearbyWaterForFactory(aiBrain, oACU, tLZOrWZData)
                                 --Do we want more power?
                             elseif M28Team.tTeamData[iTeam][M28Team.subrefiTeamGrossEnergy] <= 50 * M28Team.tTeamData[iTeam][M28Team.refiHighestBrainResourceMultiplier] and M28Team.tTeamData[iTeam][M28Team.subrefiTeamAverageMassPercentStored] >= 0.3 and not(M28Conditions.HaveLowMass(aiBrain)) and (M28Team.tTeamData[iTeam][M28Team.subrefiHighestFriendlyFactoryTech] == 1 or (M28Team.tTeamData[iTeam][M28Team.subrefiHighestFriendlyFactoryTech] == 2 and oACU.HasEnhancement and oACU:HasEnhancement('AdvancedEngineering'))) and (M28Conditions.WantMorePower(iTeam) or M28Team.tTeamData[iTeam][M28Team.subrefiTeamAverageMassPercentStored] >= 0.7) then

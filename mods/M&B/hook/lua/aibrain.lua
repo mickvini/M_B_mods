@@ -220,6 +220,8 @@ AIBrain = Class(M28AIBrainClass) {
                 ForkThread(import('/mods/M&B/lua/AI/M28Factory.lua').MBRosterThread, self)
                 --M&B: multi-group attack doctrine manager (strike force ~30 -> enemy base; raid parties ~10 -> enemy mexes; adaptive x2 sizing on failure; experimentals escorted with the strike wave). Self-gates on IsMBModActive; waits for team/map data inside the thread.
                 ForkThread(import('/mods/M&B/lua/AI/MNBBattlegroups.lua').ManageBattlegroups, self)
+                --M&B Stage 1B: naval assault fighter escort — ASF escort combat-drop transports via the Support order, taken out of M28's air management for the duration. Self-gates on IsMBModActive + naval map inside the thread.
+                ForkThread(import('/mods/M&B/lua/AI/M28Air.lua').ManageMNBNavalEscort, self)
                 --M&B: mass kickstart is now EVENT-DRIVEN instead of the old flat 3000-at-GT120 (which didnt fit all maps): 2000 when the bot starts its first ACU upgrade (M28ACU.lua GetACUUpgradeWanted M&B return), and 2000/3000/5000 when it completes study 9200/9300/9400 (defaultunits.lua OnStopBeingBuilt). Granted in those event handlers, not here.
             else
                 M28AIBrainClass.OnCreateAI(self, planName)

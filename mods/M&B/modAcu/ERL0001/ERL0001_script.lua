@@ -273,10 +273,10 @@ ERL0001 = Class(CWalkingLandUnit) {
         self:AddBuildRestriction( categories.CYBRAN * (categories.BUILTBYTIER4COMMANDER) )
         --M&B: bot ACU 15 mass/s (player 2); mass on the ACU so adjacency cant wipe it
         local oBrainACU = self:GetAIBrain()
-        self.MNB_AcuMass = ({normal=5, hard=15, impossible=50})[oBrainACU.MNBDifficulty]
+        self.MNB_AcuMass = ({normal=5, hard=15, impossible=25})[oBrainACU.MNBDifficulty]
         if oBrainACU.BrainType ~= 'Human' and self.MNB_AcuMass then
             self:SetProductionPerSecondMass(self.MNB_AcuMass)
-            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=11000})[oBrainACU.MNBDifficulty]
+            self.MNB_AcuEnergy = ({normal=2000, hard=3000, impossible=4000})[oBrainACU.MNBDifficulty]
             if self.MNB_AcuEnergy then self:SetProductionPerSecondEnergy(self.MNB_AcuEnergy) end
         end
     end,

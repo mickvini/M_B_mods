@@ -4119,6 +4119,67 @@ function AddEnemyAirUnitsAlongPath(iTeam, iStartPlateauOrZero, iStartLandOrWater
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
 end
 
+--M&B Stage 1B (user, 2026-07-18): naval assault fighter escort. Combat-drop transports carrying units fly under ASF escort via the in-game "Support" (Guard) order. Escort ASF are flagged ('MNBEscort'=transport) and filtered out of ManageAirAAUnits so M28 doesn't cancel their Support order; once the transport unloads (cargo empty), is destroyed, or stops being a combat drop, surviving ASF are released back to M28. Forked per-brain from aibrain.lua OnCreateAI. Tunables below.
+local MNB_ESCORT_TICK = 3
+local MNB_ESCORT_STARTUP = 12
+local MNB_ESCORTS_PER_TRANSPORT = 8
+local MNB_ESCORT_DEFENSE_RESERVE = 4
+function ManageMNBNavalEscort(aiBrain)
+    local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then bDebugMessages = true end
+    WaitSeconds(MNB_ESCORT_STARTUP)
+    while aiBrain and not(aiBrain.Dead) do
+        if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 then
+            local bOk, sErr = pcall(function()
+                local tAllASF = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryAirAA, false, false)
+                if M28Utilities.IsTableEmpty(tAllASF) == false then
+                    --(1) Release escorts whose transport is gone/no longer en route; keep+re-guard valid ones; collect idle ASF
+                    local tIdleASF = {}
+                    local tiEscortCountByTransport = {}
+                    for iASF, oASF in tAllASF do
+                        if M28UnitInfo.IsUnitValid(oASF) and not(oASF[M28UnitInfo.refbSpecialMicroActive]) then
+                            local oTarget = oASF['MNBEscort']
+                            if oTarget then
+                                if M28UnitInfo.IsUnitValid(oTarget) and oTarget[refbCombatDrop] and not(M28Utilities.IsTableEmpty(oTarget:GetCargo())) then
+                                    tiEscortCountByTransport[oTarget] = (tiEscortCountByTransport[oTarget] or 0) + 1
+                                    --M&B: Guard/Support order makes air ASF trail passively (react only once the transport is shot). AggressiveMove to the transport's position makes them actively fly to it and engage enemy air en route — proper escort cover.
+                                    M28Orders.IssueTrackedAggressiveMove(oASF, oTarget:GetPosition(), 20, false, 'MNBEscAM', false)
+                                else
+                                    oASF['MNBEscort'] = nil
+                                    if oASF.GetFuelRatio and oASF:GetFuelRatio() > 0.25 then table.insert(tIdleASF, oASF) end
+                                end
+                            elseif oASF.GetFuelRatio and oASF:GetFuelRatio() > 0.25 then
+                                table.insert(tIdleASF, oASF)
+                            end
+                        end
+                    end
+                    --(2) Assign escorts to en-route combat-drop transports (respecting the defense reserve)
+                    local iAssignedTotal = 0
+                    for iASF, oASF in tAllASF do if oASF['MNBEscort'] then iAssignedTotal = iAssignedTotal + 1 end end
+                    local iMaxEscorts = math.max(0, table.getn(tAllASF) - MNB_ESCORT_DEFENSE_RESERVE)
+                    if iAssignedTotal < iMaxEscorts and M28Utilities.IsTableEmpty(tIdleASF) == false then
+                        local tTransports = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryTransport, false, false)
+                        for iTr, oTr in tTransports do
+                            if iAssignedTotal >= iMaxEscorts then break end
+                            if M28UnitInfo.IsUnitValid(oTr) and oTr[refbCombatDrop] and not(M28Utilities.IsTableEmpty(oTr:GetCargo())) then
+                                local iCur = tiEscortCountByTransport[oTr] or 0
+                                while iCur < MNB_ESCORTS_PER_TRANSPORT and table.getn(tIdleASF) > 0 and iAssignedTotal < iMaxEscorts do
+                                    local oASF = table.remove(tIdleASF, 1)
+                                    oASF['MNBEscort'] = oTr
+                                    M28Orders.IssueTrackedAggressiveMove(oASF, oTr:GetPosition(), 20, false, 'MNBEscAM', false)
+                                    iCur = iCur + 1
+                                    iAssignedTotal = iAssignedTotal + 1
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+            if not bOk then LOG('M&B ManageMNBNavalEscort error: '..tostring(sErr)) end
+        end
+        WaitSeconds(MNB_ESCORT_TICK)
+    end
+end
+
 function ManageAirAAUnits(iTeam, iAirSubteam)
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
     local sFunctionRef = 'ManageAirAAUnits'
@@ -4126,6 +4187,14 @@ function ManageAirAAUnits(iTeam, iAirSubteam)
 
     --Get available airAA units (owned by M28 brains in our subteam):
     local tAvailableAirAA, tAirForRefueling, tUnavailableUnits, tInCombatUnits = GetAvailableLowFuelAndInUseAirUnits(iTeam, iAirSubteam, M28UnitInfo.refCategoryAirAA)
+    --M&B Stage 1B: ASF flagged as naval-assault escorts (ManageMNBNavalEscort) are removed from M28's air management so it doesn't override their "Support" (Guard) order on the transport. They stay under the escort manager until released. WATER-GATED (on land there are no escort ASF, so the filter is a no-op anyway — skip the per-tick iteration).
+    if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 and M28Utilities.IsTableEmpty(tAvailableAirAA) == false then
+        local tMNBKeep = {}
+        for iASF, oASF in tAvailableAirAA do
+            if oASF and oASF['MNBEscort'] == nil then table.insert(tMNBKeep, oASF) end
+        end
+        tAvailableAirAA = tMNBKeep
+    end
     if bDebugMessages == true then
         LOG(sFunctionRef..': Near start of code, time='..GetGameTimeSeconds()..'; Is tAvailableAirAA empty='..tostring(M28Utilities.IsTableEmpty(tAvailableAirAA))..'; iTeam='..iTeam..'; iAirSubteam='..iAirSubteam..'; M28Team.tAirSubteamData[iAirSubteam][M28Team.reftAirSubSupportPoint]='..repru(M28Team.tAirSubteamData[iAirSubteam][M28Team.reftAirSubSupportPoint]))
         --List out every brain in airsubteam
@@ -5983,7 +6052,16 @@ function ManageBombers(iTeam, iAirSubteam)
     local bHaveT3Bombers = false
     local iMassThreshold = 0
     local iAAMassThreshold = 0
-    local iMNBPriorityCategory = M28Utilities.IsMBModActive() and M28UnitInfo.refCategoryPower or nil --M&B: in M&B power = the maintenance resource (shields/lasers/labs), so sniping enemy pgens cripples them. Let bombers target pgens regardless of the mass filter below.
+    local iMNBPriorityCategory = nil
+    if M28Utilities.IsMBModActive() then
+        --M&B (user, 2026-07-18): "change the target, not the route". Default = snipe enemy power generators (power is the maintenance resource in M&B). BUT if an enemy ground-AA recently shot down one of our bombers, switch to clearing AA first (the killers) — bombers kill the flak that's killing them, clearing the path to the generators, then revert. AA-clearing mode lasts ~120s after a bomber is killed by AA. Set by AirUnit.OnKilled hook (defaultunits.lua).
+        local iMNBLastAAKill = M28Team.tAirSubteamData[iAirSubteam] and M28Team.tAirSubteamData[iAirSubteam]['iMNBLastBomberKilledByAa']
+        if iMNBLastAAKill and (GetGameTimeSeconds() - iMNBLastAAKill) < 120 then
+            iMNBPriorityCategory = M28UnitInfo.refCategoryGroundAA
+        else
+            iMNBPriorityCategory = M28UnitInfo.refCategoryPower
+        end
+    end
     local iAACategory = M28UnitInfo.refCategoryGroundAA + M28UnitInfo.refCategoryFixedShield + M28UnitInfo.refCategoryMobileLandShield + M28UnitInfo.refCategoryShieldBoat + categories.COMMAND
     M28Team.tAirSubteamData[iAirSubteam][M28Team.reftoActiveBomberTargets] = {} --Reset
 
@@ -9993,8 +10071,65 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
 
 
     M28Team.tTeamData[iTeam][M28Team.refiTimeOfLastTransportShortlistUpdate] = GetGameTimeSeconds()
+    if not M28Team.tTeamData[iTeam]['bMNBDiagUS'] then M28Team.tTeamData[iTeam]['bMNBDiagUS'] = true; LOG('M&B diag: UpdateTransportPlateauDropLocationShortlist FIRST RUN (team '..tostring(iTeam)..')') end
     M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] = {}
     local tbPlateausWithPlayerStartOrIslandDrop = {}
+
+    --M&B (user, 2026-07-18): REPLACE M28's complex island detection (crashes on some maps — "Unable to find valid land zone" → function aborts → no island shortlist → no eco-capture). Simple principle: a mex unreachable by land from our base = "island" = needs transport. Bypasses vanilla detection entirely (early return). Finds enemy island mexes (via intel) and unbuilt island mex spots (zone data, pcall-wrapped).
+    if M28Utilities.IsMBModActive() then
+        M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau] = M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau] or {}
+        local oMNBDetBrain = M28Team.GetFirstActiveM28Brain(iTeam)
+        if oMNBDetBrain then
+            local tMNBOurBase = M28Map.GetPlayerStartPosition(oMNBDetBrain)
+            if tMNBOurBase then
+                local iMNBOurLabel = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBOurBase)
+                local tMNBAdded = {}
+                --1. Enemy island mexes (via intel)
+                for iEB, oEB in M28Team.tTeamData[iTeam][M28Team.subreftoEnemyBrains] do
+                    local tEBStart = M28Map.GetPlayerStartPosition(oEB)
+                    if tEBStart then
+                        local tMNBEMexes = oMNBDetBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex, tEBStart, 1000, 'Enemy')
+                        for iM, oM in tMNBEMexes do
+                            if M28UnitInfo.IsUnitValid(oM) then
+                                local iMLabel = NavUtils.GetLabel(M28Map.refPathingTypeLand, oM:GetPosition())
+                                if iMLabel and iMLabel ~= iMNBOurLabel then
+                                    local iP, iZ = M28Map.GetPlateauAndLandZoneReferenceFromPosition(oM:GetPosition())
+                                    local sK = (iP or 0)..'_'..(iZ or 0)
+                                    if iP and iZ and not tMNBAdded[sK] then tMNBAdded[sK] = true; table.insert(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist], {iP, iZ}) end
+                                end
+                            end
+                        end
+                    end
+                end
+                --2. Unbuilt island mex spots (zone data, pcall-wrapped)
+                pcall(function()
+                    if M28Map.tAllPlateaus then
+                        for iP2, tP2 in M28Map.tAllPlateaus do
+                            if tP2 and tP2[M28Map.subrefPlateauLandZones] then
+                                for iZ2, tZ2 in tP2[M28Map.subrefPlateauLandZones] do
+                                    if tZ2 and M28Utilities.IsTableEmpty(tZ2[M28Map.subrefMexUnbuiltLocations]) == false then
+                                        local tMP = tZ2[M28Map.subrefMidpoint]
+                                        if tMP then
+                                            local iZ2L = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMP)
+                                            if iZ2L and iZ2L ~= iMNBOurLabel then
+                                                local sK2 = (iP2 or 0)..'_'..(iZ2 or 0)
+                                                if not tMNBAdded[sK2] then tMNBAdded[sK2] = true; table.insert(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist], {iP2, iZ2}) end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end)
+            end
+        end
+        LOG('M&B diag islands: custom detection, shortlist='..table.getn(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] or {}))
+        M28Team.tTeamData[iTeam][M28Team.reftTransportCombatPlateauLandZoneDropShortlist] = {}
+        if bUpdateCombatDropShortlist then UpdateActiveShortlistForCombatDrops(iTeam) end
+        M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+        return
+    end
 
     --First record (once per game) potential islands to consider dropping for this team
     if not(M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau]) then
@@ -10063,7 +10198,10 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
                                     if bDebugMessages == true then LOG(sFunctionRef..': P'..iPlateau..'Z'..iLandZone..'; tLZOrWZData[subrefLastReclaimRefresh]='..(tLZData[M28Map.subrefLastReclaimRefresh] or 'nil')..'; iCurDistToFriendlyBase='..iCurDistToFriendlyBase..'; Signif reclaim val for just this zone='..(tLZData[M28Map.subrefTotalSignificantMassReclaim] or 0)..'; Is table of units to capture empty='..tostring(M28Utilities.IsTableEmpty(tLZData[M28Map.subreftoUnitsToCapture]))) end
                                 end
                                 if bDebugMessages == true then LOG(sFunctionRef..': Considering island '..iIsland..'; iClosestLZToBase='..iClosestLZToBase..'; iClosestBasePlateau='..(iClosestBasePlateau or 'nil')..'; iClosestLZToBase='..(iClosestLZToBase or 'nil')..'; Island mex count='..tPlateauSubtable[M28Map.subrefPlateauIslandMexCount][iIsland]..'; iSignificantReclaimValue='..iSignificantReclaimValue) end
-                                if iClosestLZToBase >= 190 or (iClosestLZToBase >= 140 and tPlateauSubtable[M28Map.subrefPlateauIslandMexCount][iIsland] >= 7) or (not(iClosestBasePlateau == iPlateau) and (tPlateauSubtable[M28Map.subrefPlateauIslandMexCount][iIsland] or 0) > 0) then
+                                --M&B (user, 2026-07-18): vanilla requires islands >=190 (or >=140 with 7+ mexes) from base to qualify for eco-capture — this excludes nearby islands on small/medium maps, leaving the island shortlist empty, so no transports build and island mexes are never captured. For M&B lower to 80/60 so normal islands with mexes qualify. TUNABLE (80/60). (The "different plateau + mexes" clause already captures islands on a different landmass at any distance.)
+                                local iMNBIslandMin = M28Utilities.IsMBModActive() and 0 or 190
+                                local iMNBIslandRich = M28Utilities.IsMBModActive() and 0 or 140
+                                if iClosestLZToBase >= iMNBIslandMin or (iClosestLZToBase >= iMNBIslandRich and tPlateauSubtable[M28Map.subrefPlateauIslandMexCount][iIsland] >= 7) or (not(iClosestBasePlateau == iPlateau) and (tPlateauSubtable[M28Map.subrefPlateauIslandMexCount][iIsland] or 0) > 0) then
                                     bAlreadyIncluded = false
                                     if not(M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau][iPlateau]) then M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau][iPlateau] = {}
                                     else
@@ -10117,6 +10255,14 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
         local iZonesWithMexesAndNoEnemyThreatOrFriendlyEngis
         local iSignificantReclaimValue
 
+        --M&B diag (user, 2026-07-18): show whether island eco-capture targets are being detected on this map. If this line appears -> UpdateTransportPlateauDropLocationShortlist runs; potential=N (islands that qualified in detection). If potential=0 -> islands aren't qualifying (threshold/filter). If the line never appears -> the transport/drop logic isn't called at all on this map type (the gate we're hunting).
+        local iMNBPotIslands = 0
+        if M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau] then
+            for iPL2, tIL2 in M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau] do
+                for iE2, iI2 in tIL2 do iMNBPotIslands = iMNBPotIslands + 1 end
+            end
+        end
+        LOG('M&B diag islands: potential='..iMNBPotIslands..'; shortlist='..table.getn(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] or {}))
         for iPlateau, tIslands in M28Team.tTeamData[iTeam][M28Team.reftiPotentialDropIslandsByPlateau] do
             iZonesWithMexesAndNoEnemyThreatOrFriendlyEngis = 0
             for iEntry, iIsland in tIslands do
@@ -10352,6 +10498,46 @@ function UpdateActiveShortlistForCombatDrops(iTeam)
         end
     end
 
+    --M&B (naval raid, REVISED per user): on water maps, ferry combat units across water to RAID ENEMY MEXES on islands we don't hold — NOT the enemy spawn zone (that's heavily defended by AA and would just shred the transports). For each enemy on another island, find their mexes (GetUnitsAroundPoint 'Enemy'); only add a mex's land zone as a combat-drop target if its enemy ground-AA threat is below the safe transport threshold (reusing iGroundAAThreshold), so transports drop where they survive. Mexes sitting in the heavily-defended core base are skipped implicitly (their zone's AA exceeds the threshold). Existing combat-drop machinery then loads combat units and raids.
+    if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 then
+        local oMNBRaidBrain = M28Team.GetFirstActiveM28Brain(iTeam)
+        if oMNBRaidBrain and oMNBRaidBrain.GetUnitsAroundPoint then
+            local tMNBOurIslands = {}
+            for iFBrain, oFBrain in M28Team.tTeamData[iTeam][M28Team.subreftoFriendlyHumanAndAIBrains] do
+                local tFStart = M28Map.GetPlayerStartPosition(oFBrain)
+                if tFStart then
+                    local iFIsland = NavUtils.GetLabel(M28Map.refPathingTypeLand, tFStart)
+                    if iFIsland then tMNBOurIslands[iFIsland] = true end
+                end
+            end
+            local tMNBAddedZones = {}
+            for iEBrain, oEBrain in M28Team.tTeamData[iTeam][M28Team.subreftoEnemyBrains] do
+                local tEStart = M28Map.GetPlayerStartPosition(oEBrain)
+                if tEStart then
+                    local iEIsland = NavUtils.GetLabel(M28Map.refPathingTypeLand, tEStart)
+                    if iEIsland and not tMNBOurIslands[iEIsland] then
+                        local tMNBEnemyMexes = oMNBRaidBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex, tEStart, 900, 'Enemy')
+                        for iMex, oMex in tMNBEnemyMexes do
+                            if M28UnitInfo.IsUnitValid(oMex) then
+                                local iPlateau, iLZ = M28Map.GetPlateauAndLandZoneReferenceFromPosition(oMex:GetPosition())
+                                local sZoneKey = (iPlateau or 0)..'_'..(iLZ or 0)
+                                if iPlateau and iLZ and iPlateau > 0 and not tMNBAddedZones[sZoneKey] then
+                                    local tLZData = M28Map.tAllPlateaus[iPlateau][M28Map.subrefPlateauLandZones][iLZ]
+                                    local tLZTeamData = tLZData[M28Map.subrefLZTeamData][iTeam]
+                                    if (tLZTeamData[M28Map.subrefiThreatEnemyGroundAA] or 0) < iGroundAAThreshold then
+                                        tMNBAddedZones[sZoneKey] = true
+                                        table.insert(M28Team.tTeamData[iTeam][M28Team.reftTransportCombatPlateauLandZoneDropShortlist], {iPlateau, iLZ})
+                                        if bDebugMessages == true then LOG(sFunctionRef..': M&B naval raid - enemy mex zone P'..iPlateau..'Z'..iLZ..' (island '..iEIsland..', groundAA '..(tLZTeamData[M28Map.subrefiThreatEnemyGroundAA] or 0)..'< threshold '..iGroundAAThreshold..') added to combat-drop shortlist') end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
 end
 
@@ -10390,7 +10576,17 @@ function GetIslandPlateauAndLandZoneForTransportToTravelTo(iTeam, oUnit)
                 iClosestNoMexLZ = nil
                 iCurAdjustedIslandMexValue = 0
                 if bDebugMessages == true then LOG(sFunctionRef..': About to consider all zones in plateau '..(tiPlateauAndIsland[1] or 'nil')..' to get the closest land zone adjusted for mexes, repru='..repru(M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauIslandLandZones][tiPlateauAndIsland[2]])) end
-                for iLZEntry, iLandZone in M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauIslandLandZones][tiPlateauAndIsland[2]] do
+                --M&B (user, 2026-07-18): guard against nil island data. Custom detection (#84) may add zones not in M28's island system (subrefPlateauIslandLandZones). If nil, use the zone directly as the landing zone (the mex is there). Prevents the crash "attempt to loop over nil" at this line.
+                local tMNBIslLZs = M28Map.tAllPlateaus[tiPlateauAndIsland[1]] and M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauIslandLandZones] and M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauIslandLandZones][tiPlateauAndIsland[2]]
+                if not tMNBIslLZs and tiPlateauAndIsland[2] then
+                    local tMNBFB = M28Map.tAllPlateaus[tiPlateauAndIsland[1]] and M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauLandZones] and M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauLandZones][tiPlateauAndIsland[2]]
+                    if tMNBFB then
+                        iCurAdjustedIslandMexValue = (tMNBFB[M28Map.subrefLZOrWZMexCount] or 0)
+                        iCurDist = M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), tMNBFB[M28Map.subrefMidpoint])
+                        if (tMNBFB[M28Map.subrefLZOrWZMexCount] or 0) > 0 then iClosestDist = iCurDist; iClosestLZ = tiPlateauAndIsland[2] end
+                    end
+                end
+                for iLZEntry, iLandZone in (tMNBIslLZs or {}) do
                     local tLZData = M28Map.tAllPlateaus[tiPlateauAndIsland[1]][M28Map.subrefPlateauLandZones][iLandZone]
                     iCurAdjustedIslandMexValue = iCurAdjustedIslandMexValue + (tLZData[M28Map.subrefLZOrWZMexCount] or 0)
                     --Only consider LZs with mexes so we land close to where we likely want to be
@@ -10827,6 +11023,7 @@ function ManageTransports(iTeam, iAirSubteam)
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
     local sFunctionRef = 'ManageTransports'
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerStart)
+    if not M28Team.tTeamData[iTeam]['bMNBDiagMT'] then M28Team.tTeamData[iTeam]['bMNBDiagMT'] = true; LOG('M&B diag: ManageTransports FIRST RUN (team '..tostring(iTeam)..')') end
 
 
 
@@ -11141,7 +11338,9 @@ function ManageTransports(iTeam, iAirSubteam)
                         end
                     end
                     if not(iIslandToTravelTo) and not(iWaterZoneToTravelTo) then
-                        if oUnit[refbCombatDrop] or M28Utilities.IsTableEmpty(oUnit:GetCargo()) then
+                        --M&B (user, 2026-07-18): десант активируется ТОЛЬКО при >=3 транспортах на морской карте. Пока их меньше — приказа на десант нет, транспорт стоит на базе (не летит, не гибнет). При 3 — все получают приказ, грузятся (#74) и летят. (Было 4, но бот тянет только 3 → десант не запускался; юзер: сменить на 3.) Vanilla/не-морская карта гейтом не тронуты (bMNBAssaultReady=true).
+                        local bMNBAssaultReady = not(M28Utilities.IsMBModActive()) or (M28Map.iMapWaterHeight or 0) == 0 or oUnit:GetAIBrain():GetCurrentUnits(M28UnitInfo.refCategoryTransport) >= 2
+                        if bMNBAssaultReady and (oUnit[refbCombatDrop] or M28Utilities.IsTableEmpty(oUnit:GetCargo())) then
                             local iCombatEntryRef = GetCombatDropPlateauAndLandZoneEntryRefForTransport(iTeam, oUnit)
                             if iCombatEntryRef then
                                 iPlateauToTravelTo = M28Team.tTeamData[iTeam][M28Team.reftTransportCombatPlateauLandZoneDropShortlist][iCombatEntryRef][1]
@@ -11192,8 +11391,10 @@ function ManageTransports(iTeam, iAirSubteam)
                             local iBuildRate = math.max(1, (oUnit:GetAIBrain()[M28Economy.refiBrainBuildRateMultiplier] or 1))
                             if iWaterZoneToTravelTo then iExtraEngisWanted = 1
                             else
-                                iExtraEngisWanted = math.max(1, M28Map.tAllPlateaus[iPlateauToTravelTo][M28Map.subrefPlateauIslandMexCount][iIslandToTravelTo] / iBuildRate)
-                                if M28Map.tAllPlateaus[iPlateauToTravelTo][M28Map.subrefPlateauIslandMexCount][iIslandToTravelTo] <= 2 then iExtraEngisWanted = 1 end
+                                --M&B: guard against nil island mex count (custom detection zones may not be in M28's island system). Default to 1 (want 1 engineer).
+                                local iMNBIslMex = (M28Map.tAllPlateaus[iPlateauToTravelTo] and M28Map.tAllPlateaus[iPlateauToTravelTo][M28Map.subrefPlateauIslandMexCount] and M28Map.tAllPlateaus[iPlateauToTravelTo][M28Map.subrefPlateauIslandMexCount][iIslandToTravelTo]) or 1
+                                iExtraEngisWanted = math.max(1, iMNBIslMex / iBuildRate)
+                                if iMNBIslMex <= 2 then iExtraEngisWanted = 1 end
                             end
 
                             if iExtraEngisWanted == 2 then iExtraEngisWanted = 1 end --Only want 1 engi for 1-2 mex plateaus (as wont be building land fac)
@@ -11257,6 +11458,21 @@ function ManageTransports(iTeam, iAirSubteam)
                             --Get more engis/combat units
                             if tCurLZOrWZTeamData[M28Map.subrefLZbCoreBase] then
 
+                                --M&B Stage 1A (user, 2026-07-18): vanilla only loads FRESHLY-BUILT combat units (LoadCombatUnitOntoTransport fires from M28Events on construction). Existing idle tanks never get the load action, so naval-raid transports idled waiting for fresh builds instead of loading the standing army. On naval maps, when a combat-drop transport wants combat units at the core base, flag idle T1/T2 tanks with the load action (up to the transport's wanted count); the existing seek below (11300+) then finds and loads them. Excludes T3 (too costly to lose in a raid), special-micro units, units already tasked, and M&B-battlegroup units.
+                                if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 and oUnit[refbCombatDrop] and (oUnit[refiCombatUnitsWanted] or 0) > 0 then
+                                    local iMNBQueued = 0
+                                    local iMNBWant = oUnit[refiCombatUnitsWanted] or 0
+                                    local tMNBIdleTanks = EntityCategoryFilterDown(M28UnitInfo.refCategoryLandCombat - categories.TECH3, tCurLZOrWZTeamData[M28Map.subreftoLZOrWZAlliedUnits])
+                                    for iMNBK, oTNK in tMNBIdleTanks do
+                                        if iMNBQueued >= iMNBWant then break end
+                                        if M28UnitInfo.IsUnitValid(oTNK) and not(oTNK:IsUnitState('Attached')) and oTNK:GetFractionComplete() == 1 and not(oTNK[M28UnitInfo.refbSpecialMicroActive]) and not(oTNK[M28Engineer.refiAssignedAction]) and oTNK['MNBBGroup'] == nil then
+                                            oTNK[M28Engineer.refiAssignedAction] = M28Engineer.refActionLoadOntoTransport
+                                            iMNBQueued = iMNBQueued + 1
+                                        end
+                                    end
+                                    if bDebugMessages == true and iMNBQueued > 0 then LOG(sFunctionRef..': M&B Stage1A: flagged '..iMNBQueued..' idle tank(s) to load onto combat-drop transport '..oUnit.UnitId) end
+                                end
+
                                 if M28UnitInfo.IsUnitValid(oUnit[refoTransportUnitTryingToLoad]) and not(oUnit[refoTransportUnitTryingToLoad]:IsUnitState('Attached')) and oUnit[M28Engineer.refiAssignedAction] == M28Engineer.refActionLoadOntoTransport then
                                     --Do nothing re orders if transport already has an engineer assigned to load onto it (as dont want to override transport orders incase engineers are trying to load onto it)
                                     if bDebugMessages == true then LOG(sFunctionRef..': Already have an engineer assigned to load onto this transport='..oUnit[refoTransportUnitTryingToLoad].UnitId..M28UnitInfo.GetUnitLifetimeCount(oUnit[refoTransportUnitTryingToLoad])..'; Engineer action='..oUnit[M28Engineer.refiAssignedAction]) end
@@ -11267,7 +11483,16 @@ function ManageTransports(iTeam, iAirSubteam)
                                     local iClosestLoadingEngineerDist = 1000
                                     local iCurEngiDist
                                     local iCategoryWanted
-                                    if oUnit[refbCombatDrop] then iCategoryWanted = M28UnitInfo.refCategoryIndirect * categories.TECH1 else iCategoryWanted = M28UnitInfo.refCategoryEngineer end
+                                    if oUnit[refbCombatDrop] then
+                                        --M&B (user, 2026-07-18): vanilla combat drops load ONLY T1 arty (the suicide arti-drop tactic), so naval raid transports arrived carrying just arty and got wiped. For M&B load a real army mix (tanks + arty) so the dropped force can actually fight. WATER-GATED so land maps keep the vanilla T1-arty harassment drop unchanged.
+                                        if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 then
+                                            iCategoryWanted = M28UnitInfo.refCategoryLandCombat + M28UnitInfo.refCategoryIndirect
+                                        else
+                                            iCategoryWanted = M28UnitInfo.refCategoryIndirect * categories.TECH1
+                                        end
+                                    else
+                                        iCategoryWanted = M28UnitInfo.refCategoryEngineer
+                                    end
                                     local tEngineersInZone = EntityCategoryFilterDown(iCategoryWanted, tCurLZOrWZTeamData[M28Map.subreftoLZOrWZAlliedUnits])
                                     for iEngineer, oEngineer in tEngineersInZone do
                                         if M28UnitInfo.IsUnitValid(oEngineer) and oEngineer[M28Engineer.refiAssignedAction] == M28Engineer.refActionLoadOntoTransport and not(oEngineer:IsUnitState('Attached')) and (not(iMinUnitTechLevel) or M28UnitInfo.GetUnitTechLevel(oEngineer) >= iMinUnitTechLevel) and oEngineer:GetFractionComplete() == 1 then
@@ -11348,7 +11573,39 @@ function ManageTransports(iTeam, iAirSubteam)
                         oUnit[refiEngisWanted] = 0
                         oUnit[refiCombatUnitsWanted] = nil
                     end
+                    --M&B Stage 2-lite (user, 2026-07-18): BIG coordinated landings. On naval maps, hold a full combat-drop transport AT BASE until 2 are staged, then they depart TOGETHER. Holding = set bGetMoreUnits so the departure below is skipped and the (already full) transport waits at base. Launch is gated by a team-level "launch window": when 2 are staged (or 600s anti-stuck timeout) we open an 8s window during which ALL staged transports launch and clear their flag. ⚠️ A transport that has LAUNCHED sets 'MNBOnRaid' and will NOT re-stage until it DROPS its cargo (cargo empty clears the flag) — without this a launched transport re-stages every tick near base and loops "staged=1 -> solo launch -> re-stage" (builds transports but never actually uses them past the first raid), and a lone survivor (partner shot down) would be re-held and freeze mid-flight.
+                    if oUnit['MNBOnRaid'] and M28Utilities.IsTableEmpty(oUnit:GetCargo()) then oUnit['MNBOnRaid'] = nil end --raid done (cargo dropped) -> allow re-staging for the next raid
+                    if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 and oUnit[refbCombatDrop] and not(bGetMoreUnits) and not(oUnit['MNBOnRaid']) and M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), M28Map.GetPlayerStartPosition(oUnit:GetAIBrain())) < 200 then
+                        local bMNBJustStaged = (oUnit['MNBStaging'] == nil)
+                        if bMNBJustStaged then oUnit['MNBStaging'] = GetGameTimeSeconds() end
+                        local iMNBStaged = 0
+                        local tMNBTrans = oUnit:GetAIBrain():GetListOfUnits(M28UnitInfo.refCategoryTransport, false, false)
+                        for iT, oT in tMNBTrans do
+                            if M28UnitInfo.IsUnitValid(oT) and oT['MNBStaging'] then iMNBStaged = iMNBStaged + 1 end
+                        end
+                        local iMNBNow = GetGameTimeSeconds()
+                        local iMNBLaunchWindow = M28Team.tTeamData[iTeam]['iMNBLaunchWindow']
+                        local bMNBLaunch = false
+                        if iMNBLaunchWindow and (iMNBNow - iMNBLaunchWindow) < 8 then
+                            bMNBLaunch = true
+                        elseif iMNBStaged >= 2 then
+                            M28Team.tTeamData[iTeam]['iMNBLaunchWindow'] = iMNBNow
+                            bMNBLaunch = true
+                        elseif (iMNBNow - (oUnit['MNBStaging'] or 0)) >= 600 then
+                            M28Team.tTeamData[iTeam]['iMNBLaunchWindow'] = iMNBNow
+                            bMNBLaunch = true
+                        else
+                            bGetMoreUnits = true
+                        end
+                        if bMNBJustStaged then LOG('M&B staging: transport '..oUnit.UnitId..' full+ready, staged='..iMNBStaged..' (waiting for group of 2; 600s anti-stuck backstop)') end
+                        if bMNBLaunch then
+                            oUnit['MNBStaging'] = nil
+                            oUnit['MNBOnRaid'] = true --don't re-stage until the cargo is dropped (raid done)
+                            LOG('M&B staging: transport '..oUnit.UnitId..' LAUNCHING in group of '..iMNBStaged)
+                        end
+                    end
                     if not(bGetMoreUnits) then
+                        if M28Utilities.IsMBModActive() and (M28Map.iMapWaterHeight or 0) > 0 then LOG('M&B depart: transport '..oUnit.UnitId..' LAUNCHING SOLO (combatDrop='..tostring(oUnit[refbCombatDrop])..'; staging-flag='..tostring(oUnit['MNBStaging'] ~= nil)..') — if combatDrop=true, staging failed to hold it') end
                         oUnit[refiTransportTimeSpentWaiting] = 0
                         --Have enough engineers (or arent on core lZ so dont want to delay by going back for more) - unload at the target land zone
                         oUnit[refiTargetPlateauForDrop] = iPlateauToTravelTo

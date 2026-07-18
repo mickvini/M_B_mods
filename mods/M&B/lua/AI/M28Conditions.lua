@@ -1892,7 +1892,7 @@ function WantMoreFactories(iTeam, iPlateau, iLandZone, bIgnoreMainEcoConditions)
                 iMNBEnemyFacs = iMNBEnemyFacs + table.getn(oMNBBrain:GetListOfUnits(M28UnitInfo.refCategoryLandFactory + M28UnitInfo.refCategoryAirFactory, false, false))
             end
         end
-        if iMNBOurFacs < iMNBEnemyFacs * ((aiBrain.MNBDifficulty == 'impossible') and 2 or 1) then
+        if iMNBOurFacs < iMNBEnemyFacs then
             bWantMoreFactories = true
             if bDebugMessages == true then LOG(sFunctionRef..': M&B: want more factories to match enemy (ours='..iMNBOurFacs..'; enemy land+air='..iMNBEnemyFacs..')') end
         end
@@ -2104,6 +2104,18 @@ function DoWeWantAirFactoryInsteadOfLandFactory(iTeam, tLZData, tLZTeamData, oOp
                     local iEBAir = table.getn(oMNBEB:GetListOfUnits(M28UnitInfo.refCategoryAirFactory, false, false))
                     if iEBAir > iMNBMaxEnemyAirFacs then iMNBMaxEnemyAirFacs = iEBAir end
                 end
+            end
+            --M&B (user, 2026-07-18, REVISED): HARD-CAP land factories at 2 ONLY when our base and the enemy base are on DIFFERENT landmasses (no land route — real islands). If there's a land crossing (same landmass), build factories normally — the old "any water on map" gate wrongly capped land factories on maps that had water but also a land route. Mirrors the units cap (#78 uses bCanPathToEnemyWithLand).
+            local tMNBEnemyBase = tLZTeamData[M28Map.reftClosestEnemyBase]
+            local bMNBLandLocked = false
+            if tMNBEnemyBase then
+                local tMNBOwnBase = M28Map.GetPlayerStartPosition(oMNBRatioBrain)
+                if tMNBOwnBase then bMNBLandLocked = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBOwnBase) ~= NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBEnemyBase) end
+            end
+            if bMNBLandLocked and iMNBLandFacs >= 2 then
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B naval - land factories hard-capped at 2 (have '..iMNBLandFacs..'), building air not land') end
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return true
             end
             if iMNBLandFacs < (iMNBAirFacs + 1) * 2 and iMNBAirFacs >= iMNBMaxEnemyAirFacs then
                 M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
@@ -3001,6 +3013,12 @@ function WantToAttackWithNavyEvenIfOutranged(tWZData, tWZTeamData, iTeam, iNearb
     local sFunctionRef = 'WantToAttackWithNavyEvenIfOutranged'
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerStart)
+
+    --M&B (user, 2026-07-18): naval mirror of land #60. Remove the naval "fear" entirely — ships ALWAYS engage the enemy fleet (no threat-ratio gate), same as tanks/land. Two identical bots are always ~1:1, so the vanilla 1.1-1.3x requirement means neither ever attacks -> endless naval stalemate; return true so both sides engage.
+    if M28Utilities.IsMBModActive() then
+        M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+        return true
+    end
 
     local bAreInScenario2 = false
     if M28Team.tTeamData[iTeam][M28Team.refbDontHaveBuildingsOrACUInPlayableArea] then bAreInScenario2 = true
