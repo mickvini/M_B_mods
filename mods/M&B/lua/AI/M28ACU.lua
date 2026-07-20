@@ -1844,6 +1844,22 @@ function GetUpgradePathForACU(oACU, bWantToDoTeleSnipe)
         elseif EntityCategoryContains(categories.SERAPHIM, oACU.UnitId) then
             oACU[reftPreferredUpgrades] = {'RateOfFire', 'AdvancedEngineering', 'DamageStabilization'}
         end
+        --M&B: replace the vanilla preferred-upgrade names (HeavyAntiMatterCannon, Shield, etc. —
+        --none exist on M&B ACUs so they get filtered out below) with the M&B EX-enhancement lines
+        --the user chose per faction. Ordered so each chain's tiers follow their Prerequisite.
+        --This lets M28 actually self-upgrade through the chosen lines, and keeps the list clean
+        --(no vanilla names to confuse it). EXCombatEngineering is also force-prepended below.
+        if M28Utilities.IsMBModActive() then
+            if EntityCategoryContains(categories.UEF, oACU.UnitId) then
+                oACU[reftPreferredUpgrades] = {'EXCombatEngineering','EXAssaultEngineering','EXApocolypticEngineering','EXShieldBattery','EXActiveShielding','EXImprovedShieldBattery','EXShieldExpander','EXAntiMatterCannon','EXImprovedContainmentBottle','EXPowerBooster'}
+            elseif EntityCategoryContains(categories.AEON, oACU.UnitId) then
+                oACU[reftPreferredUpgrades] = {'EXCombatEngineering','EXAssaultEngineering','EXApocolypticEngineering','EXMaelstromQuantum','EXFieldExpander','EXQuantumInstability','EXArtilleryMiasma','EXAdvancedShells','EXImprovedReloader'}
+            elseif EntityCategoryContains(categories.CYBRAN, oACU.UnitId) then
+                oACU[reftPreferredUpgrades] = {'EXCombatEngineering','EXAssaultEngineering','EXApocolypticEngineering','EXMobilitySubsystems','EXDefensiveSubsystems','EXNanoKickerSubsystems','EXEMPArray','EXImprovedCapacitors','EXPowerBooster'}
+            elseif EntityCategoryContains(categories.SERAPHIM, oACU.UnitId) then
+                oACU[reftPreferredUpgrades] = {'EXCombatEngineering','EXAssaultEngineering','EXApocolypticEngineering','EXL1Lambda','EXL2Lambda','EXL3Lambda','EXCannonBigBall','EXImprovedContainmentBottle','EXPowerBooster'}
+            end
+        end
     end
 
     --M&B REMOVED sequence-builder (the "list of many ACU upgrades"). It was added so the com would keep upgrading past the first one, but the user only wants the single forced first upgrade then stop. Vanilla preferred-upgrade names (HeavyAntiMatterCannon, Shield, etc. set above) dont exist in M&B ACUs, so they get filtered out below - after the forced first upgrade the com does nothing further, as intended.
@@ -2153,7 +2169,14 @@ function GetACUUpgradeWanted(oACU, bWantToDoTeleSnipe, tLZOrWZData, tLZOrWZTeamD
             end
             --tLZOrWZTeamData[M28Map.subrefMexCountByTech][3] + tLZOrWZTeamData[M28Map.subrefMexCountByTech][2] <= 2
         end
-        --M&B REMOVED gate-relaxation (was clearing bDontConsiderAnyUpgrades to allow more upgrades). Removed per user: only the first forced upgrade (EXCombatEngineering) should happen; the gate now stays so M28's main upgrade logic stays blocked -> coms do just the one upgrade.
+        --M&B (2026-07-20): RE-ENABLED ACU upgrades. Previously M&B had removed the gate-relaxation
+        --so only the first forced upgrade happened and the ACU did nothing further. The user has
+        --now chosen full EX-enhancement lines (reftPreferredUpgrades set above per faction) and
+        --wants the ACU to progress through them, so clear the norush/safe-spot/eco-focus gates for
+        --M&B. The else-branch below still applies its own eco/power sanity checks before upgrading.
+        if M28Utilities.IsMBModActive() then
+            bDontConsiderAnyUpgrades = false
+        end
         if bDontConsiderAnyUpgrades then
             --Do nothing
             if bDebugMessages == true then LOG(sFunctionRef..': Dont want to consider any upgrades due to norush or being in a safe spot') end
@@ -6352,6 +6375,61 @@ function RunFromEnemyTeleport(oACU, iTeam, tLZOrWZData)
     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
 end
 
+--M&B: ACU risk-assessment weights (tunable).
+local MNB_ACU_THREAT_RADIUS = 50
+local MNB_ACU_FLEE_MASS = 500
+local MNB_ACU_ENEMY_ACU_MASS = 200
+local MNB_ACU_T1EXP_MASS = 50
+local MNB_ACU_T2EXP_MASS = 100
+
+--M&B: weighted enemy threat mass within MNB_ACU_THREAT_RADIUS of the ACU. Enemy ACU = fixed;
+--T1/T2 experimentals get a heavy discount (they shouldnt scare the com despite high real cost);
+--T3+ exp and normal units count their real BuildCostMass. Used by GetACUOrder's risk block to
+--decide fight (<= MNB_ACU_FLEE_MASS) vs flee. Exp tier from TECH1..4 category, else the "T<n>"
+--in the bp Description; exps with no tier marker count real mass (conservative -> flee).
+local function MNBAcuEnemyThreat(oACU)
+    local aiBrain = oACU:GetAIBrain()
+    local tEnemies = aiBrain:GetUnitsAroundPoint(categories.ALLUNITS - categories.ENGINEER - categories.STRUCTURE, oACU:GetPosition(), MNB_ACU_THREAT_RADIUS, 'Enemy')
+    local iThreat = 0
+    for i, oE in tEnemies do
+        if oE and not(oE.Dead) and oE.UnitId then
+            local bp = __blueprints[oE.UnitId]
+            if bp then
+                local bIsACU, bIsExp, iTech = false, false, nil
+                if bp.Categories then
+                    for k, v in bp.Categories do
+                        if v == 'COMMAND' then bIsACU = true
+                        elseif v == 'EXPERIMENTAL' then bIsExp = true
+                        elseif v == 'TECH1' then iTech = 1
+                        elseif v == 'TECH2' then iTech = 2
+                        elseif v == 'TECH3' then iTech = 3
+                        elseif v == 'TECH4' then iTech = 4 end
+                    end
+                end
+                if bIsACU then
+                    iThreat = iThreat + MNB_ACU_ENEMY_ACU_MASS
+                elseif bIsExp then
+                    local iTier = iTech
+                    if not iTier then
+                        local _, _, c = string.find(string.lower(bp.Description or ''), 't([0-9])')
+                        if c then iTier = tonumber(c) end
+                    end
+                    if iTier == 1 then iThreat = iThreat + MNB_ACU_T1EXP_MASS
+                    elseif iTier == 2 then iThreat = iThreat + MNB_ACU_T2EXP_MASS
+                    else
+                        local m = (bp.Economy and bp.Economy.BuildCostMass) or 0
+                        iThreat = iThreat + m
+                    end
+                else
+                    local m = (bp.Economy and bp.Economy.BuildCostMass) or 0
+                    iThreat = iThreat + m
+                end
+            end
+        end
+    end
+    return iThreat
+end
+
 function GetACUOrder(aiBrain, oACU)
     local sFunctionRef = 'GetACUOrder'
     local bDebugMessages = false if M28Profiler.bGlobalDebugOverride == true then   bDebugMessages = true end
@@ -6389,16 +6467,26 @@ function GetACUOrder(aiBrain, oACU)
     --Refresh ACU last orders as some functions will check last order to decide if it was given an order
     M28Orders.UpdateRecordedOrders(oACU)
 
-    --M&B fix (2026-07-16): ACU suicide on defense. When the enemy army reaches the bot's base, the army retreats but the ACU charges forward to its death. Root cause: in core base with refbUseACUAggressively, DoesACUWantToRun/DoesACUWantToReturnToCoreBase have a 'dont run from core base' exception, so the ACU falls through to AttackNearestEnemyWithACU and runs AT the enemy. In M&B losing the ACU is catastrophic (it's the mass backbone, +15 mass/s). So if M&B and the ACU is in its core base with a real enemy ground force at the gates, call for help and retreat to core (under a shield if one is up) instead of charging - intercept BEFORE the attack logic. Threshold 1200 = a real army at the gates (T1 tank ~24 mass), not a stray raider the ACU could win. Tunable.
-    if M28Utilities.IsMBModActive() and not(oACU:IsUnitState('Upgrading')) and tLZOrWZTeamData[M28Map.subrefLZbCoreBase] and ((tLZOrWZTeamData[M28Map.subrefTThreatEnemyCombatTotal] or 0) >= 1200) and M28Utilities.IsTableEmpty(tLZOrWZTeamData[M28Map.reftoNearestDFEnemies]) == false then
-        ConsiderIfACUNeedsEmergencySupport(iPlateauOrZero, iLandOrWaterZone, tLZOrWZData, tLZOrWZTeamData, oACU)
-        if not(ConsiderRunningToNearestShield(oACU, tLZOrWZData, tLZOrWZTeamData, iTeam, iPlateauOrZero, iLandOrWaterZone)) then
-            ReturnACUToCoreBase(oACU, tLZOrWZData, tLZOrWZTeamData, aiBrain, iTeam, iPlateauOrZero, iLandOrWaterZone)
+    --M&B fix (2026-07-16): ACU suicide on defense. When the enemy army reaches the bot's base, the army retreats but the ACU charges forward to its death. Root cause: in core base with refbUseACUAggressively, DoesACUWantToRun/DoesACUWantToReturnToCoreBase have a 'dont run from core base' exception, so the ACU falls through to AttackNearestEnemyWithACU and runs AT the enemy. In M&B losing the ACU is catastrophic (it's the mass backbone, +15 mass/s). So if M&B and the ACU is in its core base with a real enemy ground force at the gates, call for help and retreat to core (under a shield if one is up) instead of charging - intercept BEFORE the attack logic. Threshold = MNB_ACU_FLEE_MASS (500) of weighted enemy mass in radius 50 (MNBAcuEnemyThreat: enemy ACU=200, T1 exp=50, T2 exp=100, else real BuildCostMass); flee if above, else fight (M28 attack logic + overcharge). Replaces the old flat 1200 zone-threat gate. Tunable.
+    if M28Utilities.IsMBModActive() and tLZOrWZTeamData[M28Map.subrefLZbCoreBase] then
+        local iThreat = MNBAcuEnemyThreat(oACU)
+        if iThreat > MNB_ACU_FLEE_MASS then
+            --too dangerous: retreat (this cancels an in-progress upgrade too, but thats justified to survive)
+            ConsiderIfACUNeedsEmergencySupport(iPlateauOrZero, iLandOrWaterZone, tLZOrWZData, tLZOrWZTeamData, oACU)
+            if not(ConsiderRunningToNearestShield(oACU, tLZOrWZData, tLZOrWZTeamData, iTeam, iPlateauOrZero, iLandOrWaterZone)) then
+                ReturnACUToCoreBase(oACU, tLZOrWZData, tLZOrWZTeamData, aiBrain, iTeam, iPlateauOrZero, iLandOrWaterZone)
+            end
+            tLZOrWZTeamData[M28Map.refbACUInTrouble] = true
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B ACU threat '..iThreat..' > '..MNB_ACU_FLEE_MASS..' - retreating instead of charging') end
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return
+        elseif oACU:IsUnitState('Upgrading') then
+            --M&B: upgrading and enemies are weak (<=flee threshold): let the upgrade finish instead
+            --of canceling it to chase kills. Only a high-threat flee (above) is allowed to interrupt.
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return
         end
-        tLZOrWZTeamData[M28Map.refbACUInTrouble] = true
-        if bDebugMessages == true then LOG(sFunctionRef..': M&B ACU defense - retreating to core (enemy combat threat '..(tLZOrWZTeamData[M28Map.subrefTThreatEnemyCombatTotal] or 0)..') instead of charging') end
-        M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
-        return
+        --else: not upgrading, weak enemies -> fall through; ACU fights (M28 attack + overcharge)
     end
 
     if bDebugMessages == true then LOG(sFunctionRef..': Near start of code for brain '..oACU:GetAIBrain().Nickname..', ACU='..oACU.UnitId..M28UnitInfo.GetUnitLifetimeCount(oACU)..'; time='..GetGameTimeSeconds()..'; oACU[refbDoingInitialBuildOrder]='..tostring(oACU[refbDoingInitialBuildOrder])..'; ACU unit state='..M28UnitInfo.GetUnitState(oACU)..'; work progress='..oACU:GetWorkProgress()..'; iPlateau='..(iPlateauOrZero or 'nil')..'; iLandZone='..(iLandOrWaterZone or 'nil')..'; Can ACU use overcharge='..tostring(M28Conditions.CanUnitUseOvercharge(oACU:GetAIBrain(), oACU))..'; ACU position='..repru(oACU:GetPosition())..'; ACU Orders (before updates)='..reprs(oACU[M28Orders.reftiLastOrders])..'; Is special micro active='..tostring(oACU[M28UnitInfo.refbSpecialMicroActive] or false)..'; Time to stop micro='..(oACU[M28UnitInfo.refiGameTimeToResetMicroActive] or 'nil')..'; Brian nickname='..aiBrain.Nickname..'; reftSpecialObjectiveMoveLocation='..repru(oACU[reftSpecialObjectiveMoveLocation])..'; Enemy combat threat='..(tLZOrWZTeamData[M28Map.subrefTThreatEnemyCombatTotal] or 'nil')..'; Is table of unbuilt mexes empty='..tostring(M28Utilities.IsTableEmpty(tLZOrWZTeamData[M28Map.subrefMexUnbuiltLocations]))..'; refbFocusOnT1Spam='..tostring(M28Team.tTeamData[iTeam][M28Team.refbFocusOnT1Spam])..'; oACU[M28UnitInfo.refbUsingDefaultWeaponPriority]='..tostring(oACU[M28UnitInfo.refbUsingDefaultWeaponPriority] or false)..'; Is table of snipe targets empty='..tostring(M28Utilities.IsTableEmpty(M28Team.tTeamData[iTeam][M28Team.toActiveSnipeTargets])))

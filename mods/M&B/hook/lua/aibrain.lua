@@ -209,7 +209,12 @@ AIBrain = Class(M28AIBrainClass) {
                 self.M28AI = true
                 --M&B: difficulty mapped from the lobby personality.
                 --Vanilla: easy=Лёгкий, normal/medium=Нормальный, adaptive=Сложный (current bot), others=Нормальный.
-                if sPersonality == 'easy' or sPersonality == 'm28aie' then self.MNBDifficulty = 'easy'
+                if string.find(string.lower(sPersonality), 'random', 1, true) then
+                    --M&B: any "Random" lobby personality -> pick a random difficulty each game.
+                    local tDiff = {'easy', 'normal', 'hard', 'impossible'}
+                    self.MNBDifficulty = tDiff[math.random(1, 4)]
+                    LOG('M&B: Random personality "'..sPersonality..'" -> random difficulty "'..self.MNBDifficulty..'" for '..(self.Nickname or '?'))
+                elseif sPersonality == 'easy' or sPersonality == 'm28aie' then self.MNBDifficulty = 'easy'
                 elseif sPersonality == 'normal' or sPersonality == 'medium' or sPersonality == 'm28ai' then self.MNBDifficulty = 'normal'
                 elseif sPersonality == 'adaptive' or sPersonality == 'm28aii' then self.MNBDifficulty = 'impossible'
                 else self.MNBDifficulty = 'hard' end
@@ -222,6 +227,44 @@ AIBrain = Class(M28AIBrainClass) {
                 ForkThread(import('/mods/M&B/lua/AI/MNBBattlegroups.lua').ManageBattlegroups, self)
                 --M&B Stage 1B: naval assault fighter escort — ASF escort combat-drop transports via the Support order, taken out of M28's air management for the duration. Self-gates on IsMBModActive + naval map inside the thread.
                 ForkThread(import('/mods/M&B/lua/AI/M28Air.lua').ManageMNBNavalEscort, self)
+                --M&B: Research Centre (lab) completion watchdog. M28 builds the lab via an engineer
+                --(refActionBuildResearchCentre); if the builder is pulled away or stalled, the lab
+                --sits half-built and blocks a rebuild (ResearchFactoryUnit.OnStartBeingBuilt destroys
+                --a 2nd lab if one exists). So: if a lab is <100% AND hasnt progressed for ~90s AND the
+                --brain has mass banked (genuinely abandoned, not just mass-starved), scrap it so M28
+                --re-queues a fresh lab it can afford to finish. Self-gates on IsMBModActive.
+                ForkThread(function(brain)
+                    WaitSeconds(15)
+                    local M28UnitInfoX = import('/mods/M&B/lua/AI/M28UnitInfo.lua')
+                    while not(brain.Dead) and not(brain:IsDefeated()) do
+                        WaitSeconds(15)
+                        pcall(function()
+                            if not(M28UnitInfoX.IsMBModActive()) then return end
+                            local labs = brain:GetListOfUnits(categories.RESEARCHCENTRE * categories.STRUCTURE, false)
+                            brain.MNBLabStall = brain.MNBLabStall or {}
+                            for i, lab in labs do
+                                if lab and not(lab.Dead) and lab.GetFractionComplete and lab:GetFractionComplete() < 1 then
+                                    local frac = lab:GetFractionComplete()
+                                    local eid = lab.EntityId
+                                    local rec = brain.MNBLabStall[eid] or {frac = -1, count = 0}
+                                    if frac <= rec.frac + 0.001 then
+                                        rec.count = rec.count + 1
+                                        local bMassOK = brain.GetEconomyStoredRatio and brain:GetEconomyStoredRatio('MASS') > 0.02
+                                        if rec.count >= 6 and bMassOK then
+                                            LOG('M&B lab watchdog: scrapping stalled half-built lab (frac '..tostring(frac)..', ~'..(rec.count*15)..'s no progress) for '..tostring(brain.Nickname))
+                                            lab:Destroy()
+                                            brain.MNBLabStall[eid] = nil
+                                        else
+                                            brain.MNBLabStall[eid] = rec
+                                        end
+                                    else
+                                        brain.MNBLabStall[eid] = {frac = frac, count = 0}
+                                    end
+                                end
+                            end
+                        end)
+                    end
+                end, self)
                 --M&B: mass kickstart is now EVENT-DRIVEN instead of the old flat 3000-at-GT120 (which didnt fit all maps): 2000 when the bot starts its first ACU upgrade (M28ACU.lua GetACUUpgradeWanted M&B return), and 2000/3000/5000 when it completes study 9200/9300/9400 (defaultunits.lua OnStopBeingBuilt). Granted in those event handlers, not here.
             else
                 M28AIBrainClass.OnCreateAI(self, planName)

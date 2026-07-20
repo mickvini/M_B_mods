@@ -10070,6 +10070,18 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
 
 
 
+    --M&B: throttle the (dynamic) mex status check to every 15s. The map-static island GEOGRAPHY
+    --is cached separately in the M&B block below (full-map scan runs ONCE), so only the cheap mex
+    --recheck repeats. Callers keep calling but this cheap-returns between checks.
+    if M28Utilities.IsMBModActive() then
+        local iGT = GetGameTimeSeconds()
+        local iLast = M28Team.tTeamData[iTeam][M28Team.refiTimeOfLastTransportShortlistUpdate] or 0
+        if M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] ~= nil and iGT - iLast < 15 then
+            if bUpdateCombatDropShortlist then UpdateActiveShortlistForCombatDrops(iTeam) end
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return
+        end
+    end
     M28Team.tTeamData[iTeam][M28Team.refiTimeOfLastTransportShortlistUpdate] = GetGameTimeSeconds()
     if not M28Team.tTeamData[iTeam]['bMNBDiagUS'] then M28Team.tTeamData[iTeam]['bMNBDiagUS'] = true; LOG('M&B diag: UpdateTransportPlateauDropLocationShortlist FIRST RUN (team '..tostring(iTeam)..')') end
     M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] = {}
@@ -10084,7 +10096,34 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
             if tMNBOurBase then
                 local iMNBOurLabel = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMNBOurBase)
                 local tMNBAdded = {}
-                --1. Enemy island mexes (via intel)
+
+                --M&B GEOGRAPHY (map-static; computed ONCE per team): cache every island land-zone
+                --(land label != ours). This is the "point of interest" set; avoids re-scanning the
+                --whole map every call. Only the cheap mex recheck below repeats.
+                local tMNBIslZones = M28Team.tTeamData[iTeam]['tMNBCachedIslandZones']
+                if not tMNBIslZones then
+                    tMNBIslZones = {}
+                    pcall(function()
+                        if M28Map.tAllPlateaus then
+                            for iPG, tPG in M28Map.tAllPlateaus do
+                                if tPG and tPG[M28Map.subrefPlateauLandZones] then
+                                    for iZG, tZG in tPG[M28Map.subrefPlateauLandZones] do
+                                        if tZG and tZG[M28Map.subrefMidpoint] then
+                                            local iLG = NavUtils.GetLabel(M28Map.refPathingTypeLand, tZG[M28Map.subrefMidpoint])
+                                            if iLG and iLG ~= iMNBOurLabel then
+                                                table.insert(tMNBIslZones, {iPG, iZG})
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    M28Team.tTeamData[iTeam]['tMNBCachedIslandZones'] = tMNBIslZones
+                    LOG('M&B islands: geography cached once ('..table.getn(tMNBIslZones)..' island land-zones)')
+                end
+
+                --1. Enemy island mexes (via intel; DYNAMIC — rechecked so we attack occupied mexes)
                 for iEB, oEB in M28Team.tTeamData[iTeam][M28Team.subreftoEnemyBrains] do
                     local tEBStart = M28Map.GetPlayerStartPosition(oEB)
                     if tEBStart then
@@ -10101,27 +10140,17 @@ function UpdateTransportPlateauDropLocationShortlist(iTeam, bUpdateCombatDropSho
                         end
                     end
                 end
-                --2. Unbuilt island mex spots (zone data, pcall-wrapped)
-                pcall(function()
-                    if M28Map.tAllPlateaus then
-                        for iP2, tP2 in M28Map.tAllPlateaus do
-                            if tP2 and tP2[M28Map.subrefPlateauLandZones] then
-                                for iZ2, tZ2 in tP2[M28Map.subrefPlateauLandZones] do
-                                    if tZ2 and M28Utilities.IsTableEmpty(tZ2[M28Map.subrefMexUnbuiltLocations]) == false then
-                                        local tMP = tZ2[M28Map.subrefMidpoint]
-                                        if tMP then
-                                            local iZ2L = NavUtils.GetLabel(M28Map.refPathingTypeLand, tMP)
-                                            if iZ2L and iZ2L ~= iMNBOurLabel then
-                                                local sK2 = (iP2 or 0)..'_'..(iZ2 or 0)
-                                                if not tMNBAdded[sK2] then tMNBAdded[sK2] = true; table.insert(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist], {iP2, iZ2}) end
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
+                --2. Unbuilt island mex spots (DYNAMIC — rechecked, but only over the cached island
+                --zones now; no full-map scan)
+                for iK, tPZ in tMNBIslZones do
+                    local iP2, iZ2 = tPZ[1], tPZ[2]
+                    local tP2 = M28Map.tAllPlateaus[iP2]
+                    local tZ2 = tP2 and tP2[M28Map.subrefPlateauLandZones] and tP2[M28Map.subrefPlateauLandZones][iZ2]
+                    if tZ2 and M28Utilities.IsTableEmpty(tZ2[M28Map.subrefMexUnbuiltLocations]) == false then
+                        local sK2 = (iP2 or 0)..'_'..(iZ2 or 0)
+                        if not tMNBAdded[sK2] then tMNBAdded[sK2] = true; table.insert(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist], {iP2, iZ2}) end
                     end
-                end)
+                end
             end
         end
         LOG('M&B diag islands: custom detection, shortlist='..table.getn(M28Team.tTeamData[iTeam][M28Team.reftTransportIslandDropShortlist] or {}))

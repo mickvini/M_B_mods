@@ -996,3 +996,34 @@ end
                 self.UpgradeEffectsBag:Add(e)
             end
         end, ]]--
+
+-- === M&B: veterancy by killed MASS ===
+-- OnKilledUnit fires on the KILLER (self) with the victim. We add the victim's BuildCostMass
+-- to the killer's KILLS stat; paired with the scaled Veteran thresholds (Blueprints.lua) this
+-- makes veterancy mass-based. Victim mass is read from __blueprints (safe on a dying unit)
+-- rather than calling GetBlueprint on it. pcall-wrapped so a bad reference can never break the
+-- kill chain. Skipped on FAF (native mass veterancy). NB: KILLS now holds accumulated mass,
+-- so anything that read it as a raw kill COUNT (e.g. XSL0310 transform veterancy transfer, UI
+-- kill counter) now reflects mass instead -- intended.
+do
+    local bMNBIsFAF = DiskGetFileInfo and DiskGetFileInfo('/lua/sim/navutils.lua')
+    if not bMNBIsFAF then
+        local MNBOldUnitVet = Unit
+        Unit = Class(MNBOldUnitVet) {
+            OnKilledUnit = function(self, unitKilled, massKilled)
+                pcall(function()
+                    if unitKilled and unitKilled.UnitId and __blueprints[unitKilled.UnitId] then
+                        local eco = __blueprints[unitKilled.UnitId].Economy
+                        if eco and eco.BuildCostMass and eco.BuildCostMass > 0 then
+                            local iCur = 0
+                            local tStat = self:GetStat('KILLS', 0)
+                            if tStat and tStat.Value then iCur = tStat.Value end
+                            self:UpdateStat('KILLS', iCur + eco.BuildCostMass)
+                        end
+                    end
+                end)
+                if MNBOldUnitVet.OnKilledUnit then MNBOldUnitVet.OnKilledUnit(self, unitKilled, massKilled) end
+            end,
+        }
+    end
+end

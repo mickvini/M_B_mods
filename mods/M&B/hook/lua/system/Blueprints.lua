@@ -1611,3 +1611,179 @@ do
     end
 end
 
+-- === M&B: veterancy by killed MASS -- per-class thresholds (WIP) ===
+-- Engine promotes veteran levels when KILLS crosses Veteran.LevelN. sim/Unit.lua OnKilledUnit
+-- credits the victim's BuildCostMass to the killer's KILLS. Here we set Veteran thresholds to
+-- MASS amounts per class.
+-- NOTE: the user's L1 is NOT the unit's BuildCostMass (checked: light tank mass 24 vs L1 40,
+-- med 30 vs 60, heavy 48 vs 90), so thresholds can't be auto-derived from mass -- a per-class
+-- table is needed (the user is computing it). Status:
+--   * ACU (COMMAND) and SACU (SUBCOMMANDER): WIRED now via category (certain).
+--   * Every other unit that already has a Veteran table: TEMPORARY placeholder =
+--     BuildCostMass x {1,2,3,4,5}, so the game stays balanced.
+--   * The user's full per-class table is captured in tMNBVetUser below and will be wired
+--     class-by-class (matched by the unit's in-game Description label, e.g. all units labelled
+--     "Тяжёлый танк T1" -> 90/180/270/360/450) in one verified pass once every class/tech is in.
+--   * Structures without a Veteran table are untouched (still don't vet); adding veterancy to
+--     turrets/static-AA etc. is a separate step.
+-- Skipped on FAF (native mass veterancy).
+do
+    local bMNBIsFAF = DiskGetFileInfo and DiskGetFileInfo('/lua/sim/navutils.lua')
+    if not bMNBIsFAF then
+
+        -- User per-class thresholds: V[role][tech] = {L1,L2,L3,L4,L5}; tech in 0..4.
+        -- commander/subcommander are flat rows (any tech). Roles are matched in Classify().
+        local V = {
+            commander   = {1200,2600,4800,7600,12800},
+            subcommander= {1000,2200,3800,6600,9200},
+            light       = { [0]={20,40,60,80,100}, [1]={40,80,120,160,200}, [2]={60,120,180,240,300}, [3]={80,160,240,320,400}, [4]={160,320,480,640,800} },
+            med         = { [1]={60,120,180,240,300}, [2]={80,160,240,320,400}, [3]={120,240,360,480,600}, [4]={180,360,540,720,900} },
+            heavy       = { [1]={90,180,270,360,450}, [2]={120,240,360,480,600}, [3]={160,320,480,640,800}, [4]={180,360,540,720,900} },
+            mobile_arty = { [1]={120,240,360,480,600}, [2]={240,480,720,960,1200}, [3]={320,640,960,1280,1600}, [4]={600,1200,1800,2400,3000} },
+            mobile_rocket={ [2]={320,640,960,1280,1600}, [3]={500,750,1000,1250,1500}, [4]={600,1200,1800,2400,3000} },
+            mobile_aa   = { [1]={240,480,720,960,1200}, [2]={320,640,960,1280,1600}, [3]={400,800,1200,1400,1800}, [4]={400,800,1200,1400,1800} },
+            light_turret= { [1]={60,120,180,240,300}, [2]={80,160,240,320,400}, [3]={120,240,360,480,600}, [4]={120,240,360,480,600} },
+            heavy_turret= { [1]={90,180,270,360,450}, [2]={120,240,360,480,600}, [3]={160,320,480,640,800}, [4]={160,320,480,640,800} },
+            static_aa   = { [1]={240,480,720,960,1200}, [2]={240,480,720,960,1200}, [3]={400,800,1200,1400,1800} },
+            longrange_arty={ [1]={250,500,750,1000,1250}, [2]={500,750,1000,1250,1500}, [3]={2500,5000,7500,10000,12500} },
+            rapid_arty  = { [1]={250,500,750,1000,1250}, [2]={500,750,1000,1250,1500}, [3]={2500,5000,7500,10000,12500} },
+            tactical_missile={ [2]={2500,5000,7500,10000,12500} },
+            exp_turret  = { [4]={2500,5000,7500,10000,12500} },
+            experimental= { [1]={250,500,750,1000,1250}, [2]={500,750,1000,1250,1500}, [3]={2500,5000,7500,10000,12500}, [4]={5000,10000,15000,20000,25000} },
+            light_fighter={ [1]={240,480,720,960,1200}, [2]={320,640,960,1280,1600}, [3]={400,800,1200,1400,1800} },
+            heavy_fighter={ [1]={320,640,960,1280,1600}, [2]={400,800,1200,1400,1800}, [3]={500,750,1000,1250,1500} },
+            interceptor = { [1]={240,480,720,960,1200}, [2]={320,640,960,1280,1600}, [3]={400,800,1200,1400,1800} },
+            assault     = { [1]={90,180,270,360,450}, [2]={120,240,360,480,600}, [3]={160,320,480,640,800} },
+            bomber      = { [1]={320,640,960,1280,1600}, [2]={500,1000,1500,2000,2500}, [3]={2500,5000,7500,10000,12500} },
+            air_torpedo = { [1]={320,640,960,1280,1600}, [2]={500,1000,1500,2000,2500}, [3]={2500,5000,7500,10000,12500} },
+            frigate     = { [1]={320,640,960,1280,1600} },
+            submarine   = { [1]={400,800,1200,1600,2000}, [2]={500,1000,1500,2000,2500}, [3]={2500,5000,7500,10000,12500} },
+            artyship    = { [2]={1000,2000,3000,4000,5000} },
+            destroyer   = { [2]={500,1000,1500,2000,2500} },
+            cruiser     = { [2]={500,1000,1500,2000,2500} },
+            battleship  = { [3]={2500,5000,7500,10000,12500} },
+            battlecruiser={ [3]={2500,5000,7500,10000,12500} },
+            carrier     = { [3]={2500,5000,7500,10000,12500} },
+        }
+        -- explicit per-blueprint-id overrides (skip classification entirely)
+        local VID = { ['xeb2402'] = {2500,5000,7500,10000,12500} }
+
+        local function HasCat(bp, sCat)
+            if not bp.Categories then return false end
+            for i, v in bp.Categories do if v == sCat then return true end end
+            return false
+        end
+
+        local function SetVet(bp, t)
+            if not bp.Veteran then bp.Veteran = {} end
+            bp.Veteran.Level1 = t[1]; bp.Veteran.Level2 = t[2]; bp.Veteran.Level3 = t[3]
+            bp.Veteran.Level4 = t[4]; bp.Veteran.Level5 = t[5]
+        end
+
+        local function Placeholder(bp)
+            local m = (bp.Economy and bp.Economy.BuildCostMass) or 0
+            if m <= 0 then m = 60 end
+            return { m, m * 2, m * 3, m * 4, m * 5 }
+        end
+
+        -- Map a unit bp to (role, tech). Category-primary; description keywords for role/weight.
+        -- Handles Russian ("Тяжёлый танк T1") AND English ("Medium tank T1") labels. Returns
+        -- nil role for units that arent one of the user's classes.
+        local function Classify(bp)
+            if HasCat(bp, 'SUBCOMMANDER') then return 'subcommander', nil end
+            if HasCat(bp, 'COMMAND') then return 'commander', nil end
+
+            local s = bp.Description or ''
+            local p = string.find(s, '>')
+            if p then s = string.sub(s, p + 1) end
+            s = string.gsub(s, 'ё', 'е')
+            s = string.gsub(s, 'Ё', 'Е')
+            local sLow = string.lower(s)  -- ASCII-only lower (Russian bytes unchanged); for English kw
+
+            local tech = nil
+            local _, _, cap = string.find(sLow, 't([0-9])')
+            if cap then tech = tonumber(cap)
+            elseif HasCat(bp, 'TECH4') then tech = 4
+            elseif HasCat(bp, 'TECH3') then tech = 3
+            elseif HasCat(bp, 'TECH2') then tech = 2
+            elseif HasCat(bp, 'TECH1') then tech = 1 end
+
+            local function Has(sub) return string.find(s, sub, 1, true) ~= nil end
+            local function HasL(sub) return string.find(sLow, sub, 1, true) ~= nil end
+
+            if HasCat(bp, 'EXPERIMENTAL') then
+                if HasCat(bp, 'STRUCTURE') then return 'exp_turret', (tech or 4) end
+                return 'experimental', (tech or 4)
+            end
+            if HasCat(bp, 'STRUCTURE') then
+                if HasCat(bp, 'ANTIAIR') then return 'static_aa', tech end
+                if Has('тактич') or HasL('tactical') or HasL('missile') then return 'tactical_missile', tech end
+                if Has('орудие') or HasL('turret') or HasL('point defense') then
+                    if Has('Тяжел') or HasL('heavy') then return 'heavy_turret', tech end
+                    return 'light_turret', tech
+                end
+                if Has('арта') or Has('артилл') or HasL('artillery') then
+                    if Has('скорострельная') or HasL('rapid') then return 'rapid_arty', tech end
+                    return 'longrange_arty', tech
+                end
+                return nil, nil
+            end
+            if HasCat(bp, 'AIR') then
+                if Has('торпедник') or HasL('torpedo') then return 'air_torpedo', tech end
+                if Has('бомбардировщик') or HasL('bomber') then return 'bomber', tech end
+                if Has('штурмовик') or HasL('gunship') or HasL('assault') then return 'assault', tech end
+                if Has('перехватчик') or HasL('interceptor') then return 'interceptor', tech end
+                if Has('истребитель') or HasL('fighter') then
+                    if Has('Тяжел') or HasL('heavy') then return 'heavy_fighter', tech end
+                    return 'light_fighter', tech
+                end
+                return nil, nil
+            end
+            if HasCat(bp, 'NAVAL') then
+                if Has('лодка') or HasL('submarine') then return 'submarine', tech end
+                if Has('авианосец') or HasL('carrier') then return 'carrier', tech end
+                if Has('линкор') or HasL('battleship') then
+                    if Has('линейный') or HasL('battlecruiser') then return 'battlecruiser', tech end
+                    return 'battleship', tech
+                end
+                if Has('артшип') or HasL('artillery') then return 'artyship', tech end
+                if Has('крейсер') or HasL('cruiser') then return 'cruiser', tech end
+                if Has('эсминец') or HasL('destroyer') then return 'destroyer', tech end
+                if Has('фрегат') or HasL('frigate') then return 'frigate', tech end
+                return nil, nil
+            end
+            -- LAND mobile
+            if Has('зенитка') or HasL('anti-air') or HasL('flak') then return 'mobile_aa', tech end
+            if Has('ракетниц') or HasL('rocket') then return 'mobile_rocket', tech end
+            if Has('арта') or Has('артилл') or HasL('artillery') then return 'mobile_arty', tech end
+            if Has('Тяжел') or HasL('heavy') then return 'heavy', tech end
+            if Has('Средн') or HasL('medium') then return 'med', tech end
+            if Has('Легк') or HasL('light') then return 'light', tech end
+            return nil, nil
+        end
+
+        local oldModBlueprintsMNBVet = ModBlueprints
+        ModBlueprints = function(all_blueprints)
+            oldModBlueprintsMNBVet(all_blueprints)
+            local nClass, nPlace, nNone = 0, 0, 0
+            for id, bp in all_blueprints.Unit do
+                local t = VID[bp.BlueprintId]   -- explicit id override first
+                if not t then
+                    local role, tech = Classify(bp)
+                    if role then
+                        local row = V[role]
+                        if row then
+                            if role == 'commander' or role == 'subcommander' then t = row
+                            elseif tech then t = row[tech] end
+                        end
+                    end
+                end
+                if t then SetVet(bp, t); nClass = nClass + 1          -- user's value
+                elseif bp.Veteran then SetVet(bp, Placeholder(bp)); nPlace = nPlace + 1  -- unclassified vetter
+                else nNone = nNone + 1 end                            -- doesn't vet (unchanged)
+            end
+            LOG('M&B veterancy(mass): class='..nClass..' placeholder='..nPlace..' none='..nNone)
+        end
+    end
+end
+

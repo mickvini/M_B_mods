@@ -274,7 +274,15 @@ refCategoryAntiNavy = categories.ANTINAVY
 --Land units
 refCategoryScathis = categories.CYBRAN * categories.ARTILLERY * categories.EXPERIMENTAL
 refCategoryExperimentalStructure = refCategoryScathis + categories.STRUCTURE * categories.EXPERIMENTAL -categories.OPTICS - categories.SHIELD * categories.STRUCTURE
-refCategoryLandExperimental = categories.EXPERIMENTAL * categories.MOBILE * categories.LAND + categories.BUILTBYTIER3ENGINEER * categories.TECH3 * categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.CYBRAN * categories.ARTILLERY - categories.UNSELECTABLE - categories.UNTARGETABLE
+--M&B: exclude FACTORY-BUILT units from the land-experimental category. In M&B the factory T4 tanks
+--(brnt3bt/brmt1extank/brot2exm2/xsl04st etc.) carry EXPERIMENTAL (used as the tier-4 marker) AND
+--BUILTBYTIER3FACTORY. Without this exclusion, vanilla M28's experimental micro (kite / hold range /
+--don't-advance / retreat-when-outranged) grabs them -> a pure-T4 army (lower tiers dead) never presses
+--and looks like it retreats. Subtracting factory-built units removes them from this micro category so they
+--fight as normal heavy tanks. NO-OP in vanilla (vanilla mobile experimentals are not built by T1/T2/T3
+--factories), so no M&B gate is needed here and vanilla behaviour is unchanged. Real field experimentals
+--in M&B are NEEDMOBILEBUILD (handled separately in MNBBattlegroups.lua) and stay unaffected.
+refCategoryLandExperimental = categories.EXPERIMENTAL * categories.MOBILE * categories.LAND + categories.BUILTBYTIER3ENGINEER * categories.TECH3 * categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.CYBRAN * categories.ARTILLERY - categories.UNSELECTABLE - categories.UNTARGETABLE - categories.BUILTBYTIER1FACTORY - categories.BUILTBYTIER2FACTORY - categories.BUILTBYTIER3FACTORY
 refCategoryMonkeylord = refCategoryLandExperimental * categories.CYBRAN * categories.DIRECTFIRE - categories.SNIPER
 refCategoryMegalith = refCategoryLandExperimental * categories.CYBRAN * categories.DIRECTFIRE * categories.SNIPER
 refCategoryYthotha = refCategoryLandExperimental * categories.SERAPHIM * categories.DIRECTFIRE
