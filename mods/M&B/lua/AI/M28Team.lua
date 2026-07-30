@@ -4857,7 +4857,7 @@ function RefreshPotentialTeleSnipeTargets(iTeam, iOptionalMaxTimeDelayInSeconds)
                                 for iPD, oPD in tPDInZone do
                                     if M28UnitInfo.IsUnitValid(oPD) then
                                         if bDebugMessages == true then LOG(sFunctionRef..': Dist between PD and target unit='..M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), oPD:GetPosition())..'; PD DF range='..oPD[M28UnitInfo.refiDFRange]) end
-                                        if M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), oPD:GetPosition()) <= 5 + oPD[M28UnitInfo.refiDFRange] then
+                                        if M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), oPD:GetPosition()) <= 5 + (oPD[M28UnitInfo.refiDFRange] or 0) then
                                             table.insert(tPDInRange, oPD)
                                         end
                                     end

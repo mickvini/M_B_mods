@@ -18,6 +18,12 @@ local M28Team = import('/mods/M&B/lua/AI/M28Team.lua')
 --Using refCategoryLandExperimental (EXPERIMENTAL) wrongly treats T4 factory tanks as experimentals -> excludes them
 --from the spare pool and flags them pending-strike -> no escorts for strikes -> army piles at base. This separates them.
 local refCategoryMNBFieldExp = categories.NEEDMOBILEBUILD * categories.MOBILE * categories.LAND
+--M&B: T4 factory-built indirect-fire artillery (e.g. SRL0311 Cybran rocket artillery). It slips through M28's
+--combat categories (indirect only counts as T1 in refCategoryLandCombat; and it's subtracted from
+--refCategoryLandExperimental), so the bot builds it but only the REACTIVE M28 indirect logic touches it -> it
+--idles on the rear base instead of marching with the army. Adding it to the strike spare pool marches it to the
+--front; being slow + long-range it naturally trails behind the main force, as artillery should.
+local refCategoryMNBT4Artillery = categories.EXPERIMENTAL * categories.INDIRECTFIRE * categories.MOBILE * categories.LAND - categories.DIRECTFIRE
 
 -- ===== Tunables =====
 local TICK = 5              -- seconds between manager ticks
@@ -35,6 +41,8 @@ local MAX_RAID_GROUPS = 4   -- max concurrent raid parties per brain
 local ROSTER_DEAD_RATIO = 0.3  -- alive ratio below this => group considered wiped
 local EXP_STRIKE_ESCORT_MIN = 10  -- if an exp is waiting, form a strike with at least this many tanks
 local MAX_PENDING_EXPS = 5  -- cap experimentals held 'pending-strike' so they dont ALL pile at base if no strike forms (e.g. bot has 0 tanks)
+local RIFT_STRIKE_SIZE = 15  --M&B: rift-gate (BSB2402) free units are ~0 mass, so M28 undervalues their threat and leaves them idle at the gate. Once this many rift bots gather, send them as their own wave to the enemy base (ignoring the defense reserve - they're free).
+local ARTILLERY_STRIKE_MIN = 3  --M&B: T4 factory artillery (SRL0311 etc.) gets its OWN wave to the front once this many gather, separate from the 30-slot strike (which left spare nearly empty -> arty piled on the base). Slow + long-range, so it trails behind the main force.
 local bDebug = true
 
 -- Per-unit flag. Also referenced by M28Land.lua skip; keep the key string in sync.
@@ -170,7 +178,9 @@ end
 -- Spare (unassigned, complete, valid) land-combat units owned by the brain. Experimentals excluded (handled separately).
 local function GetSpareCombatUnits(aiBrain)
     local tOut = {}
-    local tUnits = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandCombat, false, false)
+    --M&B: include T4 factory-built indirect artillery (e.g. SRL0311) so the strike system marches it to the
+    --front with the army instead of leaving it idle on the base (it falls outside refCategoryLandCombat).
+    local tUnits = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandCombat + refCategoryMNBT4Artillery, false, false)
     if tUnits then
         for i, oUnit in tUnits do
             if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
@@ -254,6 +264,14 @@ local function HasActiveStrike(tGroups)
     return false
 end
 
+--M&B: an active artillery wave (role 'artillery') is tracked separately so it doesn't gate the main strike.
+local function HasActiveArtillery(tGroups)
+    for i, tG in tGroups do
+        if tG.role == 'artillery' then return true end
+    end
+    return false
+end
+
 -- Resolve launched groups: detect success/failure, escalate or reset required sizes, free rosters.
 local function ResolveGroups(aiBrain, tGroups)
     local iNow = GetGameTimeSeconds()
@@ -288,6 +306,13 @@ local function ResolveGroups(aiBrain, tGroups)
                     DBG('strike survived > ' .. STRIKE_LONG .. 's -> reset strike size to ' .. STRIKE_BASE)
                     bDrop = true
                 end
+            elseif tG.role == 'artillery' then
+                --M&B: artillery wave - free its roster once wiped or after a long engagement so the pool can
+                --reform and re-march (no escalation size; the whole arty pool is re-sent each cycle).
+                if bWiped or (iNow - tG.launchTime) > STRIKE_LONG then
+                    DBG('artillery wave resolved (wiped=' .. tostring(bWiped) .. ') -> freeing roster')
+                    bDrop = true
+                end
             end
         end
         if bDrop then
@@ -315,6 +340,62 @@ local function FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
     if not tEnemyBasePos then return end
     local iRaidReq = aiBrain.iMNBRaidRequired or RAID_BASE
     local iStrikeReq = aiBrain.iMNBStrikeRequired or STRIKE_BASE
+
+    --M&B: rift-gate free-army strike. Rift bots (bsl0310/bsl0003, from the Seraphim BSB2402 gate) are nearly
+    --mass-free, so M28's mass-based threat rating undervalues them (~0) and leaves them idling at the gate
+    --instead of attacking. Pull them out of the spare pool and send them as their OWN wave once enough gather,
+    --ignoring the defense reserve (they're free -> throw them all). Below the threshold they stay in spare so the
+    --normal strike/raid logic can still use them. (BUILTBYRIFTGATE isnt a registered Lua category, so we identify
+    --rift bots by ID; only the LAND rift bots end up in the land-combat spare pool anyway.)
+    if M28Utilities.IsMBModActive() then
+        local rMNBRiftCat = categories.bsl0310 + categories.bsl0003
+        local tRiftPool = {}
+        for i = table.getn(tSpare), 1, -1 do
+            local oU = tSpare[i]
+            if oU and EntityCategoryContains(rMNBRiftCat, oU.UnitId) then
+                table.insert(tRiftPool, oU)
+                table.remove(tSpare, i)
+            end
+        end
+        if table.getn(tRiftPool) >= RIFT_STRIKE_SIZE then
+            local tG = { role = 'strike', targetPos = tEnemyBasePos, basePos = tEnemyBasePos, huntingACU = false, roster = tRiftPool, launchedCount = table.getn(tRiftPool), launchTime = GetGameTimeSeconds(), state = 'launched' }
+            for i, oUnit in tRiftPool do
+                oUnit[refiMNBBGroup] = tG
+                M28Orders.IssueTrackedAggressiveMove(oUnit, tEnemyBasePos, 6, false, 'MNBRiftStrike')
+            end
+            table.insert(tGroups, tG)
+            DBG('rift-gate strike launched: ' .. table.getn(tRiftPool) .. ' free units -> enemy base')
+        else
+            -- not enough yet; put them back so the normal strike/raid logic can still grab them
+            for i, oU in tRiftPool do table.insert(tSpare, oU) end
+        end
+    end
+
+    --M&B: separate ARTILLERY wave. T4 factory artillery (SRL0311 etc.) sits in the spare pool, but the main
+    --strike only takes ~30 mixed units and spare is often nearly empty (directfire T4 already marched via M28),
+    --so the arty piled on the base. Give it its OWN wave (role 'artillery' so it doesn't block the main strike
+    --gate); march all of it to the front. Being slow + long-range it trails behind the main force, as artillery should.
+    if M28Utilities.IsMBModActive() and not HasActiveArtillery(tGroups) then
+        local tArtPool = {}
+        for i = table.getn(tSpare), 1, -1 do
+            local oU = tSpare[i]
+            if oU and EntityCategoryContains(refCategoryMNBT4Artillery, oU.UnitId) then
+                table.insert(tArtPool, oU)
+                table.remove(tSpare, i)
+            end
+        end
+        if table.getn(tArtPool) >= ARTILLERY_STRIKE_MIN then
+            local tG = { role = 'artillery', targetPos = tEnemyBasePos, basePos = tEnemyBasePos, huntingACU = false, roster = tArtPool, launchedCount = table.getn(tArtPool), launchTime = GetGameTimeSeconds(), state = 'launched' }
+            for i, oUnit in tArtPool do
+                oUnit[refiMNBBGroup] = tG
+                M28Orders.IssueTrackedAggressiveMove(oUnit, tEnemyBasePos, 6, false, 'MNBArtStrike')
+            end
+            table.insert(tGroups, tG)
+            DBG('T4 artillery strike launched: ' .. table.getn(tArtPool) .. ' units -> enemy base')
+        else
+            for i, oU in tArtPool do table.insert(tSpare, oU) end
+        end
+    end
 
     -- STRIKE: form if none active and (enough spares, OR an exp is waiting with a smaller escort)
     if not HasActiveStrike(tGroups) then

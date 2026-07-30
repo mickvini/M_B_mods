@@ -171,6 +171,20 @@ function ACUActionBuildFactory(aiBrain, oACU, iPlateauOrZero, iLandOrWaterZone, 
         else iCategoryToBuild = M28UnitInfo.refCategoryLandFactory
         end
     end
+    --M&B (user 2026-07-30): hard factory caps — land <=10, air <=4, naval <=2 (mirrors ConsiderActionToAssign).
+    --The ACU path bypassed the engineer-side cap, so the ACU kept building factories past the limit.
+    if M28Utilities.IsMBModActive() then
+        local iMNBFacCap = nil
+        if iCategoryToBuild == M28UnitInfo.refCategoryLandFactory then iMNBFacCap = 10
+        elseif iCategoryToBuild == M28UnitInfo.refCategoryAirFactory then iMNBFacCap = 4
+        elseif iCategoryToBuild == M28UnitInfo.refCategoryNavalFactory then iMNBFacCap = 2
+        end
+        if iMNBFacCap and aiBrain:GetCurrentUnits(iCategoryToBuild) >= iMNBFacCap then
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B ACU factory cap hit: '..aiBrain:GetCurrentUnits(iCategoryToBuild)..' >= '..iMNBFacCap..'; not building more') end
+            M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+            return
+        end
+    end
     --= (iFactoryCategoryOverride or M28UnitInfo.refCategoryLandFactory)
     if iCategoryToBuild == M28UnitInfo.refCategoryLandFactory then
         local iCurLandFacs = aiBrain:GetCurrentUnits(iCategoryToBuild)

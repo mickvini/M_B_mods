@@ -1466,8 +1466,11 @@ function GetBlueprintToBuildForLandFactory(aiBrain, oFactory)
         elseif iFactoryTechLevel == 2 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH3 end
         local iMNBTargetMex = 0
         if iMNBTargetMexCat then iMNBTargetMex = (aiBrain:GetCurrentUnits(iMNBTargetMexCat) or 0) end
-        local iMNBMexNeeded = math.max(6, math.floor(iMNBTotalMex * 0.5))
-        if iMNBMexNeeded > iMNBTotalMex then iMNBMexNeeded = iMNBTotalMex end
+        --M&B (user 2026-07-30): need 6 upgraded extractors of the TARGET tier before upgrading a factory, OR
+        --all of them if the bot has fewer than 6 (so on extractor-poor maps a single upgraded mex is enough to
+        --unlock the factory upgrade). Previously max(6, 50% of all mexes), which on rich maps demanded 10-15
+        --upgraded mexes and delayed factory tech needlessly; on poor maps the cap-at-total saved it but only barely.
+        local iMNBMexNeeded = math.min(6, iMNBTotalMex)
         local iMNBNow = GetGameTimeSeconds()
         local iMNBFacCd = 60 --TUNABLE: seconds between factory upgrades so they stagger instead of all-at-once
         if iFactoryTechLevel >= 2 then iMNBFacCd = 120 end --M&B: T2->T3 upgrades are mass-heavy; 60s let the 2nd fac start before the 1st finishes -> mass cascade. User: raise to 2 min for T3.
@@ -1479,11 +1482,10 @@ function GetBlueprintToBuildForLandFactory(aiBrain, oFactory)
                 if oFac and not(oFac.Dead) and (oFac:IsUnitState('Upgrading') or oFac:IsUnitState('BeingUpgraded')) then bMNBFactoryUpgrading = true break end
             end
         end
-        if iMNBTargetMex >= iMNBMexNeeded and not bMNBFactoryUpgrading and (not(aiBrain.MNB_LastFacUpgradeTime) or (iMNBNow - aiBrain.MNB_LastFacUpgradeTime) >= iMNBFacCd) and not(M28Conditions.CheckIfNeedMoreEngineersOrSnipeUnitsBeforeUpgrading(oFactory)) then
+        if iMNBTargetMex >= iMNBMexNeeded and not bMNBFactoryUpgrading and not(M28Conditions.CheckIfNeedMoreEngineersOrSnipeUnitsBeforeUpgrading(oFactory)) then
             local sMNBLandUpg = M28UnitInfo.GetUnitUpgradeBlueprint(oFactory, true)
             if sMNBLandUpg then
-                aiBrain.MNB_LastFacUpgradeTime = iMNBNow
-                if bDebugMessages == true then LOG(sFunctionRef..': M&B upgrading land factory (staggered; target-tier mex='..iMNBTargetMex..'/'..iMNBMexNeeded..' of '..iMNBTotalMex..'; fac tech '..iFactoryTechLevel..'; cd '..iMNBFacCd..'s); bp='..sMNBLandUpg) end
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B upgrading land factory (one-at-a-time; target-tier mex='..iMNBTargetMex..'/'..iMNBMexNeeded..' of '..iMNBTotalMex..'; fac tech '..iFactoryTechLevel..'); bp='..sMNBLandUpg) end
                 M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
                 return sMNBLandUpg
             end

@@ -1228,6 +1228,16 @@ function GetBlueprintAndLocationToBuild(aiBrain, oEngineer, iOptionalEngineerAct
     local sBlueprintToBuild = sBlueprintOverride or M28Factory.GetBlueprintThatCanBuildOfCategory(aiBrain, iCategoryToBuild, oEngineer, false,          false,      bBuildCheapestStructure, iOptionalCategoryForStructureToBuild, nil,         nil,                   bGetMostExpensive)
 
 
+    --M&B: BSB2402 rift-gate is a game-ender factory; cap at 1. M28 treats the gate as a top-tier land factory
+    --(EXPERIMENTAL ranks as tech3 in GetBlueprintThatCanBuildOfCategory), so the factory picker keeps re-selecting
+    --it and the bot ends up building ~20 of them. If we already have 1, re-pick a NON-gate land factory so the
+    --engineer builds a normal T3 factory instead of a 2nd gate. Production from the existing gate is untouched
+    --(DetermineWhatToBuild still routes the gate to GetBlueprintToBuildForExperimentalLandFactory). Seraphim-only.
+    if M28Utilities.IsMBModActive() and sBlueprintToBuild == 'bsb2402' and aiBrain:GetCurrentUnits(categories.bsb2402) >= 1 then
+        if bDebugMessages == true then LOG(sFunctionRef..': M&B: already have a rift-gate (BSB2402); re-picking a normal land factory instead of a 2nd gate') end
+        sBlueprintToBuild = M28Factory.GetBlueprintThatCanBuildOfCategory(aiBrain, M28UnitInfo.refCategoryLandFactory - categories.bsb2402, oEngineer, false, false, bBuildCheapestStructure, iOptionalCategoryForStructureToBuild)
+    end
+
     --M&B: fab cluster hint. If building a mass fabricator and fabs already exist (anchor), suggest the next
     -- 2D-cluster slot (square rings around the anchor, gap left for mass storage adjacency) instead of letting
     -- M28 scatter/line them. Only used if the suggested slot is still buildable (CanBuildStructureAt); otherwise
@@ -9886,6 +9896,29 @@ function ConsiderActionToAssign(iActionToAssign, iMinTechWanted, iTotalBuildPowe
         end
     end
     --]]
+    --M&B (user, 2026-07-30): HARD factory caps to stop factory spam. Bots were racing to match the primary
+    --enemy's factory count with no ceiling -> at some point they spammed T1 factories ("M28 thinks spamming T1
+    --factories is the right call"). Flat caps regardless of enemy: land <=10, air <=4, naval <=2. oMNBBrain is nil
+    --for water-zone (naval) calls, so fall back to the closest friendly M28 brain there (same pattern as the
+    --ser9100 gate below). Gated on M&B; vanilla M28 untouched.
+    if M28Utilities.IsMBModActive() then
+        local iMNBFacCap, rMNBFacCat = nil, nil
+        if iActionToAssign == refActionBuildLandFactory or iActionToAssign == refActionBuildSecondLandFactory then
+            iMNBFacCap, rMNBFacCat = 10, M28UnitInfo.refCategoryLandFactory
+        elseif iActionToAssign == refActionBuildAirFactory or iActionToAssign == refActionBuildSecondAirFactory then
+            iMNBFacCap, rMNBFacCat = 4, M28UnitInfo.refCategoryAirFactory
+        elseif iActionToAssign == refActionBuildNavalFactory then
+            iMNBFacCap, rMNBFacCat = 2, M28UnitInfo.refCategoryNavalFactory
+        end
+        if iMNBFacCap then
+            local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])
+            if oMNBOwnerBrain and oMNBOwnerBrain:GetCurrentUnits(rMNBFacCat) >= iMNBFacCap then
+                if bDebugMessages == true then LOG(sFunctionRef..': M&B factory cap hit: '..oMNBOwnerBrain:GetCurrentUnits(rMNBFacCat)..' >= '..iMNBFacCap..'; not building more of this type') end
+                M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
+                return
+            end
+        end
+    end
     --M&B: naval factory is useless before ser9100 (RESEARCHLOCKEDTECH1) — ships are research-locked until then, so an early factory can only spam engineers. Don't assign engineers to build naval factories until ser9100 is done. oMNBBrain is nil for water-zone calls (where naval factories are built), so fall back to the closest friendly M28 brain for the tech-unlock flag.
     if M28Utilities.IsMBModActive() and iActionToAssign == refActionBuildNavalFactory then
         local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])

@@ -1886,15 +1886,35 @@ function WantMoreFactories(iTeam, iPlateau, iLandZone, bIgnoreMainEcoConditions)
     -- land+air count). This also covers rebuild: a lost factory drops our count below the enemy's -> want more.
     if M28Utilities.IsMBModActive() then
         local iMNBOurFacs = (M28Team.tTeamData[iTeam][M28Team.subrefiTotalFactoryCountByType][M28Factory.refiFactoryTypeLand] or 0) + (M28Team.tTeamData[iTeam][M28Team.subrefiTotalFactoryCountByType][M28Factory.refiFactoryTypeAir] or 0)
+        --M&B FIX (spiral, user 2026-07-30): compare our factory count against our PRIMARY (nearest) enemy ONLY,
+        --not the SUM of all enemies. The old SUM version caused an infinite factory arms-race in FFA (3+ bots):
+        --each bot forever trailed the COMBINED count of ALL its rivals (mathematically unwinnable), so it never
+        --stopped building factories -> mass drained into endless T1 factories -> research/mex-upgrades starved
+        ---> the whole team got stuck on T1. "Our enemy" = the one M28 has chosen as primary (nearest enemy base,
+        --GetPrimaryEnemyBaseLocation); we match THAT single opponent's factory count so the race converges instead
+        --of diverging. Mirrors how DoWeWantAirFactoryInsteadOfLandFactory (#33) already uses MAX enemy air, not sum.
         local iMNBEnemyFacs = 0
-        for iMNBBrain, oMNBBrain in ArmyBrains do
-            if oMNBBrain ~= aiBrain and IsEnemy(aiBrain:GetArmyIndex(), oMNBBrain:GetArmyIndex()) then
-                iMNBEnemyFacs = iMNBEnemyFacs + table.getn(oMNBBrain:GetListOfUnits(M28UnitInfo.refCategoryLandFactory + M28UnitInfo.refCategoryAirFactory, false, false))
+        local tMNBPrimaryEnemyPos = M28Map.GetPrimaryEnemyBaseLocation(aiBrain)
+        local tMNBEnemyBrains = M28Team.tTeamData[iTeam] and M28Team.tTeamData[iTeam][M28Team.subreftoEnemyBrains]
+        if tMNBPrimaryEnemyPos and tMNBEnemyBrains and not M28Utilities.IsTableEmpty(tMNBEnemyBrains) then
+            local oMNBPrimaryEnemyBrain = nil
+            local iMNBBestDist = nil
+            for iEB, oEB in tMNBEnemyBrains do
+                if oEB and not(oEB.Dead) then
+                    local iDist = M28Utilities.GetDistanceBetweenPositions(M28Map.GetPlayerStartPosition(oEB), tMNBPrimaryEnemyPos)
+                    if (not iMNBBestDist) or (iDist < iMNBBestDist) then
+                        iMNBBestDist = iDist
+                        oMNBPrimaryEnemyBrain = oEB
+                    end
+                end
             end
+            if oMNBPrimaryEnemyBrain then
+                iMNBEnemyFacs = table.getn(oMNBPrimaryEnemyBrain:GetListOfUnits(M28UnitInfo.refCategoryLandFactory + M28UnitInfo.refCategoryAirFactory, false, false))
+            end
+            if bDebugMessages == true then LOG(sFunctionRef..': M&B: factory race vs PRIMARY enemy '..(oMNBPrimaryEnemyBrain and oMNBPrimaryEnemyBrain.Nickname or 'none')..' (ours='..iMNBOurFacs..'; primary enemy land+air='..iMNBEnemyFacs..')') end
         end
         if iMNBOurFacs < iMNBEnemyFacs then
             bWantMoreFactories = true
-            if bDebugMessages == true then LOG(sFunctionRef..': M&B: want more factories to match enemy (ours='..iMNBOurFacs..'; enemy land+air='..iMNBEnemyFacs..')') end
         end
     end
     if bDebugMessages == true then LOG(sFunctionRef..': End of code, bWantMoreFactories='..tostring(bWantMoreFactories)) end

@@ -37,12 +37,36 @@ local EXQuantumMaelstromWeapon = Class(Weapon) {
 }
 
 local EXChronoDampenerWeapon = Class(ADFChronoDampener) {
+    --M&B (user 2026-07-30): aura damage + stun applied to LAND ENEMY units only, scaling by distance zone
+    --(damage rises toward the centre). Replaces the old DamageArea-by-rings which hit EVERYTHING in the circle
+    --(air, allies, and reclaim props like trees/rocks/wreckage). We now gather only enemy LAND-MOBILE units
+    --within the outermost radius, look up each unit's damage from MNBZones (innermost zone that contains it wins),
+    --deal damage directly to that unit (Damage with a target arg => no props/area fallout) and apply a stun.
     CreateProjectileAtMuzzle = function(self, muzzle)
         local unit = self.unit
+        local brain = unit:GetAIBrain()
         local pos = unit:GetPosition()
-        local dtype = self:GetBlueprint().DamageType
-        for _, ring in self.Rings do
-            DamageArea(unit, pos, ring[1], ring[2], dtype, false)
+        local dtype = self:GetBlueprint().DamageType or 'Normal'
+        local zones = self.MNBZones
+        local iStun = self.MNBStun or 0
+        if not zones then return end
+        local iMaxR = zones[1][1]
+        local tTargets = brain:GetUnitsAroundPoint(categories.MOBILE * categories.LAND, pos, iMaxR, 'Enemy')
+        if tTargets then
+            for _, tgt in tTargets do
+                if tgt and not tgt.Dead and tgt:GetFractionComplete() >= 1 then
+                    local tPos = tgt:GetPosition()
+                    local iDist = VDist2(pos[1], pos[3], tPos[1], tPos[3])
+                    local iDmg = 0
+                    for _, zZone in zones do
+                        if iDist <= zZone[1] then iDmg = zZone[2] end   --innermost matching zone wins
+                    end
+                    if iDmg > 0 then
+                        Damage(unit, tPos, tgt, iDmg, dtype)
+                        if iStun > 0 then tgt:SetStunned(iStun) end
+                    end
+                end
+            end
         end
     end,
 }
@@ -123,11 +147,15 @@ EAL0001 = Class(AWalkingLandUnit) {
             end,	
 		},
         RightDisruptor = Class(ADFDisruptorCannonWeapon) {},
+        --M&B: damage zones {outerRadius, damage}, listed outer->inner (damage rises toward the centre);
+        --MNBStun = stun seconds applied to each enemy LAND unit hit.
         EXChronoDampener01 = Class(EXChronoDampenerWeapon) {
-            Rings = { {30, 50}, {20, 50}, {10, 50} },
+            MNBZones = { {30, 25}, {25, 50}, {20, 75}, {15, 100}, {10, 150} },
+            MNBStun = 3,
         },
         EXChronoDampener02 = Class(EXChronoDampenerWeapon) {
-            Rings = { {40, 100}, {30, 100}, {20, 150}, {10, 150} },
+            MNBZones = { {40, 50}, {35, 75}, {30, 100}, {25, 150}, {20, 250} },
+            MNBStun = 5,
         },
         EXTorpedoLauncher01 = Class(AANChronoTorpedoWeapon) {},
         EXTorpedoLauncher02 = Class(AANChronoTorpedoWeapon) {},
@@ -785,17 +813,28 @@ EAL0001 = Class(AWalkingLandUnit) {
     end,
 	
     MaelstromAuraThread = function(self)
+        --M&B (user 2026-07-30): rot/DoT aura. Damage LAND ENEMY units only (was DamageArea which hit air,
+        --allies, and reclaim props). 5 damage per tick; tick rate rises with the tier so dps = 10/25/50.
         while self.wcMaelstrom01 or self.wcMaelstrom02 or self.wcMaelstrom03 do
-            local radius, dmg
+            local iRadius, iDmg, iInterval
             if self.wcMaelstrom03 then
-                radius, dmg = 40, 20
+                iRadius, iDmg, iInterval = 50, 5, 0.1   --10 hits/s x 5 = 50 dps
             elseif self.wcMaelstrom02 then
-                radius, dmg = 35, 10
+                iRadius, iDmg, iInterval = 40, 5, 0.2   --5 hits/s x 5 = 25 dps
             else
-                radius, dmg = 30, 5
+                iRadius, iDmg, iInterval = 30, 5, 0.5   --2 hits/s x 5 = 10 dps
             end
-            DamageArea(self, self:GetPosition(), radius, dmg, 'OverCharge', false)
-            WaitSeconds(0.2)
+            local brain = self:GetAIBrain()
+            local pos = self:GetPosition()
+            local tTargets = brain:GetUnitsAroundPoint(categories.MOBILE * categories.LAND, pos, iRadius, 'Enemy')
+            if tTargets then
+                for _, tgt in tTargets do
+                    if tgt and not tgt.Dead and tgt:GetFractionComplete() >= 1 then
+                        Damage(self, pos, tgt, iDmg, 'Normal')
+                    end
+                end
+            end
+            WaitSeconds(iInterval)
         end
     end,
 
