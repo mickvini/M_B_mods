@@ -813,20 +813,22 @@ EAL0001 = Class(AWalkingLandUnit) {
     end,
 	
     MaelstromAuraThread = function(self)
-        --M&B (user 2026-07-30): rot/DoT aura. Damage LAND ENEMY units only (was DamageArea which hit air,
-        --allies, and reclaim props). 5 damage per tick; tick rate rises with the tier so dps = 10/25/50.
+        --M&B (user 2026-07-30): DoT aura. CONSTANT 5 ticks/sec (WaitSeconds 0.2); only DAMAGE PER TICK scales
+        --with the tier -> tier1/2/3 = 2/5/10 dmg per tick = 10/25/50 dps. Hits enemy GROUND only (all EXCEPT air).
         while self.wcMaelstrom01 or self.wcMaelstrom02 or self.wcMaelstrom03 do
-            local iRadius, iDmg, iInterval
+            local iRadius, iDmg
             if self.wcMaelstrom03 then
-                iRadius, iDmg, iInterval = 50, 5, 0.1   --10 hits/s x 5 = 50 dps
+                iRadius, iDmg = 50, 10   --5/s x 10 = 50 dps
             elseif self.wcMaelstrom02 then
-                iRadius, iDmg, iInterval = 40, 5, 0.2   --5 hits/s x 5 = 25 dps
+                iRadius, iDmg = 40, 5    --5/s x 5  = 25 dps
             else
-                iRadius, iDmg, iInterval = 30, 5, 0.5   --2 hits/s x 5 = 10 dps
+                iRadius, iDmg = 30, 2    --5/s x 2  = 10 dps
             end
             local brain = self:GetAIBrain()
             local pos = self:GetPosition()
-            local tTargets = brain:GetUnitsAroundPoint(categories.MOBILE * categories.LAND, pos, iRadius, 'Enemy')
+            --M&B: hit enemy GROUND targets = everything EXCEPT air (land army + naval + structures/factories).
+            --(was MOBILE*LAND which skipped factories and ships; rule = no air, ground kept.)
+            local tTargets = brain:GetUnitsAroundPoint(categories.ALLUNITS - categories.AIR, pos, iRadius, 'Enemy')
             if tTargets then
                 for _, tgt in tTargets do
                     if tgt and not tgt.Dead and tgt:GetFractionComplete() >= 1 then
@@ -834,8 +836,9 @@ EAL0001 = Class(AWalkingLandUnit) {
                     end
                 end
             end
-            WaitSeconds(iInterval)
+            WaitSeconds(0.2)   --constant 5 ticks/sec for all tiers
         end
+        self.MNBMaelstromRunning = false   --aura ended (all maelstrom enh removed) -> allow a future re-fork
     end,
 
     WeaponConfigCheck = function(self)
@@ -2218,7 +2221,10 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcMaelstrom03 = false
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
-			self:ForkThread(self.MaelstromAuraThread)
+			if not self.MNBMaelstromRunning then
+				self.MNBMaelstromRunning = true
+				self:ForkThread(self.MaelstromAuraThread)
+			end
 			self.RBComTier1 = true
 			self.RBComTier2 = false
 			self.RBComTier3 = false
