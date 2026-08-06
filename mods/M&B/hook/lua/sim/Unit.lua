@@ -1011,14 +1011,20 @@ do
         local MNBOldUnitVet = Unit
         Unit = Class(MNBOldUnitVet) {
             OnKilledUnit = function(self, unitKilled, massKilled)
+                --M&B fix: read the victim's mass via GetBlueprint(), NOT unitKilled.UnitId.
+                --.UnitId is NOT a native engine field -- it is set manually by M28 (M28Building.lua:859),
+                --so it is nil in any game without a bot. The old code used __blueprints[unitKilled.UnitId],
+                --which was always nil without a bot -> mass never credited -> veterancy fell back to vanilla
+                --kill-count. GetBlueprint() works for every unit regardless of M28; pcall guards a dying ref.
                 pcall(function()
-                    if unitKilled and unitKilled.UnitId and __blueprints[unitKilled.UnitId] then
-                        local eco = __blueprints[unitKilled.UnitId].Economy
-                        if eco and eco.BuildCostMass and eco.BuildCostMass > 0 then
+                    if unitKilled and unitKilled.GetBlueprint then
+                        local vBp = unitKilled:GetBlueprint()
+                        local iMass = (vBp and vBp.Economy and vBp.Economy.BuildCostMass) or 0
+                        if iMass > 0 then
                             local iCur = 0
                             local tStat = self:GetStat('KILLS', 0)
                             if tStat and tStat.Value then iCur = tStat.Value end
-                            self:UpdateStat('KILLS', iCur + eco.BuildCostMass)
+                            self:UpdateStat('KILLS', iCur + iMass)
                         end
                     end
                 end)

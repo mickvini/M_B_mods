@@ -319,7 +319,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Исследование Т1',
+                Description = '<LOC res_t1_desc>Tech 1 Research',
             },
             TECH2 = {
                 techid = 2,
@@ -331,7 +331,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Исследование Т2',
+                Description = '<LOC res_t2_desc>Tech 2 Research',
             },
             TECH3 = {
                 techid = 3,
@@ -343,7 +343,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Исследование Т3',
+                Description = '<LOC res_t3_desc>Tech 3 Research',
             },
             EXPERIMENTAL = {
                 techid = 4,
@@ -355,7 +355,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Исследование экспериментального теча Т4',
+                Description = '<LOC res_exp_desc>Experimental Tech Research',
             },
             TECH4 = {
                 techid = 5,
@@ -367,7 +367,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Исследования Т4',
+                Description = '<LOC res_t4_desc>Tech 4 Research',
             },
             MK101 = {
                 techid = 101,
@@ -379,7 +379,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление заводов 1-й уровень',
+                Description = '<LOC mk101_desc>Factory boost (1st level)',
             },
             MK102 = {
                 techid = 102,
@@ -391,7 +391,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление инженеров 1-й уровень',
+                Description = '<LOC mk102_desc>Engineer boost (1st level)',
             },
             MK103 = {
                 techid = 103,
@@ -403,7 +403,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление инженерных дронов 1-й уровень',
+                Description = '<LOC mk103_desc>Engineer station boost (1st level)',
             },
             MK104 = {
                 techid = 104,
@@ -415,7 +415,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление мобильности наземных юнитов 1-й уровень',
+                Description = '<LOC mk104_desc>Land unit mobility boost (1st level)',
             },
             MK105 = {
                 techid = 105,
@@ -427,7 +427,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиления очков прочности и регена наземных юнитов 1-й уровень',
+                Description = '<LOC mk105_desc>Land unit health boost (1st level)',
             },
             MK106 = {
                 techid = 106,
@@ -439,7 +439,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Оружейное усиление наземных юнитов 1-й уровень',
+                Description = '<LOC mk106_desc>Land unit weapon boost (1st level)',
             },
             MK107 = {
                 techid = 107,
@@ -451,7 +451,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление мобильности воздушных юнитов 1-й уровень',
+                Description = '<LOC mk107_desc>Air unit mobility boost (1st level)',
             },
             MK108 = {
                 techid = 108,
@@ -463,7 +463,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Увеличение очков прочности и регена воздушных юнитов 1-й уровень',
+                Description = '<LOC mk108_desc>Air unit health boost (1st level)',
             },
             MK109 = {
                 techid = 109,
@@ -475,7 +475,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Оружейное усиление воздушных юнитов 1-й уровень',
+                Description = '<LOC mk109_desc>Air unit weapon boost (1st level)',
             },
             MK110 = {
                 techid = 110,
@@ -487,7 +487,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Улучшение мобильности водных юнитов 1-й уровень',
+                Description = '<LOC mk110_desc>Naval unit mobility boost (1st level)',
             },
             MK111 = {
                 techid = 111,
@@ -499,7 +499,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Увеличение очков прочности и регена водных юнитов 1-й уровень',
+                Description = '<LOC mk111_desc>Naval unit health boost (1st level)',
             },
             MK112 = {
                 techid = 112,
@@ -511,7 +511,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Оружейное усиление водных юнитов 1-й уровень',
+                Description = '<LOC mk112_desc>Naval unit weapon boost (1st level)',
             },
             MK113 = {
                 techid = 113,
@@ -523,7 +523,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Усиление стационарных турелей 1-й уровень',
+                Description = '<LOC mk113_desc>Turret weapon boost (1st level)',
             },
             MK114 = {
                 techid = 114,
@@ -535,7 +535,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
-                Description = 'Увеличение прочности стационарных турелей 1-й уровень',
+                Description = '<LOC mk114_desc>Turret health boost (1st level)',
             },                        
             MK201 = {
                 techid = 201,
@@ -547,7 +547,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление заводов 2-й уровень',
+                Description = '<LOC mk201_desc>Factory boost (2nd level)',
             },
             MK202 = {
                 techid = 202,
@@ -559,7 +559,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление инженеров 2-й уровень',
+                Description = '<LOC mk202_desc>Engineer boost (2nd level)',
             },            
             MK203 = {
                 techid = 203,
@@ -571,7 +571,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Улучшение инженерных дронов 2-й уровень',
+                Description = '<LOC mk203_desc>Engineer station boost (2nd level)',
             },
             MK204 = {
                 techid = 204,
@@ -583,7 +583,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление мобильности наземных юнитов 2-й уровень',
+                Description = '<LOC mk204_desc>Land unit mobility boost (2nd level)',
             },
             MK205 = {
                 techid = 205,
@@ -595,7 +595,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Увеличение прочности та регена наземных юнитов 2-й уровень',
+                Description = '<LOC mk205_desc>Land unit health boost (2nd level)',
             },
             MK206 = {
                 techid = 206,
@@ -607,7 +607,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление оружия наземных юнитов 2-й уровень',
+                Description = '<LOC mk206_desc>Land unit weapon boost (2nd level)',
             },
             MK207 = {
                 techid = 207,
@@ -619,7 +619,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление мобильности воздушных юнитов  2-й уровень',
+                Description = '<LOC mk207_desc>Air unit mobility boost (2nd level)',
             },
             MK208 = {
                 techid = 208,
@@ -631,7 +631,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'увелиение прочности и регена воздушных юнитов 2-й уровень',
+                Description = '<LOC mk208_desc>Air unit health boost (2nd level)',
             },
             MK209 = {
                 techid = 209,
@@ -643,7 +643,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление оружия воздушных юнитов 2-й уровень',
+                Description = '<LOC mk209_desc>Air unit weapon boost (2nd level)',
             },
             MK210 = {
                 techid = 210,
@@ -655,7 +655,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Улучшение мобильности водных юнитов 2-й уровень',
+                Description = '<LOC mk210_desc>Naval unit mobility boost (2nd level)',
             },
             MK211 = {
                 techid = 211,
@@ -667,7 +667,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Увеличение очков прочности и регена водных юнитов 2-й уровень',
+                Description = '<LOC mk211_desc>Naval unit health boost (2nd level)',
             },
             MK212 = {
                 techid = 212,
@@ -679,7 +679,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление оружейной мощи водных юнитов 2-й уровень',
+                Description = '<LOC mk212_desc>Naval unit weapon boost (2nd level)',
             },
             MK213 = {
                 techid = 213,
@@ -691,7 +691,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Усиление оружейной мощи стационарных турелей 2-й уровень',
+                Description = '<LOC mk213_desc>Turret weapon boost (2nd level)',
             },
             MK214 = {
                 techid = 214,
@@ -703,7 +703,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
-                Description = 'Увеличение очков прочности стационарных турелей 2-й уровень',
+                Description = '<LOC mk214_desc>Turret health boost (2nd level)',
             },
             MK301 = {
                 techid = 301,
@@ -715,7 +715,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление заводов 3-й уровень',
+                Description = '<LOC mk301_desc>Factory boost (3rd level)',
             },
             MK302 = {
                 techid = 302,
@@ -727,7 +727,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление инженеров 3-й уровень',
+                Description = '<LOC mk302_desc>Engineer boost (3rd level)',
             },            
             MK303 = {
                 techid = 303,
@@ -739,7 +739,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление инженерных дронов 3-й уровень',
+                Description = '<LOC mk303_desc>Engineer station boost (3rd level)',
             },
             MK304 = {
                 techid = 304,
@@ -751,7 +751,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление мобильности наземных юнитов 3-й уровень',
+                Description = '<LOC mk304_desc>Land unit mobility boost (3rd level)',
             },
             MK305 = {
                 techid = 305,
@@ -763,7 +763,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Увеличение очков прочности и регена наземных юнитов 3-й уровень',
+                Description = '<LOC mk305_desc>Land unit health boost (3rd level)',
             },
             MK306 = {
                 techid = 306,
@@ -775,7 +775,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление оружейной мощи наземных юнитов 3-й уровень',
+                Description = '<LOC mk306_desc>Land unit weapon boost (3rd level)',
             },
             MK307 = {
                 techid = 307,
@@ -787,7 +787,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление мобильности воздушных юнитов 3-й уровень',
+                Description = '<LOC mk307_desc>Air unit mobility boost (3rd level)',
             },
             MK308 = {
                 techid = 308,
@@ -799,7 +799,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'увелиение прочности и регена воздушных юнитов 3-й уровень',
+                Description = '<LOC mk308_desc>Air unit health boost (3rd level)',
             },
             MK309 = {
                 techid = 309,
@@ -811,7 +811,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление оружия воздушных юнитов 3-й уровень',
+                Description = '<LOC mk309_desc>Air unit weapon boost (3rd level)',
             },
             MK310 = {
                 techid = 310,
@@ -823,7 +823,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Улучшение мобильности водных юнитов 3-й уровень',
+                Description = '<LOC mk310_desc>Naval unit mobility boost (3rd level)',
             },
             MK311 = {
                 techid = 311,
@@ -835,7 +835,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Увеличение очков прочности и регена водных юнитов 3-й уровень',
+                Description = '<LOC mk311_desc>Naval unit health boost (3rd level)',
             },
             MK312 = {
                 techid = 312,
@@ -847,7 +847,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление оружейной мощи водных юнитов 3-й уровень',
+                Description = '<LOC mk312_desc>Naval unit weapon boost (3rd level)',
             },
             MK313 = {
                 techid = 313,
@@ -859,7 +859,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Усиление оружейной мощи стационарных турелей 3-й уровень',
+                Description = '<LOC mk313_desc>Turret weapon boost (3rd level)',
             },
             MK314 = {
                 techid = 314,
@@ -871,7 +871,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
-                Description = 'Увеличение очков прочности стационарных турелей 3-й уровень',
+                Description = '<LOC mk314_desc>Turret health boost (3rd level)',
             },
             MK401 = {
                 techid = 401,
@@ -883,7 +883,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление заводов 4-й уровень',
+                Description = '<LOC mk401_desc>Factory boost (4th level)',
             },
             MK402 = {
                 techid = 402,
@@ -895,7 +895,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление инженеров 4-й уровень',
+                Description = '<LOC mk402_desc>Engineer boost (4th level)',
             },            
             MK403 = {
                 techid = 403,
@@ -907,7 +907,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление инженерных дронов 4-й уровень',
+                Description = '<LOC mk403_desc>Engineer station boost (4th level)',
             },
             MK404 = {
                 techid = 404,
@@ -919,7 +919,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление мобильности наземных юнитов 4-й уровень',
+                Description = '<LOC mk404_desc>Land unit mobility boost (4th level)',
             },
             MK405 = {
                 techid = 405,
@@ -931,7 +931,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности и регена наземных юнитов 4-й уровень',
+                Description = '<LOC mk405_desc>Land unit health boost (4th level)',
             },
             MK406 = {
                 techid = 406,
@@ -943,7 +943,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи наземных юнитов 4-й уровень',
+                Description = '<LOC mk406_desc>Land unit weapon boost (4th level)',
             },
             MK407 = {
                 techid = 407,
@@ -955,7 +955,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление мобильности воздушных юнитов 4-й уровень',
+                Description = '<LOC mk407_desc>Air unit mobility boost (4th level)',
             },
             MK408 = {
                 techid = 408,
@@ -967,7 +967,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увелиение прочности и регена воздушных юнитов 4-й уровень',
+                Description = '<LOC mk408_desc>Air unit health boost (4th level)',
             },
             MK409 = {
                 techid = 409,
@@ -979,7 +979,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружия воздушных юнитов 4-й уровень',
+                Description = '<LOC mk409_desc>Air unit weapon boost (4th level)',
             },
             MK410 = {
                 techid = 410,
@@ -991,7 +991,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Улучшение мобильности водных юнитов 4-й уровень',
+                Description = '<LOC mk410_desc>Naval unit mobility boost (4th level)',
             },
             MK411 = {
                 techid = 411,
@@ -1003,7 +1003,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности и регена водных юнитов 4-й уровень',
+                Description = '<LOC mk411_desc>Naval unit health boost (4th level)',
             },
             MK412 = {
                 techid = 412,
@@ -1015,7 +1015,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи водных юнитов 4-й уровень',
+                Description = '<LOC mk412_desc>Naval unit weapon boost (4th level)',
             },
             MK413 = {
                 techid = 413,
@@ -1027,7 +1027,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи стационарных турелей 4-й уровень',
+                Description = '<LOC mk413_desc>Turret weapon boost (4th level)',
             },
             MK414 = {
                 techid = 414,
@@ -1039,7 +1039,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности стационарных турелей 4-й уровень',
+                Description = '<LOC mk414_desc>Turret health boost (4th level)',
             },
             -- MK501 = {
             --     techid = 501,
@@ -1063,7 +1063,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление инженеров 5-й уровень',
+                Description = '<LOC mk502_desc>Engineer boost (5th level)',
             },            
             MK503 = {
                 techid = 503,
@@ -1075,7 +1075,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление инженерных дронов 5-й уровень',
+                Description = '<LOC mk503_desc>Engineer station boost (5th level)',
             },
             MK504 = {
                 techid = 504,
@@ -1087,7 +1087,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление мобильности наземных юнитов 5-й уровень',
+                Description = '<LOC mk504_desc>Land unit mobility boost (5th level)',
             },
             MK505 = {
                 techid = 505,
@@ -1099,7 +1099,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности и регена наземных юнитов 5-й уровень',
+                Description = '<LOC mk505_desc>Land unit health boost (5th level)',
             },
             MK506 = {
                 techid = 506,
@@ -1111,7 +1111,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи наземных юнитов 5-й уровень',
+                Description = '<LOC mk506_desc>Land unit weapon boost (5th level)',
             },
             MK507 = {
                 techid = 507,
@@ -1123,7 +1123,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление мобильности воздушных юнитов 5-й уровень',
+                Description = '<LOC mk507_desc>Air unit mobility boost (5th level)',
             },
             MK508 = {
                 techid = 508,
@@ -1135,7 +1135,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увелиение прочности и регена воздушных юнитов 5-й уровень',
+                Description = '<LOC mk508_desc>Air unit health boost (5th level)',
             },
             MK509 = {
                 techid = 509,
@@ -1147,7 +1147,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружия воздушных юнитов 5-й уровень',
+                Description = '<LOC mk509_desc>Air unit weapon boost (5th level)',
             },
             MK510 = {
                 techid = 410,
@@ -1159,7 +1159,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Улучшение мобильности водных юнитов 5-й уровень',
+                Description = '<LOC mk510_desc>Naval unit mobility boost (5th level)',
             },
             MK511 = {
                 techid = 511,
@@ -1171,7 +1171,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности и регена водных юнитов 5-й уровень',
+                Description = '<LOC mk511_desc>Naval unit health boost (5th level)',
             },
             MK512 = {
                 techid = 512,
@@ -1183,7 +1183,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи водных юнитов 5-й уровень',
+                Description = '<LOC mk512_desc>Naval unit weapon boost (5th level)',
             },
             MK513 = {
                 techid = 513,
@@ -1195,7 +1195,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Усиление оружейной мощи стационарных турелей 5-й уровень',
+                Description = '<LOC mk513_desc>Turret weapon boost (5th level)',
             },
             MK514 = {
                 techid = 514,
@@ -1207,7 +1207,7 @@ function GenerateResearchItemBPs(all_bps)
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
-                Description = 'Увеличение очков прочности стационарных турелей 5-й уровень',
+                Description = '<LOC mk514_desc>Turret health boost (5th level)',
             },
         }
         for tech, bp in techresearch do
@@ -1272,6 +1272,48 @@ function GenerateResearchItemBPs(all_bps)
     end
 end
 
+--M&B: generate effect description for MK research items based on techid (type+tier)
+--Returns '<LOC mnb_eff_NNN>EN text' so EN players see EN default, RU players see strings_db override.
+local function MNbResearchEffect(bp)
+    local tt = bp.techid
+    if not tt then return '<LOC ability_rnd_unlock>Research Unlock' end
+    -- Tier-unlock researches (techid 1-5)
+    if tt < 10 then
+        local tn = {[1]='Unlocks Tech Level 1',[2]='Unlocks Tech Level 2',[3]='Unlocks Tech Level 3',[4]='Unlocks Tech Level 4',[5]='Unlocks Tech Level 4'}
+        return '<LOC mnb_eff_t'..tt..'>'..(tn[tt] or 'Research Unlock')
+    end
+    local tier = math.floor(tt / 100)
+    if tier < 1 or tier > 5 then return '<LOC ability_rnd_unlock>Research Unlock' end
+    local typ = tt - tier * 100
+    local L = tier
+    -- Full parameter values per type (arrays indexed 1-5 for levels 1-5)
+    local DMG={10,20,30,40,60}; local SPL={5,10,15,20,30}; local RNG={4,8,12,16,20}; local ROF={5,11,18,25,122}
+    local HPL={25,50,75,100,150}; local RGL={2,4,6,8,15}
+    local HPA={10,15,20,30,50}; local RGA={1,2,3,4,8}
+    local SPL_L={6,12,18,24,30}; local ACC_L={5,10,15,20,25}; local TRN_L={2,4,6,8,10}
+    local SPL_A={2,4,6,8,10}; local ACC_A={5,10,15,20,25}; local TRN_A={4,8,12,16,20}
+    local SPL_N={2,3,4,5,8}; local ACC_N={5,10,15,20,25}; local TRN_N={2,3,4,5,8}
+    local TDMG={10,20,30,40,30}; local THP={14,28,42,56,40}
+    local E = {
+        [1]='Structure health +'..(10*L)..'%',
+        [2]='Build rate +'..(10*L)..'%, health +'..(20*L)..'%',
+        [3]='Station rate +'..(10*L)..'%, health +'..(20*L)..'%',
+        [4]='Speed +'..SPL_L[L]..'%, accel +'..ACC_L[L]..'%, turn +'..TRN_L[L]..'%',
+        [5]='Health +'..HPL[L]..'%, regen +'..RGL[L],
+        [6]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
+        [7]='Speed +'..SPL_A[L]..'%, accel +'..ACC_A[L]..'%, turn +'..TRN_A[L]..'%',
+        [8]='Health +'..HPA[L]..'%, regen +'..RGA[L],
+        [9]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
+        [10]='Speed +'..SPL_N[L]..'%, accel +'..ACC_N[L]..'%, turn +'..TRN_N[L]..'%',
+        [11]='Health +'..HPA[L]..'%, regen +'..RGA[L],
+        [12]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
+        [13]='Damage +'..TDMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%',
+        [14]='Health +'..THP[L]..'%',
+    }
+    local en = E[typ] or 'Research Unlock'
+    return '<LOC mnb_eff_'..tt..'>'..en
+end
+
 function RNDGenerateBaseResearchItemBlueprint(all_bps, newid, id, bp)
     local sizescale = math.max( ((bp.Physics.SkirtSizeX or bp.SizeX or 4) / 2), ((bp.Physics.SkirtSizeZ or bp.SizeZ or 4) / 2) )
     all_bps[newid] = {
@@ -1295,7 +1337,7 @@ function RNDGenerateBaseResearchItemBlueprint(all_bps, newid, id, bp)
         Description = bp.Description,
         Display = {
             Abilities = {
-                '<LOC ability_rnd_unlock>Research Unlock',
+                MNbResearchEffect(bp),
             },
             --IconName = id,
             UniformScale = (bp.Display.UniformScale or 0.2) / sizescale, --calculate properly based on footprint size

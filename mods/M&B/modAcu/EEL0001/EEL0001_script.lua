@@ -1428,12 +1428,27 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXZephyrBooster' then
+            --M&B bugfix: bp NewHealth=3000 was never applied (0 HP). Add it.
+            if not Buffs['EXUEFZephyrHealthBoost'] then
+                BuffBlueprint {
+                    Name = 'EXUEFZephyrHealthBoost',
+                    DisplayName = 'EXUEFZephyrHealthBoost',
+                    BuffType = 'EXUEFZephyrHealthBoost',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = { Add = bp.NewHealth, Mult = 1.0 },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXUEFZephyrHealthBoost')
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             wepZephyr:ChangeMaxRadius(40)
 			self.wcZephyr01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXZephyrBoosterRemove' then
+            if Buff.HasBuff(self, 'EXUEFZephyrHealthBoost') then Buff.RemoveBuff(self, 'EXUEFZephyrHealthBoost') end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)

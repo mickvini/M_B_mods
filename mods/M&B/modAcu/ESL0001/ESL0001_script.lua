@@ -1464,12 +1464,27 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self.RBApoEngineering = false
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXChronotonBooster' then
+            --M&B bugfix: bp NewHealth=3000 was never applied (0 HP). Add it.
+            if not Buffs['EXSeraChronotonHealthBoost'] then
+                BuffBlueprint {
+                    Name = 'EXSeraChronotonHealthBoost',
+                    DisplayName = 'EXSeraChronotonHealthBoost',
+                    BuffType = 'EXSeraChronotonHealthBoost',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = { Add = bp.NewHealth, Mult = 1.0 },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXSeraChronotonHealthBoost')
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             wepChronotron:ChangeMaxRadius(40)
 			self.wcDisruptor01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXChronotonBoosterRemove' then
+            if Buff.HasBuff(self, 'EXSeraChronotonHealthBoost') then Buff.RemoveBuff(self, 'EXSeraChronotonHealthBoost') end
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)

@@ -23,7 +23,7 @@ LightGreenCollisionBeam = Class(CollisionBeam) {
     OnImpact = function(self, impactType, targetEntity)
         if impactType == 'Terrain' then
             if self.Scorching == nil then
-                self.Scorching = self:ForkThread( self.ScorchThread )   
+                self.Scorching = self:ForkThread( self.ScorchThread )
             end
         elseif not impactType == 'Unit' then
             KillThread(self.Scorching)

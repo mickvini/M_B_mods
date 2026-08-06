@@ -294,9 +294,9 @@ do
             Name = 'MobileBuffLand' .. i, DisplayName = 'MobileBuffLand' .. i,
             BuffType = 'MobileBuffLand' , Stacks = 'REPLACE', Duration = -1,
             Affects = {        
-                MoveMult = {Add = 0, Mult = 1 + i/50},  
-                AccMult = {Add = 0, Mult = 1 + i/20}, 
-                TurnMult = {Add = 0, Mult = 1 + i/50},               
+                MoveMult = {Add = 0, Mult = 1 + i*0.06},
+                AccMult = {Add = 0, Mult = 1 + i/20},
+                TurnMult = {Add = 0, Mult = 1 + i/50},
             },
         }            
         

@@ -1825,18 +1825,6 @@ UnitBlueprint {
             AboveWaterFireOnly = true,
             AboveWaterTargetsOnly = true,
             BallisticArc = 'RULEUBA_None',
-            Buffs = {
-                {
-                    Add = {
-                        OnFire = true,
-                    },
-                    BuffType = 'STUN',
-                    Duration = 3,
-                    Radius = 30,
-                    TargetAllow = 'MOBILE',
-                    TargetDisallow = 'EXPERIMENTAL,COMMAND',
-                },
-            },
             CollideFriendly = false,
             Damage = 50,
             DamageRadius = 30,
@@ -1896,18 +1884,6 @@ UnitBlueprint {
             AboveWaterFireOnly = true,
             AboveWaterTargetsOnly = true,
             BallisticArc = 'RULEUBA_None',
-            Buffs = {
-                {
-                    Add = {
-                        OnFire = true,
-                    },
-                    BuffType = 'STUN',
-                    Duration = 5,
-                    Radius = 40,
-                    TargetAllow = 'MOBILE',
-                    TargetDisallow = 'EXPERIMENTAL,COMMAND',
-                },
-            },
             CollideFriendly = false,
             Damage = 150,
             DamageRadius = 40,

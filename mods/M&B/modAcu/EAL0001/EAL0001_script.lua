@@ -51,10 +51,12 @@ local EXChronoDampenerWeapon = Class(ADFChronoDampener) {
         local iStun = self.MNBStun or 0
         if not zones then return end
         local iMaxR = zones[1][1]
-        local tTargets = brain:GetUnitsAroundPoint(categories.MOBILE * categories.LAND, pos, iMaxR, 'Enemy')
+        local army = unit:GetArmy()
+        --M&B: COMMAND excluded => ACUs/sub-ACUs are never stunned; 'Enemy' filter + IsEnemy hard guard => allies/neutral can never be hit.
+        local tTargets = brain:GetUnitsAroundPoint(categories.MOBILE * categories.LAND - categories.COMMAND, pos, iMaxR, 'Enemy')
         if tTargets then
             for _, tgt in tTargets do
-                if tgt and not tgt.Dead and tgt:GetFractionComplete() >= 1 then
+                if tgt and not tgt.Dead and tgt:GetFractionComplete() >= 1 and IsEnemy(army, tgt:GetArmy()) then
                     local tPos = tgt:GetPosition()
                     local iDist = VDist2(pos[1], pos[3], tPos[1], tPos[3])
                     local iDmg = 0
@@ -361,7 +363,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 		self.wcMaelstrom02 = false
 		self.wcMaelstrom03 = false
 		local wepPainter = self:GetWeaponByLabel('EXTargetPainter')
-		wepPainter:ChangeMaxRadius(22)
+		wepPainter:ChangeMaxRadius(30)   --M&B: painter must cover base gun range (30); was 22 -> gun never enabled for radar targets beyond 22
 		self:ForkThread(self.WeaponConfigCheck)
 		self:ForkThread(self.WeaponRangeReset)
 		self.MaelstromEffects01 = {}
@@ -1512,9 +1514,11 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonDisruptorrHealthBoost')
 			self.wcDisruptor01 = true
+			self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(40)   --M&B: painter covers gun range (40). In the upgrade's OWN function, NOT in DefaultGunBuffThread (shared by the artillery line -> would clobber painter=100)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
         elseif enh =='EXDisruptorrBoosterRemove' then
+			if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			if Buff.HasBuff( self, 'EXAeonDisruptorrHealthBoost' ) then
                 Buff.RemoveBuff( self, 'EXAeonDisruptorrHealthBoost' )
@@ -1523,17 +1527,38 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcDisruptor01 = false
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh =='EXDisruptorrEnhancer' then
+            --M&B bugfix: this tier granted 0 HP (bp NewHealth=8000 was never applied). Add it as a
+            --separate stacking buff so it adds on top of the Booster's EXAeonDisruptorrHealthBoost (+3000).
+            if not Buffs['EXAeonDisruptorrHealthBoost2'] then
+                BuffBlueprint {
+                    Name = 'EXAeonDisruptorrHealthBoost2',
+                    DisplayName = 'EXAeonDisruptorrHealthBoost2',
+                    BuffType = 'EXAeonDisruptorrHealthBoost2',
+                    Stacks = 'REPLACE',
+                    Duration = -1,
+                    Affects = {
+                        MaxHealth = {
+                            Add = bp.NewHealth,
+                            Mult = 1.0,
+                        },
+                    },
+                }
+            end
+            Buff.ApplyBuff(self, 'EXAeonDisruptorrHealthBoost2')
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             wepDisruptor:AddDamageMod(-74)
             wepDisruptor:AddDamageMod(240)
             wepDisruptor:ChangeMaxRadius(45)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
-			wepTargetPainter:ChangeMaxRadius(35)
+			wepTargetPainter:ChangeMaxRadius(45)   --M&B: painter must cover gun range (was 35 < 45 -> dead zone on radar targets)
 			self.DisruptorRange = true
 			self.wcDisruptor02 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
         elseif enh =='EXDisruptorrEnhancerRemove' then
+            if Buff.HasBuff(self, 'EXAeonDisruptorrHealthBoost2') then
+                Buff.RemoveBuff(self, 'EXAeonDisruptorrHealthBoost2')
+            end
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             wepDisruptor:AddDamageMod(74)
             wepDisruptor:AddDamageMod(-240)
@@ -1610,6 +1635,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.DefaultGunBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
         elseif enh =='EXTorpedoRapidLoaderRemove' then
+            if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
             if Buff.HasBuff( self, 'EXAeonHealthBoost7' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost7' )
             end
@@ -1731,6 +1757,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost11')
+			self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(100)   --M&B: painter covers artillery02 range (80); each grade sets its own painter so it works on first apply
 			self.wcArtillery01 = false
 			self.wcArtillery02 = true
 			self.wcArtillery03 = false
@@ -1741,7 +1768,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
-        elseif enh =='EXAdvancedShellsRemove' then    
+        elseif enh =='EXAdvancedShellsRemove' then
+			if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
 			self:RemoveToggleCap('RULEUTC_WeaponToggle')
             if Buff.HasBuff( self, 'EXAeonHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost10' )
@@ -1776,6 +1804,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost12')
+			self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(100)   --M&B: painter covers artillery03 range (100)
 			self.wcArtillery01 = false
 			self.wcArtillery02 = false
 			self.wcArtillery03 = true
@@ -1861,6 +1890,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost14')
+            self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(40)   --M&B: painter must cover beam02 range (40)
             self.wcBeam01 = false
 			self.wcBeam02 = true
 			self.wcBeam03 = false
@@ -1870,6 +1900,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.DefaultGunBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
         elseif enh =='EXImprovedCoolingSystemRemove' then
+            if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
             if Buff.HasBuff( self, 'EXAeonHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost13' )
             end
@@ -1901,6 +1932,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost15')
+            self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(45)   --M&B: painter must cover beam03 range (45)
 			local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
             wepDisruptor:ChangeMaxRadius(45)
             self.wcBeam01 = false
@@ -1953,9 +1985,10 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 		elseif enh == 'EXShieldBatteryRemove' then
-            if Buff.HasBuff(self, 'EXAeonShieldHealth1') then
-                Buff.RemoveBuff(self, 'EXAeonShieldHealth1')
-            end
+            --M&B bugfix: remove ALL shield HP buffs (was only top tier -> phantom HP after removing a stacked shield)
+            if Buff.HasBuff(self, 'EXAeonShieldHealth1') then Buff.RemoveBuff(self, 'EXAeonShieldHealth1') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth2') then Buff.RemoveBuff(self, 'EXAeonShieldHealth2') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth3') then Buff.RemoveBuff(self, 'EXAeonShieldHealth3') end
             self.RBDefTier1 = false
             self.RBDefTier2 = false
             self.RBDefTier3 = false
@@ -1996,9 +2029,10 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXActiveShieldingRemove' then
-            if Buff.HasBuff(self, 'EXAeonShieldHealth2') then
-                Buff.RemoveBuff(self, 'EXAeonShieldHealth2')
-            end
+            --M&B bugfix: remove ALL shield HP buffs (was only top tier -> phantom HP after removing a stacked shield)
+            if Buff.HasBuff(self, 'EXAeonShieldHealth1') then Buff.RemoveBuff(self, 'EXAeonShieldHealth1') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth2') then Buff.RemoveBuff(self, 'EXAeonShieldHealth2') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth3') then Buff.RemoveBuff(self, 'EXAeonShieldHealth3') end
             self.RBDefTier1 = false
             self.RBDefTier2 = false
             self.RBDefTier3 = false
@@ -2041,9 +2075,10 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh == 'EXImprovedShieldBatteryRemove' then
-            if Buff.HasBuff(self, 'EXAeonShieldHealth3') then
-                Buff.RemoveBuff(self, 'EXAeonShieldHealth3')
-            end
+            --M&B bugfix: remove ALL shield HP buffs (was only top tier -> phantom HP after removing a stacked shield)
+            if Buff.HasBuff(self, 'EXAeonShieldHealth1') then Buff.RemoveBuff(self, 'EXAeonShieldHealth1') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth2') then Buff.RemoveBuff(self, 'EXAeonShieldHealth2') end
+            if Buff.HasBuff(self, 'EXAeonShieldHealth3') then Buff.RemoveBuff(self, 'EXAeonShieldHealth3') end
             self.RBDefTier1 = false
             self.RBDefTier2 = false
             self.RBDefTier3 = false
@@ -2293,7 +2328,7 @@ EAL0001 = Class(AWalkingLandUnit) {
                 }
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost21')
-			self:SetWeaponEnabledByLabel('EXAntiMissile', false)
+			self:SetWeaponEnabledByLabel('EXAntiMissile', true)   --M&B bugfix: T4 Quantum was turning the TMD OFF (was false) — it must stay enabled (FieldExpander T2 enabled it)
             self.wcMaelstrom01 = false
 			self.wcMaelstrom02 = false
 			self.wcMaelstrom03 = true
