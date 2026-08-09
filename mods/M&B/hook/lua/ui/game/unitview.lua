@@ -85,6 +85,18 @@ function UpdateWindow(info)
             end
         end
 
+        -- M&B: prefer the LIVE buffed shield max health (synced from sim via the 'MnbShieldMax' stat) over
+        -- the blueprint value. Adjacency/accumulator buffs grow the real max in hook/lua/sim/Buff.lua; the
+        -- blueprint number never changes, so without this the panel shows a stale ceiling. The stat is absent
+        -- (=0) when no buff has touched the shield, in which case the blueprint value set above is correct.
+        -- Using the live max here also fixes the current/regen numbers, since both are derived from it.
+        if info.userUnit.GetStat then
+            local liveMax = info.userUnit:GetStat('MnbShieldMax', 0).Value or 0
+            if liveMax > 0 then
+                shieldMaxHealth = liveMax
+            end
+        end
+
         if shieldMaxHealth then
             -- Defensive: if the layout hook did not create the control (e.g. a non-mini layout), make it now.
             if controls.mnbShieldText == nil then

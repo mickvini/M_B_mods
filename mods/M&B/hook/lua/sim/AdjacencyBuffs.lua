@@ -1431,7 +1431,7 @@ BuffBlueprint { Name = 'T1EnergyStorageShieldHealthMODBonusSize4',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.1/4,
+            Add = 0.2/4,
             Mult = 1.0,
         },
     },
@@ -1447,7 +1447,7 @@ BuffBlueprint { Name = 'T1EnergyStorageShieldHealthMODBonusSize12',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.1/12,
+            Add = 0.2/12,
             Mult = 1.0,
         },
     },
@@ -1463,7 +1463,7 @@ BuffBlueprint { Name = 'T1EnergyStorageShieldHealthMODBonusSize16',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.1/16,
+            Add = 0.2/16,
             Mult = 1.0,
         },
     },
@@ -1689,7 +1689,7 @@ BuffBlueprint { Name = 'T2EnergyStorageShieldHealthMODBonusSize4',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.15/4,
+            Add = 0.3/4,
             Mult = 1.0,
         },
     },
@@ -1704,7 +1704,7 @@ BuffBlueprint { Name = 'T2EnergyStorageShieldHealthMODBonusSize8',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.15/8,
+            Add = 0.3/8,
             Mult = 1.0,
         },
     },
@@ -1720,7 +1720,7 @@ BuffBlueprint { Name = 'T2EnergyStorageShieldHealthMODBonusSize12',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.15/12,
+            Add = 0.3/12,
             Mult = 1.0,
         },
     },
@@ -1736,7 +1736,7 @@ BuffBlueprint { Name = 'T2EnergyStorageShieldHealthMODBonusSize16',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.15/16,
+            Add = 0.3/16,
             Mult = 1.0,
         },
     },
@@ -1961,7 +1961,7 @@ BuffBlueprint { Name = 'T3EnergyStorageShieldHealthMODBonusSize4',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.2/4,
+            Add = 0.4/4,
             Mult = 1.0,
         },
     },
@@ -1977,7 +1977,7 @@ BuffBlueprint { Name = 'T3EnergyStorageShieldHealthMODBonusSize8',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.2/8,
+            Add = 0.4/8,
             Mult = 1.0,
         },
     },
@@ -1992,7 +1992,7 @@ BuffBlueprint { Name = 'T3EnergyStorageShieldHealthMODBonusSize12',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.2/12,
+            Add = 0.4/12,
             Mult = 1.0,
         },
     },
@@ -2008,7 +2008,7 @@ BuffBlueprint { Name = 'T3EnergyStorageShieldHealthMODBonusSize16',
     OnBuffRemove = AdjBuffFuncs.DefaultBuffRemove,
     Affects = {
         ShieldHealth = {
-            Add = 0.2/16,
+            Add = 0.4/16,
             Mult = 1.0,
         },
     },

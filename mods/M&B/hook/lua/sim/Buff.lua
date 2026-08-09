@@ -105,6 +105,14 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
                 --LOG(val)
                 shield:SetMaxHealth(shieldhealth * val)
 
+                -- M&B: push the LIVE buffed max health into a synced stat so the UI panel shows the real
+                -- ceiling, not the stale blueprint value. Read back in the unitview hooks via
+                -- userUnit:GetStat('MnbShieldMax', 0).Value. Runs on buff apply AND removal (afterRemove):
+                -- the line above recomputes the max either way, so the stat always tracks the live value.
+                if shield.Owner and shield.Owner.SetStat then
+                    shield.Owner:SetStat('MnbShieldMax', math.floor(shield:GetMaxHealth()))
+                end
+
                 --shield:SetStat('SHIELDHP', val * shieldhealth )                
                 shield.Owner:SetShieldRatio(shield:GetHealth() / shield:GetMaxHealth())
 
