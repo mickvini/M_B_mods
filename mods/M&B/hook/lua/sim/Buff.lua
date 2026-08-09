@@ -107,9 +107,15 @@ function BuffAffectUnit(unit, buffName, instigator, afterRemove)
 
                 -- M&B: push the LIVE buffed max health into a synced stat so the UI panel shows the real
                 -- ceiling, not the stale blueprint value. Read back in the unitview hooks via
-                -- userUnit:GetStat('MnbShieldMax', 0).Value. Runs on buff apply AND removal (afterRemove):
-                -- the line above recomputes the max either way, so the stat always tracks the live value.
-                if shield.Owner and shield.Owner.SetStat then
+                -- userUnit:GetStat('MnbShieldMax', 0).Value.
+                -- CRITICAL: the engine's C-side SetStat HARD-CRASHES (game freeze + exit, NO Lua trace) when
+                -- the stat does not yet exist on the unit. GetStat with a default MUST run first -- it
+                -- creates/initializes the missing stat. This was the crash when first placing an energy
+                -- storage next to a shield (and when an upgrade spawns a fresh shielded unit): the buff
+                -- applies, SetStat fires on the never-yet-created 'MnbShieldMax' stat -> access violation.
+                -- Only run on APPLY, not removal, to also avoid touching the stat while a unit is mid-upgrade.
+                if not afterRemove and shield.Owner and shield.Owner.GetStat and shield.Owner.SetStat then
+                    shield.Owner:GetStat('MnbShieldMax', 0)
                     shield.Owner:SetStat('MnbShieldMax', math.floor(shield:GetMaxHealth()))
                 end
 

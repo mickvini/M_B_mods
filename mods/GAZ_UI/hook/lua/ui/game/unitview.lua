@@ -127,6 +127,14 @@ do
 
                     if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth then
                         local ShieldMaxHealth = info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth
+                        -- M&B: show the LIVE buffed max (grown by adjacency/accumulator buffs, synced from sim
+                        -- via the 'MnbShieldMax' stat) instead of the stale blueprint value. Also fixes the
+                        -- current/regen numbers, since both are derived from this max. Stat is 0 when no buff
+                        -- has touched the shield -> fall back to the blueprint value above.
+                        if info.userUnit.GetStat then
+                            local statMax = info.userUnit:GetStat('MnbShieldMax', 0).Value or 0
+                            if statMax > 0 then ShieldMaxHealth = statMax end
+                        end
                         local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
                         controls.shieldText:Show()
                         -- M&B: shield regen is dynamic (5% of the missing health per second, min 2, 0 when full),
@@ -149,6 +157,11 @@ do
                     if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth == nil then
                         local enhBp = info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back]
                         local ShieldMaxHealth = enhBp.ShieldMaxHealth
+                        -- M&B: same live-buffed-max override as for structure shields (stat synced from sim).
+                        if info.userUnit.GetStat then
+                            local statMax = info.userUnit:GetStat('MnbShieldMax', 0).Value or 0
+                            if statMax > 0 then ShieldMaxHealth = statMax end
+                        end
                         local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
                         controls.shieldText:Show()
                         -- M&B: personal/enhancement shields (ACU, SACU) use the SAME dynamic regen model as
