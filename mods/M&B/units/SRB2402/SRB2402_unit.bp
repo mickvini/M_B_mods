@@ -44,6 +44,24 @@ UnitBlueprint {
         Health = 18600,
         MaxHealth = 18600,
         RegenRate = 1,
+        -- M&B: Cybran-skinned shield (mesh/effects/impact taken from the Cybran T2 shield URB4202),
+        -- stats scaled up to experimental tier to match Perses (BRNT3PERSES1). Auto-created by the
+        -- base Unit class because ShieldSize > 0; no script change needed. Actual regen is the M&B
+        -- dynamic model (5% of the gap/s, min 2) -- ShieldRegenRate here only needs to be > 0.
+        Shield = {
+            ImpactEffects = 'CybranShieldHit01',
+            RegenAssistMult = 60,
+            ShieldEnergyDrainRechargeTime = 10,
+            ShieldMaxHealth = 20000,
+            ShieldRechargeTime = 45,
+            ShieldRegenRate = 64,
+            ShieldRegenStartTime = 1,
+            ShieldSize = 25,
+            ShieldVerticalOffset = -3,
+            ImpactMesh = '/effects/entities/ShieldSection01/ShieldSection01b_mesh',
+            Mesh = '/effects/entities/CybranShield01/CybranShield01_mesh',
+            MeshZ = '/effects/entities/Shield01/Shield01z_mesh',
+        },
         AirThreatLevel = 500,
         SurfaceThreatLevel = 88,
         SubThreatLevel = 0,

@@ -86,15 +86,26 @@ do
 --evilnewcode
                     local getEnh = import('/lua/enhancementcommon.lua')
                     if info.userUnit != nil then
-                        local enhRegen , regenBase = 0 , 0
-                        if getEnh.GetEnhancements(info.entityId) != nil then
-                            for k,v in getEnh.GetEnhancements(info.entityId) do
-                                if info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId)[k]].NewRegenRate != nil then
-                                    enhRegen = info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId)[k]].NewRegenRate
+                        local bp = info.userUnit:GetBlueprint()
+                        -- M&B: ACU regen ADDS UP from several sources -- the blueprint base RegenRate, EVERY
+                        -- installed enhancement that carries a NewRegenRate (in M&B the engineering, shield and
+                        -- weapon lines all grant regen), plus veterancy. The old code only kept ONE enhancement's
+                        -- NewRegenRate (it overwrote enhRegen each loop), so the displayed number was far too low.
+                        -- Sum all installed enhancements here so the UI matches the sim-side total.
+                        local enhRegen = 0
+                        local installed = getEnh.GetEnhancements(info.entityId)
+                        if installed != nil then
+                            for k, enhName in installed do
+                                if enhName and bp.Enhancements[enhName] and bp.Enhancements[enhName].NewRegenRate then
+                                    enhRegen = enhRegen + bp.Enhancements[enhName].NewRegenRate
                                 end
                             end
                         end
-                        local veterancyLevels = info.userUnit:GetBlueprint().Veteran or veterancyDefaults
+                        local baseRegen = math.floor(bp.Defense.RegenRate or 0)
+
+                        -- Veterancy regen: bp.Buffs.Regen['LevelN'] at the highest veteran level reached.
+                        local vetRegen = 0
+                        local veterancyLevels = bp.Veteran or veterancyDefaults
                         if info.kills >= veterancyLevels[string.format('Level%d', 1)] then
                             local lvl = 1
                             for i = 2,5 do
@@ -102,46 +113,58 @@ do
                                     lvl = i
                                 end
                             end
-                            local addRegen = info.userUnit:GetBlueprint().Buffs.Regen[string.format('Level%d', lvl)]
-                            local regenTotal
-                            if info.userUnit != nil and info.health then
-                                if math.floor(info.userUnit:GetBlueprint().Defense.RegenRate) > 0 then
-                                    regenTotal = math.floor(  (info.userUnit:GetBlueprint().Defense.RegenRate) + addRegen   )
-                                    regenBase = math.floor(info.userUnit:GetBlueprint().Defense.RegenRate + enhRegen)
-                                else
-                                    regenTotal = math.floor(addRegen)
-                                end
-                                if regenTotal > 0 and regenBase > 0 then
-                                    controls.health:SetText(string.format("%d / %d +%d(%d)/s", info.health, info.maxHealth, regenBase ,regenTotal ))
-                                else
-                                    controls.health:SetText(string.format("%d / %d +%d/s", info.health, info.maxHealth ,regenTotal ))
-                                end
+                            if bp.Buffs and bp.Buffs.Regen then
+                                vetRegen = math.floor(bp.Buffs.Regen[string.format('Level%d', lvl)] or 0)
                             end
-                        else
-                            if info.userUnit != nil and info.health and info.userUnit:GetBlueprint().Defense.RegenRate > 0 then
-                                controls.health:SetText(string.format("%d / %d +%d/s", info.health, info.maxHealth,math.floor(info.userUnit:GetBlueprint().Defense.RegenRate + enhRegen)))
-                            end
+                        end
+
+                        local totalRegen = baseRegen + enhRegen + vetRegen
+                        if info.health and totalRegen > 0 then
+                            controls.health:SetText(string.format("%d / %d +%d/s", info.health, info.maxHealth, totalRegen))
                         end
                     end
 --endevilnewcode
 
                     if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth then
                         local ShieldMaxHealth = info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth
+                        local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
                         controls.shieldText:Show()
-                        if info.userUnit:GetBlueprint().Defense.Shield.ShieldRegenRate then
-                            controls.shieldText:SetText(string.format("%d / %d +%d/s", math.floor(ShieldMaxHealth*info.shieldRatio), info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth , info.userUnit:GetBlueprint().Defense.Shield.ShieldRegenRate))
+                        -- M&B: shield regen is dynamic (5% of the missing health per second, min 2, 0 when full),
+                        -- NOT the static blueprint value. Keep these numbers in sync with M&B hook/lua/shield.lua
+                        -- (MNB_SHIELD_REGEN_FRACTION = 0.05, MNB_SHIELD_REGEN_FLOOR = 2). Only shown for shields
+                        -- that can regen at all (blueprint ShieldRegenRate > 0), matching the sim-side gate.
+                        local bpRegen = info.userUnit:GetBlueprint().Defense.Shield.ShieldRegenRate
+                        if bpRegen and bpRegen > 0 then
+                            local gap = ShieldMaxHealth - curShield
+                            local dynRegen = 0
+                            if gap > 0 then
+                                dynRegen = math.min(math.max(gap * 0.05, 2), gap)
+                            end
+                            controls.shieldText:SetText(string.format("%d / %d +%d/s", curShield, ShieldMaxHealth, dynRegen))
                         else
-                            controls.shieldText:SetText(string.format("%d / %d", math.floor(ShieldMaxHealth*info.shieldRatio), info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth ))
+                            controls.shieldText:SetText(string.format("%d / %d", curShield, ShieldMaxHealth))
                         end
                     end
 -- newcode
                     if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth == nil then
-                        local ShieldMaxHealth = info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back].ShieldMaxHealth
+                        local enhBp = info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back]
+                        local ShieldMaxHealth = enhBp.ShieldMaxHealth
+                        local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
                         controls.shieldText:Show()
-                        if info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back].ShieldRegenRate then
-                            controls.shieldText:SetText(string.format("%d / %d +%d/s", math.floor(ShieldMaxHealth*info.shieldRatio), ShieldMaxHealth , info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back].ShieldRegenRate))
+                        -- M&B: personal/enhancement shields (ACU, SACU) use the SAME dynamic regen model as
+                        -- structure shields (see the UnitShield wrap in hook/lua/shield.lua), so show the dynamic
+                        -- value here too -- 5% of the missing health, min 2, 0 when full. Keep in sync with
+                        -- MNB_SHIELD_REGEN_FRACTION = 0.05, MNB_SHIELD_REGEN_FLOOR = 2.
+                        local bpRegen = enhBp.ShieldRegenRate
+                        if bpRegen and bpRegen > 0 then
+                            local gap = ShieldMaxHealth - curShield
+                            local dynRegen = 0
+                            if gap > 0 then
+                                dynRegen = math.min(math.max(gap * 0.05, 2), gap)
+                            end
+                            controls.shieldText:SetText(string.format("%d / %d +%d/s", curShield, ShieldMaxHealth, dynRegen))
                         else
-                            controls.shieldText:SetText(string.format("%d / %d", math.floor(ShieldMaxHealth*info.shieldRatio), ShieldMaxHealth ))
+                            controls.shieldText:SetText(string.format("%d / %d", curShield, ShieldMaxHealth))
                         end
                     end
 --newcode

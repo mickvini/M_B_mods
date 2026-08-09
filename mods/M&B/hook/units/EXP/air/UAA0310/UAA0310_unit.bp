@@ -123,7 +123,7 @@ UnitBlueprint {
             ImpactEffects = 'AeonShieldHit01',
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 5,
-            ShieldMaxHealth = 33600,
+            ShieldMaxHealth = 18600,
             ShieldRechargeTime = 120,
             ShieldRegenRate = 120,
             ShieldRegenStartTime = 2,

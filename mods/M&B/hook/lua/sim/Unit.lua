@@ -923,13 +923,21 @@ do --Per Balthazaar - encasing the code in do .... end means that you dont have 
             ForkThread(M28Events.ShieldRechargeStarted, self)
             if M28OldUnit.OnShieldIsCharging then return M28OldUnit.OnShieldIsCharging(self) end
         end,
+        -- M&B: shield does NOT drain energy passively -- only on regen (TakeResource in hook/lua/shield.lua).
+        -- Base OnShieldEnabled called self:SetMaintenanceConsumptionActive() -- that was the continuous drain,
+        -- which made the shield hook look broken: the unit re-enabled drain itself when the shield turned on,
+        -- bypassing shield.lua entirely. So we do NOT call M28OldUnit.OnShieldEnabled (it would re-enable the
+        -- drain) -- we only play the sound and fire the M28 event.
         OnShieldEnabled = function(self)
+            self:PlayUnitSound('ShieldOn')
             ForkThread(M28Events.ShieldEnabled, self)
-            if M28OldUnit.OnShieldEnabled then return M28OldUnit.OnShieldEnabled(self) end
         end,
         OnShieldDisabled = function(self)
+            self:PlayUnitSound('ShieldOff')
+            -- M&B: shield is off -- stop the regen energy cost too (regen sets a maintenance override).
+            self:SetEnergyMaintenanceConsumptionOverride(0)
+            self:SetMaintenanceConsumptionInactive()
             ForkThread(M28Events.ShieldDisabled, self)
-            if M28OldUnit.OnShieldDisabled then return M28OldUnit.OnShieldDisabled(self) end
         end,
 
         UpdateStat = function(self, key, value)

@@ -67,7 +67,7 @@ UnitBlueprint {
             PersonalShield = true,
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 34,
-            ShieldMaxHealth = 4000,
+            ShieldMaxHealth = 6000,
             ShieldRechargeTime = 48,
             ShieldRegenRate = 50,
             ShieldRegenStartTime = 2,

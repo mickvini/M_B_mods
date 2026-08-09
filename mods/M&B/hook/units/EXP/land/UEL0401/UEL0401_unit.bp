@@ -131,7 +131,7 @@ UnitBlueprint {
             ImpactEffects = 'UEFShieldHit01',
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 5,
-            ShieldMaxHealth = 24000,
+            ShieldMaxHealth = 16000,
             ShieldRechargeTime = 100,
             ShieldRegenRate = 100,
             ShieldRegenStartTime = 1,

@@ -53,7 +53,7 @@ UnitBlueprint {
             ImpactEffects = 'CybranShieldHit01',
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 40,
-            ShieldMaxHealth = 18200,
+            ShieldMaxHealth = 22200,
             ShieldRechargeTime = 90,
             ShieldRegenRate = 130,
             ShieldRegenStartTime = 1,
