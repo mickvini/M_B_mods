@@ -32,6 +32,34 @@ EXClusterMissle01 = Class(TMissileCruiseProjectile) {
         --local dist = self:GetDistanceToTarget()
 		local dist = VDist3(self:GetPosition(), self:GetCurrentTargetPosition())
 		--LOG('Distance : ', dist)
+        -- M&B: split earlier (dist<=40, was only at <=8) and widen the fan so sub-munitions cover an area, not a single unit
+        if dist > 0 and dist <= 14 then
+            local FxFragEffect = EffectTemplate.SThunderStormCannonProjectileSplitFx
+            local ChildProjectileBP = '/mods/M&B/projectiles/EXSmallYieldNuclearBomb01/EXSmallYieldNuclearBomb01_proj.bp'
+            for k, v in FxFragEffect do
+                CreateEmitterAtEntity( self, self:GetArmy(), v )
+            end
+            local vx, vy, vz = self:GetVelocity()
+            local velocity = 20
+            local numProjectiles = 3
+            local angle = (2*math.pi) / numProjectiles
+            local angleInitial = RandomFloat( 0, angle )
+            local angleVariation = angle * 3
+            local spreadMul = 1.6
+            local xVec = 0
+            local yVec = vy
+            local zVec = 0
+            for i = 0, (numProjectiles -1) do
+                xVec = vx + (math.sin(angleInitial + (i*angle) + RandomFloat(-angleVariation, angleVariation))) * spreadMul
+                zVec = vz + (math.cos(angleInitial + (i*angle) + RandomFloat(-angleVariation, angleVariation))) * spreadMul
+                local proj = self:CreateChildProjectile(ChildProjectileBP)
+                proj:SetVelocity(xVec,yVec,zVec)
+                proj:SetVelocity(velocity)
+                proj:PassDamageData(self.DamageData)
+            end
+            self:Destroy()
+            return
+        end
         if dist > 50 then        
             #Freeze the turn rate as to prevent steep angles at long distance targets
 			self:SetTurnRate(15)

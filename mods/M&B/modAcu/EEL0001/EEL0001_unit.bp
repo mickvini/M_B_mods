@@ -1027,7 +1027,7 @@ UnitBlueprint {
         },
         EXShieldBattery = {
             BuildCostEnergy = 1,
-            BuildCostMass = 3200,
+            BuildCostMass = 3600,
             BuildTime = 3000,
             Icon = 'exbsh1',
             ImpactEffects = 'UEFShieldHit01',
@@ -1074,7 +1074,7 @@ UnitBlueprint {
         },
         EXActiveShielding = {
             BuildCostEnergy = 1,
-            BuildCostMass = 5600,
+            BuildCostMass = 6400,
             BuildTime = 6000,
             Icon = 'exbsh2',
             ImpactEffects = 'UEFShieldHit01',
@@ -1125,7 +1125,7 @@ UnitBlueprint {
         },
         EXImprovedShieldBattery = {
             BuildCostEnergy = 1,
-            BuildCostMass = 9800,
+            BuildCostMass = 11800,
             BuildTime = 9000,
             Icon = 'exbsh3',
             ImpactEffects = 'UEFShieldHit01',
@@ -1177,7 +1177,7 @@ UnitBlueprint {
         },
         EXShieldExpander = {
             BuildCostEnergy = 1,
-            BuildCostMass = 16600,
+            BuildCostMass = 18600,
             BuildTime = 9000,
             Icon = 'exbsh4',
             ImpactEffects = 'UEFShieldHit01',
