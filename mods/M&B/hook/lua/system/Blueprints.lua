@@ -1686,7 +1686,7 @@ do
             mobile_aa   = { [1]={240,480,720,960,1200}, [2]={320,640,960,1280,1600}, [3]={400,800,1200,1400,1800}, [4]={400,800,1200,1400,1800} },
             light_turret= { [1]={60,120,180,240,300}, [2]={80,160,240,320,400}, [3]={120,240,360,480,600}, [4]={120,240,360,480,600} },
             heavy_turret= { [1]={90,180,270,360,450}, [2]={120,240,360,480,600}, [3]={160,320,480,640,800}, [4]={160,320,480,640,800} },
-            static_aa   = { [1]={240,480,720,960,1200}, [2]={240,480,720,960,1200}, [3]={400,800,1200,1400,1800} },
+            static_aa   = { [1]={240,480,720,960,1200}, [2]={240,480,720,960,1200}, [3]={400,800,1200,1400,1800}, [4]={400,800,1200,1400,1800} },
             longrange_arty={ [1]={250,500,750,1000,1250}, [2]={500,750,1000,1250,1500}, [3]={2500,5000,7500,10000,12500} },
             rapid_arty  = { [1]={250,500,750,1000,1250}, [2]={500,750,1000,1250,1500}, [3]={2500,5000,7500,10000,12500} },
             tactical_missile={ [2]={2500,5000,7500,10000,12500} },
@@ -1753,8 +1753,24 @@ do
             local function Has(sub) return string.find(s, sub, 1, true) ~= nil end
             local function HasL(sub) return string.find(sLow, sub, 1, true) ~= nil end
 
-            if HasCat(bp, 'EXPERIMENTAL') then
-                if HasCat(bp, 'STRUCTURE') then return 'exp_turret', (tech or 4) end
+            -- Static experimental routing. EXPERIMENTAL is the T4 tier marker (every T4 unit has it),
+            -- so this branch catches all static T4 structures. The true experimental point-defense
+            -- turret (one per faction: Perses / Sinn-Unthe / Neolith / Brute) is identified by its
+            -- signature hull 18600 + shield 20000 -- the ONLY traits the user confirmed are consistent
+            -- across them. Regular T4 point defense (light/heavy "орудие T4", no signature) must NOT
+            -- land here: it falls through to the role branch below and classes by description like
+            -- lower tiers. Non-turret EXPERIMENTAL structures (static exp arty, gates, generators)
+            -- keep exp_turret.
+            if HasCat(bp, 'STRUCTURE') and HasCat(bp, 'EXPERIMENTAL') then
+                local sig = bp.Defense and bp.Defense.Health == 18600
+                    and bp.Defense.Shield and bp.Defense.Shield.ShieldMaxHealth == 20000
+                local turretDesc = Has('орудие') or HasL('turret') or HasL('point defense')
+                if sig or not turretDesc then
+                    return 'exp_turret', (tech or 4)
+                end
+                -- turret by description, no experimental signature -> fall through to role branch
+            end
+            if HasCat(bp, 'NEEDMOBILEBUILD') and HasCat(bp, 'MOBILE') then
                 return 'experimental', (tech or 4)
             end
             if HasCat(bp, 'STRUCTURE') then
