@@ -51,8 +51,9 @@ ZAB0205 = Class(AConstructionStructureUnit)
         while not self.Dead do           
             local reclaimTargets = GetReclaimablesInRect(pos[1] - bp, pos[3] - bp, pos[1] + bp, pos[3] + bp)
 
-            -- Clear blacklist if finished reclaiming everything or if reclaim targets greater than blacklist
-            if table.getn(reclaimTargets) <= 0 or table.getn(reclaimTargets) > table.getn(blacklist) then
+            -- Only clear our own orders when the area is fully picked clean;
+            -- never abort an in-progress reclaim just because new wrecks appeared.
+            if table.getn(reclaimTargets) <= 0 then
                 IssueClearCommands({self})
                 blacklist = {}
             end
@@ -60,19 +61,21 @@ ZAB0205 = Class(AConstructionStructureUnit)
             for _, unit in reclaimTargets do
                 -- Check unit is properly defined
                 if unit then
-                    WaitTicks(6) -- Wait 8 ticks (0.8 seconds)
-                    -- Check range to target
-                    local targetPos = unit:GetPosition()
+                    WaitTicks(6)
+                    -- A reclaimable can vanish between scan and now; pcall keeps the thread alive.
+                    pcall(function()
+                        local targetPos = unit:GetPosition()
 
-                    if VDist2(pos[1], pos[3], targetPos[1], targetPos[3]) <= bp then
-                        if IsUnit(unit) then
-                            if not IsAlly(self:GetArmy(), unit:GetArmy()) and not unit:IsCapturable() and aiBrain:GetEconomyStoredRatio('MASS') < 0.95 then
+                        if VDist2(pos[1], pos[3], targetPos[1], targetPos[3]) <= bp then
+                            if IsUnit(unit) then
+                                if not IsAlly(self:GetArmy(), unit:GetArmy()) and not unit:IsCapturable() and aiBrain:GetEconomyStoredRatio('MASS') < 0.95 then
+                                    self:ReclaimCheck(unit, blacklist)
+                                end
+                            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.95 then
                                 self:ReclaimCheck(unit, blacklist)
                             end
-                        elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.95 then
-                            self:ReclaimCheck(unit, blacklist)
                         end
-                    end
+                    end)
                 end
             end 
 
