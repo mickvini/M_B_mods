@@ -242,7 +242,7 @@ UnitBlueprint {
             },
             FiringTolerance = 5,
             Label = 'MissileRack',
-            MaxRadius = 90,
+            MaxRadius = 70,
             MinRadius = 20,
             MuzzleChargeDelay = 0.5,
             MuzzleSalvoDelay = 0,

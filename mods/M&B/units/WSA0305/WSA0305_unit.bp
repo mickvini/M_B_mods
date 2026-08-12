@@ -280,7 +280,7 @@ UnitBlueprint {
             CollideFriendly = false,
             Damage = 30,
             DamageFriendly = false,
-            DamageRadius = 0.5,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Losaare AA Autocannon',
             FireTargetLayerCapsTable = {
@@ -353,7 +353,7 @@ UnitBlueprint {
             CollideFriendly = false,
             Damage = 30,
             DamageFriendly = false,
-            DamageRadius = 0.5,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Losaare AA Autocannon',
             FireTargetLayerCapsTable = {

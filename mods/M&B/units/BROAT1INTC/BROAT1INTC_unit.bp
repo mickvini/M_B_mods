@@ -280,7 +280,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 10,
-            DamageRadius = 1,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {
@@ -353,7 +353,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 10,
-            DamageRadius = 1,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {
@@ -427,7 +427,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 10,
-            DamageRadius = 1,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {
@@ -500,7 +500,7 @@ UnitBlueprint {
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 10,
-            DamageRadius = 1,
+            DamageRadius = 0,
             DamageType = 'Normal',
             DisplayName = 'Sonic Pulse Battery',
             FireTargetLayerCapsTable = {

@@ -315,7 +315,7 @@ UnitBlueprint {
             FiringRandomness = 0.2,
             FiringTolerance = 2,
             Label = 'TauCannon01',
-            MaxRadius = 80,
+            MaxRadius = 65,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             MuzzleVelocity = 20,

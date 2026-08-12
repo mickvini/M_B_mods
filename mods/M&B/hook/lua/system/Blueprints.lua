@@ -315,7 +315,7 @@ function GenerateResearchItemBPs(all_bps)
                 Economy = {
                     BuildCostEnergy = 0,
                     BuildCostMass = 2800,
-                    BuildTime = 1400,
+                    BuildTime = 1500,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH1'},
@@ -327,7 +327,7 @@ function GenerateResearchItemBPs(all_bps)
                 Economy = {
                     BuildCostEnergy = 0,
                     BuildCostMass = 4600,
-                    BuildTime = 2000,
+                    BuildTime = 2250,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH2'},
@@ -339,7 +339,7 @@ function GenerateResearchItemBPs(all_bps)
                 Economy = {
                     BuildCostEnergy = 0,
                     BuildCostMass = 16400,
-                    BuildTime = 3000,
+                    BuildTime = 4200,
                     ResearchMult = 1,
                 },
                 Categories = {'TECH3'},
@@ -351,7 +351,7 @@ function GenerateResearchItemBPs(all_bps)
                 Economy = {
                     BuildCostEnergy = 0,
                     BuildCostMass = 42400,
-                    BuildTime = 3600,
+                    BuildTime = 6600,
                     ResearchMult = 1,
                 },
                 Categories = {'EXPERIMENTAL'},
