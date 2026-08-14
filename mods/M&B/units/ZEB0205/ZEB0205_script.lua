@@ -37,7 +37,10 @@ ZEB0205 = Class(TConstructionStructureUnit)
             return
         else
             IssueReclaim({self}, unit)
-            blacklist[unit] = true            
+            blacklist[unit] = true
+            -- Diagnostic marker only, no logic change
+            local p = unit:GetPosition()
+            LOG('MNB_RC ISSUE uid=' .. tostring(self:GetEntityId()) .. ' tgt=' .. tostring(math.floor(p[1])) .. ',' .. tostring(math.floor(p[3])) .. ' unit=' .. tostring(IsUnit(unit)))
         end
     end,
 
@@ -47,22 +50,22 @@ ZEB0205 = Class(TConstructionStructureUnit)
         local pos = self:GetPosition()
         local curMass = 0
         local blacklist = {}
+        -- Diagnostic marker only, no logic change
+        LOG('MNB_RC START uid=' .. tostring(self:GetEntityId()) .. ' pos=' .. tostring(math.floor(pos[1])) .. ',' .. tostring(math.floor(pos[3])))
 
-        while not self.Dead do           
+        while not self.Dead do
             local reclaimTargets = GetReclaimablesInRect(pos[1] - bp, pos[3] - bp, pos[1] + bp, pos[3] + bp)
+            -- Diagnostic marker only, no logic change
+            LOG('MNB_RC SCAN uid=' .. tostring(self:GetEntityId()) .. ' targets=' .. table.getn(reclaimTargets or {}) .. ' queue=' .. table.getn(self:GetCommandQueue() or {}) .. ' mass=' .. tostring(aiBrain:GetEconomyStoredRatio('MASS')))
 
-            -- Only clear our own orders when the area is fully picked clean;
-            -- never abort an in-progress reclaim just because new wrecks appeared.
             if table.getn(reclaimTargets) <= 0 then
                 IssueClearCommands({self})
                 blacklist = {}
             end
 
             for _, unit in reclaimTargets do
-                -- Check unit is properly defined
                 if unit then
                     WaitTicks(6)
-                    -- A reclaimable can vanish between scan and now; pcall keeps the thread alive.
                     pcall(function()
                         local targetPos = unit:GetPosition()
 
@@ -77,9 +80,9 @@ ZEB0205 = Class(TConstructionStructureUnit)
                         end
                     end)
                 end
-            end 
+            end
 
-            WaitSeconds(10)                                 
+            WaitSeconds(10)
         end
     end,
 }

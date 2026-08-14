@@ -442,7 +442,7 @@ UnitBlueprint {
             BuildableCategoryAdds = 'BUILTBYTIER2COMMANDER AEON',
             Icon = 'exlce1',
             Name = '<LOC enhancements_0617>Tech 2 Combat Engineering (T1)',
-            NewBuildRate = 20,
+            NewBuildRate = 28,
             NewHealth = 3000,
             ProductionPerSecondEnergy = 500,
             ProductionPerSecondMass = 4,
@@ -491,7 +491,7 @@ UnitBlueprint {
 			Prerequisite = 'EXCombatEngineering',
             ProductionPerSecondEnergy = 1000,
             ProductionPerSecondMass = 10,
-            NewBuildRate = 27,
+            NewBuildRate = 36,
             NewHealth = 4000,
             ShowBones = {
                 'Combat_Engineering',
@@ -540,7 +540,7 @@ UnitBlueprint {
 			Prerequisite = 'EXAssaultEngineering',
             ProductionPerSecondEnergy = 2000,
             ProductionPerSecondMass = 18,
-            NewBuildRate = 32,
+            NewBuildRate = 44,
             NewHealth = 6000,
             ShowBones = {
                 'Combat_Engineering',
@@ -655,7 +655,7 @@ UnitBlueprint {
         EXTorpedoLauncher = {
             BuildCostEnergy = 1,
             BuildCostMass = 3200,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exrtorp1',
             Name = '<LOC enhancements_0623>Torpedo Launcher (T2)',
             NewHealth = 3000,
@@ -695,7 +695,7 @@ UnitBlueprint {
         EXTorpedoRapidLoader = {
             BuildCostEnergy = 1,
             BuildCostMass = 6800,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exrtorp2',
             Name = '<LOC enhancements_0625>Improved Reloader (T3)',
 			Prerequisite = 'EXTorpedoLauncher',
@@ -737,7 +737,7 @@ UnitBlueprint {
         EXTorpedoClusterLauncher = {
             BuildCostEnergy = 1,
             BuildCostMass = 14200,
-            BuildTime = 9000,
+            BuildTime = 18000,
             Icon = 'exrtorp3',
             Name = '<LOC enhancements_0627>Advanced Warheads (T4)',
 			Prerequisite = 'EXTorpedoRapidLoader',
@@ -780,7 +780,7 @@ UnitBlueprint {
         EXArtilleryMiasma = {
             BuildCostEnergy = 1,
             BuildCostMass = 2800,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exramc1',
             Name = '<LOC enhancements_0629>Dual Miasma Artillery (T2)',
 			NewHealth = 2000,
@@ -813,7 +813,7 @@ UnitBlueprint {
         EXAdvancedShells = {
             BuildCostEnergy = 1,
             BuildCostMass = 5600,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exramc2',
             Name = '<LOC enhancements_0631>Advanced Warhead Compression (T3)',
 			Prerequisite = 'EXArtilleryMiasma',
@@ -848,7 +848,7 @@ UnitBlueprint {
         EXImprovedReloader = {
             BuildCostEnergy = 1,
             BuildCostMass = 14200,
-            BuildTime = 9000,
+            BuildTime = 18000,
             Icon = 'exramc3',
             Name = '<LOC enhancements_0633>Improved Auto Loader (T4)',
 			Prerequisite = 'EXAdvancedShells',
@@ -884,7 +884,7 @@ UnitBlueprint {
         EXBeamPhason = {
             BuildCostEnergy = 1,
             BuildCostMass = 3600,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exrgec1',
             Name = '<LOC enhancements_0635>Phason Beam Cannon (T2)',
 			ZephyrDamageMod = 230,
@@ -930,7 +930,7 @@ UnitBlueprint {
         EXImprovedCoolingSystem = {
             BuildCostEnergy = 1,
             BuildCostMass = 6200,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exrgec2',
             Name = '<LOC enhancements_0637>Dual Channel Booster (T3)',
 			Prerequisite = 'EXBeamPhason',
@@ -978,7 +978,7 @@ UnitBlueprint {
         EXPowerBooster = {
             BuildCostEnergy = 1,
             BuildCostMass = 14800,
-            BuildTime = 9000,
+            BuildTime = 18000,
             Icon = 'exrgec3',
             Name = '<LOC enhancements_0639>Energized Molecular Inducer (T4)',
 			Prerequisite = 'EXImprovedCoolingSystem',
@@ -1027,7 +1027,7 @@ UnitBlueprint {
         EXShieldBattery = {
             BuildCostEnergy = 1,
             BuildCostMass = 3200,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exbsh1',
             ImpactEffects = 'UEFShieldHit01',
             Name = '<LOC enhancements_0641>Shield Battery (T2)',
@@ -1068,7 +1068,7 @@ UnitBlueprint {
         EXActiveShielding = {
             BuildCostEnergy = 1,
             BuildCostMass = 5400,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exbsh2',
             ImpactEffects = 'UEFShieldHit01',
             Name = '<LOC enhancements_0643>Improved Shield Battery (T3)',
@@ -1112,7 +1112,7 @@ UnitBlueprint {
         EXImprovedShieldBattery = {
             BuildCostEnergy = 1,
             BuildCostMass = 8800,
-            BuildTime = 9000,
+            BuildTime = 18000,
             Icon = 'exbsh3',
             ImpactEffects = 'UEFShieldHit01',
             Name = '<LOC enhancements_0645>Advanced Shield Battery (T4)',
@@ -1156,7 +1156,7 @@ UnitBlueprint {
         EXElectronicsEnhancment = {
             BuildCostEnergy = 1,
             BuildCostMass = 1800,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exbint1',
             Name = '<LOC enhancements_0647>Electronic Enhancment (T2)',
 			MaintenanceConsumptionPerSecondEnergy = 140,
@@ -1203,7 +1203,7 @@ UnitBlueprint {
         EXElectronicCountermeasures = {
             BuildCostEnergy = 1,
             BuildCostMass = 3400,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exbint2',
             Name = '<LOC enhancements_0649>Farsight Optics (T3)',
 			Prerequisite = 'EXElectronicsEnhancment',
@@ -1300,7 +1300,7 @@ UnitBlueprint {
         EXMaelstromQuantum = {
             BuildCostEnergy = 1,
             BuildCostMass = 3200,
-            BuildTime = 3000,
+            BuildTime = 9000,
             Icon = 'exbbat1',
             Name = '<LOC enhancements_0653>Quantum Maelstrom Generator (T2)',
             NewHealth = 5000,
@@ -1353,7 +1353,7 @@ UnitBlueprint {
         EXFieldExpander = {
             BuildCostEnergy = 1,
             BuildCostMass = 7400,
-            BuildTime = 6000,
+            BuildTime = 12000,
             Icon = 'exbbat2',
             Name = '<LOC enhancements_0655>Quantum Distortion Amplifier (T3)',
 			Prerequisite = 'EXMaelstromQuantum',
@@ -1408,7 +1408,7 @@ UnitBlueprint {
         EXQuantumInstability = {
             BuildCostEnergy = 1,
             BuildCostMass = 14600,
-            BuildTime = 9000,
+            BuildTime = 18000,
             Icon = 'exbbat3',
             Name = '<LOC enhancements_0657>Quantum Instability Enhancer (T4)',
 			Prerequisite = 'EXFieldExpander',
@@ -2407,7 +2407,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 29,
+            Damage = 16,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',
@@ -2499,7 +2499,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 55,
+            Damage = 33,
             DamageRadius = 1,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',
@@ -2591,7 +2591,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 85,
+            Damage = 62,
             DamageRadius = 3,
             DamageType = 'Normal',
             DisplayName = 'Phason Laser',

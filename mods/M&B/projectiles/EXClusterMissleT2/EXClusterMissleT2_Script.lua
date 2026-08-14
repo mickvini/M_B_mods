@@ -1,11 +1,11 @@
 #
-# Terran Land-Based Cruise Missile (T3 Tactical cluster)
+# Terran Land-Based Cruise Missile (T2 cluster variant)
 #
 local TMissileCruiseProjectile = import('/mods/M&B/lua/EXBlackOpsprojectiles.lua').UEFACUClusterMIssileProjectile
 local EffectTemplate = import('/lua/EffectTemplates.lua')
 local RandomFloat = import('/lua/utilities.lua').GetRandomFloat
 
-EXClusterMissle01 = Class(TMissileCruiseProjectile) {
+EXClusterMissleT2 = Class(TMissileCruiseProjectile) {
     OnCreate = function(self)
         TMissileCruiseProjectile.OnCreate(self)
         self:SetCollisionShape('Sphere', 0, 0, 0, 2)
@@ -24,8 +24,8 @@ EXClusterMissle01 = Class(TMissileCruiseProjectile) {
 
     SetTurnRateByDist = function(self)
         local dist = VDist3(self:GetPosition(), self:GetCurrentTargetPosition())
-        -- T3 Tactical: split at dist<=12, spread 1.5, 3 sub-munitions
-        if dist > 0 and dist <= 12 then
+        -- T2 cluster: split at dist<=10, spread 1.3, 3 sub-munitions (weaker than T3)
+        if dist > 0 and dist <= 10 then
             local FxFragEffect = EffectTemplate.SThunderStormCannonProjectileSplitFx
             local ChildProjectileBP = '/mods/M&B/projectiles/EXSmallYieldNuclearBomb01/EXSmallYieldNuclearBomb01_proj.bp'
             for k, v in FxFragEffect do
@@ -37,7 +37,7 @@ EXClusterMissle01 = Class(TMissileCruiseProjectile) {
             local angle = (2*math.pi) / numProjectiles
             local angleInitial = RandomFloat( 0, angle )
             local angleVariation = angle * 3
-            local spreadMul = 1.5
+            local spreadMul = 1.3
             local xVec = 0
             local yVec = vy
             local zVec = 0
@@ -71,7 +71,7 @@ EXClusterMissle01 = Class(TMissileCruiseProjectile) {
             self:SetTurnRate(90)
             WaitSeconds(0.1)
             self:SetTurnRate(15)
-        elseif dist > 12 and dist <= 25 then
+        elseif dist > 10 and dist <= 25 then
             self:SetTurnRate(45)
             WaitSeconds(0.1)
             self:SetTurnRate(100)
@@ -90,4 +90,4 @@ EXClusterMissle01 = Class(TMissileCruiseProjectile) {
         self:SetDestroyOnWater(true)
     end,
 }
-TypeClass = EXClusterMissle01
+TypeClass = EXClusterMissleT2
