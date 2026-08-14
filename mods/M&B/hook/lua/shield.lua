@@ -37,7 +37,15 @@ Shield = Class(oldShield) {
             desired = math.min(desired, gap)
 
             -- Ask for `desired` energy/s as a maintenance cost -- this shows up in the +/- rate.
-            unit:SetEnergyMaintenanceConsumptionOverride(desired * MNB_SHIELD_ENERGY_PER_HP)
+            -- For units with their own energy upkeep (mass fabricators: MaintenanceConsumptionPerSecondEnergyFab)
+            -- the regen price is ADDED on top, not replaced -- otherwise a fabricator under fire loses its own
+            -- upkeep (and with it mass production) while the shield stretches back up.
+            local ownMaint = 0
+            local econ = unit:GetBlueprint().Economy
+            if econ.MaintenanceConsumptionPerSecondEnergyFab and unit.Prodon ~= false then
+                ownMaint = econ.MaintenanceConsumptionPerSecondEnergyFab
+            end
+            unit:SetEnergyMaintenanceConsumptionOverride(ownMaint + desired * MNB_SHIELD_ENERGY_PER_HP)
             unit:SetMaintenanceConsumptionActive()
 
             -- Heal only by as much energy as the unit actually receives this tick:
@@ -59,10 +67,23 @@ Shield = Class(oldShield) {
     -- M&B: stop charging energy for regen (maintenance override back to 0, consumption flag off).
     -- Called when regen ends (shield full), and when the shield breaks, so the unit never keeps draining
     -- after regen stops. The manual-off case is handled in hook/lua/sim/Unit.lua (OnShieldDisabled).
+    -- EXCEPTION: mass fabricators (MaintenanceConsumptionPerSecondEnergyFab in their blueprint) run their
+    -- own upkeep/production logic tied to the maintenance flag -- deactivating maintenance here stops their
+    -- mass production outright (SAB1313 bug: produced for ~1s, then went silent). For them, hand control
+    -- back to their script: active production = Fab upkeep; a paused fabricator (Prodon=false) is left alone.
     StopRegen = function(self)
-        if self.Owner then
-            self.Owner:SetEnergyMaintenanceConsumptionOverride(0)
-            self.Owner:SetMaintenanceConsumptionInactive()
+        local unit = self.Owner
+        if unit and not unit.Dead then
+            local econ = unit:GetBlueprint().Economy
+            if econ.MaintenanceConsumptionPerSecondEnergyFab then
+                if unit.Prodon ~= false then
+                    unit:SetEnergyMaintenanceConsumptionOverride(econ.MaintenanceConsumptionPerSecondEnergyFab)
+                    unit:SetMaintenanceConsumptionActive()
+                end
+            else
+                unit:SetEnergyMaintenanceConsumptionOverride(0)
+                unit:SetMaintenanceConsumptionInactive()
+            end
         end
     end,
 

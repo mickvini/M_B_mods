@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//f/Games/steam/steamapps/common/Supreme Commander Forged Alliance/mods/skuf/**)",
+      "Bash(sed -i 's/GetUnitById\\(/GetEntityById\\(/g' Hook/lua/SimCallbacks.lua)"
+    ]
+  }
+}
