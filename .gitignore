@@ -1,0 +1,28 @@
+# Python-артефакты и вспомогательные скрипты агентов — в репо мода не попадают
+__pycache__/
+*.py
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Артефакты ИИ-агентов и локальные настройки
+.claude/
+.claude*
+CLAUDE.md
+AGENTS.md
+
+# Редакторы / ОС
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Временные и бэкап-файлы
+*.tmp
+*.log
+~$*
