@@ -20,6 +20,9 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'SERAPHIM',
+        'BUILTBYTIER2ENGINEER',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER2COMMANDER',
         'STRUCTURE',
         'ECONOMIC',
         'TECH2',

@@ -17,9 +17,12 @@ do
 end 
 
 
-countingResearchsToUnlockTECH = function(unit, army, tech)        
-    local unitBp = unit:GetBlueprint()   
-    MK[army][tonumber(string.sub(tech, 4 , 6))][unitBp.General.FactionName] = MK[army][tonumber(string.sub(tech, 4 , 6))][unitBp.General.FactionName] + 1 
+countingResearchsToUnlockTECH = function(unit, army, tech)
+    local unitBp = unit:GetBlueprint()
+    MK[army][tonumber(string.sub(tech, 4 , 6))][unitBp.General.FactionName] = MK[army][tonumber(string.sub(tech, 4 , 6))][unitBp.General.FactionName] + 1
+    --M&B: one line per MK research completion -- shows exactly which item moved which line
+    --(diagnostics for the mystery "level 5 without a 5th research existing" case)
+    LOG('M&B MK research complete: ' .. tostring(tech) .. ' army ' .. tostring(army) .. ' line ' .. tostring(string.sub(tech, 4, 6)) .. ' now ' .. tostring(MK[army][tonumber(string.sub(tech, 4, 6))][unitBp.General.FactionName]))
 
     local currTechLevel = MK[army][15][unitBp.General.FactionName]  
     --LOG("cur: " .. currTechLevel) 
@@ -33,16 +36,19 @@ countingResearchsToUnlockTECH = function(unit, army, tech)
         RemoveBuildRestriction(army, categories[factions[unitBp.General.FactionName].. (tonumber(string.sub(tech, 3)) + 100) .. '00'])
     end
     local pos = unit:GetPosition()
-    local updateTargets = GetUnitsInRect(pos[1] - 100, pos[3] - 100, pos[1] + 100, pos[3] + 100)
+    --M&B (user, 2026-08-15): lab zone raised 100 -> 200 so engineers spread over the base
+    --catch the shield/buff at the next research; an engineer far away simply waits for the
+    --next level (deliberate: no global catch-up, the lab zone is the civilian zone)
+    local updateTargets = GetUnitsInRect(pos[1] - 200, pos[3] - 200, pos[1] + 200, pos[3] + 200)
     for i, units in updateTargets do
-        if (units) then 
+        if (units) then
             if IsAlly(army, units:GetArmy()) then
                 local unitsBp = units:GetBlueprint()
                 local factionCat = unitsBp.General.FactionName
                 if table.find(unitsBp.Categories, 'STRUCTURE') or (unitsBp.General.UnitName == '<LOC url0401_name>Scathis') then
                     if MK[army][1][factionCat] > 0 and not table.find(unitsBp.Categories, 'DEFENSE') and not table.find(unitsBp.Categories, 'ARTILLERY') and not table.find(unitsBp.Categories, 'ENGINEERSTATION') then
                         SetMarkLevel(units, 'StructureHealthMod' .. MK[army][1][factionCat], 1, MK[army][1][factionCat])
-                    end                    
+                    end
                     if MK[army][3][factionCat] > 0  and( table.find(unitsBp.Categories, 'STATIONASSISTPOD') or table.find(unitsBp.Categories, 'ENGINEERSTATION')) then
                         SetMarkLevel(units, 'EngineerStationMod' .. MK[army][3][factionCat], 3, MK[army][3][factionCat])
                     end
@@ -51,10 +57,14 @@ countingResearchsToUnlockTECH = function(unit, army, tech)
                     end
                     if MK[army][14][factionCat] > 0 and (table.find(unitsBp.Categories, 'DEFENSE') or table.find(unitsBp.Categories, 'ARTILLERY'))  then
                         SetMarkLevel(units, 'HealthBuffTurret' .. MK[army][14][factionCat], 14, MK[army][14][factionCat])
-                    end                   
+                    end
+                    --M&B: structure line extras for factories (BP boost, dome at levels 4/5)
+                    MNBApplyFactoryBoost(units, army)
                 elseif ((not table.find(unitsBp.Categories, 'SUBCOMMANDER')) and (not table.find(unitsBp.Categories, 'COMMAND'))) and table.find(unitsBp.Categories, 'MOBILE') and table.find(unitsBp.Categories, 'ENGINEER') then
                     if MK[army][2][factionCat] > 0 then
                         SetMarkLevel(units, 'ConstrctionBotMod' .. MK[army][2][factionCat], 2, MK[army][2][factionCat])
+                        --M&B: the line also carries the personal shield (200/400/600/1000 HP)
+                        MNBApplyEngineerShield(units, army)
                     end
                 end
             end
@@ -65,16 +75,141 @@ end
 
 
 SetMarkLevel = function(self, buffName, tech, techLevel)
-    local army = self:GetArmy() 
-    if MK[army][tech][self:GetBlueprint().General.FactionName] ~= self.MarkLevel[tech] then  
+    local army = self:GetArmy()
+    if MK[army][tech][self:GetBlueprint().General.FactionName] ~= self.MarkLevel[tech] then
         if not self:IsBeingBuilt() then
             --LOG('1')
-            Buff.ApplyBuff(self ,  buffName) 
-            self.MarkLevel[tech] = techLevel   
+            Buff.ApplyBuff(self ,  buffName)
+            self.MarkLevel[tech] = techLevel
         else
             --LOG('2')
-        end                   
-    end      
+        end
+    end
+end
+
+--M&B: engineer personal shield granted by the engineer research line (user, 2026-08-15).
+--Line 2 research levels -> shield HP: 1 = none, 2 = 200, 3 = 400, 4 = 600, 5 = 1000.
+--Granted the same way the line's buff is: to engineers BUILT after the research (on
+--completion of the build) and to EXISTING engineers standing in the lab's zone when a
+--research completes (deliberately NOT the commander's combat zone -- engineers are
+--civilian, see the lab/commander zone split). A higher level replaces the old shield.
+MNBEngineerShieldHP = {0, 200, 400, 600, 1000}
+--M&B: per-faction dome mesh + hit effect (user: each faction must keep its own look)
+MNBShieldMesh = {
+    UEF = '/effects/Entities/Shield01/Shield01_mesh',
+    Aeon = '/effects/Entities/AeonShield01/AeonShield01_mesh',
+    Cybran = '/effects/Entities/CybranShield01/CybranShield01_mesh',
+    Seraphim = '/effects/Entities/SeraphimShield01/SeraphimShield01_mesh',
+}
+MNBShieldHitFx = {
+    UEF = 'UEFShieldHit01',
+    Aeon = 'AeonShieldHit01',
+    Cybran = 'CybranShieldHit01',
+    Seraphim = 'SeraphimShieldHit01',
+}
+MNBApplyEngineerShield = function(unit, army)
+    local ok, err = pcall(function()
+        if not unit or unit.Dead or unit:IsBeingBuilt() then return end
+        army = army or unit:GetArmy()
+        local unitBp = unit:GetBlueprint()
+        -- mobile engineers only: the ACU/SACU have their own shield enhancement lines,
+        -- engineer stations/structures must not grow a bubble either
+        if not table.find(unitBp.Categories, 'ENGINEER') then return end
+        if not table.find(unitBp.Categories, 'MOBILE') then return end
+        if table.find(unitBp.Categories, 'COMMAND') or table.find(unitBp.Categories, 'SUBCOMMANDER') then return end
+        local faction = unitBp.General.FactionName
+        if not MK[army] or not MK[army][2] then return end
+        local level = MK[army][2][faction] or 0
+        local hp = MNBEngineerShieldHP[level] or 0
+        if hp <= 0 then return end
+        -- already carries the right shield: nothing to do (upgrades recreate it)
+        if unit.MyShield and not unit.MyShield.Dead and unit.MyShield:GetMaxHealth() == hp then return end
+        local mesh = MNBShieldMesh
+        local hitFx = MNBShieldHitFx
+        --M&B (user, 2026-08-15): dome size per engineer tier -- a T1 bubble as big as a T3's
+        -- could park next to a turret and screen it from enemy fire; small engineers get a
+        -- snug dome so they can only ever shield themselves
+        local size = 3.6
+        if table.find(unitBp.Categories, 'TECH1') then
+            size = 2.0
+        elseif table.find(unitBp.Categories, 'TECH2') then
+            size = 2.8
+        end
+        unit:CreateShield({
+            Mesh = mesh[faction] or mesh.UEF,
+            ImpactMesh = '/effects/Entities/ShieldSection01/ShieldSection01_mesh',
+            ImpactEffects = hitFx[faction] or 'UEFShieldHit01',
+            ShieldSize = size,
+            ShieldMaxHealth = hp,
+            ShieldRechargeTime = 10,
+            ShieldEnergyDrainRechargeTime = 10,
+            ShieldVerticalOffset = 0,
+            ShieldRegenRate = 2,
+            ShieldRegenStartTime = 5,
+        })
+        --M&B: publish the live shield max so the unit panel (unitview.lua) can show
+        --"cur / max +regen" -- script-granted shields have no blueprint entry, the stat
+        --is their only visible source (UpdateStat, never bare SetStat: crashes on uninit)
+        pcall(function() unit:UpdateStat('MnbShieldMax', hp) end)
+        LOG('M&B engineer shield: ' .. (unitBp.BlueprintId or '?') .. ' level ' .. level .. ' -> ' .. hp .. ' HP')
+    end)
+    if not ok then LOG('M&B engineer shield error: ' .. tostring(err)) end
+end
+
+--M&B: structure research line (910100..950100) also boosts FACTORIES (user, 2026-08-15):
+--build power +10% per level (50% at level 5) and a dome at levels 4 (5000 HP) / 5 (8000 HP).
+--BP is NOT done with a buff: ReduceFactoryBuildRate re-asserts build rate from BaseBuildRate
+--every second, which would wipe a buff right back out. The lever is BaseBuildRate itself
+--(same trick the bot's lab boost uses), so the economy throttle keeps managing the boosted
+--value through mass/energy stalls. Lab (RESEARCHCENTRE) and the quantum gate (EXPERIMENTAL
+--factory) are deliberately excluded -- land/air/naval factories only.
+MNBFactoryShieldHP = {[4] = 5000, [5] = 8000}
+MNBApplyFactoryBoost = function(unit, army)
+    local ok, err = pcall(function()
+        if not unit or unit.Dead or unit:IsBeingBuilt() then return end
+        army = army or unit:GetArmy()
+        local unitBp = unit:GetBlueprint()
+        if not table.find(unitBp.Categories, 'FACTORY') then return end
+        if table.find(unitBp.Categories, 'RESEARCHCENTRE') then return end
+        if table.find(unitBp.Categories, 'EXPERIMENTAL') then return end
+        local faction = unitBp.General.FactionName
+        if not MK[army] or not MK[army][1] then return end
+        local level = MK[army][1][faction] or 0
+        if level > 0 and unit.BaseBuildRate then
+            if not unit.MNBFactoryBPOrig then
+                unit.MNBFactoryBPOrig = unit.BaseBuildRate
+            end
+            -- factory just went up a tier (T1->T2 upgrade re-enters OnStopBeingBuilt):
+            -- refresh the stored base from the NEW blueprint so the boost rides the new BP
+            local bpRate = unitBp.Economy.BuildRate or 0
+            if bpRate > unit.MNBFactoryBPOrig then
+                unit.MNBFactoryBPOrig = bpRate
+            end
+            unit.BaseBuildRate = unit.MNBFactoryBPOrig * (1 + level / 10)
+            unit:SetBuildRate(unit.BaseBuildRate)
+            unit:UpdateConsumptionValues()
+        end
+        local hp = MNBFactoryShieldHP[level] or 0
+        if hp <= 0 then return end
+        if unit.MyShield and not unit.MyShield.Dead and unit.MyShield:GetMaxHealth() == hp then return end
+        local skirt = math.max(unitBp.Physics.SkirtSizeX or 4, unitBp.Physics.SkirtSizeZ or 4)
+        unit:CreateShield({
+            Mesh = MNBShieldMesh[faction] or MNBShieldMesh.UEF,
+            ImpactMesh = '/effects/Entities/ShieldSection01/ShieldSection01_mesh',
+            ImpactEffects = MNBShieldHitFx[faction] or 'UEFShieldHit01',
+            ShieldSize = skirt + 1,
+            ShieldMaxHealth = hp,
+            ShieldRechargeTime = 10,
+            ShieldEnergyDrainRechargeTime = 10,
+            ShieldVerticalOffset = 0,
+            ShieldRegenRate = 6,
+            ShieldRegenStartTime = 5,
+        })
+        --M&B: publish the live shield max for the unit panel (same as the engineer dome)
+        pcall(function() unit:UpdateStat('MnbShieldMax', hp) end)
+        LOG('M&B factory boost: ' .. (unitBp.BlueprintId or '?') .. ' level ' .. level .. ' BP x' .. (1 + level / 10) .. ' shield ' .. hp .. ' HP')
+    end)
+    if not ok then LOG('M&B factory boost error: ' .. tostring(err)) end
 end
 
 
@@ -165,6 +300,9 @@ StructureUnit = Class(oldStructureUint) {
         local factionCat = unitBp.General.FactionName        
         if MK[army][1][factionCat] > 0 and table.find(unitBp.Categories, 'STRUCTURE') and  not table.find(unitBp.Categories, 'DEFENSE') and not table.find(unitBp.Categories, 'ENGINEERSTATION') then
             SetMarkLevel(self, 'StructureHealthMod' .. MK[army][1][factionCat], 1, MK[army][1][factionCat])
+            --M&B: the structure line also carries the factory build power boost (+10%/level)
+            -- and the factory dome at levels 4/5 (5000/8000 HP)
+            MNBApplyFactoryBoost(self, army)
         end
         if MK[army][3][factionCat] > 0 and table.find(unitBp.Categories, 'ENGINEERSTATION') then
             SetMarkLevel(self, 'EngineerStationMod' .. MK[army][3][factionCat], 3, MK[army][3][factionCat])
@@ -441,6 +579,8 @@ ConstructionUnit = Class(oldConstructionUnit){
         local factionCat = unitBp.General.FactionName
         if MK[army][2][factionCat] > 0 then
             SetMarkLevel(self, 'ConstrctionBotMod' .. MK[army][2][factionCat], 2, MK[army][2][factionCat])
+            --M&B: engineers built after the research come out with the line's personal shield
+            MNBApplyEngineerShield(self, army)
         end
     end,
     OnCreate = function(self)

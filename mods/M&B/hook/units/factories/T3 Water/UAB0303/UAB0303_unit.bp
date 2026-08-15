@@ -38,6 +38,8 @@ UnitBlueprint {
         'SELECTABLE',
         'BUILTBYTIER2FACTORY',
         'AEON',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'NAVAL',
         'TECH3',

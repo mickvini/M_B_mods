@@ -105,7 +105,10 @@ function UpdateWindow(info)
                 LayoutHelpers.CenteredBelow(controls.mnbShieldText, controls.shieldBar, 2)
             end
             local curShield = math.floor(shieldMaxHealth * info.shieldRatio)
-            local bpRegen = shieldBp.ShieldRegenRate
+            -- script-granted shields (engineer/factory research domes) have no blueprint shield spec:
+            -- their max comes from the live stat alone and they ALWAYS use the dynamic regen model
+            local bpRegen = shieldBp and shieldBp.ShieldRegenRate or nil
+            if not shieldBp then bpRegen = 1 end
             if bpRegen and bpRegen > 0 then
                 local gap = shieldMaxHealth - curShield
                 local dynRegen = 0

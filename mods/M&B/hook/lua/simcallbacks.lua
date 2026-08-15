@@ -280,18 +280,30 @@ end
 -- === auto-reclaim engineer (user's design, 2026-08-14) ===
 -- Reclaim order + click on EMPTY ground -> the click point is the engineer's
 -- reference point: it FIRST drives to that point, THEN eats everything by the Reclaim
--- Turret (M&B Z?B0205) rules. Station-to-station: everything within reach of where it
--- stands is queued at once; the nearest target beyond reach means a one-order hop to a
--- new spot. Clean circle around the reference point -> radius doubles (cleans outward).
+-- Turret (M&B Z?B0205) rules. Station-to-station: everything within (arm reach minus
+-- a margin) of where it stands is queued at once; clean station -> explicit drive to
+-- the nearest target = next station. Clean zone around the reference point -> radius
+-- doubles (cleans outward).
 -- Each target is CLAIMED by one engineer, so several auto-engineers never share a list.
 local SKUF_ZONE_MIN = 20 -- starting circle around the click point: random in [MIN, MAX]
 local SKUF_ZONE_MAXR = 40
-local SKUF_ZONE_MAX = 640  -- give up when even this half-size circle is empty
+local SKUF_ZONE_MAX = 150  -- work zone cap around the click point: bounds the
+                           -- expensive "all reclaimables in rect" queries (640 covered
+                           -- half the map per engineer per second = sim lag); when empty
+                           -- within it the engineer goes home and waits for a new click
 local SKUF_ZONE_BATCH = 12 -- max targets queued at one spot (safety cap only)
+local SKUF_REACH_MARGIN = 0 -- queue radius = arm reach minus this; 0 = full reach +2 buffer
+                            -- (the old -5 shrank stations to 1-3 rocks and caused hop spam;
+                            -- the freeze it guarded against was zero-mass props, now mass-filtered)
+local SKUF_RETRY_MAX = 3 -- same target re-issued this many times = engine refuses it
+                         -- (island/cliff rock) -> mark bad, never pick again
 
 local skufAutoEngs = {} -- eid -> { anchor={x,z}, radius, expect } while in auto-reclaim mode
 local skufReclaimCandidates = {} -- eid -> click pos until the thread confirms it was NOT a rock click
 local skufClaimed = {} -- target entity -> captor eid (one target belongs to one engineer)
+local skufBadTargets = {} -- target entity -> {x, z of the engineer when marked}:
+                          -- skipped while the engineer stays near that point; re-tried
+                          -- once it actually gets elsewhere (e.g. ferried to the island)
 
 -- TRUE props only (rocks and wrecks). GetReclaimablesInRect ALSO returns LIVE units
 -- (own units are reclaimable in FA!), which made auto-engineers eat each other and the
@@ -302,12 +314,29 @@ local function SkufIsProp(p)
     return ok and not isUnit
 end
 
--- Reclaim Turret (M&B Z?B0205) target filter: props are always fair game;
+-- how much mass a target is worth: props carry it in ReclaimMassMax (rocks 10-50;
+-- hydrocarbon deposits and decorations have 0/empty -- the engineer froze on one
+-- for two minutes once), live units are worth their build cost
+local function SkufTargetMass(p)
+    local ok, mass = pcall(function()
+        if SkufIsProp(p) then
+            -- the live amount the engine maintains (wrecks get it at runtime);
+            -- blueprint fallback -- note it lives under Economy, not top-level
+            if p.MaxMassReclaim then return p.MaxMassReclaim end
+            return p:GetBlueprint().Economy.ReclaimMassMax
+        end
+        return p:GetBlueprint().Economy.BuildCostMass
+    end)
+    return ok and (tonumber(mass) or 0) or 0
+end
+
+-- Reclaim Turret (M&B Z?B0205) target filter: props only if they actually hold
+-- mass (zero-mass props = an order the engine silently drops = the freeze loop);
 -- a unit only if it is an ENEMY one (not allied, not capturable) -- this is what
 -- keeps the reclaimer from eating friendly units. Everything gated by mass storage.
 local function SkufTurretWantsTarget(reclaimerArmy, target, brain)
     if (brain:GetEconomyStoredRatio('MASS') or 0) >= 0.95 then return false end
-    if SkufIsProp(target) then return true end
+    if SkufIsProp(target) then return SkufTargetMass(target) > 0 end
     local ok, isUnit = pcall(IsUnit, target)
     if not ok or not isUnit then return false end
     local okA, isAlly = pcall(IsAlly, reclaimerArmy, target:GetArmy())
@@ -344,60 +373,143 @@ Callbacks.SkufReclaimClick = function(data)
     end
 end
 
--- scan the current circle around the anchor, claim and queue the nearest unclaimed
--- targets (turret rules). Doubles the radius while the circle is clean. Returns the
--- number of orders queued (0 = zone given up, auto mode turned off).
+-- Station-to-station (user, 2026-08-15): arm reach minus a margin is the SCAN radius
+-- around the spot the engineer stands on -- everything found there is queued at once
+-- and is guaranteed to be within arm's reach (the engine does NOT walk the engineer
+-- in on a bare out-of-reach reclaim order -- he stood frozen and the order was
+-- re-issued every second, forever). When the station circle is clean, the engineer
+-- drives to the nearest target in the (expanding) anchor zone = the next station.
+-- Returns orders queued (0 = zone given up, auto mode turned off).
 local function SkufScanAndQueue(eng, eid, entry)
     -- queue empty: everything we claimed is eaten or gone -> free the claims first
     SkufReleaseClaims(eid)
     local brain = GetArmyBrain(eng:GetArmy())
     local a = entry.anchor
-    -- nearest is measured from the engineer's CURRENT spot, not from the anchor:
-    -- that way it finishes the cluster it is standing in before going anywhere
     local ep = eng:GetPosition() or { a[1], 0, a[2] }
-    local scored = {}
-    while table.getn(scored) == 0 and entry.radius <= SKUF_ZONE_MAX do
-        local props = GetReclaimablesInRect(a[1] - entry.radius, a[2] - entry.radius, a[1] + entry.radius, a[2] + entry.radius) or {}
+    local econ = eng:GetBlueprint().Economy
+    local reach = (econ.BuildRadius or econ.MaxBuildDistance or 6) + 2
+    local scanR = reach - SKUF_REACH_MARGIN
+    local scan2 = scanR * scanR
+    -- collect wanted unclaimed props in a rect, scored by distance from the engineer
+    local function Collect(x0, z0, x1, z1)
+        local out = {}
+        local props = GetReclaimablesInRect(x0, z0, x1, z1) or {}
         for _, p in props do
-            if p and not skufClaimed[p] then
+            if p and not skufClaimed[p] and not skufBadTargets[p] then
                 local okT, want = pcall(SkufTurretWantsTarget, eng:GetArmy(), p, brain)
                 local okP, pp = pcall(function() return p:GetPosition() end)
                 if okT and want and okP and pp then
                     local dx = pp[1] - ep[1]
                     local dz = pp[3] - ep[3]
-                    table.insert(scored, { p = p, d = dx * dx + dz * dz })
+                    table.insert(out, { p = p, pos = pp, d = dx * dx + dz * dz, m = SkufTargetMass(p) })
                 end
             end
         end
-        if table.getn(scored) == 0 then
+        return out
+    end
+    -- anti-freeze (user, 2026-08-15): if the SAME target keeps being re-issued --
+    -- the queue drains, we pick it again, the engine refuses the order again
+    -- (island/cliff rock) -- after SKUF_RETRY_MAX tries mark it bad and move on
+    local function StuckCheck(t)
+        if entry.last == t.p then
+            entry.tries = (entry.tries or 0) + 1
+        else
+            entry.last = t.p
+            entry.tries = 1
+        end
+        if entry.tries >= SKUF_RETRY_MAX then
+            skufBadTargets[t.p] = { ep[1], ep[3] }
+            entry.last = nil
+            entry.tries = 0
+            LOG('SKUF auto-reclaim eng=' .. eid .. ' target refused ' .. SKUF_RETRY_MAX .. ' times (unreachable?), skipping')
+            return true
+        end
+        return false
+    end
+    -- 1) station: everything within scanR of where the engineer stands right now.
+    -- First, rehab: a bad-marked target only stays bad while the engineer is near
+    -- the point where it was marked -- if it got elsewhere (ferried by transport
+    -- to the island), the target is retried
+    local near = GetReclaimablesInRect(ep[1] - scanR, ep[3] - scanR, ep[1] + scanR, ep[3] + scanR) or {}
+    for _, p in near do
+        local mark = skufBadTargets[p]
+        if mark then
+            local mx = ep[1] - mark[1]
+            local mz = ep[3] - mark[2]
+            if mx * mx + mz * mz > 900 then -- 30+ from the mark point
+                skufBadTargets[p] = nil
+                LOG('SKUF auto-reclaim eng=' .. eid .. ' bad target near a new position, retrying')
+            end
+        end
+    end
+    local station = {}
+    for _, s in Collect(ep[1] - scanR, ep[3] - scanR, ep[1] + scanR, ep[3] + scanR) do
+        if s.d <= scan2 then
+            table.insert(station, s)
+        end
+    end
+    if table.getn(station) > 0 then
+        -- priority reclaim (user, 2026-08-15): fattest target first, nearest breaks
+        -- ties -- on contested ground the big rocks must be grabbed first
+        table.sort(station, function(x, y)
+            if x.m ~= y.m then return x.m > y.m end
+            return x.d < y.d
+        end)
+        if StuckCheck(station[1]) then
+            table.remove(station, 1)
+        end
+    end
+    if table.getn(station) > 0 then
+        local issued = 0
+        for i = 1, math.min(SKUF_ZONE_BATCH, table.getn(station)) do
+            skufClaimed[station[i].p] = eid
+            IssueReclaim({ eng }, station[i].p)
+            issued = issued + 1
+        end
+        entry.expect = issued
+        LOG('SKUF auto-reclaim station eng=' .. eid .. ' @' .. math.floor(ep[1]) .. ',' .. math.floor(ep[3]) .. ' targets=' .. issued .. ' top=' .. station[1].m)
+        return issued
+    end
+    -- 2) station clean: drive to the NEAREST target in the expanding anchor zone.
+    -- Fattest-first only decides the eating order INSIDE a station -- letting it
+    -- pick the hop too sent the engineer zigzagging across the map after 75-mass
+    -- rocks while whole fields of small ones waited (user, 2026-08-15)
+    local hop = nil
+    while hop == nil and entry.radius <= SKUF_ZONE_MAX do
+        local cand = Collect(a[1] - entry.radius, a[2] - entry.radius, a[1] + entry.radius, a[2] + entry.radius)
+        for _, s in cand do
+            if hop == nil or s.d < hop.d then
+                hop = s
+            end
+        end
+        if hop ~= nil and StuckCheck(hop) then
+            hop = nil -- just blacklisted: re-collect without it
+        end
+        if hop == nil then
             entry.radius = entry.radius * 2
             LOG('SKUF auto-reclaim eng=' .. eid .. ' circle clean, radius now ' .. entry.radius)
         end
     end
-    table.sort(scored, function(x, y) return x.d < y.d end)
-    -- station-to-station (user, 2026-08-14): everything within REACH of where the
-    -- engineer stands is queued at once (it eats it all without moving); if even the
-    -- nearest target is out of reach, only that ONE is queued -> the engineer drives
-    -- to the new spot, and on arrival everything there is within reach again.
-    local econ = eng:GetBlueprint().Economy
-    local reach = (econ.BuildRadius or econ.MaxBuildDistance or 6) + 2
-    local reach2 = reach * reach
-    local issued = 0
-    for i = 1, math.min(SKUF_ZONE_BATCH, table.getn(scored)) do
-        local s = scored[i]
-        if i > 1 and s.d > reach2 then break end
-        skufClaimed[s.p] = eid
-        IssueReclaim({ eng }, s.p)
-        issued = issued + 1
-    end
-    if issued == 0 then
+    if hop == nil then
         skufAutoEngs[eid] = nil
-        LOG('SKUF auto-reclaim off: nothing left')
-    else
-        entry.expect = issued
-        LOG('SKUF auto-reclaim queue eng=' .. eid .. ' targets=' .. issued .. ' radius=' .. entry.radius)
+        -- zone given up: send the engineer home so the player does not have to
+        -- hunt for it across the map (user, 2026-08-15)
+        -- GetStartVector3f returns a plain {x, 0, z} table -- pass it straight through
+        local okH, home = pcall(function() return brain:GetStartVector3f() end)
+        if okH and home and home[1] then
+            IssueMove({ eng }, home)
+            LOG('SKUF auto-reclaim off: nothing left, going home')
+        else
+            LOG('SKUF auto-reclaim off: nothing left')
+        end
+        return 0
     end
-    return issued
+    -- the hop target is claimed so other auto-engineers leave it alone during the drive
+    skufClaimed[hop.p] = eid
+    IssueMove({ eng }, hop.pos)
+    entry.expect = 1
+    LOG('SKUF auto-reclaim hop eng=' .. eid .. ' to ' .. math.floor(hop.pos[1]) .. ',' .. math.floor(hop.pos[3]) .. ' mass=' .. hop.m .. ' radius=' .. entry.radius)
+    return 1
 end
 
 -- length of the unit's command queue (the only reliably readable thing about sim

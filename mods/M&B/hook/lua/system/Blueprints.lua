@@ -1041,18 +1041,24 @@ function GenerateResearchItemBPs(all_bps)
                 Categories = {'EXPERIMENTAL'},
                 Description = '<LOC mk414_desc>Turret health boost (4th level)',
             },
-            -- MK501 = {
-            --     techid = 501,
-            --     BuildIconSortPriority = 1,
-            --     Economy = {
-            --      BuildCostEnergy = 0,
-            --         BuildCostMass = 900,
-            --         BuildTime = 600,
-            --         ResearchMult = 1,
-            --     },
-            --     Categories = {'EXPERIMENTAL'},
-            --     Description = 'Усиление заводов 5-й уровень',
-            -- },
+            --M&B (2026-08-15): KEEP MK501 COMMENTED OUT -- this is load-bearing, not dead code.
+            --The 950100 research item exists as hand-written unit files (extraunit/S?R950100/
+            --*_unit.bp, 4 factions), and those files are the ONLY blueprints in the game with the
+            --'MOD' category. A table entry here would generate all_bps['ser950100'] AFTER those
+            --files load and OVERWRITE them, wiping out the 'MOD' category -> categories.MOD
+            --becomes nil -> BeginSession crashes (scenarioutilities "arithmetic on field 'MOD'").
+            --MK501 = {
+            --    techid = 501,
+            --    BuildIconSortPriority = 1,
+            --    Economy = {
+            --        BuildCostEnergy = 0,
+            --        BuildCostMass = 3920,
+            --        BuildTime = 600,
+            --        ResearchMult = 1,
+            --    },
+            --    Categories = {'EXPERIMENTAL'},
+            --    Description = '<LOC mk501_desc>Factory boost (5th level)',
+            --},
             MK502 = {
                 techid = 502,
                 BuildIconSortPriority = 2,
@@ -1150,7 +1156,9 @@ function GenerateResearchItemBPs(all_bps)
                 Description = '<LOC mk509_desc>Air unit weapon boost (5th level)',
             },
             MK510 = {
-                techid = 410,
+                --M&B (2026-08-15): was techid = 410 -- a typo that made the 5th naval mobility
+                --item OVERWRITE the 4th's blueprint id (ser941000), so the 5th never existed
+                techid = 510,
                 BuildIconSortPriority = 10,
                 Economy = {
                     BuildCostEnergy = 0,
@@ -1295,8 +1303,13 @@ local function MNbResearchEffect(bp)
     local SPL_N={2,3,4,5,8}; local ACC_N={5,10,15,20,25}; local TRN_N={2,3,4,5,8}
     local TDMG={10,20,30,40,30}; local THP={14,28,42,56,40}
     local E = {
-        [1]='Structure health +'..(10*L)..'%',
-        [2]='Build rate +'..(10*L)..'%, health +'..(20*L)..'%',
+        --M&B (2026-08-15): the structure line also boosts factory build power +10%/level and
+        -- gives factories a dome at levels 4/5 (see defaultunits.lua MNBFactoryShieldHP --
+        -- keep the numbers in sync)
+        [1]='Structure health +'..(10*L)..'%, factory build rate +'..(10*L)..'%'..((L >= 4) and (', factory shield '..({[4]=5000,[5]=8000})[L]..' HP') or ''),
+        --M&B (2026-08-15): engineer line levels 2+ also grant a personal shield (see
+        --defaultunits.lua MNBEngineerShieldHP -- keep the numbers in sync)
+        [2]='Build rate +'..(10*L)..'%, health +'..(20*L)..'%'..((L >= 2 and L <= 5) and (', personal shield '..({[2]=200,[3]=400,[4]=600,[5]=1000})[L]..' HP') or ''),
         [3]='Station rate +'..(10*L)..'%, health +'..(20*L)..'%',
         [4]='Speed +'..SPL_L[L]..'%, accel +'..ACC_L[L]..'%, turn +'..TRN_L[L]..'%',
         [5]='Health +'..HPL[L]..'%, regen +'..RGL[L],

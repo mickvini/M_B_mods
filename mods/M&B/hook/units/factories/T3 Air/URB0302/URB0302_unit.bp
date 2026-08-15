@@ -47,6 +47,8 @@ UnitBlueprint {
         'SELECTABLE',
         'BUILTBYTIER2FACTORY',
         'CYBRAN',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'AIR',
         'TECH3',

@@ -20,6 +20,8 @@ UnitBlueprint {
     Categories = {
         'SELECTABLE',
         'CYBRAN',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'ECONOMIC',
         'TECH3',

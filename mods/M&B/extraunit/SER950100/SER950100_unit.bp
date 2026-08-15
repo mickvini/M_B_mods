@@ -19,6 +19,8 @@ UnitBlueprint {
     Display = {
     Abilities = {
         '<LOC ability_rnd_unlock>Research Unlock',
+        --M&B (2026-08-15): effect line like the generated research items get (RU text lives in strings_db mnb_eff_501)
+        '<LOC mnb_eff_501>Structure health +50%, factory build rate +50%, factory shield 8000 HP',
     },
     IconName = 'SER950100',
     UniformScale =  0.2, 

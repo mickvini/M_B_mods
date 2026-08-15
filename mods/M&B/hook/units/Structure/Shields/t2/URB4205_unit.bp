@@ -32,6 +32,10 @@ UnitBlueprint {
         'PRODUCTSC1',
         'SELECTABLE',
         'CYBRAN',
+        --M&B (2026-08-15): direct build at T3 (user request) -- Cybran had to build the T2
+        --shield and upgrade twice to reach this, while other factions get a T3 shield right away
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'DEFENSE',
         'TECH3',

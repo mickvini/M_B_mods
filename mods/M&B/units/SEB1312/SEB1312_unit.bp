@@ -67,6 +67,8 @@ UnitBlueprint {
         'PRODUCTBREWLAN',
         'SELECTABLE',
         'UEF',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'ECONOMIC',
         'ENGINEER',

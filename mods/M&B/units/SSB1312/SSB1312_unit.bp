@@ -31,6 +31,8 @@ UnitBlueprint {
         'PRODUCTBREWLAN',
         'SELECTABLE',
         'SERAPHIM',
+        'BUILTBYTIER3ENGINEER',
+        'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'ECONOMIC',
         'TECH3',

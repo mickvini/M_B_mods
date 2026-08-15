@@ -125,59 +125,51 @@ do
                     end
 --endevilnewcode
 
-                    if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth then
-                        local ShieldMaxHealth = info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth
-                        -- M&B: show the LIVE buffed max (grown by adjacency/accumulator buffs, synced from sim
-                        -- via the 'MnbShieldMax' stat) instead of the stale blueprint value. Also fixes the
-                        -- current/regen numbers, since both are derived from this max. Stat is 0 when no buff
-                        -- has touched the shield -> fall back to the blueprint value above.
+                    -- M&B (2026-08-15): resolve the shield spec SAFELY, one branch for all shield kinds.
+                    -- Units with a script-granted shield (engineer/factory research domes) have NO
+                    -- Defense.Shield and NO enhancement -- the old code indexed
+                    -- Defense.Shield.ShieldMaxHealth / enhBp.ShieldMaxHealth straight away and crashed
+                    -- on them, which killed BOTH the shield text and the build rate text every frame.
+                    if info.shieldRatio > 0 then
+                        local ShieldMaxHealth
+                        local bpRegen
+                        local sBp = info.userUnit:GetBlueprint().Defense.Shield
+                        if sBp and sBp.ShieldMaxHealth then
+                            ShieldMaxHealth = sBp.ShieldMaxHealth
+                            bpRegen = sBp.ShieldRegenRate
+                        else
+                            local installed = getEnh.GetEnhancements(info.entityId)
+                            local enhBp = installed and installed.Back and info.userUnit:GetBlueprint().Enhancements[installed.Back] or nil
+                            if enhBp then
+                                ShieldMaxHealth = enhBp.ShieldMaxHealth
+                                bpRegen = enhBp.ShieldRegenRate
+                            end
+                        end
+                        -- M&B: live buffed max synced from sim (adjacency/accumulator buffs grow it;
+                        -- script-granted shields carry ONLY this stat -- no blueprint source at all)
                         if info.userUnit.GetStat then
                             local statMax = info.userUnit:GetStat('MnbShieldMax', 0).Value or 0
-                            if statMax > 0 then ShieldMaxHealth = statMax end
-                        end
-                        local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
-                        controls.shieldText:Show()
-                        -- M&B: shield regen is dynamic (5% of the missing health per second, min 2, 0 when full),
-                        -- NOT the static blueprint value. Keep these numbers in sync with M&B hook/lua/shield.lua
-                        -- (MNB_SHIELD_REGEN_FRACTION = 0.05, MNB_SHIELD_REGEN_FLOOR = 2). Only shown for shields
-                        -- that can regen at all (blueprint ShieldRegenRate > 0), matching the sim-side gate.
-                        local bpRegen = info.userUnit:GetBlueprint().Defense.Shield.ShieldRegenRate
-                        if bpRegen and bpRegen > 0 then
-                            local gap = ShieldMaxHealth - curShield
-                            local dynRegen = 0
-                            if gap > 0 then
-                                dynRegen = math.min(math.max(gap * 0.05, 2), gap)
+                            if statMax > 0 then
+                                ShieldMaxHealth = statMax
+                                if bpRegen == nil then bpRegen = 1 end -- dynamic dome: always show +regen/s
                             end
-                            controls.shieldText:SetText(string.format("%d / %d +%d/s", curShield, ShieldMaxHealth, dynRegen))
-                        else
-                            controls.shieldText:SetText(string.format("%d / %d", curShield, ShieldMaxHealth))
                         end
-                    end
--- newcode
-                    if info.shieldRatio > 0 and info.userUnit:GetBlueprint().Defense.Shield.ShieldMaxHealth == nil then
-                        local enhBp = info.userUnit:GetBlueprint().Enhancements[getEnh.GetEnhancements(info.entityId).Back]
-                        local ShieldMaxHealth = enhBp.ShieldMaxHealth
-                        -- M&B: same live-buffed-max override as for structure shields (stat synced from sim).
-                        if info.userUnit.GetStat then
-                            local statMax = info.userUnit:GetStat('MnbShieldMax', 0).Value or 0
-                            if statMax > 0 then ShieldMaxHealth = statMax end
-                        end
-                        local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
-                        controls.shieldText:Show()
-                        -- M&B: personal/enhancement shields (ACU, SACU) use the SAME dynamic regen model as
-                        -- structure shields (see the UnitShield wrap in hook/lua/shield.lua), so show the dynamic
-                        -- value here too -- 5% of the missing health, min 2, 0 when full. Keep in sync with
-                        -- MNB_SHIELD_REGEN_FRACTION = 0.05, MNB_SHIELD_REGEN_FLOOR = 2.
-                        local bpRegen = enhBp.ShieldRegenRate
-                        if bpRegen and bpRegen > 0 then
-                            local gap = ShieldMaxHealth - curShield
-                            local dynRegen = 0
-                            if gap > 0 then
-                                dynRegen = math.min(math.max(gap * 0.05, 2), gap)
+                        if ShieldMaxHealth then
+                            local curShield = math.floor(ShieldMaxHealth * info.shieldRatio)
+                            controls.shieldText:Show()
+                            -- M&B: shield regen is dynamic (5% of the missing health per second, min 2, 0 when
+                            -- full), NOT the static blueprint value. Keep these numbers in sync with M&B
+                            -- hook/lua/shield.lua (MNB_SHIELD_REGEN_FRACTION = 0.05, MNB_SHIELD_REGEN_FLOOR = 2).
+                            if bpRegen and bpRegen > 0 then
+                                local gap = ShieldMaxHealth - curShield
+                                local dynRegen = 0
+                                if gap > 0 then
+                                    dynRegen = math.min(math.max(gap * 0.05, 2), gap)
+                                end
+                                controls.shieldText:SetText(string.format("%d / %d +%d/s", curShield, ShieldMaxHealth, dynRegen))
+                            else
+                                controls.shieldText:SetText(string.format("%d / %d", curShield, ShieldMaxHealth))
                             end
-                            controls.shieldText:SetText(string.format("%d / %d +%d/s", curShield, ShieldMaxHealth, dynRegen))
-                        else
-                            controls.shieldText:SetText(string.format("%d / %d", curShield, ShieldMaxHealth))
                         end
                     end
 --newcode
