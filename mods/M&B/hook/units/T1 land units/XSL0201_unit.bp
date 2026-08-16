@@ -188,13 +188,16 @@ UnitBlueprint {
     SelectionSizeX = 0.5,
     SelectionSizeZ = 0.8,
     SelectionThickness = 0.5,
-    SizeX = 0.7,
+    -- MNB collision fix 2026-08-16: box was narrower than the visible model
+    -- (mesh 1x1) and shifted forward, so led shots at a moving tank passed
+    -- ahead of the box; center the box and pad it to the mesh size
+    SizeX = 0.8,
     SizeY = 0.5,
-    SizeZ = 0.9,
+    SizeZ = 1.0,
     StrategicIconName = 'icon_land1_directfire',
     StrategicIconSortPriority = 125,
     CollisionOffsetX = 0,
-    CollisionOffsetZ = 0.1,
+    CollisionOffsetZ = 0,
     Transport = {
         TransportClass = 1,
     },

@@ -262,7 +262,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 66,
+            Damage = 64.6,
             DamageFriendly = false,
             DamageType = 'Normal',
             DisplayName = 'Displacement Cannon',

@@ -289,7 +289,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 27,
+            Damage = 26.1,
             DamageType = 'Normal',
             DisplayName = 'Shleo AA AutoGun',
             FireTargetLayerCapsTable = {
@@ -299,7 +299,7 @@ UnitBlueprint {
             FiringRandomness = 0.1,
             FiringTolerance = 0,
             Label = 'SonicPulseBattery',
-            MaxRadius = 22,
+            MaxRadius = 28,
             MuzzleSalvoDelay = 0.1,
             MuzzleSalvoSize = 3,
             MuzzleVelocity = 70,

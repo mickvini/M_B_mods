@@ -1,5 +1,563 @@
+-- === M&B order spreading (G / Shift+G): sim side ===
+-- The UI sends the deduplicated order pool of the selection; this deals it
+-- round-robin among the (alive, same-army) units and re-issues everything.
+-- One SimCallback per keypress, no threads, no per-tick work.
 do
-	Callbacks.GiveOrders = import('/mods/M&B/lua/spreadattack.lua').GiveOrders
+	local MNBQueueDumped
+
+	-- Who received builds at the last spread (entity ids only). The light
+	-- assist watcher turns freed engineers into helpers of the busiest one
+	-- (user design, 2026-08-16: "just append a support order for the
+	-- neighboring engineer -- if he builds they help, if he is done too,
+	-- everything is fine").
+	local MNBDealtIds = {}
+	local MNBHelpStarted
+
+	-- Queue length (acceptance oracle: Issue* calls are synchronous, so a
+	-- command the engine refuses simply never appears in the queue).
+	-- Blueprint parsing was tried first and failed hard: M&B engineers
+	-- carry 'BuildableCategory' (SINGULAR) with expression strings like
+	-- 'BUILTBYTIER1ENGINEER AEON', so a plural-field reader concluded
+	-- nobody could build anything and wiped every queue ('dealt 0').
+	local function QueueLen(unit)
+		local ok, q = pcall(function() return unit:GetCommandQueue() end)
+		if ok and q then
+			return table.getn(q)
+		end
+		return -1
+	end
+
+	local function ReissueOrder(unit, order, slot, slots)
+		if order.t == 'Attack' then
+			-- Path 1: the RAW echo id, straight through (original-mod
+			-- mechanism, user directive 2026-08-16). GetEntityById accepts
+			-- it and IssueAttack follows the exact clicked unit. NO
+			-- validation on the returned object: it can be a bare entity
+			-- table without lua methods, and asking it anything (v23-v25
+			-- called IsDead) only produced false fallbacks into ground
+			-- orders. The engine takes the target or drops the order
+			-- silently -- proven behavior.
+			if order.e then
+				local victim = GetEntityById(order.e)
+				if victim then
+					IssueAttack({ unit }, victim)
+					if not ReissueOrder.aLogged then
+						ReissueOrder.aLogged = true
+						LOG('MNB_SpreadOrders: sample attack unit=' .. unit:GetEntityId() ..
+							' e=' .. tostring(order.e) .. ' (raw-handle order)')
+					end
+					return
+				end
+			end
+			-- Path 2: an attack order FOLLOWS its target (user: "the order
+			-- moves with it"), so the stored position IS the target's live
+			-- position at press time. Re-find the nearest living enemy there
+			-- and attack the UNIT -- never the ground.
+			if order.p then
+				local okR, victim = pcall(function()
+					local brain = GetArmyBrain(unit:GetArmy())
+					local cands = brain:GetUnitsAroundPoint(categories.ALLUNITS,
+						order.p, 10, 'Enemy')
+					local best, bestD2 = nil, 121 -- within 11 of the point
+					for _, c in cands do
+						if not c:IsDead() then
+							local cp = c:GetPosition()
+							local dx = cp[1] - order.p[1]
+							local dz = cp[3] - order.p[3]
+							local d2 = dx * dx + dz * dz
+							if d2 < bestD2 then
+								best, bestD2 = c, d2
+							end
+						end
+					end
+					return best
+				end)
+				if okR and victim then
+					IssueAttack({ unit }, victim)
+					if not ReissueOrder.pLogged then
+						ReissueOrder.pLogged = true
+						LOG('MNB_SpreadOrders: sample attack unit=' .. unit:GetEntityId() ..
+							' target=' .. victim:GetEntityId() .. ' (pos-resolved)')
+					end
+					return
+				end
+				-- Nothing alive near the point: a true ground attack.
+				IssueAggressiveMove({ unit }, order.p)
+			end
+		elseif order.t == 'Move' then
+			IssueMove({ unit }, order.p)
+		elseif order.t == 'AggressiveMove' then
+			IssueAggressiveMove({ unit }, order.p)
+		elseif order.t == 'Build' then
+			-- Approach a point the engineer can BUILD FROM, never the site
+			-- itself: standing on the footprint makes the engine silently
+			-- drop the order (the v14 freeze). When he already reaches the
+			-- site, no move at all -- he builds from where he stands (user
+			-- design, 2026-08-16).
+			local up = unit:GetPosition()
+			local econ = unit:GetBlueprint().Economy
+			local reach = econ.BuildRadius or econ.MaxBuildDistance or 6
+			local stop = reach * 0.8
+			-- Closer than the footprint half-size = standing on it.
+			local skirt = 3
+			local tBp = __blueprints[order.b]
+			if tBp and tBp.Physics then
+				local sx = (tBp.Physics.SkirtSizeX or 4) / 2
+				local sz = (tBp.Physics.SkirtSizeZ or 4) / 2
+				if sx > sz then
+					skirt = sx + 1
+				else
+					skirt = sz + 1
+				end
+			end
+			if slot and slots and slots > 1 then
+				-- SHARED site (broadcast or doubling gave one site to
+				-- several engineers): each takes a FIXED place on the ring
+				-- around the footprint, so twenty of them spread around the
+				-- structure instead of clumping every approach line onto
+				-- the same bearing (playtest v23: "they stack waypoints
+				-- next to the pgen in a heap").
+				local a = (slot - 1) / slots * 2 * math.pi
+				IssueMove({ unit }, { order.p[1] + math.cos(a) * stop,
+					order.p[2], order.p[3] + math.sin(a) * stop })
+			elseif up then
+				local dx = up[1] - order.p[1]
+				local dz = up[3] - order.p[3]
+				local d = math.sqrt(dx * dx + dz * dz)
+				if d < skirt or d >= stop then
+					-- Land 'stop' short of the site, on his own side.
+					local fx, fz
+					if d > 0.3 then
+						local k = stop / d
+						fx = order.p[1] + dx * k
+						fz = order.p[3] + dz * k
+					else
+						fx = order.p[1] + stop
+						fz = order.p[3]
+					end
+					IssueMove({ unit }, { fx, order.p[2], fz })
+				end
+			else
+				IssueMove({ unit }, order.p)
+			end
+			-- Acceptance oracle: measure AFTER the move (if the engine
+			-- ignores a move to where the unit already stands, the baseline
+			-- is still correct), then the build must grow the queue by 1.
+			local len0 = QueueLen(unit)
+			local ok, res = pcall(IssueBuildMobile, { unit }, order.p, order.b, {})
+			if not ok then
+				LOG('MNB_SpreadOrders: IssueBuildMobile error: ' .. tostring(res))
+				return false
+			end
+			if QueueLen(unit) <= len0 then
+				return false
+			end
+			-- One detailed sample per session: what exactly we asked for.
+			if not ReissueOrder.bLogged then
+				ReissueOrder.bLogged = true
+				LOG('MNB_SpreadOrders: sample build unit=' .. unit:GetEntityId() ..
+					' bp=' .. tostring(order.b) ..
+					' pos=' .. tostring(order.p[1]) .. ',' .. tostring(order.p[3]))
+			end
+			return true
+		elseif order.t == 'Repair' then
+			local target = order.e and GetEntityById(order.e)
+			if target and target.IsDead and not target:IsDead() then
+				IssueRepair({ unit }, target)
+			end
+		elseif order.t == 'Reclaim' then
+			local target = order.e and GetEntityById(order.e)
+			if target then
+				IssueReclaim({ unit }, target)
+			end
+		elseif order.t == 'Capture' then
+			local target = order.e and GetEntityById(order.e)
+			if target and target.IsDead and not target:IsDead() then
+				IssueCapture({ unit }, target)
+			end
+		end
+	end
+
+	-- Light 5s watcher (user design, 2026-08-16): every engineer that got
+	-- builds from a spread and has FINISHED his queue gets ONE area-assist
+	-- order -- a patrol under his own feet ("finished -> patrol under
+	-- himself"). A patrolling engineer auto-assists every construction and
+	-- repair within arm's reach all by himself; the engine picks the
+	-- targets, we enumerate nothing. The route is TWO points 10m apart: a
+	-- single patrol point at/next to where the unit already stands was
+	-- silently dropped by the engine (playtest v18). When the WHOLE job is
+	-- over -- nobody of the group is building/repairing/reclaiming and
+	-- nobody holds own queue orders, everyone just paces -- the patrol
+	-- orders are taken back off so the engineers stand still instead of
+	-- dashing around (user, 2026-08-16). Two idle ticks (10s) of
+	-- hysteresis so a patrol is never cut off right before the engine
+	-- latches the helper onto nearby work.
+	local MNBIdleTicks = 0
+	local function MNBHelpThread()
+		while true do
+			WaitSeconds(5)
+			local ok, err = pcall(function()
+				if not next(MNBDealtIds) then
+					return
+				end
+				local anyBusy = false
+				local pacers = {}
+				for _, eid in MNBDealtIds do
+					local u = GetEntityById(eid)
+					if u and not u.Dead then
+						local len = QueueLen(u)
+						if len == 0 then
+							-- Finished -> patrol under self. Acceptance
+							-- oracle (same as for builds): the patrol must
+							-- appear in the queue, else say so loudly.
+							local p = u:GetPosition()
+							if p then
+								IssuePatrol({ u }, { p[1] - 5, p[2], p[3] })
+								IssuePatrol({ u }, { p[1] + 5, p[2], p[3] })
+								if QueueLen(u) > 0 then
+									LOG('MNB_SpreadOrders: assist eng=' .. eid ..
+										' patrol at ' .. math.floor(p[1]) .. ',' .. math.floor(p[3]))
+								else
+									LOG('MNB_SpreadOrders: patrol REFUSED eng=' .. eid ..
+										' at ' .. math.floor(p[1]) .. ',' .. math.floor(p[3]))
+								end
+							end
+							-- fresh orders: give the engine time to latch
+							-- onto nearby work before counting him idle
+							anyBusy = true
+						elseif u:IsUnitState('Building') or u:IsUnitState('Repairing')
+							or u:IsUnitState('Reclaiming') then
+							anyBusy = true
+						elseif not u:IsUnitState('Patrolling') then
+							-- non-patrol orders still in the queue (the
+							-- player's own): busy
+							anyBusy = true
+						else
+							-- patrolling with nothing to do: a pacer
+							table.insert(pacers, u)
+						end
+					end
+				end
+				if anyBusy then
+					MNBIdleTicks = 0
+				else
+					MNBIdleTicks = MNBIdleTicks + 1
+					if MNBIdleTicks >= 2 and table.getn(pacers) > 0 then
+						for _, u in pacers do
+							IssueClearCommands({ u })
+						end
+						LOG('MNB_SpreadOrders: assist done, released ' ..
+							table.getn(pacers) .. ' eng (patrol removed)')
+						MNBDealtIds = {}
+						MNBIdleTicks = 0
+					end
+				end
+			end)
+			if not ok then
+				LOG('MNB_SpreadOrders: assist watcher error: ' .. tostring(err))
+			end
+		end
+	end
+
+	Callbacks.MNB_SpreadOrders = function(data)
+		-- First-line marker: proves the callback reached the sim at all.
+		LOG('MNB_SpreadOrders: sim entered, units=' .. (data.units and table.getn(data.units) or 'nil') ..
+			' orders=' .. (data.orders and table.getn(data.orders) or 'nil') ..
+			' army=' .. tostring(data.army))
+
+		if not data.units or not data.orders then
+			return
+		end
+
+		local units = {}
+		for _, id in data.units do
+			local u = GetEntityById(id)
+			if u and not u:IsDead() and u:GetArmy() == data.army then
+				table.insert(units, u)
+			end
+		end
+		local n = table.getn(units)
+		if n < 2 then
+			return
+		end
+
+		-- Empty order pool = the diagnostic probe from the UI: dump what the
+		-- sim can really see in a unit's command queue (once per session).
+		-- If entries expose blueprint+position, builds can later be taken
+		-- straight from the queue instead of the unreliable UI echoes.
+		if table.getn(data.orders) == 0 then
+			if not MNBQueueDumped then
+				MNBQueueDumped = true
+				for i = 1, math.min(2, n) do
+					local uid = units[i]:GetEntityId()
+					local ok, q = pcall(function() return units[i]:GetCommandQueue() end)
+					if not ok or not q then
+						LOG('MNB_SpreadOrders: queueprobe u=' .. uid .. ' failed: ' .. tostring(q))
+					elseif table.getn(q) == 0 then
+						LOG('MNB_SpreadOrders: queueprobe u=' .. uid .. ' queue EMPTY')
+					else
+						-- Entries may be tables OR engine userdata: one bad entry
+						-- must not kill the whole probe, so each dump is shielded.
+						for j, c in q do
+							local okD, errD = pcall(function()
+								local keys = {}
+								for k in c do
+									table.insert(keys, tostring(k))
+								end
+								table.sort(keys)
+								LOG('MNB_SpreadOrders: queueprobe u=' .. uid .. ' #' .. j ..
+									' type=' .. tostring(c.type) ..
+									' bp=' .. tostring(c.blueprint) ..
+									' keys=' .. table.concat(keys, ','))
+							end)
+							if not okD then
+								LOG('MNB_SpreadOrders: queueprobe u=' .. uid .. ' #' .. j ..
+									' entry not a table: ' .. tostring(errD))
+							end
+						end
+					end
+				end
+			end
+			return
+		end
+
+		-- Drop entity-target orders whose target is no longer resolvable
+		-- (Attack keeps going: it falls back to its stored position).
+		local valid = {}
+		local unitAtks = {} -- unit-click attacks: broadcast, not divided
+		for _, order in data.orders do
+			if order.e and order.t ~= 'Attack' then
+				local tgt = GetEntityById(order.e)
+				if tgt then
+					table.insert(valid, order)
+				end
+			else
+				if order.t == 'Attack' and order.e then
+					order.uatk = true
+					table.insert(unitAtks, order)
+				end
+				table.insert(valid, order)
+			end
+		end
+
+		-- Bind every pooled GROUND-POINT attack (no target id) to a concrete
+		-- enemy unit, ONCE per press and with UNIQUENESS: each click's point
+		-- claims the nearest LIVING enemy that no other click has claimed
+		-- yet. Without the uniqueness rule several nearby click points
+		-- (targets clicked while still clustered) all snapped to the same
+		-- nearest tank -- the whole selection became one pack instead of
+		-- splitting (playtest v26: "went killing them one by one"). Unit
+		-- clicks skip this: they carry their exact target id already.
+		local claimed = {}
+		local resLog = {}
+		for _, order in valid do
+			if order.t == 'Attack' and order.p and not order.e then
+				local okR, victim = pcall(function()
+					local brain = GetArmyBrain(data.army)
+					local cands = brain:GetUnitsAroundPoint(categories.ALLUNITS,
+						order.p, 20, 'Enemy')
+					local best, bestD2 = nil, 441 -- within 21 of the point
+					for _, c in cands do
+						if not c:IsDead() then
+							local cid = c:GetEntityId()
+							if not claimed[cid] then
+								local cp = c:GetPosition()
+								local dx = cp[1] - order.p[1]
+								local dz = cp[3] - order.p[3]
+								local d2 = dx * dx + dz * dz
+								if d2 < bestD2 then
+									best, bestD2 = c, d2
+								end
+							end
+						end
+					end
+					return best
+				end)
+				if okR and victim then
+					claimed[victim:GetEntityId()] = true
+					order.e = victim:GetEntityId()
+				end
+				table.insert(resLog, tostring(order.e or 'ground'))
+			end
+		end
+		if table.getn(resLog) > 0 then
+			LOG('MNB_SpreadOrders: attack res: ' .. table.concat(resLog, ','))
+		end
+
+		-- A single pooled order is fine: the doubling pass below hands it
+		-- to EVERY unit -- "everyone to the one point" (catching a running
+		-- ACU; user, 2026-08-16).
+		if table.getn(valid) == 0 then
+			return
+		end
+
+		local assigned = {}
+		local cursor = 0
+		local dealt = 0
+		-- Builds are dealt in CONTIGUOUS chunks (pool order = placement
+		-- order, so a wall drag gives each engineer his own stretch):
+		-- round-robin scattered every 25th segment along the whole line,
+		-- engineers spent the game crossing it and blocking each other's
+		-- thin build sites -> holes. Other types keep the spread.
+		local buildTotal = 0
+		for _, order in valid do
+			if order.t == 'Build' then
+				buildTotal = buildTotal + 1
+			end
+		end
+		local buildCap = math.ceil(buildTotal / n)
+		local buildIdx = 0
+		for _, order in valid do
+			if not order.uatk then
+				local idx
+				if order.t == 'Build' and buildCap > 0 then
+					buildIdx = buildIdx + 1
+					idx = math.min(n, math.floor((buildIdx - 1) / buildCap) + 1)
+				else
+					idx = math.mod(cursor, n) + 1
+				end
+				if not assigned[idx] then
+					assigned[idx] = {}
+				end
+				table.insert(assigned[idx], order)
+				cursor = idx
+				dealt = dealt + 1
+			end
+		end
+
+		-- Unit-click attacks are BROADCAST, not divided (user, 2026-08-16:
+		-- "after a kill the next enemy is known immediately -- with full
+		-- division the killer is left without a target"). Every unit
+		-- receives ALL clicked targets; each unit's list starts at its own
+		-- rotation offset (deterministic shuffle, like the original mod's
+		-- random swap but MP-safe), so the packs still spread over the
+		-- targets at the start while everyone always has a next one queued.
+		local na = table.getn(unitAtks)
+		if na > 0 then
+			for i = 1, n do
+				if not assigned[i] then
+					assigned[i] = {}
+				end
+				local rot = math.mod(i - 1, na)
+				for j = 1, na do
+					table.insert(assigned[i], unitAtks[math.mod(rot + j - 1, na) + 1])
+				end
+			end
+			dealt = dealt + na
+		end
+
+		-- More units than orders: instead of parking the leftovers (air
+		-- units would land), give them the same tasks again from the start,
+		-- so everyone stays busy (20 bombers over 12 targets -> 8 doubled;
+		-- ONE order over many units -> the whole selection receives it).
+		local total = table.getn(valid)
+		if total > 0 then
+			local k = 0
+			for i = 1, n do
+				if not assigned[i] then
+					assigned[i] = { valid[math.mod(k, total) + 1] }
+					k = k + 1
+				end
+			end
+		end
+
+		local busy = 0
+		for i = 1, n do
+			if assigned[i] then
+				busy = busy + 1
+			end
+		end
+
+		-- Every unit in the pool had only distributable orders, so a full
+		-- clear-then-reissue can never lose anything.
+		-- Shared build sites (broadcast/doubling handed one site to several
+		-- engineers): count per site, so the issue loop can give each
+		-- engineer his own place on the ring around it.
+		local ringKey = function(order)
+			return order.b .. '_' .. math.floor(order.p[1] + 0.5) .. '_' ..
+				math.floor(order.p[3] + 0.5)
+		end
+		local ringTotal = {}
+		local ringCount = {}
+		for i = 1, n do
+			local list = assigned[i]
+			if list then
+				for _, order in list do
+					if order.t == 'Build' then
+						local k = ringKey(order)
+						ringTotal[k] = (ringTotal[k] or 0) + 1
+					end
+				end
+			end
+		end
+		local rejected = 0
+		-- Engineers that actually took builds this press (assist watcher).
+		local dealtIds = {}
+		local dealtFlag = {}
+		local function RecordBuild(unit)
+			if not dealtFlag[unit:GetEntityId()] then
+				dealtFlag[unit:GetEntityId()] = true
+				table.insert(dealtIds, unit:GetEntityId())
+			end
+		end
+		for i = 1, n do
+			local unit = units[i]
+			-- M28 uses a bare IssueClearCommands here (no IssueStop), and it
+			-- reliably wipes the whole queue including the active order.
+			IssueClearCommands({ unit })
+			local list = assigned[i]
+			if list then
+				for _, order in list do
+					local slot, slots
+					if order.t == 'Build' then
+						local k = ringKey(order)
+						ringCount[k] = (ringCount[k] or 0) + 1
+						slot = ringCount[k]
+						slots = ringTotal[k]
+					end
+					local accepted = ReissueOrder(unit, order, slot, slots)
+					if accepted == true then
+						RecordBuild(unit)
+					elseif accepted == false then
+						-- The engine refused this unit the build (e.g. a
+						-- combat unit in the selection): append it to
+						-- another unit instead of losing it.
+						local placed = false
+						for step = 1, n - 1 do
+							local j = math.mod(i + step - 1, n) + 1
+							if ReissueOrder(units[j], order) then
+								RecordBuild(units[j])
+								placed = true
+								break
+							end
+						end
+						if not placed then
+							rejected = rejected + 1
+						end
+					end
+				end
+			end
+		end
+		if table.getn(dealtIds) > 0 then
+			MNBDealtIds = dealtIds
+			if not MNBHelpStarted then
+				MNBHelpStarted = true
+				ForkThread(MNBHelpThread)
+			end
+		end
+		-- Ground truth for the next playtest log: the real command queue
+		-- length of every unit right after the reissue (expect = assigned).
+		local qs = {}
+		for i = 1, n do
+			local ok, q = pcall(function() return units[i]:GetCommandQueue() end)
+			-- Lua 5.0 table.concat takes STRINGS only: numbers crash the
+			-- whole callback after the work is already done (playtest log).
+			table.insert(qs, tostring(ok and q and table.getn(q) or '?'))
+		end
+		LOG('MNB_SpreadOrders: dealt ' .. dealt .. ' orders over ' .. n .. ' units (' .. busy .. ' busy)' ..
+			' rejected=' .. rejected ..
+			' queue lens=' .. table.concat(qs, ','))
+	end
 end
 
 -- === skuf: sim side of the personal Economy Helper UI mod ===

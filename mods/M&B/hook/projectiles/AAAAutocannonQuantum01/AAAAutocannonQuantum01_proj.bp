@@ -1,0 +1,8 @@
+ProjectileBlueprint {
+    Merge = true,
+    Physics = {
+        -- MNB 2026-08-17: lifetime 1s x speed 30 = died at 30 units, short of
+        -- the 40 range of BROAT3ASUP / 38 of UAA0303; 1.4s covers 42
+        Lifetime = 1.4,
+    },
+}

@@ -211,7 +211,7 @@ UnitBlueprint {
             BeamLifetime = 0,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 82,
+            Damage = 330,
             DamageFriendly = false,
             DamageRadius = 1.8,
             DamageType = 'Normal',
@@ -223,7 +223,7 @@ UnitBlueprint {
             FiringRandomness = 0,
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 66,
+            MaxRadius = 58,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             RackBones = {

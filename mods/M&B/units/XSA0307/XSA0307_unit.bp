@@ -275,7 +275,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 63,
+            Damage = 64,
             DamageFriendly = false,
             DamageType = 'Normal',
             DisplayName = 'Losaare AA Autocannon',

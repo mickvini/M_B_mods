@@ -268,7 +268,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 30,
+            Damage = 20,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {

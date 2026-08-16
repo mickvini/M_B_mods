@@ -263,8 +263,10 @@ UnitBlueprint {
     SelectionSizeX = 0.35,
     SelectionSizeZ = 0.5,
     SelectionThickness = 0.75,
+    -- MNB collision fix 2026-08-16: hover bots bob while moving and this was
+    -- the flattest T0 bot box (0.35), so led shots passed over/under it
     SizeX = 0.55,
-    SizeY = 0.35,
+    SizeY = 0.45,
     SizeZ = 0.6,
     StrategicIconName = 'icon_land1_artillery',
     StrategicIconSortPriority = 135,

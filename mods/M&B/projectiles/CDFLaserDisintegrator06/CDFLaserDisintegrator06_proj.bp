@@ -42,8 +42,10 @@ ProjectileBlueprint {
     },
     Physics = {
         DestroyOnWater = true,
-        InitialSpeed = 15,
-        ProjectileLifetime = 1.5,
+        -- MNB 2026-08-17: 15 x 1.5 covered only 22 of the 34 range (third dead);
+        -- raised speed and lifetime so it reaches with margin
+        InitialSpeed = 25,
+        ProjectileLifetime = 2.5,
         UseGravity = true,
     },
 }

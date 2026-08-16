@@ -1,0 +1,8 @@
+ProjectileBlueprint {
+    Merge = true,
+    Physics = {
+        -- MNB 2026-08-17: speed 20 needed 1.5-2s to reach max range, so shots
+        -- missed moving targets; 30 cuts flight time by a third
+        InitialSpeed = 30,
+    },
+}

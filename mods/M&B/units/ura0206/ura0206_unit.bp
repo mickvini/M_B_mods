@@ -290,7 +290,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 67,
+            Damage = 65.7,
             DamageFriendly = false,
             DamageRadius = 0,
             DamageType = 'Normal',

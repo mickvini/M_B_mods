@@ -44,7 +44,6 @@ UnitBlueprint {
         'VISIBLETORECON',
         'RECLAIMABLE',
         'OVERLAYDIRECTFIRE',
-        'OVERLAYANTIAIR',
         'SORTDEFENSE',
     },
     Defense = {
@@ -59,9 +58,6 @@ UnitBlueprint {
     },
     Description = '<LOC BROT1EXPD_desc>Тяжелое орудие T2',
     Display = {
-        Abilities = {
-            '<LOC ability_aa>Anti-Air',
-        },
         Mesh = {
             IconFadeInZoom = 170,
             LODs = {
@@ -211,7 +207,7 @@ UnitBlueprint {
             BeamLifetime = 0.2,
             CollideFriendly = false,
             ContinuousBeam = true,
-            Damage = 280,
+            Damage = 400,
             DamageFriendly = false,
             DamageRadius = 2.2,
             DamageType = 'Normal',
@@ -219,13 +215,13 @@ UnitBlueprint {
             EnergyDrainPerSecond = 0,
             EnergyRequired = 0,
             FireTargetLayerCapsTable = {
-                Land = 'Land|Water|Seabed|Air',
-                Water = 'Land|Water|Seabed|Air',
+                Land = 'Land|Water|Seabed',
+                Water = 'Land|Water|Seabed',
             },
             FiringRandomness = 0,
             FiringTolerance = 0.1,
             Label = 'laserblue',
-            MaxRadius = 50,
+            MaxRadius = 46,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
             RackBones = {

@@ -37,12 +37,10 @@ UnitBlueprint {
         'STRUCTURE',
         'DEFENSE',
         'EXPERIMENTAL',
-        'ANTIAIR',
         'DRAGBUILD',
         'SIZE4',
         'VISIBLETORECON',
         'RECLAIMABLE',
-        'OVERLAYANTIAIR',
         'SORTDEFENSE',
     },
     Defense = {
@@ -50,7 +48,7 @@ UnitBlueprint {
         Health = 5750,
         MaxHealth = 5750,
         RegenRate = 1,
-        AirThreatLevel = 27,
+        AirThreatLevel = 0,
         SurfaceThreatLevel = 0,
         SubThreatLevel = 0,
         EconomyThreatLevel = 17,
@@ -58,7 +56,6 @@ UnitBlueprint {
     Description = '<LOC BRNT1EXPDT2_desc>Experimental Gatling Defense System',
     Display = {
         Abilities = {
-            '<LOC ability_aa>Anti-Air',
             '<LOC ability_aquatic>Aquatic',
         },
         Mesh = {
@@ -198,8 +195,8 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
-                Land = 'Land|Water|Seabed|Air',
-                Water = 'Land|Water|Seabed|Air',
+                Land = 'Land|Water|Seabed',
+                Water = 'Land|Water|Seabed',
             },
             FiringRandomness = 0.5,
             FiringTolerance = 1,
@@ -273,7 +270,7 @@ UnitBlueprint {
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',
             FireTargetLayerCapsTable = {
-                Land = 'Land|Water|Seabed|Air',
+                Land = 'Land|Water|Seabed',
                 Water = 'Land|Water|Seabed',
             },
             FiringRandomness = 0.5,
