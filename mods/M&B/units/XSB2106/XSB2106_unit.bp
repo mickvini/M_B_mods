@@ -27,6 +27,7 @@ UnitBlueprint {
         'ECONOMIC',
         'TECH2',
         'MASSSTORAGE',
+        'DRAGBUILD',
         'VISIBLETORECON',
         'RECLAIMABLE',
         'SHOWQUEUE',
