@@ -1,18 +1,12 @@
 #****************************************************************************
 #**
-#**  File     :  /cdimage/units/UEA0103/UEA0103_script.lua
-#**  Author(s):  John Comes, David Tomandl, Gordon Duclos
+#**  File     :  /units/UEA0103/UEA0103_Script.lua
+#**  Summary  :  Terran Carpet Bomber Unit Script (M&B: scripted bomb drop)
 #**
-#**  Summary  :  Terran Carpet Bomber Unit Script
-#**
-#**  Copyright � 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
-#
-# Terran Bomber Script : UEA0103
-#
 local TAirUnit = import('/lua/terranunits.lua').TAirUnit
 local TIFCarpetBombWeapon = import('/lua/terranweapons.lua').TIFCarpetBombWeapon
-
+local MNBMakeBombDropper = import('/mods/M&B/lua/MNBBombDrop.lua').MNBMakeBombDropper
 
 UEA0103 = Class(TAirUnit) {
     DestroyNoFallRandomChance = 1.1,
@@ -20,10 +14,7 @@ UEA0103 = Class(TAirUnit) {
         Bomb = Class(MNBMakeBombDropper(TIFCarpetBombWeapon)) {
             },
         },
-#    DestructionPartsLowToss = {'P01', 'P02', 'P03', 'P04', 'P05', 'P06', },
-#    DestructionTicks = 50,
     DamageEffectPullback = 0.5,
 }
 
 TypeClass = UEA0103
-

@@ -6,10 +6,11 @@ local SIFBombZhanaseeWeapon = SeraphimWeapons.SIFBombZhanaseeWeapon
 local SLaanseMissileWeapon = SeraphimWeapons.SLaanseMissileWeapon
 local SANHeavyCavitationTorpedo = SeraphimWeapons.SANHeavyCavitationTorpedo
 --local SB0OhwalliExperimentalStrategicBombWeapon = SeraphimWeapons.SB0OhwalliExperimentalStrategicBombWeapon
+local MNBMakeBombDropper = import('/mods/M&B/lua/MNBBombDrop.lua').MNBMakeBombDropper
 
 SSA0314 = Class(SAirUnit, MissileFlare) {
     Weapons = {
-        Bomb = Class(SIFBombZhanaseeWeapon) {},
+        Bomb = Class(MNBMakeBombDropper(SIFBombZhanaseeWeapon)) {},
         Torpedo = Class(SANHeavyCavitationTorpedo) {},
         CruiseMissile = Class(SLaanseMissileWeapon) {},
     },
