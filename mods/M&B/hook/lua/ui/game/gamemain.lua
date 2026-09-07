@@ -13,6 +13,7 @@ do
 	function CreateUI(isReplay)
 	    oldCreateUI(isReplay)
 	    import('/mods/M&B/lua/spreadattack.lua').Init()
+	    import('/mods/M&B/lua/skuftoggle.lua').Install()
 	end
 end
 
@@ -46,4 +47,25 @@ function OnFirstUpdate()
     --[[ConExecute('path_armybudget = 6500')
     ConExecute('path_backgroundbudget = 3000')
     ConExecute('path_maxinstantworkunits = 1250')--]]
+end
+
+-- === skuf (Economy Helper) merged from the standalone skuf mod ===
+-- Keeps the alive-structures list current for the deposit hover-build.
+-- NOTE: unlike the standalone skuf mod there is NO SkufInit here: the
+-- sim watcher starts only when the player presses Alt-E (skuftoggle).
+do
+	local oldOnSelectionChanged = OnSelectionChanged
+	function OnSelectionChanged(old, new, added, removed)
+		local CM = import('/lua/ui/game/commandmode.lua')
+		for id, unit in added do
+			if unit:IsInCategory('STRUCTURE') then
+				CM.AddAliveStruct(unit)
+			end
+			local focus = unit:GetFocus()
+			if focus and focus:GetArmy() == unit:GetArmy() and focus:IsInCategory('STRUCTURE') then
+				CM.AddAliveStruct(focus)
+			end
+		end
+		oldOnSelectionChanged(old, new, added, removed)
+	end
 end

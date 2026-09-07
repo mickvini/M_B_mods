@@ -744,8 +744,12 @@ local function SkufWatcherThread(brain)
         WaitSeconds(5)
         if brain:IsDefeated() then break end
         ticks = ticks + 1
+        -- Alt-E off (skuftoggle): idle this pass; the thread stays for the session
+        local ok = true
+        local err
+        if brain.SkufEnabled then
         -- pcall keeps the watcher alive even if one pass hits a bad unit
-        local ok, err = pcall(function()
+        ok, err = pcall(function()
             local target = SkufTargetTier(brain)
             if math.mod(ticks, 12) == 1 then
                 LOG('SKUF watch tick=' .. ticks .. ' targetTier=' .. target .. ' researchFlags=' .. tostring(brain.MNB_TechUnlocked ~= nil))
@@ -829,6 +833,7 @@ local function SkufWatcherThread(brain)
                 end
             end
         end)
+        end -- SkufEnabled guard
         if not ok then
             LOG('SKUF watcher error: ' .. tostring(err))
         end
@@ -1091,7 +1096,7 @@ local function SkufAutoReclaimThread()
             for eid, cpos in skufReclaimCandidates do
                 skufReclaimCandidates[eid] = nil
                 local u = GetEntityById(eid)
-                if u and not u.Dead then
+                if u and not u.Dead and u:GetAIBrain().SkufEnabled then
                     if SkufQueueCount(u) > 0 then
                         LOG('SKUF reclaim click was on a rock: staying out')
                     elseif not skufAutoEngs[eid] then
@@ -1107,6 +1112,11 @@ local function SkufAutoReclaimThread()
                 if not eng or eng.Dead then
                     SkufReleaseClaims(eid)
                     skufAutoEngs[eid] = nil
+                elseif not eng:GetAIBrain().SkufEnabled then
+                    -- Alt-E turned off: stop this engineer's auto mode
+                    SkufReleaseClaims(eid)
+                    skufAutoEngs[eid] = nil
+                    LOG('SKUF auto-reclaim off: switch off eng=' .. eid)
                 elseif entry.justArmed then
                     -- armed this very pass: skip one round so the engine registers the
                     -- move order we just issued before we start counting the queue
@@ -1148,6 +1158,18 @@ Callbacks.SkufInit = function(data)
     ForkThread(SkufWatcherThread, brain)
     ForkThread(SkufAutoReclaimThread)
     LOG('SKUF watcher started')
+end
+
+Callbacks.SkufSetEnabled = function(data)
+    -- Alt-E master switch (from /mods/M&B/lua/skuftoggle.lua): gates the mex
+    -- watcher and auto-reclaim for this army. Absent/nil = off (the default
+    -- every session, until the player presses the combo).
+    if not data or not data.army then return end
+    local brain = GetArmyBrain(data.army)
+    if brain then
+        brain.SkufEnabled = data.enabled == true
+        LOG('SKUF ' .. (brain.SkufEnabled and 'enabled' or 'disabled') .. ', army=' .. tostring(data.army))
+    end
 end
 
 end
