@@ -175,7 +175,10 @@ function ACUActionBuildFactory(aiBrain, oACU, iPlateauOrZero, iLandOrWaterZone, 
     --The ACU path bypassed the engineer-side cap, so the ACU kept building factories past the limit.
     if M28Utilities.IsMBModActive() then
         local iMNBFacCap = nil
-        if iCategoryToBuild == M28UnitInfo.refCategoryLandFactory then iMNBFacCap = 10
+        --M&B (user, 2026-09-10): land cap is dynamic - while mass storage keeps overflowing it creeps up +1
+        --at a time (10 -> 11 -> 12, ...) so excess mass turns into factories instead of storage; decays back
+        --when storage is no longer full. See M28Conditions.MNBGetFactoryOverflowBonus.
+        if iCategoryToBuild == M28UnitInfo.refCategoryLandFactory then iMNBFacCap = 10 + M28Conditions.MNBGetFactoryOverflowBonus(aiBrain)
         elseif iCategoryToBuild == M28UnitInfo.refCategoryAirFactory then iMNBFacCap = 4
         elseif iCategoryToBuild == M28UnitInfo.refCategoryNavalFactory then iMNBFacCap = 2
         end

@@ -878,50 +878,68 @@ ESL0001 = Class( SWalkingLandUnit ) {
         end
     end,
 
-    RegenBuffThread = function(self)
+    -- === M&B: flat regen aura (rework 2026-09-10) ===
+    -- Every 5s applies flat Regen buffs to own LAND units around the ACU
+    -- (commander included; air, naval and structures excluded).
+    -- Tier 1 = EXCombatEngineering, tier 2 = EXAssaultEngineering
+    -- (EXApocolypticEngineering keeps the tier-2 field running).
+    MNBRegenFieldValues = {
+        [1] = { radius = 20, cmd = 30, t1 = 20, t2 = 30, t3 = 40, t4 = 50 },
+        [2] = { radius = 25, cmd = 50, t1 = 40, t2 = 60, t3 = 80, t4 = 100 },
+    },
+
+    MNBRegenFieldThread = function(self, iTier)
+        local v = self.MNBRegenFieldValues[iTier]
+        -- Register the flat buffs once
+        local tClasses = { 'cmd', 't1', 't2', 't3', 't4' }
+        for iClass = 1, table.getn(tClasses) do
+            local sClass = tClasses[iClass]
+            local sName = 'MNBSeraRegenField' .. iTier .. sClass
+            if not Buffs[sName] then
+                BuffBlueprint {
+                    Name = sName,
+                    DisplayName = sName,
+                    BuffType = 'COMMANDERAURA',
+                    Stacks = 'REPLACE',
+                    Duration = 5,
+                    Affects = {
+                        Regen = {
+                            Add = v[sClass],
+                            Mult = 1,
+                        },
+                    },
+                }
+            end
+        end
         while not self:IsDead() do
-            #Get friendly units in the area (including self)
-            local units = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH1, self:GetPosition(), self:GetBlueprint().Enhancements.EXCombatEngineering.Radius)
-            local units2 = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH2, self:GetPosition(), self:GetBlueprint().Enhancements.EXCombatEngineering.Radius)
-            local units3 = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH3, self:GetPosition(), self:GetBlueprint().Enhancements.EXCombatEngineering.Radius)
-            
-            #Give them a 5 second regen buff
+            -- Own land mobile units around the ACU; COMMAND union keeps the ACU itself in
+            local units = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), (categories.LAND * categories.MOBILE) + categories.COMMAND, self:GetPosition(), v.radius)
             for _,unit in units do
-                Buff.ApplyBuff(unit, 'SeraphimACURegenAura')
+                if not unit.Dead then
+                    -- EXPERIMENTAL is checked before TECH3 because T4 experiments also carry TECH3
+                    local sClass = 't1'
+                    if EntityCategoryContains(categories.COMMAND, unit) then
+                        sClass = 'cmd'
+                    elseif EntityCategoryContains(categories.EXPERIMENTAL, unit) then
+                        sClass = 't4'
+                    elseif EntityCategoryContains(categories.TECH3, unit) then
+                        sClass = 't3'
+                    elseif EntityCategoryContains(categories.TECH2, unit) then
+                        sClass = 't2'
+                    end
+                    Buff.ApplyBuff(unit, 'MNBSeraRegenField' .. iTier .. sClass)
+                end
             end
-            for _,unit in units2 do
-                Buff.ApplyBuff(unit, 'SeraphimACURegenAura2')
-            end
-            for _,unit in units3 do
-                Buff.ApplyBuff(unit, 'SeraphimACURegenAura3')
-            end
-            
-            #Wait 5 seconds
             WaitSeconds(5)
         end
     end,
+
+    RegenBuffThread = function(self)
+        self:MNBRegenFieldThread(1)
+    end,
        
     AdvancedRegenBuffThread = function(self)
-        while not self:IsDead() do
-            #Get friendly units in the area (including self)
-            local units = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH1, self:GetPosition(), self:GetBlueprint().Enhancements.EXAssaultEngineering.Radius)
-            local units2 = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH2, self:GetPosition(), self:GetBlueprint().Enhancements.EXAssaultEngineering.Radius)
-            local units3 = AIUtils.GetOwnUnitsAroundPoint(self:GetAIBrain(), categories.TECH3, self:GetPosition(), self:GetBlueprint().Enhancements.EXAssaultEngineering.Radius)
-            
-            #Give them a 5 second regen buff
-            for _,unit in units do
-                Buff.ApplyBuff(unit, 'SeraphimAdvancedACURegenAura')
-            end
-            for _,unit in units2 do
-                Buff.ApplyBuff(unit, 'SeraphimAdvancedACURegenAura2')
-            end
-            for _,unit in units3 do
-                Buff.ApplyBuff(unit, 'SeraphimAdvancedACURegenAura3')
-            end
-            
-            #Wait 5 seconds
-            WaitSeconds(5)
-        end
+        self:MNBRegenFieldThread(2)
     end,
 
     CreateEnhancement = function(self, enh)
@@ -1131,60 +1149,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXCombatEngineering' then
             local bp = self:GetBlueprint().Enhancements[enh]
-            if not Buffs['SeraphimACURegenAura'] then
-                BuffBlueprint {
-                    Name = 'SeraphimACURegenAura',
-                    DisplayName = 'SeraphimACURegenAura',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-                
-            end
-            if not Buffs['SeraphimACURegenAura2'] then
-                BuffBlueprint {
-                    Name = 'SeraphimACURegenAura2',
-                    DisplayName = 'SeraphimACURegenAura2',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond2 or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-                
-            end
-            if not Buffs['SeraphimACURegenAura3'] then
-                BuffBlueprint {
-                    Name = 'SeraphimACURegenAura3',
-                    DisplayName = 'SeraphimACURegenAura3',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond3 or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-                
-            end
+            -- M&B: aura buffs are created inside RegenBuffThread now
             table.insert( self.ShieldEffectsBag, CreateAttachedEmitter( self, 'XSL0001', self:GetArmy(), '/effects/emitters/seraphim_regenerative_aura_01_emit.bp' ) )
             self.RegenThreadHandle = self:ForkThread(self.RegenBuffThread)
             local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
@@ -1266,57 +1231,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
                 
             end
             local bp = self:GetBlueprint().Enhancements[enh]
-            if not Buffs['SeraphimAdvancedACURegenAura'] then
-                BuffBlueprint {
-                    Name = 'SeraphimAdvancedACURegenAura',
-                    DisplayName = 'SeraphimAdvancedACURegenAura',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-            end
-            if not Buffs['SeraphimAdvancedACURegenAura2'] then
-                BuffBlueprint {
-                    Name = 'SeraphimAdvancedACURegenAura2',
-                    DisplayName = 'SeraphimAdvancedACURegenAura2',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond2 or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-            end
-            if not Buffs['SeraphimAdvancedACURegenAura3'] then
-                BuffBlueprint {
-                    Name = 'SeraphimAdvancedACURegenAura3',
-                    DisplayName = 'SeraphimAdvancedACURegenAura3',
-                    BuffType = 'COMMANDERAURA',
-                    Stacks = 'REPLACE',
-                    Duration = 5,
-                    Affects = {
-                        RegenPercent = {
-                            Add = 0,
-                            Mult = bp.RegenPerSecond3 or 0.1,
-                            Ceil = bp.RegenCeiling,
-                            Floor = bp.RegenFloor,
-                        },
-                    },
-                }
-            end
+            -- M&B: aura buffs are created inside AdvancedRegenBuffThread now
             table.insert( self.ShieldEffectsBag, CreateAttachedEmitter( self, 'XSL0001', self:GetArmy(), '/effects/emitters/seraphim_regenerative_aura_01_emit.bp' ) )
             self.AdvancedRegenThreadHandle = self:ForkThread(self.AdvancedRegenBuffThread)
             local cat = ParseEntityCategory(bp.BuildableCategoryAdds)

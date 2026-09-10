@@ -74,7 +74,7 @@ UnitBlueprint {
             PassOverkillDamage = true,
             RegenAssistMult = 60,
             ShieldEnergyDrainRechargeTime = 4,
-            ShieldMaxHealth = 1200,
+            ShieldMaxHealth = 1600,
             ShieldRechargeTime = 10,
             ShieldRegenRate = 40,
             ShieldRegenStartTime = 0.5,

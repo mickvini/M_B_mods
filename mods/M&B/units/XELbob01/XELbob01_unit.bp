@@ -60,11 +60,11 @@ UnitBlueprint {
     BuildIconSortPriority = 30,
     Buffs = {
         Regen = {
-            Level1 = 3,
-            Level2 = 6,
-            Level3 = 9,
-            Level4 = 12,
-            Level5 = 15,
+            Level1 = 10,
+            Level2 = 20,
+            Level3 = 30,
+            Level4 = 40,
+            Level5 = 50,
         },
     },
     Categories = {
@@ -91,8 +91,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Normal',
-        Health = 13600,
-        MaxHealth = 13600,
+        Health = 14800,
+        MaxHealth = 14800,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 27,
@@ -186,7 +186,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 6890,
+        BuildCostMass = 4200,
         BuildTime = 7500,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,
@@ -281,7 +281,7 @@ UnitBlueprint {
             AboveWaterTargetsOnly = true,
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = true,
-            Damage = 14,
+            Damage = 24,
             DamageFriendly = true,
             DamageRadius = 4,
             DamageType = 'Normal',

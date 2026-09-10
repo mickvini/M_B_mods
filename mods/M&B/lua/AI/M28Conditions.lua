@@ -4908,3 +4908,26 @@ function IsCloseToPacifistUnit(tPosition, iOptionalDistThreshold)
     return false
 end
 
+
+--M&B (user, 2026-09-10): dynamic land-factory cap bonus. The hard caps (land 10 / air 4 / naval 2, 2026-07-30)
+--stop factory spam, but a capped bot sitting on overflowing mass storage just banks mass it cant spend - the
+--player simply out-waits the cap, builds 12 factories and wins. While the brain's mass storage stays effectively
+--full the land cap creeps up +1 at a time (10 -> 11 -> 12, ...): every 60s of sustained overflow grants +1;
+--once storage drops below the threshold the bonus decays -1 per 60s so the cap tightens again. Called from both
+--cap sites (ConsiderActionToAssign in M28Engineer.lua, ACUActionBuildFactory in M28ACU.lua); the time gate keeps
+--it independent of how often those fire. Tunables: 60s interval, 0.9 stored-ratio threshold.
+function MNBGetFactoryOverflowBonus(aiBrain)
+    if not(aiBrain and M28Utilities.IsMBModActive()) then return 0 end
+    local iNow = GetGameTimeSeconds()
+    if not aiBrain.iMNBFacOverflowSince then aiBrain.iMNBFacOverflowSince = iNow end
+    aiBrain.iMNBFacOverflowBonus = aiBrain.iMNBFacOverflowBonus or 0
+    if iNow - aiBrain.iMNBFacOverflowSince >= 60 then
+        aiBrain.iMNBFacOverflowSince = iNow
+        if (aiBrain:GetEconomyStoredRatio('MASS') or 0) >= 0.9 then
+            aiBrain.iMNBFacOverflowBonus = aiBrain.iMNBFacOverflowBonus + 1
+        elseif aiBrain.iMNBFacOverflowBonus > 0 then
+            aiBrain.iMNBFacOverflowBonus = aiBrain.iMNBFacOverflowBonus - 1
+        end
+    end
+    return aiBrain.iMNBFacOverflowBonus
+end

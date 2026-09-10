@@ -36,7 +36,11 @@ UALBob01 = Class(ALandUnit) {
                     bp.SizeX * 0.5, (bp.SizeY + (bp.CollisionOffsetYTall or 0) - (bp.CollisionOffsetY or 0) ) * 0.5, bp.SizeZ * 0.5)
         self:DisableShield()
         self:ToggleAAGuns(false)
+        --M&B: AI deployment is managed by MNBBattlegroups.ManageMNBPointDefense (drive to a key
+        --position first, THEN deploy there and hold forever). Do NOT auto-deploy here: a unit deployed
+        --at the factory has DefenseModeMaxSpeedMult=0 and can never start moving again.
     end,
+
     OnScriptBitSet = function(self, bit)
         ALandUnit.OnScriptBitSet(self, bit)
         if bit == 1 and self:GetCurrentLayer() == 'Land' then

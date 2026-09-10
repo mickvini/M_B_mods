@@ -176,7 +176,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 24580,
+        BuildCostMass = 19600,
         BuildTime = 101840,
     },
     General = {
@@ -306,7 +306,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'EyeWeapon',
-            MaxRadius = 40,
+            MaxRadius = 45,
             MinRadius = 10,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,

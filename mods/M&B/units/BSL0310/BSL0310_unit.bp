@@ -34,11 +34,11 @@ UnitBlueprint {
     BuildIconSortPriority = 163,
     Buffs = {
         Regen = {
-            Level1 = 2,
-            Level2 = 4,
-            Level3 = 6,
-            Level4 = 8,
-            Level5 = 10,
+            Level1 = 15,
+            Level2 = 30,
+            Level3 = 45,
+            Level4 = 60,
+            Level5 = 80,
         },
     },
     Categories = {
@@ -49,7 +49,7 @@ UnitBlueprint {
         'SERAPHIM',
         'MOBILE',
         'LAND',
-        'TECH2',
+        'TECH3',
         'DIRECTFIRE',
         'VISIBLETORECON',
         'RECLAIMABLE',
@@ -59,8 +59,8 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Bot 2,0',
-        Health = 580,
-        MaxHealth = 580,
+        Health = 3600,
+        MaxHealth = 3600,
         RegenRate = 0,
         AirThreatLevel = 0,
         SurfaceThreatLevel = 35,
@@ -68,7 +68,7 @@ UnitBlueprint {
         EconomyThreatLevel = 0,
             dontOKControl = true,
     },
-    Description = '<LOC BSL0310_desc>Тяжёлый бот T2',
+    Description = '<LOC BSL0310_desc>Тяжёлый бот T3',
     Display = {
     	Abilities = {
             '<LOC ability_lam>Lambda Field',
@@ -213,7 +213,7 @@ UnitBlueprint {
     SizeX = 1,
     SizeY = 1.4,
     SizeZ = 0.9,
-    StrategicIconName = 'icon_bot2_directfire',
+    StrategicIconName = 'icon_bot3_directfire',
     StrategicIconSortPriority = 125,
     CollisionOffsetZ = 0,
     Transport = {
@@ -239,7 +239,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 90,
+            Damage = 210,
             DamageRadius = 2,
             DamageType = 'Normal',
             DisplayName = 'Aire-au Bolter',
@@ -250,7 +250,7 @@ UnitBlueprint {
             FiringRandomness = 0.2,
             FiringTolerance = 2,
             Label = 'MainGun',
-            MaxRadius = 25,
+            MaxRadius = 35,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,

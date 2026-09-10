@@ -5,7 +5,7 @@
 #**
 #**  Summary  :  UEF Experimental Assault Bot Script
 #**
-#**  Copyright © 2009.
+#**  Copyright ï¿½ 2009.
 #****************************************************************************
 
 #Misc Local files
@@ -427,7 +427,7 @@ uel0402 = Class(TWalkingLandUnit) {
         end        
     end,
 
-    DeathThread = function(self)
+    DeathThread = function(self, overkillRatio)
         #Removes autocannon barrel spin effects
         if self.SpinManip then
             self.unit.Trash:Add(self.SpinManip)
@@ -441,7 +441,7 @@ uel0402 = Class(TWalkingLandUnit) {
    
         # Removes the unwanted bones and starts the corpse effects
         self:HideBone('body', true)
-        self:CreateWreckage(Random(0.1,1))
+        self:CreateWreckage(overkillRatio)
         self:Destroy()
     end,
 

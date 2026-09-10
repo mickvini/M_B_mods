@@ -451,7 +451,7 @@ UnitBlueprint {
         },
         {
             CollideFriendly = false,
-            Damage = 0,
+            Damage = 1,
             DamageFriendly = false,
             DamageRadius = 0,
             DamageType = 'Normal',

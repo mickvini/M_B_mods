@@ -18,12 +18,12 @@ local M28Team = import('/mods/M&B/lua/AI/M28Team.lua')
 --Using refCategoryLandExperimental (EXPERIMENTAL) wrongly treats T4 factory tanks as experimentals -> excludes them
 --from the spare pool and flags them pending-strike -> no escorts for strikes -> army piles at base. This separates them.
 local refCategoryMNBFieldExp = categories.NEEDMOBILEBUILD * categories.MOBILE * categories.LAND
---M&B: T4 factory-built indirect-fire artillery (e.g. SRL0311 Cybran rocket artillery). It slips through M28's
---combat categories (indirect only counts as T1 in refCategoryLandCombat; and it's subtracted from
---refCategoryLandExperimental), so the bot builds it but only the REACTIVE M28 indirect logic touches it -> it
---idles on the rear base instead of marching with the army. Adding it to the strike spare pool marches it to the
---front; being slow + long-range it naturally trails behind the main force, as artillery should.
-local refCategoryMNBT4Artillery = categories.EXPERIMENTAL * categories.INDIRECTFIRE * categories.MOBILE * categories.LAND - categories.DIRECTFIRE
+--M&B: T4 factory-built artillery (SRL0311 Cybran rocket artillery). It slips through M28's experimental
+--categories (factory-built, so refCategoryLandExperimental subtracts it), so without this the bot only
+--marches it via the generic spare pool. NOTE: SRL0311 is DIRECTFIRE in its blueprint (no INDIRECTFIRE tag),
+--so a category of EXPERIMENTAL*INDIRECTFIRE-DIRECTFIRE matched NOTHING and the artillery wave never fired.
+--Match the unit ID directly instead (M&B-only unit; this module runs only when the mod is active).
+local refCategoryMNBT4Artillery = categories.srl0311
 
 -- ===== Tunables =====
 local TICK = 5              -- seconds between manager ticks
@@ -31,7 +31,7 @@ local STARTUP_WAIT = 12     -- seconds to wait before first tick (let team/map d
 local RAID_BASE = 10        -- base raid party size
 local STRIKE_BASE = 30      -- base strike group size
 local ESCALATE_X = 2        -- multiply required size by this on failure
-local RAID_CAP = 80         -- max raid party size
+local RAID_CAP = 30         -- max raid party size (user, 2026-09-10: ladder 10-20-30, not x2 forever)
 local STRIKE_CAP = 120      -- max strike group size
 local FAIL_GRACE = 25       -- min seconds after launch before a wipe counts as failure
 local STRIKE_LONG = 90      -- strike that survives longer than this is treated as success (reset)
@@ -43,6 +43,15 @@ local EXP_STRIKE_ESCORT_MIN = 10  -- if an exp is waiting, form a strike with at
 local MAX_PENDING_EXPS = 5  -- cap experimentals held 'pending-strike' so they dont ALL pile at base if no strike forms (e.g. bot has 0 tanks)
 local RIFT_STRIKE_SIZE = 15  --M&B: rift-gate (BSB2402) free units are ~0 mass, so M28 undervalues their threat and leaves them idle at the gate. Once this many rift bots gather, send them as their own wave to the enemy base (ignoring the defense reserve - they're free).
 local ARTILLERY_STRIKE_MIN = 3  --M&B: T4 factory artillery (SRL0311 etc.) gets its OWN wave to the front once this many gather, separate from the 30-slot strike (which left spare nearly empty -> arty piled on the base). Slow + long-range, so it trails behind the main force.
+local STARVE_TIMEOUT = 120    -- deadlock breaker: if no strike can FORM for this long (pool below required+reserve), launch with the units available and reset the required size
+local REISSUE_INTERVAL = 30   -- re-issue aggressive-move to strike members still far from the target every this many seconds (IssueTracked* is one-shot; stuck units never resume on their own)
+local REISSUE_DIST = 80       -- strike members closer than this to the target are considered engaged; no re-issue (don't interrupt their targeting)
+local IDLE_SWEEP_INTERVAL = 180 -- base idle sweep (user): every 3 minutes check for combat units doing nothing at the base
+local IDLE_SWEEP_MIN = 10     -- more than this many ungrouped combat units within IDLE_SWEEP_RADIUS of the bot's own start position -> send them ALL to attack
+local IDLE_SWEEP_RADIUS = 150 -- what counts as "at the base" (from the bot's start position)
+local POINT_DEFENSE_ARRIVE_DIST = 25 -- ualbob01 is considered arrived at its key position within this distance
+local POINT_DEFENSE_TIMEOUT = 240    -- if not arrived after this long (unreachable target), deploy wherever it stands
+local POINT_DEFENSE_REISSUE = 30     -- re-issue the move order while en route every this many seconds
 local bDebug = true
 
 -- Per-unit flag. Also referenced by M28Land.lua skip; keep the key string in sync.
@@ -403,7 +412,28 @@ local function FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
         local bExpWaiting = (table.getn(tPendingExps) > 0)
         local iNeed = iStrikeReq
         if bExpWaiting and iNeed > EXP_STRIKE_ESCORT_MIN then iNeed = EXP_STRIKE_ESCORT_MIN end
-        if (table.getn(tSpare) - iNeed) >= MIN_RESERVE then
+        local bCanForm = (table.getn(tSpare) - iNeed) >= MIN_RESERVE
+        --M&B: STARVATION DEADLOCK BREAKER. Wipes escalate the required strike size (x2 up to STRIKE_CAP=120),
+        --and forming needs spare >= required+MIN_RESERVE (=136 at cap). Once escalation outruns what the army
+        --can ever pool, NO strike forms again (nothing resets the requirement), the whole army piles at the
+        --front while only small raids still go out - the "T4s accumulate forever, random singles attack"
+        --symptom. If we could launch a base-size strike but haven't been able to meet the escalated
+        --requirement for STARVE_TIMEOUT seconds, launch with what's available and reset the size to base.
+        if not bCanForm and (table.getn(tSpare) - MIN_RESERVE) >= STRIKE_BASE then
+            local iNow = GetGameTimeSeconds()
+            if not aiBrain.iMNBStarveSince then
+                aiBrain.iMNBStarveSince = iNow
+            elseif (iNow - aiBrain.iMNBStarveSince) >= STARVE_TIMEOUT then
+                iNeed = math.min(STRIKE_CAP, math.max(STRIKE_BASE, table.getn(tSpare) - MIN_RESERVE))
+                bCanForm = true
+                aiBrain.iMNBStrikeRequired = STRIKE_BASE
+                aiBrain.iMNBStarveSince = nil
+                DBG('strike STARVED ' .. STARVE_TIMEOUT .. 's below required size -> launching with ' .. iNeed .. ' available units, requirement reset to ' .. STRIKE_BASE)
+            end
+        else
+            aiBrain.iMNBStarveSince = nil
+        end
+        if bCanForm then
             local tRoster = TakeUnits(tSpare, iNeed)
             -- attach waiting experimentals to the wave
             for i, oExp in tPendingExps do
@@ -442,7 +472,8 @@ local function FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
     end
 end
 
--- Called from M28Land.lua (~7226) to route an idle experimental into a strike group instead of lone-attacking.
+-- Route an experimental into a strike group instead of lone-attacking. Called from this module's own claim
+-- logic (ClaimIdleExperimentals) every tick. (An older M28Land.lua ~7226 intercept no longer exists.)
 function AttachExperimentalToStrikeGroup(oUnit, iTeam)
     if not oUnit or oUnit.Dead then return end
     local aiBrain = oUnit:GetAIBrain()
@@ -472,7 +503,9 @@ end
 local function ClaimIdleExperimentals(aiBrain)
     local tUnits = aiBrain:GetListOfUnits(refCategoryMNBFieldExp, false, false)
     if not tUnits then return end
-    -- count experimentals already held pending-strike; cap so excess exps go to M28 (prevent pile-up)
+    --M&B: while a strike is MARCHING, attach EVERY exp to it (escorted) - exps left to M28 solo-rush
+    --straight into the enemy. The pending cap only applies when no strike is active (no-strike pile-up guard).
+    local bStrikeActive = HasActiveStrike(aiBrain.tMNBBattlegroups)
     local iPending = 0
     for i, oExp in tUnits do
         if oExp and not(oExp.Dead) and oExp[refiMNBBGroup] == 'pending-strike' then iPending = iPending + 1 end
@@ -481,11 +514,117 @@ local function ClaimIdleExperimentals(aiBrain)
         if oExp and not(oExp.Dead) and M28UnitInfo.IsUnitValid(oExp)
                 and oExp[refiMNBBGroup] == nil
                 and oExp:GetFractionComplete() >= 1 then
-            if iPending < MAX_PENDING_EXPS then
+            if bStrikeActive or iPending < MAX_PENDING_EXPS then
                 AttachExperimentalToStrikeGroup(oExp, aiBrain.M28Team)
                 if oExp[refiMNBBGroup] == 'pending-strike' then iPending = iPending + 1 end
             end
             -- else: leave the exp unflagged -> M28 handles it (doesnt pile at base waiting for a strike)
+        end
+    end
+end
+
+--M&B: base idle sweep (user): units standing at the base are doing nothing for the war effort (observed
+--with two rift gates outproducing what the waves ship out). Every IDLE_SWEEP_INTERVAL seconds, count
+--completed, valid, ungrouped land-combat units within IDLE_SWEEP_RADIUS of the bot's own start position;
+--if more than IDLE_SWEEP_MIN are idling there, launch them ALL as an attack wave on the enemy base.
+--Launched as role 'strike' so the wave rides the existing resolve/re-issue machinery; its 90s survival
+--reset also de-escalates the strike requirement, keeping regular strikes forming at base size.
+local function SweepIdleBaseUnits(aiBrain, tEnemyBasePos)
+    if not tEnemyBasePos then return end
+    local tBasePos = M28Map.GetPlayerStartPosition(aiBrain)
+    if not tBasePos then return end
+    local tIdle = {}
+    local tUnits = aiBrain:GetListOfUnits(M28UnitInfo.refCategoryLandCombat + refCategoryMNBT4Artillery, false, false)
+    if tUnits then
+        for i, oUnit in tUnits do
+            if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
+                    and oUnit[refiMNBBGroup] == nil
+                    and oUnit:GetFractionComplete() >= 1
+                    and not(EntityCategoryContains(refCategoryMNBFieldExp, oUnit.UnitId))
+                    and M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), tBasePos) <= IDLE_SWEEP_RADIUS then
+                table.insert(tIdle, oUnit)
+            end
+        end
+    end
+    if table.getn(tIdle) <= IDLE_SWEEP_MIN then return end
+    local tG = { role = 'strike', targetPos = tEnemyBasePos, basePos = tEnemyBasePos, huntingACU = false, roster = tIdle, launchedCount = table.getn(tIdle), launchTime = GetGameTimeSeconds(), state = 'launched' }
+    for i, oUnit in tIdle do
+        oUnit[refiMNBBGroup] = tG
+        M28Orders.IssueTrackedAggressiveMove(oUnit, tEnemyBasePos, 6, false, 'MNBIdleSweep')
+    end
+    table.insert(aiBrain.tMNBBattlegroups, tG)
+    DBG('idle sweep: ' .. table.getn(tIdle) .. ' units idling at base -> sent ALL to attack')
+end
+
+--M&B: UALBob01 (Aeon mobile defense platform, a NEEDMOBILEBUILD exp) point-defense doctrine (user, 2026-09-10).
+--It must NOT deploy where it was built: deployed means DefenseModeMaxSpeedMult=0, so a unit deployed at the
+--factory can never leave (the old "deploy on idle" watcher glued them there). Instead: drive somewhere worth
+--defending FIRST, then deploy and hold forever. Targets (user): the 1st unit anchors the FRONT (halfway to the
+--enemy base - its 8200 shield + 4 AA guns cover the push); every later unit guards one of the bot's own
+--expansion mex clusters (anti-raid). Units are flagged with refiMNBBGroup so M28/strikes/idle-sweep never
+--re-task them; deployment is final - a deployed platform holding ground IS the point.
+local function GetExpansionMexPos(aiBrain, tBasePos, iCount)
+    local tMexes = aiBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex, tBasePos, 600, 'Ally')
+    if not tMexes then return nil end
+    local tOuter = {}
+    for i, oMex in tMexes do
+        if oMex and not(oMex.Dead)
+                and M28Utilities.GetDistanceBetweenPositions(oMex:GetPosition(), tBasePos) > 120 then
+            table.insert(tOuter, oMex)
+        end
+    end
+    if table.getn(tOuter) == 0 then return nil end
+    -- nearest-first so successive platforms spread across the expansion ring instead of stacking
+    table.sort(tOuter, function(a, b)
+        return M28Utilities.GetDistanceBetweenPositions(a:GetPosition(), tBasePos) < M28Utilities.GetDistanceBetweenPositions(b:GetPosition(), tBasePos)
+    end)
+    local k = iCount - 2
+    if k < 0 then k = 0 end
+    local oMex = tOuter[math.mod(k, table.getn(tOuter)) + 1]
+    return oMex:GetPosition()
+end
+
+local function ManageMNBPointDefense(aiBrain, tEnemyBasePos)
+    local tBobs = aiBrain:GetListOfUnits(categories.ualbob01, false, false)
+    if not tBobs then return end
+    local tBasePos = M28Map.GetPlayerStartPosition(aiBrain)
+    if not tBasePos then return end
+    local iNow = GetGameTimeSeconds()
+    for i, oUnit in tBobs do
+        if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
+                and oUnit:GetFractionComplete() >= 1 then
+            if oUnit.MNBPointDefense == nil then
+                -- pick the target: 1st platform -> front toward the enemy; later ones -> own expansion mexes
+                aiBrain.iMNBPointDefenseCount = (aiBrain.iMNBPointDefenseCount or 0) + 1
+                local tTarget = nil
+                if aiBrain.iMNBPointDefenseCount == 1 and tEnemyBasePos then
+                    tTarget = { tBasePos[1] + (tEnemyBasePos[1] - tBasePos[1]) * 0.5, 0, tBasePos[3] + (tEnemyBasePos[3] - tBasePos[3]) * 0.5 }
+                end
+                if not tTarget then
+                    tTarget = GetExpansionMexPos(aiBrain, tBasePos, aiBrain.iMNBPointDefenseCount)
+                end
+                if tTarget then
+                    oUnit.MNBPointDefense = { target = tTarget, assignedAt = iNow, lastMove = 0 }
+                    oUnit[refiMNBBGroup] = 'MNBPointDefense'  -- keep M28/strikes/idle-sweep away from it
+                    M28Orders.IssueTrackedMove(oUnit, tTarget, 0, false, 'MNBPointDef')
+                    DBG('point defense: ualbob01 #' .. aiBrain.iMNBPointDefenseCount .. ' sent to hold a key position')
+                else
+                    aiBrain.iMNBPointDefenseCount = aiBrain.iMNBPointDefenseCount - 1  -- no target found; retry next tick
+                end
+            elseif not oUnit.MNBPointDefense.deployed then
+                local tT = oUnit.MNBPointDefense.target
+                local iDist = M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), tT)
+                if iDist <= POINT_DEFENSE_ARRIVE_DIST or (iNow - oUnit.MNBPointDefense.assignedAt) >= POINT_DEFENSE_TIMEOUT then
+                    oUnit.MNBPointDefense.deployed = true
+                    if oUnit.DefenseMode ~= true then
+                        oUnit:SetScriptBit('RULEUTC_WeaponToggle', true)  -- canonical button path (shield, AA, radii)
+                    end
+                    DBG('point defense: ualbob01 deployed and holding')
+                elseif (iNow - (oUnit.MNBPointDefense.lastMove or 0)) >= POINT_DEFENSE_REISSUE then
+                    oUnit.MNBPointDefense.lastMove = iNow
+                    M28Orders.IssueTrackedMove(oUnit, tT, 0, false, 'MNBPointDefRT')
+                end
+            end
         end
     end
 end
@@ -496,6 +635,7 @@ end
 local function UpdateStrikes(aiBrain, iTeam)
     local tGroups = aiBrain.tMNBBattlegroups
     if not tGroups then return end
+    local iNow = GetGameTimeSeconds()
     local iKeep = {}
     for i, tG in tGroups do
         if tG.role ~= 'strike' then
@@ -546,7 +686,21 @@ local function UpdateStrikes(aiBrain, iTeam)
                     DBG('base cleared, ACU unknown -> freeing roster for next threat')
                 end
             else
-                table.insert(iKeep, tG)  -- base still has targets; keep pressing
+                -- base still has targets; keep pressing
+                --M&B: periodic re-issue for stalled members. IssueTracked* orders are one-shot; a member that
+                --got stuck on pathing (or had its order eaten) never resumes on its own and drops out of the
+                --march. Every REISSUE_INTERVAL seconds re-issue the aggressive-move to members still far from
+                --the target. Members already at the base (fighting) are left alone to not interrupt targeting.
+                if (not tG.lastReissueTime) or (iNow - tG.lastReissueTime) >= REISSUE_INTERVAL then
+                    tG.lastReissueTime = iNow
+                    for j, oUnit in tG.roster do
+                        if oUnit and not(oUnit.Dead) and M28UnitInfo.IsUnitValid(oUnit)
+                                and M28Utilities.GetDistanceBetweenPositions(oUnit:GetPosition(), tG.targetPos) > REISSUE_DIST then
+                            M28Orders.IssueTrackedAggressiveMove(oUnit, tG.targetPos, 6, false, 'MNBStrikeReissue')
+                        end
+                    end
+                end
+                table.insert(iKeep, tG)
             end
         end
     end
@@ -561,12 +715,23 @@ local function TickSafe(aiBrain)
     if not aiBrain.iMNBRaidRequired then aiBrain.iMNBRaidRequired = RAID_BASE end
 
     ResolveGroups(aiBrain, aiBrain.tMNBBattlegroups)
+    local tEnemyBasePos = GetEnemyBasePos(aiBrain, iTeam)
+    --M&B: claim point-defense platforms BEFORE ClaimIdleExperimentals (ualbob01 is a NEEDMOBILEBUILD exp,
+    --so the exp-claimer would otherwise grab it as pending-strike cargo)
+    ManageMNBPointDefense(aiBrain, tEnemyBasePos)
     ClaimIdleExperimentals(aiBrain)
     UpdateStrikes(aiBrain, iTeam)
     local tGroups = aiBrain.tMNBBattlegroups
-    local tEnemyBasePos = GetEnemyBasePos(aiBrain, iTeam)
     local tSpare = GetSpareCombatUnits(aiBrain)
     FormGroups(aiBrain, iTeam, tGroups, tSpare, tEnemyBasePos)
+
+    --M&B: periodic base idle sweep (user): every IDLE_SWEEP_INTERVAL seconds, if >IDLE_SWEEP_MIN combat
+    --units are idling at the base, send them all to attack.
+    local iNow = GetGameTimeSeconds()
+    if (not aiBrain.iMNBIdleSweepAt) or (iNow - aiBrain.iMNBIdleSweepAt) >= IDLE_SWEEP_INTERVAL then
+        aiBrain.iMNBIdleSweepAt = iNow
+        SweepIdleBaseUnits(aiBrain, tEnemyBasePos)
+    end
 end
 
 -- Thread entry (forked from aibrain.lua OnCreateAI).

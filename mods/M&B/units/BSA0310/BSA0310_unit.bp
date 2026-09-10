@@ -77,11 +77,11 @@ UnitBlueprint {
     BuildIconSortPriority = 235,
     Buffs = {
         Regen = {
-            Level1 = 3,
-            Level2 = 6,
-            Level3 = 9,
-            Level4 = 12,
-            Level5 = 15,
+            Level1 = 10,
+            Level2 = 20,
+            Level3 = 30,
+            Level4 = 40,
+            Level5 = 50,
         },
     },
     Categories = {
@@ -92,7 +92,7 @@ UnitBlueprint {
         'SERAPHIM',
         'MOBILE',
         'AIR',
-        'TECH2',
+        'TECH3',
         'GROUNDATTACK',
         'VISIBLETORECON',
         'RECLAIMABLE',
@@ -101,15 +101,15 @@ UnitBlueprint {
     },
     Defense = {
         ArmorType = 'Light',
-        Health = 1840,
-        MaxHealth = 1840,
+        Health = 2850,
+        MaxHealth = 2850,
         RegenRate = 0,
         AirThreatLevel = 3,
         SurfaceThreatLevel = 60,
         SubThreatLevel = 0,
         EconomyThreatLevel = 20,
     },
-    Description = '<LOC BSA0310_desc>Воздушный штурмовик T2',
+    Description = '<LOC BSA0310_desc>Воздушный штурмовик T3',
     Display = {
     	Abilities = {
             '<LOC ability_aa>Anti-Air',
@@ -232,7 +232,7 @@ UnitBlueprint {
     SizeX = 1,
     SizeY = 0.5,
     SizeZ = 1,
-    StrategicIconName = 'icon_gunship2_directfire',
+    StrategicIconName = 'icon_gunship3_directfire',
     StrategicIconSortPriority = 65,
     AverageDensity = 1,
     CollisionOffsetY = -0.075,

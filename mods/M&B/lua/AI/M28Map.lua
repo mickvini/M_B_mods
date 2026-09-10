@@ -8341,8 +8341,8 @@ function RecordAvailableMassStorageLocationsForLandZone(iPlateau, iLandZone)
     --M&B: also precompute storage locations next to FABRICATORS so fabs get surrounded by storage (adjacency mass boost) - exactly mirroring the mex loop above. Vanilla only did this for mexes, so fabs had ZERO valid storage positions (storUC=0, 'near fabs not even laid down'). Scan the bot's fabs at the 4 cardinal offsets (±2, like mexes); CanBuildStorageAtLocation validates each so only buildable spots are added.
     if M28Utilities.IsMBModActive() then
         local tiFabOffset = {{-2,0}, {0,-2}, {0,2}, {2,0}}
-        for iFabArmy, oFabBrain in ArmyBrains do --ALL brains, but zone-scoped below so each zone only sees fabs IN IT (the zone owner's fabs) - prevents the cross-brain bug where bots built storage at each other's fabs (fabs from GetFirstActiveBrain were shared across all zones).
-            if oFabBrain and oFabBrain.GetListOfUnits and not(oFabBrain:IsDefeated()) then
+        for iFabArmy, oFabBrain in ArmyBrains do --ALL AI brains, but zone-scoped below so each zone only sees fabs IN IT (the zone owner's fabs) - prevents the cross-brain bug where bots built storage at each other's fabs (fabs from GetFirstActiveBrain were shared across all zones). M&B (2026-09-10, user): HUMAN brains are skipped entirely - bots must not surround the player's fabricators with storage (the engineer-side prune drops human-mex spots the same way).
+            if oFabBrain and oFabBrain.GetListOfUnits and not(oFabBrain:IsDefeated()) and oFabBrain.BrainType ~= 'Human' then
                 local tMNBFabs = oFabBrain:GetListOfUnits(M28UnitInfo.refCategoryMassFab, false, false) or {}
                 for _, oFab in tMNBFabs do
                     if oFab and oFab.GetPosition then

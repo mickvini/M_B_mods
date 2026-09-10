@@ -5,7 +5,7 @@
 #**
 #**  Summary  :  Seraphim Gunship Script
 #**
-#**  Copyright © 2007 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2007 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
 local SAirUnit = import('/lua/seraphimunits.lua').SAirUnit
@@ -45,7 +45,6 @@ BSA0310 = Class(SAirUnit) {
             self:ForkThread(self.LaunchEffects)
             self:SetMaintenanceConsumptionActive()
             self:ForkThread(self.ResourceThread)
-            self:SetVeterancy(5)
 
             -- Global Varibles--
             self.LaunchExhaustEffectsBag = {}

@@ -136,7 +136,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 5120,
+        BuildCostMass = 3280,
         BuildTime = 7500,
     },
     General = {
@@ -250,7 +250,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 600,
+            Damage = 720,
             DamageRadius = 1.5,
             DamageType = 'Normal',
             DisplayName = 'Gauss Cannon',

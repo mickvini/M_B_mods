@@ -107,7 +107,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 17400,
+        BuildCostMass = 10440,
         BuildTime = 42300,
         MaintenanceConsumptionPerSecondEnergy = 850,
         RebuildBonusIds = {
@@ -223,7 +223,7 @@ UnitBlueprint {
             CameraShakeMin = 0,
             CameraShakeRadius = 50,
             CollideFriendly = false,
-            Damage = 300,
+            Damage = 600,
             DamageRadius = 4,
             DamageType = 'Normal',
             DisplayName = 'Sonance Artillery',

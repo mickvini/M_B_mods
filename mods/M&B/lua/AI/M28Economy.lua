@@ -93,9 +93,12 @@ function UpgradeUnit(oUnitToUpgrade, bUpdateUpgradeTracker, iOptionalWait)
         if oMNBFacBrain then
             iMNBTotalMex = (oMNBFacBrain:GetCurrentUnits(M28UnitInfo.refCategoryMex) or 0)
             --M&B: target-tier mexes (T1->T2 fac needs T2 mexes; T2->T3 fac needs T3 mexes), not T2+T3. When T3 opens all mexes are already T2, so 'T2+T3' was instantly satisfied -> factories didnt wait for the T2->T3 mex upgrade.
+            --M&B (2026-09-10 fix): for a T1 factory count ALL mexes above T1 (T2 and T3), not exactly-T2. Once the
+            --mex sweep moves the base's mexes on to T3, the exactly-T2 count collapses to 0 - so a factory BUILT
+            --after that point never passed the gate and stayed T1 forever ("old ones upgrade, new ones stay T1").
             local iMNBFacTech = M28UnitInfo.GetUnitTechLevel(oUnitToUpgrade)
             local iMNBTargetMexCat
-            if iMNBFacTech == 1 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH2
+            if iMNBFacTech == 1 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex - categories.TECH1
             elseif iMNBFacTech == 2 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH3 end
             if iMNBTargetMexCat then iMNBTargetMex = (oMNBFacBrain:GetCurrentUnits(iMNBTargetMexCat) or 0) end
         end

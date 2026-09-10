@@ -10421,8 +10421,13 @@ function ManageCombatUnitsInLandZone(tLZData, tLZTeamData, iTeam, iPlateau, iLan
 
                     if oEnemyToFocusOn then
                         local iCurAssignedThreat = 0
+                        --M&B: in M&B, EXPERIMENTAL marks factory-built T4s (regular army units), not field exps,
+                        --so the age-based dispatch fallback must not exclude them; subtract NEEDMOBILEBUILD
+                        --(the true field-built experimentals) instead so T4s still get sent against threats.
+                        local rNegligibleDispatchCombat = M28UnitInfo.refCategoryLandCombat - categories.EXPERIMENTAL
+                        if M28Utilities.IsMBModActive() then rNegligibleDispatchCombat = M28UnitInfo.refCategoryLandCombat - categories.NEEDMOBILEBUILD end
                         for iCurUnit = table.getn(tAvailableCombatUnits), 1, -1 do
-                            if tAvailableCombatUnits[iCurUnit][M28UnitInfo.refiUnitMassCost] <= iMaxThreatToAssign or ((tAvailableCombatUnits[iCurUnit][M28UnitInfo.refiDFRange] or 0) > 0 and (EntityCategoryContains(M28UnitInfo.refCategoryLandCombat - categories.EXPERIMENTAL, tAvailableCombatUnits[iCurUnit].UnitId) and M28UnitInfo.GetUnitLifetimeCount(tAvailableCombatUnits[iCurUnit]) > 3)) then
+                            if tAvailableCombatUnits[iCurUnit][M28UnitInfo.refiUnitMassCost] <= iMaxThreatToAssign or ((tAvailableCombatUnits[iCurUnit][M28UnitInfo.refiDFRange] or 0) > 0 and (EntityCategoryContains(rNegligibleDispatchCombat, tAvailableCombatUnits[iCurUnit].UnitId) and M28UnitInfo.GetUnitLifetimeCount(tAvailableCombatUnits[iCurUnit]) > 3)) then
                                 iCurAssignedThreat = iCurAssignedThreat + tAvailableCombatUnits[iCurUnit][M28UnitInfo.refiUnitMassCost]
                                 --Issue where ythotha stuck not firing at mex, dist away was 4, so do a dist of 8 to be safe
                                 if bDebugMessages == true then LOG(sFunctionRef..': dist to oEnemyToFocusOn='..M28Utilities.GetDistanceBetweenPositions(tAvailableCombatUnits[iCurUnit]:GetPosition(),oEnemyToFocusOn:GetPosition())) end
@@ -10870,8 +10875,12 @@ function ManageCombatUnitsInLandZone(tLZData, tLZTeamData, iTeam, iPlateau, iLan
                         end
                         if bDebugMessages == true then LOG(sFunctionRef..': iCurAssignedThreat='..iCurAssignedThreat..'; iMaxThreatToAssign='..iMaxThreatToAssign..'; iMaxExistingAssignedDFThreatToConsider='..iMaxExistingAssignedDFThreatToConsider) end
                         if iCurAssignedThreat < iMaxThreatToAssign then
+                            --M&B: same as the oEnemyToFocusOn fallback above - don't exclude factory T4s
+                            --(EXPERIMENTAL is just M&B's tier marker); exclude field exps instead.
+                            local rNegligibleDispatchCombat = M28UnitInfo.refCategoryLandCombat - categories.EXPERIMENTAL
+                            if M28Utilities.IsMBModActive() then rNegligibleDispatchCombat = M28UnitInfo.refCategoryLandCombat - categories.NEEDMOBILEBUILD end
                             for iCurDFUnit = table.getn(tDFUnits), 1, -1 do
-                                if tDFUnits[iCurDFUnit][M28UnitInfo.refiUnitMassCost] < iMaxThreatToAssign or (EntityCategoryContains(M28UnitInfo.refCategoryLandCombat - categories.EXPERIMENTAL, tDFUnits[iCurDFUnit].UnitId) and M28UnitInfo.GetUnitLifetimeCount(tDFUnits[iCurDFUnit]) > 3) then
+                                if tDFUnits[iCurDFUnit][M28UnitInfo.refiUnitMassCost] < iMaxThreatToAssign or (EntityCategoryContains(rNegligibleDispatchCombat, tDFUnits[iCurDFUnit].UnitId) and M28UnitInfo.GetUnitLifetimeCount(tDFUnits[iCurDFUnit]) > 3) then
                                     iCurAssignedThreat = iCurAssignedThreat + tDFUnits[iCurDFUnit][M28UnitInfo.refiUnitMassCost]
                                     M28Orders.IssueTrackedMove(tDFUnits[iCurDFUnit], tOtherLZData[M28Map.subrefMidpoint], 5, false, 'NegZDFN'..iLandZone..'To'..iOtherLZ, false)
                                     tDFUnits[iCurDFUnit][refiLastNegLZAssignment] = iOtherLZ

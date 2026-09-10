@@ -4,7 +4,7 @@
 #**
 #**  Summary  :  Seraphim Heavy Bot Script
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 local SWalkingLandUnit = import('/lua/seraphimunits.lua').SWalkingLandUnit
 local SDFThauCannon = import('/lua/seraphimweapons.lua').SDFThauCannon
@@ -32,7 +32,6 @@ BSL0310 = Class(SWalkingLandUnit) {
             self:ForkThread(self.LaunchEffects)
             self:SetMaintenanceConsumptionActive()
             self:ForkThread(self.ResourceThread1)
-            self:SetVeterancy(5)
 
             -- Global Varibles--
             self.LaunchExhaustEffectsBag = {}

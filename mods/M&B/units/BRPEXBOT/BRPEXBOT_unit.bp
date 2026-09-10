@@ -152,7 +152,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 6080,
+        BuildCostMass = 3720,
         BuildTime = 7500,
     },
     General = {
@@ -243,7 +243,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_LowArc',
             CollideFriendly = false,
-            Damage = 520,
+            Damage = 620,
             DamageFriendly = false,
             DamageRadius = 1.5,
             DamageType = 'Normal',
@@ -254,7 +254,7 @@ UnitBlueprint {
             FiringRandomness = 0.35,
             FiringTolerance = 0.5,
             Label = 'MainGun',
-            MaxRadius = 40,
+            MaxRadius = 45,
             MinRadius = 0,
             MuzzleChargeDelay = 0.3,
             MuzzleSalvoDelay = 0,
@@ -373,7 +373,7 @@ UnitBlueprint {
     },
     Wreckage = {
         Blueprint = '/props/DefaultWreckage/DefaultWreckage_prop.bp',
-        EnergyMult = 0.3,
+        EnergyMult = 0,
         HealthMult = 0.9,
         MassMult = 0.9,
         ReclaimTimeMultiplier = 1,

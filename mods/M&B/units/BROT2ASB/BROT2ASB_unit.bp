@@ -147,7 +147,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 4480,
+        BuildCostMass = 2960,
         BuildTime = 7500,
         ResearchMultTime = 1,
         ResearchMultEnergy = 2,
@@ -331,7 +331,7 @@ UnitBlueprint {
         {
             AboveWaterTargetsOnly = true,
             CollideFriendly = false,
-            Damage = 0,
+            Damage = 1,
             DamageFriendly = true,
             DamageRadius = 0,
             DamageType = 'Normal',

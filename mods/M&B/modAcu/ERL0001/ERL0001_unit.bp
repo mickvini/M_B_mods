@@ -1033,7 +1033,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'URL0001',
             },
-			NewRegenRate = 30,
+			NewRegenRate = 40,
         },
         EXArmorPlatingRemove = {
             BuildCostEnergy = 1,
@@ -1084,7 +1084,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'URL0001',
             },
-			NewRegenRate = 40,
+			NewRegenRate = 60,
         },
         EXStructuralIntegrityRemove = {
             BuildCostEnergy = 1,
@@ -1137,7 +1137,7 @@ UnitBlueprint {
             UpgradeUnitAmbientBones = {
                 'URL0001',
             },
-			NewRegenRate = 60,
+			NewRegenRate = 100,
         },
         EXCompositeMaterialsRemove = {
             BuildCostEnergy = 1,

@@ -5,7 +5,7 @@
 #**
 #**  Summary  :  Cybran Spider Bot Script
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
 --local CConstructionUnit = import('/lua/cybranunits.lua').CConstructionUnit
@@ -208,7 +208,7 @@ WRL2466 = Class(CWalkingLandUnit) {
         end
     end,
 
-    DeathThread = function(self)
+    DeathThread = function(self, overkillRatio)
         self:PlayUnitSound('Destroyed')
         local army = self:GetArmy()
 
@@ -286,7 +286,7 @@ WRL2466 = Class(CWalkingLandUnit) {
         self:CreateDamageEffects( 'Left_Leg01_Segment01', army )
         explosion.CreateFlash( self, 'Right_Leg01_Segment01', 3.2, army )        
 
-        self:CreateWreckage(0.1)
+        self:CreateWreckage(overkillRatio)
         self:ShakeCamera(3, 2, 0, 0.15)
         self:Destroy()
     end,

@@ -53,7 +53,6 @@ Shield = Class(oldShield) {
             -- but the shield never collapses (OnState does not drop it on low energy).
             local frac = unit:GetResourceConsumed()
             local healed = desired * frac
-            LOG('MNB shield regen: hp '..math.floor(self:GetHealth())..'/'..self:GetMaxHealth()..' want='..desired..' power='..tostring(frac)..' healed='..math.floor(healed))
             if healed > 0 then
                 self:AdjustHealth(self.Owner, healed)
                 self:UpdateShieldRatio(-1)

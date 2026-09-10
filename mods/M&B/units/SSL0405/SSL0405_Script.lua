@@ -449,10 +449,26 @@ SSL0405 = Class(SLandUnit) {
             end
             self.TallStance = tall
             --Psudo buff function
+            -- M&B: include active buff math (lab weapon research) in stance radii.
+            -- Engine buffs only recalc on add/remove, so a raw ChangeMaxRadius
+            -- here dropped the researched range bonus on every stance switch.
             local ChangeWeaponRadii = function(self, Key)
+                local adds = 0
+                local mults = 1
+                local aff = self.Buffs and self.Buffs.Affects and self.Buffs.Affects.MaxRadius
+                if aff then
+                    for k, v in aff do
+                        adds = adds + ((v.Add or 0) * (v.Count or 1))
+                        if v.Mult then
+                            for i = 1, (v.Count or 1) do
+                                mults = mults * v.Mult
+                            end
+                        end
+                    end
+                end
                 for i = 1, self:GetWeaponCount() do
                     local wep = self:GetWeapon(i)
-                    wep:ChangeMaxRadius(wep:GetBlueprint()[Key or 'MaxRadius'])
+                    wep:ChangeMaxRadius(((wep:GetBlueprint()[Key or 'MaxRadius'] or 0) + adds) * mults)
                 end
             end
             --------------------------------------------------------------------

@@ -238,7 +238,7 @@ UnitBlueprint {
         {
             AboveWaterTargetsOnly = true,
             CollideFriendly = false,
-            Damage = 0,
+            Damage = 1,
             DamageFriendly = true,
             DamageRadius = 0,
             DamageType = 'Normal',

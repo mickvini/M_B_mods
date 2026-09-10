@@ -1461,8 +1461,12 @@ function GetBlueprintToBuildForLandFactory(aiBrain, oFactory)
     if M28Utilities.IsMBModActive() then
         local iMNBTotalMex = (aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryMex) or 0)
         --M&B: count mexes of the FACTORY's TARGET tier (T1->T2 fac needs T2 mexes; T2->T3 fac needs T3 mexes), NOT T2+T3 combined. When T3 opens, all mexes are ALREADY T2, so the old 'T2+T3>=70%' was instantly true -> factories upgraded to T3 at once without waiting for the T2->T3 mex upgrade. Target-tier gate makes the factory wait until the mexes actually reach the tier it's upgrading to.
+        --M&B (2026-09-10 fix): for a T1 factory count ALL mexes above T1 (T2 and T3), not exactly-T2. Once the mex
+        --sweep moves the base's mexes on to T3, the exactly-T2 count collapses to 0 - so any factory BUILT after
+        --that point (the breathing factory cap builds late ones) never passed the gate and stayed T1 forever, while
+        --factories that upgraded during the T2 window kept their tech ("old ones upgrade, new ones stay T1").
         local iMNBTargetMexCat
-        if iFactoryTechLevel == 1 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH2
+        if iFactoryTechLevel == 1 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex - categories.TECH1
         elseif iFactoryTechLevel == 2 then iMNBTargetMexCat = M28UnitInfo.refCategoryMex * categories.TECH3 end
         local iMNBTargetMex = 0
         if iMNBTargetMexCat then iMNBTargetMex = (aiBrain:GetCurrentUnits(iMNBTargetMexCat) or 0) end

@@ -639,6 +639,24 @@ function CheckIfBuildableLocationsNearPositionStillValid(aiBrain, tLocation, bCh
             if M28Utilities.IsTableEmpty(tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable]) == false then
                 if bDebugMessages == true then LOG(sFunctionRef..': About to update mass storage locations for iPlateauOrZero='..iPlateauOrZero..'; iLandOrWaterZone='..iLandOrWaterZone..', tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable]='..repru(tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable])..'; Nickname of first aiBrain='..M28Overseer.GetFirstActiveBrain().Nickname) end
                 local aiBrain = M28Overseer.GetFirstActiveBrain()
+                --M&B (2026-09-10, user): bots must NOT surround a HUMAN ALLY's structures with mass storage.
+                --The storage-location list is precomputed from mex SPOTS (ownerless at record time - a human
+                --teammate builds their extractor there later) and from ALL brains' fabricators, so bots kept
+                --laying storage around the player's mexes/fabs, wasting mass and stealing the player's own
+                --adjacency slots (the user had to reclaim them). Drop any position whose anchor structure
+                --(mex or fabricator within 4) belongs to a Human brain. AI-teammate anchors stay eligible -
+                --that adjacency still benefits the team, and the complaint was about the human's base.
+                local function MNBAnchorIsHuman(oBrain, tPos)
+                    local tNear = oBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex + M28UnitInfo.refCategoryMassFab, tPos, 4, 'Ally')
+                    if not tNear then return false end
+                    for iAnchor, oAnchor in tNear do
+                        if oAnchor and not(oAnchor.Dead) then
+                            local oAnchorBrain = oAnchor.GetAIBrain and oAnchor:GetAIBrain()
+                            if oAnchorBrain and oAnchorBrain.BrainType == 'Human' then return true end
+                        end
+                    end
+                    return false
+                end
                 local function WantToKeep(tArray, iEntry, aiBrain)
                     M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
                     return aiBrain:CanBuildStructureAt('ueb1106', tArray[iEntry])
@@ -649,7 +667,8 @@ function CheckIfBuildableLocationsNearPositionStillValid(aiBrain, tLocation, bCh
 
                 for iOrigIndex=1, iTableSize do
                     if tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iOrigIndex] then --Needed as sometimes the last entry is nil
-                        if aiBrain.CanBuildStructureAt and aiBrain:CanBuildStructureAt('ueb1106', tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iOrigIndex]) then
+                        if aiBrain.CanBuildStructureAt and aiBrain:CanBuildStructureAt('ueb1106', tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iOrigIndex])
+                                and not(M28Utilities.IsMBModActive() and MNBAnchorIsHuman(aiBrain, tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iOrigIndex])) then
                             --We want to keep the entry; Move the original index to be the revised index number (so if e.g. a table of 1,2,3 removed 2, then this would've resulted in the revised index being 2 (i.e. it starts at 1, then icnreases by 1 for the first valid entry); this then means we change the table index for orig index 3 to be 2
                             if (iOrigIndex ~= iRevisedIndex) then
                                 tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iRevisedIndex] = tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable][iOrigIndex];
@@ -1430,6 +1449,23 @@ function GetBlueprintAndLocationToBuild(aiBrain, oEngineer, iOptionalEngineerAct
         end
         local tWaterToBuildAwayFrom
         if bDebugMessages == true then LOG(sFunctionRef..': sBlueprintToBuild='..(sBlueprintToBuild or 'nil')..'; Location to look from='..repru(tTargetLocation)) end
+        --M&B (2026-09-10, user: STRICT variant of the storage-adjacency ban): storage may only be built
+        --around structures OWNED by the building engineer's own brain. The zone-level spot list is shared
+        --across the team so it cant be filtered per-owner globally (pruning it for one bot would strip a
+        --teammate's valid spots); instead filter here, where THIS engineer picks its spot: a spot whose
+        --anchor (mex or fabricator within 4) belongs to a DIFFERENT brain is skipped. Spots with no anchor
+        --at all (e.g. an empty mex spot) keep vanilla behaviour.
+        local function MNBAnchorOwnedByOther(oBrain, tPos)
+            local tNear = oBrain:GetUnitsAroundPoint(M28UnitInfo.refCategoryMex + M28UnitInfo.refCategoryMassFab, tPos, 4, 'Ally')
+            if not tNear then return false end
+            for iAnchor, oAnchor in tNear do
+                if oAnchor and not(oAnchor.Dead) then
+                    local oAnchorBrain = oAnchor.GetAIBrain and oAnchor:GetAIBrain()
+                    if oAnchorBrain and oAnchorBrain ~= oBrain then return true end
+                end
+            end
+            return false
+        end
         --Mex or hydro or mass storage - consider the resource/storage locations
         if EntityCategoryContains(M28UnitInfo.refCategoryMex + M28UnitInfo.refCategoryHydro + M28UnitInfo.refCategoryMassStorage, sBlueprintToBuild) then
             local iPlateau, iLandZone = M28Map.GetPlateauAndLandZoneReferenceFromPosition(tTargetLocation)
@@ -1460,6 +1496,17 @@ function GetBlueprintAndLocationToBuild(aiBrain, oEngineer, iOptionalEngineerAct
                     tResourceLocations = tLZOrWZData[M28Map.subrefHydroUnbuiltLocations]
                 elseif EntityCategoryContains(M28UnitInfo.refCategoryMassStorage, sBlueprintToBuild) then
                     tResourceLocations = tLZOrWZData[M28Map.subrefLZOrWZMassStorageLocationsAvailable]
+                    --M&B strict: keep only spots anchored to THIS engineer's own structures. Ownership is
+                    --taken from the ENGINEER's own brain (M28 sometimes works an engineer under a different
+                    --friendly brain, but the mass spent and the bot doing the surrounding are the owner's).
+                    if M28Utilities.IsMBModActive() then
+                        local oMNBOwnerBrain = (oEngineer.GetAIBrain and oEngineer:GetAIBrain()) or aiBrain
+                        local tMNBOwnSpots = {}
+                        for iMNBSpot, tMNBSpot in (tResourceLocations or {}) do
+                            if not MNBAnchorOwnedByOther(oMNBOwnerBrain, tMNBSpot) then table.insert(tMNBOwnSpots, tMNBSpot) end
+                        end
+                        tResourceLocations = tMNBOwnSpots
+                    end
                 else M28Utilities.ErrorHandler('Unrecognised resource category')
                 end
             end
@@ -5272,6 +5319,12 @@ function GetCategoryToBuildOrAssistFromAction(iActionToAssign, iMinTechLevel, ai
                     iCategoryToBuild = M28UnitInfo.refCategorySML
                 elseif aiBrain:GetCurrentUnits(M28UnitInfo.refCategoryFixedT3Arti + categories.EXPERIMENTAL * categories.STRUCTURE * categories.ARTILLERY) < 2 then
                     iCategoryToBuild = M28UnitInfo.refCategoryFixedT3Arti + categories.EXPERIMENTAL * categories.STRUCTURE * categories.ARTILLERY
+                elseif aiBrain:GetFactionIndex() == M28UnitInfo.refFactionAeon and aiBrain:GetCurrentUnits(categories.fab4401) < 1 then
+                    --M&B: FAB4401 is Aeon's unique T4 shield. It only ever fell into the catch-all else below,
+                    --where blueprint selection keeps losing to other EXPERIMENTAL structures, so Aeon bots never
+                    --built it. Give it its own guaranteed step (after eco/nuke/arty, before the catch-all).
+                    --Faction guard keeps non-Aeon brains falling through to the else (they cant build it anyway).
+                    iCategoryToBuild = categories.fab4401
                 else
                     iCategoryToBuild = categories.EXPERIMENTAL * categories.STRUCTURE - categories.ARTILLERY - categories.SILO
                 end
@@ -9902,16 +9955,21 @@ function ConsiderActionToAssign(iActionToAssign, iMinTechWanted, iTotalBuildPowe
     --for water-zone (naval) calls, so fall back to the closest friendly M28 brain there (same pattern as the
     --ser9100 gate below). Gated on M&B; vanilla M28 untouched.
     if M28Utilities.IsMBModActive() then
+        local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])
         local iMNBFacCap, rMNBFacCat = nil, nil
         if iActionToAssign == refActionBuildLandFactory or iActionToAssign == refActionBuildSecondLandFactory then
-            iMNBFacCap, rMNBFacCat = 10, M28UnitInfo.refCategoryLandFactory
+            --M&B (user, 2026-09-10): the land cap breathes with the economy. While mass storage keeps
+            --overflowing the cap creeps up +1 at a time (10 -> 11 -> 12, ...) so excess mass turns into
+            --factories instead of sitting in storage (the player cant just out-wait a capped bot, build 12
+            --factories and win); it decays back once storage is no longer full.
+            --See M28Conditions.MNBGetFactoryOverflowBonus.
+            iMNBFacCap, rMNBFacCat = 10 + M28Conditions.MNBGetFactoryOverflowBonus(oMNBOwnerBrain or aiBrain), M28UnitInfo.refCategoryLandFactory
         elseif iActionToAssign == refActionBuildAirFactory or iActionToAssign == refActionBuildSecondAirFactory then
             iMNBFacCap, rMNBFacCat = 4, M28UnitInfo.refCategoryAirFactory
         elseif iActionToAssign == refActionBuildNavalFactory then
             iMNBFacCap, rMNBFacCat = 2, M28UnitInfo.refCategoryNavalFactory
         end
         if iMNBFacCap then
-            local oMNBOwnerBrain = oMNBBrain or (tLZOrWZTeamData and ArmyBrains[tLZOrWZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]])
             if oMNBOwnerBrain and oMNBOwnerBrain:GetCurrentUnits(rMNBFacCat) >= iMNBFacCap then
                 if bDebugMessages == true then LOG(sFunctionRef..': M&B factory cap hit: '..oMNBOwnerBrain:GetCurrentUnits(rMNBFacCat)..' >= '..iMNBFacCap..'; not building more of this type') end
                 M28Profiler.FunctionProfiler(sFunctionRef, M28Profiler.refProfilerEnd)
@@ -14639,7 +14697,18 @@ function ConsiderCoreBaseLandZoneEngineerAssignment(tLZTeamData, iTeam, iPlateau
 
     --M&B Research Centre (lab): build 1 lab so the AI uses the research system (tiers + MK boosts). Simple path (same as M28 builds any structure). 2nd-lab attempts REMOVED — M28/engine fought it at every level (placement refuses a 2nd research-centre, cancel-loop, crashes; even a direct tracked-build at a valid open location didnt place it). The bot is competitive with 1 lab (reaches T5, attacks). Crash-fixes retained elsewhere: M28Economy.lua:~639 (exclude research-centre from factory-tech-update — was math.max(nil)) and M28UnitInfo.lua EnableUnitJamming/DisableUnitJamming (pcall — unit.lua:1820).
     iCurPriority = iCurPriority + 1
-    if M28Utilities.IsTableEmpty(EntityCategoryFilterDown(M28UnitInfo.refCategoryResearchFactory, tLZTeamData[M28Map.subreftoLZOrWZAlliedUnits])) then
+    --M&B (2026-09-10): the lab gate used to check allied units IN THIS LAND ZONE only; once the base grew
+    --into an adjacent zone (e.g. the breathing factory cap pushes factories outward) that zone had no lab
+    --and the bot kept trying to build a 2nd one. Doctrine = 1 lab per bot (research locks are per-army),
+    --so count the OWNING brain's completed labs instead of the zone's.
+    local oMNBLabBrain = ArmyBrains[tLZTeamData[M28Map.reftiClosestFriendlyM28BrainIndex]]
+    local bMNBHasLab = false
+    if oMNBLabBrain and oMNBLabBrain.GetCurrentUnits then
+        bMNBHasLab = (oMNBLabBrain:GetCurrentUnits(M28UnitInfo.refCategoryResearchFactory) > 0)
+    else
+        bMNBHasLab = not(M28Utilities.IsTableEmpty(EntityCategoryFilterDown(M28UnitInfo.refCategoryResearchFactory, tLZTeamData[M28Map.subreftoLZOrWZAlliedUnits])))
+    end
+    if not(bMNBHasLab) then
         if (not(bHaveLowPower) or M28Team.tTeamData[iTeam][M28Team.subrefiTeamGrossEnergy] >= 700 * M28Team.tTeamData[iTeam][M28Team.subrefiOrigM28BrainCount])
            and (not(bHaveLowMass) or M28Team.tTeamData[iTeam][M28Team.subrefiTeamGrossMass] >= 12 * M28Team.tTeamData[iTeam][M28Team.subrefiOrigM28BrainCount]) then
             HaveActionToAssign(refActionBuildResearchCentre, 1, 5)
