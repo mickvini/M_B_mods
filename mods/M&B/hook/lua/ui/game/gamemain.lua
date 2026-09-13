@@ -14,6 +14,11 @@ do
 	    oldCreateUI(isReplay)
 	    import('/mods/M&B/lua/spreadattack.lua').Init()
 	    import('/mods/M&B/lua/skuftoggle.lua').Install()
+	    import('/mods/M&B/lua/autooctoggle.lua').Install()
+	    --M&B (2026-09-13, user): research labels above labs must be identical for
+	    --host and players - each machine writes the label from its own UI side
+	    --(sim-side SetCustomName is host-only in multiplayer)
+	    import('/mods/M&B/lua/MNBLabLabels.lua').Install()
 	end
 end
 
@@ -66,6 +71,8 @@ do
 				CM.AddAliveStruct(focus)
 			end
 		end
+		--M&B: remember labs the player clicked - they stay labeled forever
+		import('/mods/M&B/lua/MNBLabLabels.lua').NoteSelection(added)
 		oldOnSelectionChanged(old, new, added, removed)
 	end
 end

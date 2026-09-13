@@ -985,6 +985,15 @@ ResearchFactoryUnit = Class(FactoryUnit) {
     end,
    		
     OnStopBeingBuilt = function(self, builder, layer)
+        --M&B (2026-09-14, user: "полностью старая лаба + плашки"): the lab is engine-built
+        --and mass-paid again; the only custom duty left is the LABEL FEED -- a light
+        --thread that mirrors the engine's own progress (percent, queue, research id)
+        --into unit stats (own machine) and the shared Sync board (every machine), so
+        --the plates keep working exactly as before
+        if not self.MNBLabelFeedRunning then
+            self.MNBLabelFeedRunning = true
+            self:ForkThread(self.MNBLabelFeedThread)
+        end
         --If we're an AI
         local AIBrain = self:GetAIBrain()
         if AIBrain.BrainType ~= 'Human' then
@@ -1018,10 +1027,138 @@ ResearchFactoryUnit = Class(FactoryUnit) {
         self.MaintenceUnit[1]:SetConsumptionPerSecondEnergy(self.MaintenceConsumption)           
         self:SetMaintenanceConsumptionActive()
         self.MaintenceUnit[1]:SetConsumptionActive(false)
-        FactoryUnit.OnStopBuild(self, unitbuilding, order ) 
-        self.MaintenceConsumption = self:GetConsumptionPerSecondEnergy()       
-    end,                
-       
+        FactoryUnit.OnStopBuild(self, unitbuilding, order )
+        self.MaintenceConsumption = self:GetConsumptionPerSecondEnergy()
+    end,
+
+
+    ----------------------------------------------------------------------------
+    --M&B (2026-09-14, user): label feed for the PLATES -- the one thing kept from
+    --the war-lab era ("плашки оставляем, они мне нравятся"). The lab itself is
+    --fully stock again: the engine builds the research, mass pays for it, assist
+    --works. This thread only READS that state and publishes it -- unit stats for
+    --the owner (panel + own plates) and the shared Sync board for everyone else
+    --(allies always, enemies only while they hold real sight on the lab). The
+    --board is posted EVERY tick: the engine drains the Sync table after delivery,
+    --so a field only reaches the other side in a window after each write.
+    ----------------------------------------------------------------------------
+    MNBLabelFeedThread = function(self)
+        local iMNBStatTick = 0
+        while not(self.Dead) do
+            local iMNBLabIdx = 0
+            local iMNBLabPct = -1
+            local oMNBItem = self.GetUnitBeingBuilt and self:GetUnitBeingBuilt()
+            if oMNBItem and not(oMNBItem.Dead) then
+                local oMNBBp = oMNBItem.BpId and __blueprints[oMNBItem.BpId] or (oMNBItem.GetBlueprint and oMNBItem:GetBlueprint())
+                if oMNBBp and oMNBBp.BlueprintId then
+                    iMNBLabIdx = self:MNBLabResearchIndex(oMNBBp.BlueprintId)
+                end
+                if oMNBItem.GetFractionComplete then
+                    iMNBLabPct = math.floor(oMNBItem:GetFractionComplete() * 100)
+                    if iMNBLabPct > 100 then iMNBLabPct = 100 end
+                end
+            end
+            --waiting orders: the engine queue holds the item being built too
+            local iMNBLabQ = 0
+            local okQ, tMNBQ = pcall(function() return self:GetCommandQueue() end)
+            if okQ and type(tMNBQ) == 'table' then
+                iMNBLabQ = table.getn(tMNBQ)
+                if oMNBItem then iMNBLabQ = math.max(0, iMNBLabQ - 1) end
+            end
+            --shared board (every 0.25s; small numbers only -- strings die in the C++ sync)
+            local bMNBBoardOK, sMNBBoardErr = pcall(function()
+                local tMNBVis = {}
+                for iMNBAB, oMNBAB in ArmyBrains do
+                    if oMNBAB and oMNBAB.GetArmyIndex then
+                        local iMNBABIdx = oMNBAB:GetArmyIndex()
+                        if iMNBABIdx ~= self:GetArmy() then
+                            --"seen RIGHT NOW", not "was scouted once": a blip persists
+                            --forever after the first contact. The method wants the ASKING
+                            --ARMY as its argument (a string is parsed as an army NAME,
+                            --"Unknown army: ..."; no arg just echoes the signature doc
+                            --back as the error)
+                            local okBl, blip = pcall(function() return self:GetBlip(iMNBABIdx) end)
+                            if okBl and blip then
+                                local okSn, seen = pcall(function() return blip:IsSeenNow(iMNBABIdx) end)
+                                if okSn and seen then
+                                    tMNBVis[iMNBABIdx + 1] = true
+                                elseif not okSn and not self.MNBSeenNowErrLogged then
+                                    self.MNBSeenNowErrLogged = true
+                                    LOG('M&B: lab board IsSeenNow probe error: ' .. tostring(seen))
+                                end
+                            end
+                        end
+                    end
+                end
+                Sync.MNBLabs = Sync.MNBLabs or {}
+                local tMNBPos = self:GetPosition()
+                Sync.MNBLabs[self:GetEntityId()] = {
+                    a = self:GetArmy(),
+                    p = iMNBLabPct,
+                    r = iMNBLabIdx,
+                    q = iMNBLabQ,
+                    v = tMNBVis,
+                    --the UI has no unit proxy for foreign armies' units -- the plate
+                    --anchors to the world position carried here (labs are buildings)
+                    x = tMNBPos[1],
+                    y = tMNBPos[2],
+                    z = tMNBPos[3],
+                }
+            end)
+            if not bMNBBoardOK and not self.MNBBoardErrLogged then
+                self.MNBBoardErrLogged = true
+                LOG('M&B: lab board post error: ' .. tostring(sMNBBoardErr))
+            end
+            --stats once a second (they live ON the unit, no Sync drain to fear)
+            iMNBStatTick = iMNBStatTick + 1
+            if iMNBStatTick >= 4 then
+                iMNBStatTick = 0
+                local oMNBStatBrain = self:GetAIBrain()
+                if oMNBStatBrain then
+                    pcall(function() self:UpdateStat('MNBWarKilled', math.floor(oMNBStatBrain.MNBWarTotalKilled or 0)) end)
+                    pcall(function() self:UpdateStat('MNBDividend', math.floor(oMNBStatBrain.MNBDividendTotal or 0)) end)
+                end
+                pcall(function() self:UpdateStat('MNBPct', iMNBLabPct) end)
+                pcall(function() self:UpdateStat('MNBQueue', iMNBLabQ) end)
+                pcall(function() self:UpdateStat('MNBRsch', iMNBLabIdx) end)
+            end
+            WaitSeconds(0.25)
+        end
+        --this lab is gone: drop its board entry so no stale plate keeps floating
+        pcall(function()
+            if Sync.MNBLabs then
+                Sync.MNBLabs[self:GetEntityId()] = nil
+            end
+        end)
+    end,
+
+    --M&B: stable numeric id of a research blueprint -- its position in the sorted
+    --list of all sr9 research ids. The UI builds the identical list from the same
+    --blueprints, so a plain index carries the research NAME across the stat sync
+    --even though string values do not survive the C++ side. Cached on the ARMY
+    --BRAIN: the sim rejects reads of nonexistent plain globals.
+    MNBLabResearchIndex = function(self, sMNBId)
+        local oMNBBrsBrain = self.GetAIBrain and self:GetAIBrain()
+        if not oMNBBrsBrain then
+            return 0
+        end
+        if not oMNBBrsBrain.MNB_RESEARCH_ORDER then
+            oMNBBrsBrain.MNB_RESEARCH_ORDER = {}
+            for sMNBKey, oMNBBp in __blueprints do
+                if oMNBBp and string.find(sMNBKey, '^s.r9') then
+                    table.insert(oMNBBrsBrain.MNB_RESEARCH_ORDER, sMNBKey)
+                end
+            end
+            table.sort(oMNBBrsBrain.MNB_RESEARCH_ORDER)
+        end
+        for iMNBPos, sMNBKey in oMNBBrsBrain.MNB_RESEARCH_ORDER do
+            if sMNBKey == sMNBId then
+                return iMNBPos
+            end
+        end
+        return 0
+    end,
+
 
     UpgradingState = State(FactoryUnit.UpgradingState) {
         OnStopBuild = function(self, unitbuilding, order)

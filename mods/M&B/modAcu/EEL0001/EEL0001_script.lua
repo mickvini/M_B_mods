@@ -31,7 +31,13 @@ EEL0001 = Class(TWalkingLandUnit) {
 
     Weapons = {
         DeathWeapon = Class(TIFCommanderDeathWeapon) {},
-        RightZephyr = Class(TDFZephyrCannonWeapon) {},
+        RightZephyr = Class(TDFZephyrCannonWeapon) {
+            --M&B: auto-overcharge hook - evaluated only when the gun actually fires
+            OnWeaponFired = function(self)
+                TDFZephyrCannonWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCTry()
+            end,
+        },
         EXFlameCannon01 = Class(EXFlameCannonWeapon) {},
         EXFlameCannon02 = Class(EXFlameCannonWeapon) {},
         EXTorpedoLauncher01 = Class(TANTorpedoAngler) {},
@@ -150,6 +156,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end,
             OnDisableWeapon = function(self)
                 if self.unit:BeenDestroyed() then return end
+                self.unit.MNB_OCArmed = false   --M&B: auto-OC armed flag reset
                 self:SetWeaponEnabled(false)
                 self.unit:SetWeaponEnabledByLabel('RightZephyr', true)
                 self.unit:BuildManipulatorSetEnabled(false)
@@ -986,6 +993,67 @@ EEL0001 = Class(TWalkingLandUnit) {
         self:ForkThread(self.WeaponConfigCheck)
     end,
 
+    --M&B: OC range setter that remembers the value for auto-overcharge reach checks
+    MNB_SetOCRange = function(self, range)
+        self.MNB_OCRange = range
+        self:GetWeaponByLabel('OverCharge'):ChangeMaxRadius(range)
+    end,
+
+    --M&B: auto-overcharge (Alt+O, player only). Event-driven: evaluated ONLY when the
+    --main gun fires, so an idle or building commander costs nothing.
+    MNB_AutoOCTry = function(self)
+        if not self.MNB_AutoOC then
+            return
+        end
+        if self:IsOverchargePaused() then return end
+        if self:IsUnitState('Building') or self:IsUnitState('Repairing') or self:IsUnitState('Reclaiming')
+            or self:IsUnitState('Enhancing') or self:IsUnitState('Upgrading') then return end
+        if self.MNB_OCArmed then return end
+        --M&B: the gun firing is only the TRIGGER - the shot goes to the FATTEST
+        --enemy within overcharge reach (fat = blueprint mass), not to whatever
+        --the gun happens to shoot at. Commanders and air stay excluded.
+        local wepOC = self:GetWeaponByLabel('OverCharge')
+        local reach = self.MNB_OCRange or 30
+        local around = self:GetAIBrain():GetUnitsAroundPoint(categories.ALLUNITS, self:GetPosition(), reach, 'enemy') or {}
+        local best, bestMass = nil, -1
+        for _, u in around do
+            if not u.Dead and not EntityCategoryContains(categories.COMMAND, u)
+                and not EntityCategoryContains(categories.AIR, u) then
+                local m = u:GetBlueprint().Economy.BuildCostMass or 0
+                if m > bestMass then
+                    best, bestMass = u, m
+                end
+            end
+        end
+        if not best then return end
+        -- energy: exactly the shot cost, no reserve (survival rule)
+        if self:GetAIBrain():GetEconomyStored('ENERGY') < (wepOC:GetBlueprint().EnergyRequired or 0) then return end
+        self.MNB_OCArmed = true
+        --M&B: imitate the player's manual OC click with the engine's own
+        --IssueOverCharge command - the exact call the UI and the M28 bots use
+        --(M28Orders.lua IssueTrackedOvercharge). It arms the weapon, aims and
+        --fires at the target by itself. Deferred out of the gun's fire event so
+        --nothing changes weapon state mid-fire.
+        self:ForkThread(function()
+            WaitSeconds(0.1)
+            if self.Dead then return end
+            if best.Dead or not self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                return
+            end
+            IssueOverCharge({self}, best)
+        end)
+        -- safety: if the shot never happens (target slipped out of range) the gun stays
+        -- disabled and this event never refires - re-enable the gun after a grace period
+        self:ForkThread(function()
+            WaitSeconds(3)
+            if not self.Dead and self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                wepOC:OnDisableWeapon()
+            end
+        end)
+    end,
+
     CreateEnhancement = function(self, enh)
         TWalkingLandUnit.CreateEnhancement(self, enh)
         local bp = self:GetBlueprint().Enhancements[enh]
@@ -1447,11 +1515,13 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self.wcZephyr01 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: share booster range with overcharge
         elseif enh =='EXZephyrBoosterRemove' then
             if Buff.HasBuff(self, 'EXUEFZephyrHealthBoost') then Buff.RemoveBuff(self, 'EXUEFZephyrHealthBoost') end
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcZephyr01 = false
 			self:ForkThread(self.EXRegenBuffThread)
         elseif enh =='EXTorpedoLauncher' then
@@ -1605,6 +1675,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: share AMC range with overcharge
         elseif enh =='EXAntiMatterCannonRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost10' )
@@ -1612,6 +1683,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1636,7 +1708,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost11')
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(40)
+            wepZephyr:ChangeMaxRadius(50)   --M&B: match AMC02 range (was 40)
 			self.wcAMC01 = false
 			self.wcAMC02 = true
 			self.wcAMC03 = false
@@ -1644,7 +1716,8 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
-        elseif enh =='EXImprovedContainmentBottleRemove' then    
+			self:MNB_SetOCRange(50)   --M&B: share AMC02 range with overcharge
+        elseif enh =='EXImprovedContainmentBottleRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost10' )
             end
@@ -1654,6 +1727,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1678,14 +1752,15 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost12')
 			local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(60)
+            wepZephyr:ChangeMaxRadius(55)   --M&B: match AMC03 range (was 60)
             self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = true
 			self:ForkThread(self.WeaponRangeReset)
-			self:ForkThread(self.WeaponConfigCheck)     
+			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
-        elseif enh =='EXPowerBoosterRemove' then    
+			self:MNB_SetOCRange(55)   --M&B: share AMC03 range with overcharge
+        elseif enh =='EXPowerBoosterRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost10' )
             end
@@ -1698,6 +1773,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcAMC01 = false
 			self.wcAMC02 = false
 			self.wcAMC03 = false
@@ -1729,6 +1805,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(35)   --M&B: share Gatling range with overcharge
         elseif enh =='EXGattlingEnergyCannonRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost13' )
@@ -1736,6 +1813,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false
@@ -1768,6 +1846,7 @@ EEL0001 = Class(TWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: share Gatling02 range with overcharge
         elseif enh =='EXImprovedCoolingSystemRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost13' )
@@ -1778,6 +1857,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false
@@ -1802,13 +1882,14 @@ EEL0001 = Class(TWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXUEFHealthBoost15')
 			local wepZephyr = self:GetWeaponByLabel('RightZephyr')
-            wepZephyr:ChangeMaxRadius(45)
+            wepZephyr:ChangeMaxRadius(50)   --M&B: match Gatling03 range (was 45)
             self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = true
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(50)   --M&B: share Gatling03 range with overcharge
         elseif enh =='EXEnergyShellHardenerRemove' then
             if Buff.HasBuff( self, 'EXUEFHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXUEFHealthBoost13' )
@@ -1822,6 +1903,7 @@ EEL0001 = Class(TWalkingLandUnit) {
             local wepZephyr = self:GetWeaponByLabel('RightZephyr')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepZephyr:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to base range
 			self.wcGatling01 = false
 			self.wcGatling02 = false
 			self.wcGatling03 = false

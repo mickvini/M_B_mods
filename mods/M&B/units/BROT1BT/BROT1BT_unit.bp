@@ -141,7 +141,7 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 44,
+        BuildCostMass = 88,
         BuildTime = 1200,
         TeleportEnergyMod = 0.15,
         TeleportMassMod = 1,

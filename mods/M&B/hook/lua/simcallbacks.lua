@@ -1172,4 +1172,22 @@ Callbacks.SkufSetEnabled = function(data)
     end
 end
 
+Callbacks.MNB_AutoOCSet = function(data)
+    -- Alt-O auto-overcharge switch (from /mods/M&B/lua/autooctoggle.lua): while on,
+    -- the player's ACUs arm overcharge at fat targets (T3+) the moment their main
+    -- gun fires. Absent/nil = off (the default every session). Player-only: bots
+    -- handle overcharge themselves.
+    if not data or not data.army then return end
+    local brain = GetArmyBrain(data.army)
+    if brain and brain.BrainType == 'Human' then
+        local commanders = brain:GetListOfUnits(categories.COMMAND, false) or {}
+        for _, unit in commanders do
+            if not unit.Dead and unit.MNB_AutoOCTry then
+                unit.MNB_AutoOC = data.enabled == true
+            end
+        end
+        LOG('M&B auto-OC ' .. ((data.enabled == true) and 'enabled' or 'disabled') .. ', army=' .. tostring(data.army))
+    end
+end
+
 end

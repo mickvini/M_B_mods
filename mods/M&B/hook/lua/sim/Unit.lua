@@ -1006,37 +1006,153 @@ end
         end, ]]--
 
 -- === M&B: veterancy by killed MASS ===
--- OnKilledUnit fires on the KILLER (self) with the victim. We add the victim's BuildCostMass
--- to the killer's KILLS stat; paired with the scaled Veteran thresholds (Blueprints.lua) this
--- makes veterancy mass-based. Victim mass is read from __blueprints (safe on a dying unit)
--- rather than calling GetBlueprint on it. pcall-wrapped so a bad reference can never break the
--- kill chain. Skipped on FAF (native mass veterancy). NB: KILLS now holds accumulated mass,
--- so anything that read it as a raw kill COUNT (e.g. XSL0310 transform veterancy transfer, UI
--- kill counter) now reflects mass instead -- intended.
+-- OnKilled fires ON THE VICTIM (self) with the instigator (killer) as 2nd arg -- this is the
+-- death callback the VANILLA engine actually calls; the FAF-style OnKilledUnit never fires on
+-- vanilla (proven by playtest 2026-09-11: kills happened, our debug lines stayed at zero).
+-- We split the victim's BuildCostMass among everyone who damaged it, proportionally to damage
+-- dealt, crediting each attacker's KILLS stat; paired with the scaled Veteran thresholds
+-- (Blueprints.lua) this makes veterancy mass-based. pcall-wrapped so a bad reference can
+-- never break the death chain. Skipped on FAF (native mass veterancy). NB: KILLS holds
+-- accumulated mass, so anything reading it as a kill COUNT reflects mass instead -- intended.
 do
     local bMNBIsFAF = DiskGetFileInfo and DiskGetFileInfo('/lua/sim/navutils.lua')
     if not bMNBIsFAF then
+        --M&B helper: add mass to a unit's KILLS stat (KILLS holds accumulated MASS in M&B).
+        --The SAME credit also feeds the killer ARMY's war accounting: lifetime killed mass
+        --(the lab panel's "убито" line) and, since 2026-09-14, a DIVIDEND -- 20% of every
+        --credited share arrives as real mass in the army's storage ("награда за голову",
+        --user: bots and players alike; the lab itself is mass-paid again, the old war pool
+        --is gone). MNBDividendTotal accumulates what the army received (the panel's
+        --"дивиденды" line).
+        local function MNBVetCredit(oUnit, iAmount)
+            local iCur = 0
+            local tStat = oUnit:GetStat('KILLS', 0)
+            if tStat and tStat.Value then iCur = tStat.Value end
+            oUnit:UpdateStat('KILLS', iCur + iAmount)
+            local oMNBWarBrain = oUnit.GetAIBrain and oUnit:GetAIBrain()
+            if oMNBWarBrain then
+                oMNBWarBrain.MNBWarTotalKilled = (oMNBWarBrain.MNBWarTotalKilled or 0) + iAmount
+                local iMNBDiv = iAmount * 0.2
+                if iMNBDiv > 0 and oMNBWarBrain.GiveResource and not(oMNBWarBrain:IsDefeated()) then
+                    oMNBWarBrain:GiveResource('Mass', iMNBDiv)
+                    oMNBWarBrain.MNBDividendTotal = (oMNBWarBrain.MNBDividendTotal or 0) + iMNBDiv
+                end
+            end
+        end
+
         local MNBOldUnitVet = Unit
         Unit = Class(MNBOldUnitVet) {
-            OnKilledUnit = function(self, unitKilled, massKilled)
-                --M&B fix: read the victim's mass via GetBlueprint(), NOT unitKilled.UnitId.
-                --.UnitId is NOT a native engine field -- it is set manually by M28 (M28Building.lua:859),
-                --so it is nil in any game without a bot. The old code used __blueprints[unitKilled.UnitId],
-                --which was always nil without a bot -> mass never credited -> veterancy fell back to vanilla
-                --kill-count. GetBlueprint() works for every unit regardless of M28; pcall guards a dying ref.
+            OnDamage = function(self, instigator, amount, vector, damageType)
+                --M&B (2026-09-11, user): FAF-style veterancy -- each unit records HOW MUCH damage
+                --every attacker dealt to it (lazily created table keyed by EntityId). OnKilledUnit
+                --then splits the victim's mass among the attackers PROPORTIONALLY to damage dealt,
+                --instead of the last-hitter taking everything (100 tanks kill an exp -> the one that
+                --fired last no longer gets the whole reward; team fights are credited fairly).
+                --Damage absorbed by shields never reaches OnDamage, so shield drain is NOT tracked
+                --(v1 limitation). Runs first in the class chain, then hands over to the base.
+                if amount and amount > 0 and instigator and instigator ~= self and instigator.EntityId then
+                    --M&B: a single hit can never claim more veterancy credit than the victim's whole
+                    --health pool (FAF trick) -- a massive overkill shot does not steal shares.
+                    if self.GetMaxHealth then
+                        local iMNBMaxHP = self:GetMaxHealth()
+                        if iMNBMaxHP and iMNBMaxHP > 0 and amount > iMNBMaxHP then
+                            amount = iMNBMaxHP
+                        end
+                    end
+                    local tMNBTrack = self.MNBDamageFrom
+                    if not tMNBTrack then
+                        tMNBTrack = {}
+                        self.MNBDamageFrom = tMNBTrack
+                    end
+                    local tMNBEntry = tMNBTrack[instigator.EntityId]
+                    if tMNBEntry then
+                        tMNBEntry.d = tMNBEntry.d + amount
+                    else
+                        tMNBTrack[instigator.EntityId] = { u = instigator, d = amount }
+                    end
+                end
+                if MNBOldUnitVet.OnDamage then MNBOldUnitVet.OnDamage(self, instigator, amount, vector, damageType) end
+            end,
+
+            --M&B (2026-09-11, rewritten): the vanilla engine NEVER calls the FAF-style
+            --OnKilledUnit callback -- the playtest proved it (neutrals killed by player units:
+            --the bar moved on the engine's own +1/kill counter while our debug lines stayed at
+            --zero, so the whole credit block was dead code). Vanilla's real death callback is
+            --OnKilled, which fires ON THE VICTIM with the instigator as the 2nd argument.
+            OnKilled = function(self, instigator, type, overkillRatio)
                 pcall(function()
-                    if unitKilled and unitKilled.GetBlueprint then
-                        local vBp = unitKilled:GetBlueprint()
+                    --M&B: per-unit kill COUNT (how many units this unit killed), kept in its own
+                    --'MNBKills' stat -- separate from KILLS, which holds killed MASS. The panel's
+                    --chevron row shows this count (user request 2026-09-11: bar = mass, chevrons
+                    --= units killed). The kill goes to the unit that landed the finishing blow.
+                    if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat then
+                        local iMNBCnt = 0
+                        local tMNBCnt = instigator:GetStat('MNBKills', 0)
+                        if tMNBCnt and tMNBCnt.Value then iMNBCnt = tMNBCnt.Value end
+                        instigator:UpdateStat('MNBKills', iMNBCnt + 1)
+                    end
+                    if self.GetBlueprint then
+                        local vBp = self:GetBlueprint()
                         local iMass = (vBp and vBp.Economy and vBp.Economy.BuildCostMass) or 0
+                        --M&B: an under-construction victim only pays the fraction of its mass that was
+                        --actually built (FAF trick) -- killing a 5% finished factory no longer awards
+                        --its full cost.
+                        if iMass > 0 and self.GetFractionComplete then
+                            local fMNBFrac = self:GetFractionComplete()
+                            if fMNBFrac and fMNBFrac < 1 then iMass = iMass * fMNBFrac end
+                        end
+                        iMass = math.floor(iMass)
                         if iMass > 0 then
-                            local iCur = 0
-                            local tStat = self:GetStat('KILLS', 0)
-                            if tStat and tStat.Value then iCur = tStat.Value end
-                            self:UpdateStat('KILLS', iCur + iMass)
+                            --M&B (2026-09-11): damage-proportional split. Collect still-valid ENEMY
+                            --attackers from the victim's tracker and credit each with mass*share.
+                            --If there is no tracked damage at all (script kills, nil instigator,
+                            --neutral victims where IsEnemy filters everyone out), fall back to the
+                            --last-hitter-takes-all credit.
+                            local bMNBSplit = false
+                            local tMNBTrack = self.MNBDamageFrom
+                            if tMNBTrack then
+                                local iMNBVictimArmy = (self.GetArmy and self:GetArmy()) or -1
+                                local tMNBValid = {}
+                                local iMNBTotal = 0
+                                for iMNBEnt, tMNBEntry in tMNBTrack do
+                                    local oMNBAtt = tMNBEntry.u
+                                    if oMNBAtt and not(oMNBAtt.Dead) and oMNBAtt.GetStat and oMNBAtt.UpdateStat
+                                        and (not(IsEnemy) or not(oMNBAtt.GetArmy) or IsEnemy(oMNBAtt:GetArmy(), iMNBVictimArmy)) then
+                                        table.insert(tMNBValid, { u = oMNBAtt, d = tMNBEntry.d })
+                                        iMNBTotal = iMNBTotal + tMNBEntry.d
+                                    end
+                                end
+                                if iMNBTotal > 0 and table.getn(tMNBValid) > 0 then
+                                    bMNBSplit = true
+                                    local iMNBGiven = 0
+                                    local tMNBBest = tMNBValid[1] -- largest damager
+                                    local tMNBKiller = nil       -- killer, if it took part in the fight
+                                    for iMNBI = 1, table.getn(tMNBValid) do
+                                        local tMNBV = tMNBValid[iMNBI]
+                                        if tMNBV.u == instigator then tMNBKiller = tMNBV end
+                                        if tMNBV.d > tMNBBest.d then tMNBBest = tMNBV end
+                                        local iMNBShare = math.floor(iMass * tMNBV.d / iMNBTotal)
+                                        if iMNBShare > 0 then
+                                            pcall(MNBVetCredit, tMNBV.u, iMNBShare)
+                                            iMNBGiven = iMNBGiven + iMNBShare
+                                        end
+                                    end
+                                    --rounding remainder: to the killer if it fought, else to the top damager
+                                    local iMNBRest = iMass - iMNBGiven
+                                    if iMNBRest > 0 then
+                                        pcall(MNBVetCredit, (tMNBKiller or tMNBBest).u, iMNBRest)
+                                    end
+                                end
+                            end
+                            if not bMNBSplit then
+                                if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat then
+                                    pcall(MNBVetCredit, instigator, iMass)
+                                end
+                            end
                         end
                     end
                 end)
-                if MNBOldUnitVet.OnKilledUnit then MNBOldUnitVet.OnKilledUnit(self, unitKilled, massKilled) end
+                if MNBOldUnitVet.OnKilled then MNBOldUnitVet.OnKilled(self, instigator, type, overkillRatio) end
             end,
         }
     end

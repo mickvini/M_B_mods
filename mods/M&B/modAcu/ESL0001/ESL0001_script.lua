@@ -34,7 +34,13 @@ ESL0001 = Class( SWalkingLandUnit ) {
 
     Weapons = {
         DeathWeapon = Class(SIFCommanderDeathWeapon) {},
-        ChronotronCannon = Class(SDFChronotronCannonWeapon) {},
+        ChronotronCannon = Class(SDFChronotronCannonWeapon) {
+            --M&B: auto-overcharge hook - evaluated only when the gun actually fires
+            OnWeaponFired = function(self)
+                SDFChronotronCannonWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCTry()
+            end,
+        },
         EXTorpedoLauncher01 = Class(SANUallCavitationTorpedo) {},
         EXTorpedoLauncher02 = Class(SANUallCavitationTorpedo) {},
         EXTorpedoLauncher03 = Class(SANUallCavitationTorpedo) {},
@@ -183,6 +189,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             
             OnDisableWeapon = function(self)
                 if self.unit:BeenDestroyed() then return end
+                self.unit.MNB_OCArmed = false   --M&B: auto-OC armed flag reset
                 self:SetWeaponEnabled(false)
                 self.unit:SetWeaponEnabledByLabel('ChronotronCannon', true)
                 self.unit:BuildManipulatorSetEnabled(false)
@@ -659,11 +666,20 @@ ESL0001 = Class( SWalkingLandUnit ) {
 		if not self.DefaultGunBuffApplied then
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
 			wepChronotron:AddDamageMod(64)
-			local wepOvercharge = self:GetWeaponByLabel('OverCharge')
-            wepOvercharge:ChangeMaxRadius(40)
+			self:MNB_SetOCRange(40)   --M&B: was a raw ChangeMaxRadius(40); now routes through the body-floor rule
 			self:ShowBone('Basic_Gun_Up', true)
 			self.DefaultGunBuffApplied = true
 		end
+    end,
+
+    --M&B: OC range granted by the right-arm gun line. While the body chain is installed
+    --(RBComTier1: Combat Systems / Tac Missile / Overcharge Amplifier) keep a floor of 45.
+    MNB_SetOCRange = function(self, range)
+        self.MNB_OCRange = range
+        if self.RBComTier1 and range < 45 then
+            range = 45
+        end
+        self:GetWeaponByLabel('OverCharge'):ChangeMaxRadius(range)
     end,
 
     WeaponRangeReset = function(self)
@@ -940,6 +956,62 @@ ESL0001 = Class( SWalkingLandUnit ) {
        
     AdvancedRegenBuffThread = function(self)
         self:MNBRegenFieldThread(2)
+    end,
+
+    --M&B: auto-overcharge (Alt+O, player only). Event-driven: evaluated ONLY when the
+    --main gun fires, so an idle or building commander costs nothing.
+    MNB_AutoOCTry = function(self)
+        if not self.MNB_AutoOC then
+            return
+        end
+        if self:IsOverchargePaused() then return end
+        if self:IsUnitState('Building') or self:IsUnitState('Repairing') or self:IsUnitState('Reclaiming')
+            or self:IsUnitState('Enhancing') or self:IsUnitState('Upgrading') then return end
+        if self.MNB_OCArmed then return end
+        --M&B: the gun firing is only the TRIGGER - the shot goes to the FATTEST
+        --enemy within overcharge reach (fat = blueprint mass), not to whatever
+        --the gun happens to shoot at. Commanders and air stay excluded.
+        local wepOC = self:GetWeaponByLabel('OverCharge')
+        local reach = self.MNB_OCRange or 30
+        if self.RBComTier1 and reach < 45 then reach = 45 end
+        local around = self:GetAIBrain():GetUnitsAroundPoint(categories.ALLUNITS, self:GetPosition(), reach, 'enemy') or {}
+        local best, bestMass = nil, -1
+        for _, u in around do
+            if not u.Dead and not EntityCategoryContains(categories.COMMAND, u)
+                and not EntityCategoryContains(categories.AIR, u) then
+                local m = u:GetBlueprint().Economy.BuildCostMass or 0
+                if m > bestMass then
+                    best, bestMass = u, m
+                end
+            end
+        end
+        if not best then return end
+        -- energy: exactly the shot cost, no reserve (survival rule)
+        if self:GetAIBrain():GetEconomyStored('ENERGY') < (wepOC:GetBlueprint().EnergyRequired or 0) then return end
+        self.MNB_OCArmed = true
+        --M&B: imitate the player's manual OC click with the engine's own
+        --IssueOverCharge command - the exact call the UI and the M28 bots use
+        --(M28Orders.lua IssueTrackedOvercharge). It arms the weapon, aims and
+        --fires at the target by itself. Deferred out of the gun's fire event so
+        --nothing changes weapon state mid-fire.
+        self:ForkThread(function()
+            WaitSeconds(0.1)
+            if self.Dead then return end
+            if best.Dead or not self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                return
+            end
+            IssueOverCharge({self}, best)
+        end)
+        -- safety: if the shot never happens (target slipped out of range) the gun stays
+        -- disabled and this event never refires - re-enable the gun after a grace period
+        self:ForkThread(function()
+            WaitSeconds(3)
+            if not self.Dead and self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                wepOC:OnDisableWeapon()
+            end
+        end)
     end,
 
     CreateEnhancement = function(self, enh)
@@ -1556,6 +1628,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(45)   --M&B: share BigBall range with overcharge
         elseif enh =='EXCannonBigBallRemove' then
             if Buff.HasBuff( self, 'EXSeraHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost10' )
@@ -1563,6 +1636,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1595,7 +1669,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
-        elseif enh =='EXImprovedContainmentBottleRemove' then    
+			self:MNB_SetOCRange(50)   --M&B: share BigBall02 range with overcharge
+        elseif enh =='EXImprovedContainmentBottleRemove' then
             if Buff.HasBuff( self, 'EXSeraHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost10' )
             end
@@ -1605,6 +1680,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1636,7 +1712,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
-        elseif enh =='EXPowerBoosterRemove' then    
+			self:MNB_SetOCRange(60)   --M&B: share BigBall03 range with overcharge
+        elseif enh =='EXPowerBoosterRemove' then
             self:SetWeaponEnabledByLabel('EXBigBallCannon', false)
             if Buff.HasBuff( self, 'EXSeraHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost10' )
@@ -1650,6 +1727,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcBigBall01 = false
 			self.wcBigBall02 = false
 			self.wcBigBall03 = false
@@ -1681,6 +1759,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: share Rapid range with overcharge
         elseif enh =='EXCannonRapidRemove' then
             if Buff.HasBuff( self, 'EXSeraHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost13' )
@@ -1688,6 +1767,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -1720,6 +1800,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
+			self:MNB_SetOCRange(50)   --M&B: share Rapid02 range with overcharge
         elseif enh =='EXImprovedCoolingSystemRemove' then
             if Buff.HasBuff( self, 'EXSeraHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost13' )
@@ -1730,6 +1811,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -1761,6 +1843,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(60)   --M&B: share Rapid03 range with overcharge
         elseif enh =='EXEnergyShellHardenerRemove' then
             if Buff.HasBuff( self, 'EXSeraHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXSeraHealthBoost13' )
@@ -1774,6 +1857,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             local wepChronotron = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisruptZephyrRadius = self:GetBlueprint().Weapon[1].MaxRadius
             wepChronotron:ChangeMaxRadius(bpDisruptZephyrRadius or 30)
+			self:MNB_SetOCRange(30)   --M&B: overcharge back to gun-line base (body keeps 45 if installed)
 			self.wcRapid01 = false
 			self.wcRapid02 = false
 			self.wcRapid03 = false
@@ -2293,7 +2377,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost19')
 			local wepOC = self:GetWeaponByLabel('OverCharge')
-            wepOC:ChangeMaxRadius(bp.OverchargeRangeMod or 44)
+            wepOC:ChangeMaxRadius(math.max(45, self.MNB_OCRange or 30))   --M&B: 45, or the gun-line range if longer (was 44)
             wepOC:AddDamageMod(bp.OverchargeDamageMod)        
 			self.RBComTier1 = true
 			self.RBComTier2 = false
@@ -2311,8 +2395,8 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
-            wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
+            wepOC:ChangeMaxRadius(self.MNB_OCRange or 30)   --M&B: back to the gun-line OC range (body chain removed)
+            wepOC:AddDamageMod(-bp.OverchargeDamageMod)
 			self:StopSiloBuild()
 			self.RBComTier1 = false
 			self.RBComTier2 = false
@@ -2369,9 +2453,9 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
-            wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
-            wepOC:AddDamageMod(-bp.OverchargeDamageMod2)        
+            wepOC:ChangeMaxRadius(self.MNB_OCRange or 30)   --M&B: body chain removed -> back to gun-line OC range
+            wepOC:AddDamageMod(-bp.OverchargeDamageMod)
+            wepOC:AddDamageMod(-bp.OverchargeDamageMod2)
 			self.wcTMissiles01 = false
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
@@ -2397,7 +2481,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
             end
             Buff.ApplyBuff(self, 'EXSeraHealthBoost21')   
 			local wepOC = self:GetWeaponByLabel('OverCharge')
-            wepOC:ChangeMaxRadius(bp.OverchargeRangeMod or 44)
+            wepOC:ChangeMaxRadius(math.max(45, self.MNB_OCRange or 30))   --M&B: 45, or the gun-line range if longer (was 44)
             wepOC:AddDamageMod(bp.OverchargeDamageMod3)        
 			wepOC:ChangeProjectileBlueprint(bp.NewProjectileBlueprint)
 			self.RBComTier1 = true
@@ -2427,7 +2511,7 @@ ESL0001 = Class( SWalkingLandUnit ) {
 			end
 			local wepOC = self:GetWeaponByLabel('OverCharge')
             local bpDisruptOCRadius = self:GetBlueprint().Weapon[2].MaxRadius
-            wepOC:ChangeMaxRadius(bpDisruptOCRadius or 30)
+            wepOC:ChangeMaxRadius(self.MNB_OCRange or 30)   --M&B: body chain removed -> back to gun-line OC range
             wepOC:AddDamageMod(-bp.OverchargeDamageMod)        
             wepOC:AddDamageMod(-bp.OverchargeDamageMod2)        
             wepOC:AddDamageMod(-bp.OverchargeDamageMod3)        

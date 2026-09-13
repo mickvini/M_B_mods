@@ -64,7 +64,8 @@ UnitBlueprint {
         'MOBILE',
         'AIR',
         'HIGHALTAIR',
-        'SATELLITE',
+        --M&B: SATELLITE category removed - the recon satellite must not drain
+        --anti-nuke interceptors (they treat SATELLITE as a nuke-class target)
         'VISIBLETORECON',
         'RECLAIMABLE',
         'INTELLIGENCE',
@@ -150,7 +151,9 @@ UnitBlueprint {
             LAYER_Sub = false,
             LAYER_Water = false,
         },
-        Elevation = 75,
+        --M&B balance: 75 put it above most AA range (56*1.2 grade = 67);
+        --65 = reachable by long-range AA and by T3 mobile AA with range grades
+        Elevation = 65,
         FuelRechargeRate = 150,
         FuelUseTime = 0,
         MaxAcceleration = 1,

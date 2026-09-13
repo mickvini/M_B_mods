@@ -197,8 +197,8 @@ UnitBlueprint {
     },
     Economy = {
         BuildCostEnergy = 0,
-        BuildCostMass = 520,
-        BuildTime = 18000,
+        BuildCostMass = 1040,
+        BuildTime = 4500,
     },
     General = {
         Category = 'Transport',

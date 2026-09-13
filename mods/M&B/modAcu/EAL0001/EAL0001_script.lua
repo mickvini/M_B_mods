@@ -148,7 +148,13 @@ EAL0001 = Class(AWalkingLandUnit) {
 				end
             end,	
 		},
-        RightDisruptor = Class(ADFDisruptorCannonWeapon) {},
+        RightDisruptor = Class(ADFDisruptorCannonWeapon) {
+            --M&B: auto-overcharge hook - evaluated only when the gun actually fires
+            OnWeaponFired = function(self)
+                ADFDisruptorCannonWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCTry()
+            end,
+        },
         --M&B: damage zones {outerRadius, damage}, listed outer->inner (damage rises toward the centre);
         --MNBStun = stun seconds applied to each enemy LAND unit hit.
         EXChronoDampener01 = Class(EXChronoDampenerWeapon) {
@@ -203,6 +209,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             
             OnDisableWeapon = function(self)
                 if self.unit:BeenDestroyed() then return end
+                self.unit.MNB_OCArmed = false   --M&B: auto-OC armed flag reset
                 self:SetWeaponEnabled(false)
                 self.unit:SetWeaponEnabledByLabel('RightDisruptor', true)
                 self.unit:BuildManipulatorSetEnabled(false)
@@ -1083,6 +1090,67 @@ EAL0001 = Class(AWalkingLandUnit) {
         end
     end,
 
+    --M&B: OC range setter that remembers the value for auto-overcharge reach checks
+    MNB_SetOCRange = function(self, range)
+        self.MNB_OCRange = range
+        self:GetWeaponByLabel('OverCharge'):ChangeMaxRadius(range)
+    end,
+
+    --M&B: auto-overcharge (Alt+O, player only). Event-driven: evaluated ONLY when the
+    --main gun fires, so an idle or building commander costs nothing.
+    MNB_AutoOCTry = function(self)
+        if not self.MNB_AutoOC then
+            return
+        end
+        if self:IsOverchargePaused() then return end
+        if self:IsUnitState('Building') or self:IsUnitState('Repairing') or self:IsUnitState('Reclaiming')
+            or self:IsUnitState('Enhancing') or self:IsUnitState('Upgrading') then return end
+        if self.MNB_OCArmed then return end
+        --M&B: the gun firing is only the TRIGGER - the shot goes to the FATTEST
+        --enemy within overcharge reach (fat = blueprint mass), not to whatever
+        --the gun happens to shoot at. Commanders and air stay excluded.
+        local wepOC = self:GetWeaponByLabel('OverCharge')
+        local reach = self.MNB_OCRange or 30
+        local around = self:GetAIBrain():GetUnitsAroundPoint(categories.ALLUNITS, self:GetPosition(), reach, 'enemy') or {}
+        local best, bestMass = nil, -1
+        for _, u in around do
+            if not u.Dead and not EntityCategoryContains(categories.COMMAND, u)
+                and not EntityCategoryContains(categories.AIR, u) then
+                local m = u:GetBlueprint().Economy.BuildCostMass or 0
+                if m > bestMass then
+                    best, bestMass = u, m
+                end
+            end
+        end
+        if not best then return end
+        -- energy: exactly the shot cost, no reserve (survival rule)
+        if self:GetAIBrain():GetEconomyStored('ENERGY') < (wepOC:GetBlueprint().EnergyRequired or 0) then return end
+        self.MNB_OCArmed = true
+        --M&B: imitate the player's manual OC click with the engine's own
+        --IssueOverCharge command - the exact call the UI and the M28 bots use
+        --(M28Orders.lua IssueTrackedOvercharge). It arms the weapon, aims and
+        --fires at the target by itself. Deferred out of the gun's fire event so
+        --nothing changes weapon state mid-fire.
+        self:ForkThread(function()
+            WaitSeconds(0.1)
+            if self.Dead then return end
+            if best.Dead or not self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                return
+            end
+            IssueOverCharge({self}, best)
+        end)
+        -- safety: if the shot never happens (target slipped out of range) the gun stays
+        -- disabled and this event never refires - re-enable the gun after a grace period
+        self:ForkThread(function()
+            WaitSeconds(3)
+            if not self.Dead and self.MNB_OCArmed then
+                self.MNB_OCArmed = false
+                wepOC:OnDisableWeapon()
+            end
+        end)
+    end,
+
     CreateEnhancement = function(self, enh)
         AWalkingLandUnit.CreateEnhancement(self, enh)
         local bp = self:GetBlueprint().Enhancements[enh]
@@ -1517,6 +1585,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:GetWeaponByLabel('EXTargetPainter'):ChangeMaxRadius(40)   --M&B: painter covers gun range (40). In the upgrade's OWN function, NOT in DefaultGunBuffThread (shared by the artillery line -> would clobber painter=100)
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: share booster range with overcharge
         elseif enh =='EXDisruptorrBoosterRemove' then
 			if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
@@ -1555,6 +1624,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self.wcDisruptor02 = true
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
+			self:MNB_SetOCRange(45)   --M&B: share amplifier range with overcharge
         elseif enh =='EXDisruptorrEnhancerRemove' then
             if Buff.HasBuff(self, 'EXAeonDisruptorrHealthBoost2') then
                 Buff.RemoveBuff(self, 'EXAeonDisruptorrHealthBoost2')
@@ -1563,6 +1633,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             wepDisruptor:AddDamageMod(74)
             wepDisruptor:AddDamageMod(-240)
             wepDisruptor:ChangeMaxRadius(40)
+			self:MNB_SetOCRange(40)   --M&B: overcharge back to booster range
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(22)
 			self.DisruptorRange = false
@@ -1715,7 +1786,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             end
             Buff.ApplyBuff(self, 'EXAeonHealthBoost10')
             local wepDisruptor = self:GetWeaponByLabel('RightDisruptor')
-            wepDisruptor:ChangeMaxRadius(55)
+            wepDisruptor:ChangeMaxRadius(45)   --M&B: gun follows the artillery tiers 45/50/55 (was 55)
 			local wepTargetPainter = self:GetWeaponByLabel('EXTargetPainter')
 			wepTargetPainter:ChangeMaxRadius(100)
 			self.wcArtillery01 = true
@@ -1726,6 +1797,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(40)   --M&B: user spec: OC capped at 40 on the artillery line
         elseif enh =='EXArtilleryMiasmaRemove' then
             if Buff.HasBuff( self, 'EXAeonHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost10' )
@@ -1768,6 +1840,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
+			self:GetWeaponByLabel('RightDisruptor'):ChangeMaxRadius(50)   --M&B: gun follows the artillery tiers 45/50/55
+			self:MNB_SetOCRange(40)   --M&B: user spec: OC capped at 40 on the artillery line
         elseif enh =='EXAdvancedShellsRemove' then
 			if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
 			self:RemoveToggleCap('RULEUTC_WeaponToggle')
@@ -1813,7 +1887,9 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.ArtyShieldCheck)
 			self:ForkThread(self.EXRegenBuffThread)
-        elseif enh =='EXImprovedReloaderRemove' then    
+			self:GetWeaponByLabel('RightDisruptor'):ChangeMaxRadius(55)   --M&B: gun follows the artillery tiers 45/50/55
+			self:MNB_SetOCRange(40)   --M&B: user spec: OC capped at 40 on the artillery line
+        elseif enh =='EXImprovedReloaderRemove' then
 			self:RemoveToggleCap('RULEUTC_WeaponToggle')
             if Buff.HasBuff( self, 'EXAeonHealthBoost10' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost10' )
@@ -1861,6 +1937,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(35)   --M&B: share beam range with overcharge
         elseif enh =='EXBeamPhasonRemove' then
             if Buff.HasBuff( self, 'EXAeonHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost13' )
@@ -1899,6 +1976,8 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.EXRegenBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread)
 			self:ForkThread(self.DefaultGunBuffThread02)
+			self:GetWeaponByLabel('RightDisruptor'):ChangeMaxRadius(40)   --M&B: gun follows the beam tiers 35/40/45 (was stuck at 35 if the buff had already fired)
+			self:MNB_SetOCRange(40)   --M&B: share beam02 range with overcharge
         elseif enh =='EXImprovedCoolingSystemRemove' then
             if self.DefaultGunBuffApplied then self:GetWeaponByLabel('RightDisruptor'):AddDamageMod(-74); self.DefaultGunBuffApplied = false end   --M&B bugfix: reverse DefaultGunBuffThread +74 dmg so the gun doesn't keep it after remove
             if Buff.HasBuff( self, 'EXAeonHealthBoost13' ) then
@@ -1941,6 +2020,7 @@ EAL0001 = Class(AWalkingLandUnit) {
 			self:ForkThread(self.WeaponRangeReset)
 			self:ForkThread(self.WeaponConfigCheck)
 			self:ForkThread(self.EXRegenBuffThread)
+			self:MNB_SetOCRange(45)   --M&B: share beam03 range with overcharge
         elseif enh =='EXPowerBoosterRemove' then
             if Buff.HasBuff( self, 'EXAeonHealthBoost13' ) then
                 Buff.RemoveBuff( self, 'EXAeonHealthBoost13' )

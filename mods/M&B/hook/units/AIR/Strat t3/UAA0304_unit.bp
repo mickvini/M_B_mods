@@ -277,7 +277,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 204,
+            Damage = 510,
             DamageFriendly = true,
             DamageRadius = 4,
             DamageType = 'Normal',
@@ -291,7 +291,7 @@ UnitBlueprint {
             Label = 'Bomb',
             MaxRadius = 65,
             MuzzleSalvoDelay = 0.1,
-            MuzzleSalvoSize = 10,
+            MuzzleSalvoSize = 4,
             MuzzleVelocity = 0,
             ProjectileId = '/projectiles/AIFBombQuark01/AIFBombQuark01_proj.bp',
             RackBones = {

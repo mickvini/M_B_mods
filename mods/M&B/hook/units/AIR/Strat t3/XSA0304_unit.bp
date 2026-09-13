@@ -297,7 +297,7 @@ UnitBlueprint {
             },
             BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
-            Damage = 204,
+            Damage = 510,
             DamageFriendly = true,
             DamageRadius = 6,
             DamageType = 'Normal',
@@ -311,7 +311,7 @@ UnitBlueprint {
             Label = 'Bomb',
             MaxRadius = 65,
             MuzzleSalvoDelay = 0.02,
-            MuzzleSalvoSize = 10,
+            MuzzleSalvoSize = 4,
             MuzzleVelocity = 0,
             ProjectileId = '/projectiles/SBOZhanaseeBomb01/SBOZhanaseeBomb01_proj.bp',
             RackBones = {

@@ -52,11 +52,11 @@ UnitBlueprint {
     BuildIconSortPriority = 37,
     Buffs = {
         Regen = {
-            Level1 = 24,
-            Level2 = 48,
-            Level3 = 72,
-            Level4 = 96,
-            Level5 = 120,
+            Level1 = 30,
+            Level2 = 60,
+            Level3 = 90,
+            Level4 = 120,
+            Level5 = 150,
         },
     },
     Categories = {
@@ -706,7 +706,10 @@ UnitBlueprint {
                     LodCutoff = 'Weapon_LodCutoff',
                 },
             },
-            BallisticArc = 'RULEUBA_LowArc',
+            --M&B bugfix: the Sinn Unthe projectile flies straight (UseGravity=false),
+            --so a LowArc ballistic solution aims it over the target at long range.
+            --Vanilla Ythotha pairs this projectile with RULEUBA_None.
+            BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 770,
             DamageRadius = 2,
@@ -792,7 +795,10 @@ UnitBlueprint {
                     LodCutoff = 'Weapon_LodCutoff',
                 },
             },
-            BallisticArc = 'RULEUBA_LowArc',
+            --M&B bugfix: the Sinn Unthe projectile flies straight (UseGravity=false),
+            --so a LowArc ballistic solution aims it over the target at long range.
+            --Vanilla Ythotha pairs this projectile with RULEUBA_None.
+            BallisticArc = 'RULEUBA_None',
             CollideFriendly = false,
             Damage = 770,
             DamageRadius = 2,

@@ -1771,7 +1771,7 @@ UnitBlueprint {
             TargetRestrictDisallow = 'UNTARGETABLE',
             WeaponCategory = 'Direct Fire',
             EnergyChargeForFirstShot = false,
-            ManualFire = true,
+            ManualFire = false,   --M&B: was true - a manual-only weapon aims but never fires on its own, which blocked auto-overcharge
             OverChargeWeapon = true,
             ProjectileLifetimeUsesMultiplier = 2,
             RangeCategory = 'UWRC_DirectFire',

@@ -38,7 +38,7 @@ UnitBlueprint {
             Level2 = 40,
             Level3 = 60,
             Level4 = 90,
-            Level5 = 140,
+            Level5 = 120,
         },
     },
     BuildIconSortPriority = 30,

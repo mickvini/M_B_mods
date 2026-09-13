@@ -8,7 +8,10 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
-local TLandUnit = import('/lua/defaultunits.lua').MobileUnit
+--M&B bugfix: was MobileUnit - that base class skips the lab research buffs
+--(health/speed/damage). LandUnit applies them on OnStopBeingBuilt like every
+--other land combat unit.
+local TLandUnit = import('/lua/defaultunits.lua').LandUnit
 local TDFGaussCannonWeapon = import('/lua/terranweapons.lua').TDFGaussCannonWeapon
 local TDFMachineGunWeapon = import('/lua/terranweapons.lua').TDFMachineGunWeapon
 local EffectUtils = import('/lua/effectutilities.lua')

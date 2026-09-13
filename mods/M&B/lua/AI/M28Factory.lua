@@ -8045,6 +8045,22 @@ end
 
 function GetBlueprintToBuildForResearchCentre(aiBrain, oFactory)
     local sFunctionRef = 'GetBlueprintToBuildForResearchCentre'
+    --M&B (user 2026-09-11: "bot must queue 9100, wait until it reports done, THEN queue
+    --9200, and so on -- give the bot back its sequence"): with v7 lab brains the engine
+    --never holds a production task on the lab, so to M28 the lab always looks idle and
+    --it dumps every currently-available research into the script queue in one burst.
+    --Gate on OUR queue instead: while any lab of this brain has a research running or
+    --waiting in the script system, order nothing. Completion "reports" by applying the
+    --research and clearing the slot; the next M28 pass then picks the next item in the
+    --mod author's rank order below.
+    if M28Utilities.IsMBModActive() then
+        local tMNBLabs = aiBrain:GetListOfUnits(categories.RESEARCHCENTRE * categories.STRUCTURE, false) or {}
+        for _, oMNBLab in tMNBLabs do
+            if oMNBLab and not(oMNBLab.Dead) and (oMNBLab.MNBCurrent or (oMNBLab.MNBScriptQueue and table.getn(oMNBLab.MNBScriptQueue) > 0)) then
+                return nil
+            end
+        end
+    end
     -- M&B research items: tier unlocks (ResearchId RESEARCHLOCKEDTECH1/TECH2/TECH3/EXPERIMENTAL/TECH4)
     -- must be researched in order and ALWAYS first; only one tier is buildable at a time (sequential chain).
     -- Everything else (MK* boosts, *rnd unit-unlocks) comes after the tier chain is done.

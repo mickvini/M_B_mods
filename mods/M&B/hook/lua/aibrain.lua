@@ -344,3 +344,9 @@ AIBrain = Class(M28AIBrainClass) {
         end
     end,
 }
+
+-- === M&B (2026-09-11..2026-09-14, user): war pool -- REMOVED ===
+-- The killed-mass research pool and its peacetime stipend are gone: the lab is back to
+-- the stock mass-paid design (restored from the M&B_backup_2026-09-11 archive). The kill
+-- accounting itself lives on in hook/lua/sim/Unit.lua MNBVetCredit -- it now pays a 20%
+-- DIVIDEND as real mass to the killing army instead of filling a pool.

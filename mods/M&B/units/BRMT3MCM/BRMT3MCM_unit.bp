@@ -55,11 +55,11 @@ UnitBlueprint {
     BuildIconSortPriority = 20,
     Buffs = {
         Regen = {
-            Level1 = 15,
-            Level2 = 20,
-            Level3 = 25,
-            Level4 = 30,
-            Level5 = 35,
+            Level1 = 20,
+            Level2 = 40,
+            Level3 = 60,
+            Level4 = 80,
+            Level5 = 100,
         },
     },
     Categories = {

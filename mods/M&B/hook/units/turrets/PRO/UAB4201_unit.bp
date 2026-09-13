@@ -201,7 +201,7 @@ UnitBlueprint {
             MaxRadius = 30,
             MuzzleSalvoDelay = 0,
             MuzzleSalvoSize = 1,
-            MuzzleVelocity = 5,
+            MuzzleVelocity = 7,   --M&B: decoy speed tuned 5(vanilla)->10->7; 10 left missile paths too fast
             ProjectileId = '/projectiles/AIMAntiMissile01/AIMAntiMissile01_proj.bp',
             ProjectileLifetime = 4,
             ProjectilesPerOnFire = 1,
@@ -215,8 +215,8 @@ UnitBlueprint {
             },
             RackFireTogether = false,
             RackRecoilDistance = 0,
-            RackReloadTimeout = 10,
-            RateOfFire = 0.32,
+            RackReloadTimeout = 5,   --M&B: 5s reload so the rack never gates the 5s cadence (was 10)
+            RateOfFire = 0.2,   --M&B: one decoy per 5 seconds (was 0.32 = ~3s)
             RackSalvoChargeTime = 0,
             RackSalvoReloadTime = 0,
             RackSalvoSize = 1,
@@ -227,8 +227,8 @@ UnitBlueprint {
             WeaponCategory = 'Defense',
             EffectiveRadius = 10,
             Flare = {
-                Category = 'MISSILE',
-                Radius = 15,
+                Category = 'TACTICAL MISSILE',   --M&B: lure tactical missiles only; nukes carry STRATEGIC without TACTICAL, so they ignore the flare now
+                Radius = 25,   --M&B: wider lure so the climbing decoy still catches late missiles (was 15)
             },
             RangeCategory = 'UWRC_Countermeasure',
             TargetType = 'RULEWTT_Projectile',

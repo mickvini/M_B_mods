@@ -8,10 +8,11 @@ local CAirUnit = import('/lua/cybranunits.lua').CAirUnit
 local CIFBombNeutronWeapon = import('/lua/cybranweapons.lua').CIFBombNeutronWeapon
 local CAAAutocannon = import('/lua/cybranweapons.lua').CAAAutocannon
 local MNBMakeBombDropper = import('/mods/M&B/lua/MNBBombDrop.lua').MNBMakeBombDropper
+local MNB_SQUARE = import('/mods/M&B/lua/MNBBombDrop.lua').MNB_SQUARE
 
 URA0304 = Class(CAirUnit) {
     Weapons = {
-        Bomb = Class(MNBMakeBombDropper(CIFBombNeutronWeapon)) {},
+        Bomb = Class(MNBMakeBombDropper(CIFBombNeutronWeapon, MNB_SQUARE)) {},
         AAGun1 = Class(CAAAutocannon) {},
         AAGun2 = Class(CAAAutocannon) {},
     },

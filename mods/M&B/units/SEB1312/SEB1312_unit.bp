@@ -151,7 +151,7 @@ UnitBlueprint {
         BuildCostEnergy = 0,
         BuildCostMass = 1600,
         BuildRate = 15,
-        BuildTime = 12800,
+        BuildTime = 4000,
         BuildableCategory = {
             'BUILTBYTIER1ENGINEER DEFENSE DIRECTFIRE UEF',
             'BUILTBYTIER1ENGINEER DEFENSE ANTIAIR UEF',

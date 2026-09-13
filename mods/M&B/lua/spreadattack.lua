@@ -99,13 +99,17 @@ function MNBAttackOverlayBeat()
                 local t = tostring(c.type)
                 local p = c.position
                 if (t == 'Attack' or t == 'FormAttack') and p then
-                    local key = math.floor((p.x or p[1] or 0) + 0.5) .. '_' ..
-                        math.floor((p.z or p[3] or 0) + 0.5)
+                    -- some queue positions carry missing fields (seen in the game log:
+                    -- nil height), which crashed AddCommandFeedbackBlip - coerce to numbers
+                    local bx = tonumber(p.x or p[1]) or 0
+                    local by = tonumber(p.y or p[2]) or 0
+                    local bz = tonumber(p.z or p[3]) or 0
+                    local key = math.floor(bx + 0.5) .. '_' .. math.floor(bz + 0.5)
                     if not seenPos[key] then
                         seenPos[key] = true
                         drawn = drawn + 1
                         AddCommandFeedbackBlip({
-                            Position = { x = p.x or p[1], y = p.y or p[2], z = p.z or p[3] },
+                            Position = { x = bx, y = by, z = bz },
                             MeshName = '/meshes/game/Attack_lod0.scm',
                             TextureName = '/meshes/game/Attack_albedo.dds',
                             ShaderName = 'CommandFeedback',
