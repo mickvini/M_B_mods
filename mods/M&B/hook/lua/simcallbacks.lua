@@ -1184,6 +1184,12 @@ Callbacks.MNB_AutoOCSet = function(data)
         for _, unit in commanders do
             if not unit.Dead and unit.MNB_AutoOCTry then
                 unit.MNB_AutoOC = data.enabled == true
+                --M&B: switching Alt+O off must also drop the retreat auto mode,
+                --otherwise the auto weapon stays live with the automation gone
+                if not unit.MNB_AutoOC and unit.MNB_OCFAFMode then
+                    unit.MNB_OCFAFMode = false
+                    unit:GetWeaponByLabel('MNB_AutoOC'):OnDisableWeapon()
+                end
             end
         end
         LOG('M&B auto-OC ' .. ((data.enabled == true) and 'enabled' or 'disabled') .. ', army=' .. tostring(data.army))

@@ -81,6 +81,10 @@ EAL0001 = Class(AWalkingLandUnit) {
         EXTargetPainter = Class(EXCEMPArrayBeam01) {
             OnWeaponFired = function(self)
 				EXCEMPArrayBeam01.OnWeaponFired(self)
+				--M&B: while an auto-OC shot is pending OR the retreat (FAF) mode keeps the
+				--OC weapon live, freeze the weapon switch - re-enabling the gun here puts
+				--the gun and the live OC weapon into a fight over the same turret
+				if self.unit.MNB_OCArmed or self.unit.MNB_OCFAFMode then return end
 				self.mypos = self.unit:GetPosition()
 				self.targetpos = self:GetCurrentTargetPos()
 				if self.targetpos then
@@ -152,7 +156,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             --M&B: auto-overcharge hook - evaluated only when the gun actually fires
             OnWeaponFired = function(self)
                 ADFDisruptorCannonWeapon.OnWeaponFired(self)
-                self.unit:MNB_AutoOCTry()
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
             end,
         },
         --M&B: damage zones {outerRadius, damage}, listed outer->inner (damage rises toward the centre);
@@ -168,17 +172,159 @@ EAL0001 = Class(AWalkingLandUnit) {
         EXTorpedoLauncher01 = Class(AANChronoTorpedoWeapon) {},
         EXTorpedoLauncher02 = Class(AANChronoTorpedoWeapon) {},
         EXTorpedoLauncher03 = Class(AANChronoTorpedoWeapon) {},
-        EXMiasmaArtillery01 = Class(AIFArtilleryMiasmaShellWeapon) {},
-        EXMiasmaArtillery02 = Class(AIFArtilleryMiasmaShellWeapon) {},
-        EXMiasmaArtillery03 = Class(AIFArtilleryMiasmaShellWeapon) {},
-        EXPhasonBeam01 = Class(AeonACUPhasonLaser) {},
-        EXPhasonBeam02 = Class(AeonACUPhasonLaser) {},
-        EXPhasonBeam03 = Class(AeonACUPhasonLaser) {},
+        --M&B: on Aeon the painter switches the branch weapon INSTEAD of the gun, so while
+        --a branch is active the gun never fires and its hook never runs. These branch
+        --weapons carry the auto-overcharge hook themselves (artillery only fires past 25,
+        --the gun covers close range, so exactly one hook is live at any moment).
+        EXMiasmaArtillery01 = Class(AIFArtilleryMiasmaShellWeapon) {
+            OnWeaponFired = function(self)
+                AIFArtilleryMiasmaShellWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
+        EXMiasmaArtillery02 = Class(AIFArtilleryMiasmaShellWeapon) {
+            OnWeaponFired = function(self)
+                AIFArtilleryMiasmaShellWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
+        EXMiasmaArtillery03 = Class(AIFArtilleryMiasmaShellWeapon) {
+            OnWeaponFired = function(self)
+                AIFArtilleryMiasmaShellWeapon.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
+        EXPhasonBeam01 = Class(AeonACUPhasonLaser) {
+            --M&B: stream line - auto-OC fires at the beam's own target, no search
+            OnWeaponFired = function(self)
+                AeonACUPhasonLaser.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
+        EXPhasonBeam02 = Class(AeonACUPhasonLaser) {
+            OnWeaponFired = function(self)
+                AeonACUPhasonLaser.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
+        EXPhasonBeam03 = Class(AeonACUPhasonLaser) {
+            OnWeaponFired = function(self)
+                AeonACUPhasonLaser.OnWeaponFired(self)
+                self.unit:MNB_AutoOCSafe(self:GetCurrentTarget())
+            end,
+        },
         EXQuantumMaelstrom01 = Class(EXQuantumMaelstromWeapon) {},
         EXQuantumMaelstrom02 = Class(EXQuantumMaelstromWeapon) {},
         EXQuantumMaelstrom03 = Class(EXQuantumMaelstromWeapon) {},
         EXAntiTorpedo = Class(AIFQuasarAntiTorpedoWeapon) {},
         EXAntiMissile = Class(AAMWillOWisp) {},
+        MNB_AutoOC = Class(ADFOverchargeWeapon) {
+            --M&B: FAF-style auto-overcharge as a SEPARATE second weapon. The
+            --engine never auto-fires the command-driven OverCharge weapon
+            --(OverChargeWeapon flag), but an ordinary weapon it targets, aims
+            --and fires on its own - including while moving, which no order can
+            --do (FAF units/URL0001 does exactly this with its AutoOverCharge).
+            --Fixed damage for a fixed energy cost, no energy scaling (user
+            --14.09). Live only in retreat mode; standing commanders keep the
+            --cone scheme through the real OverCharge order. Shares the ONE
+            --overcharge cooldown with the manual weapon through
+            --SetOverchargePaused, so the two can never alternate shots.
+            OnCreate = function(self)
+                ADFOverchargeWeapon.OnCreate(self)
+                self:SetWeaponEnabled(false)
+                self.AimControl:SetEnabled(false)
+                self.AimControl:SetPrecedence(0)
+            end,
+
+            MNB_CanAutoOC = function(self)
+                local unit = self.unit
+                if unit:IsOverchargePaused() or not unit.MNB_AutoOC then return false end
+                if unit:IsUnitState('Building') or unit:IsUnitState('Repairing')
+                    or unit:IsUnitState('Reclaiming') or unit:IsUnitState('Enhancing')
+                    or unit:IsUnitState('Upgrading') then return false end
+                local need = self:GetBlueprint().EnergyRequired or 0
+                return (unit:GetAIBrain():GetEconomyStored('ENERGY') or 0) >= need
+            end,
+
+            OnGotTarget = function(self)
+                if self:MNB_CanAutoOC() then
+                    ADFOverchargeWeapon.OnGotTarget(self)
+                else
+                    self:OnDisableWeapon()
+                end
+            end,
+
+            OnFire = function(self)
+                if self:MNB_CanAutoOC() then
+                    ADFOverchargeWeapon.OnFire(self)
+                else
+                    self:OnDisableWeapon()
+                end
+            end,
+
+            OnWeaponFired = function(self)
+                ADFOverchargeWeapon.OnWeaponFired(self)
+                self:OnDisableWeapon()
+                self:ForkThread(self.MNB_AutoCooldown)
+            end,
+
+            MNB_AutoCooldown = function(self)
+                local unit = self.unit
+                if not unit:IsOverchargePaused() then
+                    unit:SetOverchargePaused(true)
+                    WaitSeconds(1 / (self:GetBlueprint().RateOfFire or 0.2))
+                    unit:SetOverchargePaused(false)
+                end
+            end,
+
+            OnEnableWeapon = function(self)
+                if self:BeenDestroyed() then return end
+                ADFOverchargeWeapon.OnEnableWeapon(self)
+                self:SetWeaponEnabled(true)
+                self.unit:SetWeaponEnabledByLabel('RightDisruptor', false)
+                self.unit:BuildManipulatorSetEnabled(false)
+                self.AimControl:SetEnabled(true)
+                self.AimControl:SetPrecedence(20)
+                self.unit.BuildArmManipulator:SetPrecedence(0)
+                self.AimControl:SetHeadingPitch( self.unit:GetWeaponManipulatorByLabel('RightDisruptor'):GetHeadingPitch() )
+            end,
+
+            OnDisableWeapon = function(self)
+                if self.unit:BeenDestroyed() then return end
+                self.unit.MNB_OCFAFMode = false   --M&B: retreat auto mode flag reset
+                self:SetWeaponEnabled(false)
+                self.unit:SetWeaponEnabledByLabel('RightDisruptor', true)
+                self.unit:BuildManipulatorSetEnabled(false)
+                self.AimControl:SetEnabled(false)
+                self.AimControl:SetPrecedence(0)
+                self.unit.BuildArmManipulator:SetPrecedence(0)
+                self.unit:GetWeaponManipulatorByLabel('RightDisruptor'):SetHeadingPitch( self.AimControl:GetHeadingPitch() )
+            end,
+
+            IdleState = State(ADFOverchargeWeapon.IdleState) {
+                OnGotTarget = function(self)
+                    if self:MNB_CanAutoOC() then
+                        ADFOverchargeWeapon.IdleState.OnGotTarget(self)
+                    end
+                end,
+                OnFire = function(self)
+                    if self:MNB_CanAutoOC() then
+                        ChangeState(self, self.RackSalvoFiringState)
+                    else
+                        self:OnDisableWeapon()
+                    end
+                end,
+            },
+            RackSalvoFireReadyState = State(ADFOverchargeWeapon.RackSalvoFireReadyState) {
+                OnFire = function(self)
+                    if self:MNB_CanAutoOC() then
+                        ADFOverchargeWeapon.RackSalvoFireReadyState.OnFire(self)
+                    else
+                        self:OnDisableWeapon()
+                    end
+                end,
+            },
+        },
         OverCharge = Class(ADFOverchargeWeapon) {
 
             OnCreate = function(self)
@@ -210,6 +356,7 @@ EAL0001 = Class(AWalkingLandUnit) {
             OnDisableWeapon = function(self)
                 if self.unit:BeenDestroyed() then return end
                 self.unit.MNB_OCArmed = false   --M&B: auto-OC armed flag reset
+                self.unit.MNB_OCFAFMode = false   --M&B: retreat (FAF live) mode flag reset
                 self:SetWeaponEnabled(false)
                 self.unit:SetWeaponEnabledByLabel('RightDisruptor', true)
                 self.unit:BuildManipulatorSetEnabled(false)
@@ -752,7 +899,7 @@ EAL0001 = Class(AWalkingLandUnit) {
     DefaultGunBuffThread02 = function(self)
 		if not self.DefaultGunBuffApplied02 then
 			local wepOvercharge = self:GetWeaponByLabel('OverCharge')
-            wepOvercharge:ChangeMaxRadius(30)
+            wepOvercharge:ChangeMaxRadius(self.MNB_OCRange or 30)   --M&B: keep OC at the mirrored gun range (a hard 30 broke shots after range upgrades)
 			self.DefaultGunBuffApplied02 = true
 		end
 		if not self.wcBeam01 or not self.wcBeam02 or not self.wcBeam03 then
@@ -1094,11 +1241,18 @@ EAL0001 = Class(AWalkingLandUnit) {
     MNB_SetOCRange = function(self, range)
         self.MNB_OCRange = range
         self:GetWeaponByLabel('OverCharge'):ChangeMaxRadius(range)
+        --M&B: the retreat auto weapon tracks the same range as the manual one
+        self:GetWeaponByLabel('MNB_AutoOC'):ChangeMaxRadius(range)
     end,
 
     --M&B: auto-overcharge (Alt+O, player only). Event-driven: evaluated ONLY when the
     --main gun fires, so an idle or building commander costs nothing.
-    MNB_AutoOCTry = function(self)
+    --M&B aim-cone rule: the gun's own target IS the barrel direction. A fatter target
+    --is only taken inside a 30-degree cone (+-15 degrees from that direction), so the
+    --turret never turns more than a fraction of a second. Stream weapon lines (here:
+    --the beam line) skip the search entirely and fire at the gun's target, because
+    --any turret turn would break their fire stream.
+    MNB_AutoOCTry = function(self, gunTarget)
         if not self.MNB_AutoOC then
             return
         end
@@ -1106,25 +1260,89 @@ EAL0001 = Class(AWalkingLandUnit) {
         if self:IsUnitState('Building') or self:IsUnitState('Repairing') or self:IsUnitState('Reclaiming')
             or self:IsUnitState('Enhancing') or self:IsUnitState('Upgrading') then return end
         if self.MNB_OCArmed then return end
-        --M&B: the gun firing is only the TRIGGER - the shot goes to the FATTEST
-        --enemy within overcharge reach (fat = blueprint mass), not to whatever
-        --the gun happens to shoot at. Commanders and air stay excluded.
         local wepOC = self:GetWeaponByLabel('OverCharge')
         local reach = self.MNB_OCRange or 30
-        local around = self:GetAIBrain():GetUnitsAroundPoint(categories.ALLUNITS, self:GetPosition(), reach, 'enemy') or {}
-        local best, bestMass = nil, -1
-        for _, u in around do
-            if not u.Dead and not EntityCategoryContains(categories.COMMAND, u)
-                and not EntityCategoryContains(categories.AIR, u) then
-                local m = u:GetBlueprint().Economy.BuildCostMass or 0
-                if m > bestMass then
-                    best, bestMass = u, m
+        --M&B: combo (user 14.09): standing = our cone scheme below; MOVING = the
+        --separate MNB_AutoOC weapon. No order can execute under a move command
+        --(log 14.09: SENT then TIMEOUT forever), and the engine never auto-fires
+        --the flagged OverCharge weapon - but an ordinary weapon it fires on its
+        --own even while walking (FAF's AutoOverCharge approach).
+        if self:IsUnitState('Moving') then
+            self:MNB_OCFAFEnable()
+            return
+        end
+        --M&B: standing again - drop the live mode first, the cone scheme below
+        --arms the weapon through its own order
+        if self.MNB_OCFAFMode then
+            self.MNB_OCFAFMode = false
+            self:GetWeaponByLabel('MNB_AutoOC'):OnDisableWeapon()
+        end
+        if not gunTarget or gunTarget.Dead then
+            return
+        end
+        --M&B: the gun can aim at a non-unit object (e.g. an enemy shield bubble);
+        --such objects have no GetUnitId and overcharge cannot hit them
+        local gunIsUnit = gunTarget.GetUnitId ~= nil
+        local myPos = self:GetPosition()
+        local gPos = gunTarget:GetPosition()
+        local baseAng = math.atan2(gPos[1] - myPos[1], gPos[3] - myPos[3])
+        local cone = 15 * math.pi / 180
+        local best, bestMass, pickAng, mode
+        if self.wcBeam01 or self.wcBeam02 or self.wcBeam03 then
+            -- stream line installed: no search, fire where the gun fires
+            if not gunIsUnit then
+                return
+            end
+            best = gunTarget
+            bestMass = gunTarget:GetBlueprint().Economy.BuildCostMass or 0
+            pickAng = 0
+            mode = 'stream'
+        else
+            local around = self:GetAIBrain():GetUnitsAroundPoint(categories.ALLUNITS, self:GetPosition(), reach, 'enemy') or {}
+            for _, u in around do
+                if not u.Dead and not EntityCategoryContains(categories.COMMAND, u)
+                    and not EntityCategoryContains(categories.AIR, u) then
+                    local uPos = u:GetPosition()
+                    local dAng = math.atan2(uPos[1] - myPos[1], uPos[3] - myPos[3]) - baseAng
+                    if dAng > math.pi then dAng = dAng - 2 * math.pi
+                    elseif dAng < -math.pi then dAng = dAng + 2 * math.pi end
+                    if math.abs(dAng) <= cone then
+                        local m = u:GetBlueprint().Economy.BuildCostMass or 0
+                        if not best or m > bestMass then
+                            best, bestMass, pickAng, mode = u, m, dAng, 'cone'
+                        end
+                    end
                 end
             end
+            if not best then
+                if not gunIsUnit then
+                    -- aim object is not a unit (e.g. shield bubble): the direction was
+                    -- still useful for the cone search, but OC itself has nothing to hit
+                    return
+                end
+                -- nothing worth taking inside the cone: fire at the gun's own target
+                best = gunTarget
+                bestMass = gunTarget:GetBlueprint().Economy.BuildCostMass or 0
+                pickAng = 0
+                mode = 'gun'
+            end
         end
-        if not best then return end
+        -- the final pick must itself be OC-targetable: not a commander, not air
+        if EntityCategoryContains(categories.COMMAND, best) or EntityCategoryContains(categories.AIR, best) then
+            return
+        end
+        local dist = VDist3(myPos, best:GetPosition())
+        if dist > reach then
+            return
+        end
         -- energy: exactly the shot cost, no reserve (survival rule)
-        if self:GetAIBrain():GetEconomyStored('ENERGY') < (wepOC:GetBlueprint().EnergyRequired or 0) then return end
+        local eStored = self:GetAIBrain():GetEconomyStored('ENERGY')
+        local eNeed = wepOC:GetBlueprint().EnergyRequired or 0
+        if eStored < eNeed then
+            return
+        end
+        --M&B: armed flag goes up only at the very end - a crash above must not
+        --strand the flag with no watchdog running
         self.MNB_OCArmed = true
         --M&B: imitate the player's manual OC click with the engine's own
         --IssueOverCharge command - the exact call the UI and the M28 bots use
@@ -1149,6 +1367,38 @@ EAL0001 = Class(AWalkingLandUnit) {
                 wepOC:OnDisableWeapon()
             end
         end)
+    end,
+
+    --M&B: retreat auto-overcharge for a MOVING commander (combo mode). Enables
+    --the separate MNB_AutoOC weapon - an ordinary weapon the engine targets,
+    --aims and fires by itself (usually the fattest chaser per its target
+    --priorities - exactly what a fleeing commander needs). The gun swaps off
+    --while it is live (they share the turret); the shot itself or the 3s
+    --watchdog swaps back, and the next on-the-move gun shot re-arms it.
+    MNB_OCFAFEnable = function(self)
+        if self.MNB_OCFAFMode or self.MNB_OCArmed then return end
+        local wepAuto = self:GetWeaponByLabel('MNB_AutoOC')
+        local eStored = self:GetAIBrain():GetEconomyStored('ENERGY')
+        if eStored < (wepAuto:GetBlueprint().EnergyRequired or 0) then return end
+        self.MNB_OCFAFMode = true
+        wepAuto:OnEnableWeapon()
+        self:ForkThread(function()
+            WaitSeconds(3)
+            if not self.Dead and self.MNB_OCFAFMode then
+                wepAuto:OnDisableWeapon()
+            end
+        end)
+    end,
+
+    --M&B: crash-proof entry for the weapon hooks. An error raised straight inside
+    --OnWeaponFired aborts the weapon's own fire sequence (sound plays, no shot
+    --spawns, the gun jams), so every hook calls this wrapper instead.
+    MNB_AutoOCSafe = function(self, gunTarget)
+        local ok, err = pcall(self.MNB_AutoOCTry, self, gunTarget)
+        if not ok then
+            self.MNB_OCArmed = false
+            LOG('MNB_OC ERR '..self:GetUnitId()..': '..tostring(err))
+        end
     end,
 
     CreateEnhancement = function(self, enh)

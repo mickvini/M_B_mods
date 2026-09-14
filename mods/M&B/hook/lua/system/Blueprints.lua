@@ -1295,7 +1295,10 @@ local function MNbResearchEffect(bp)
     local typ = tt - tier * 100
     local L = tier
     -- Full parameter values per type (arrays indexed 1-5 for levels 1-5)
-    local DMG={10,20,30,40,60}; local SPL={5,10,15,20,30}; local RNG={4,8,12,16,20}; local ROF={5,11,18,25,122}
+    local DMG={10,20,30,40,60}; local SPL={5,10,15,20,30}; local RNG={4,8,12,16,20}
+    --M&B (2026-09-14): fire rate moved from the weapon lines into the SPEED lines
+    --(keep in sync with hook/lua/sim/buffdefinitions.lua)
+    local ROF_L={15,25,35,45,55}; local ROF_A={5,10,15,20,25}; local ROF_N={6,9,12,15,20}
     local HPL={25,50,75,100,150}; local RGL={2,4,6,8,15}
     local HPA={10,15,20,30,50}; local RGA={1,2,3,4,8}
     local SPL_L={6,12,18,24,30}; local ACC_L={5,10,15,20,25}; local TRN_L={2,4,6,8,10}
@@ -1311,15 +1314,15 @@ local function MNbResearchEffect(bp)
         --defaultunits.lua MNBEngineerShieldHP -- keep the numbers in sync)
         [2]='Build rate +'..(10*L)..'%, health +'..(20*L)..'%'..((L >= 2 and L <= 5) and (', personal shield '..({[2]=200,[3]=400,[4]=600,[5]=1000})[L]..' HP') or ''),
         [3]='Station rate +'..(10*L)..'%, health +'..(20*L)..'%',
-        [4]='Speed +'..SPL_L[L]..'%, accel +'..ACC_L[L]..'%, turn +'..TRN_L[L]..'%',
+        [4]='Speed +'..SPL_L[L]..'%, accel +'..ACC_L[L]..'%, turn +'..TRN_L[L]..'%, fire rate +'..ROF_L[L]..'%',
         [5]='Health +'..HPL[L]..'%, regen +'..RGL[L],
-        [6]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
-        [7]='Speed +'..SPL_A[L]..'%, accel +'..ACC_A[L]..'%, turn +'..TRN_A[L]..'%',
+        [6]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%',
+        [7]='Speed +'..SPL_A[L]..'%, accel +'..ACC_A[L]..'%, turn +'..TRN_A[L]..'%, fire rate +'..ROF_A[L]..'%',
         [8]='Health +'..HPA[L]..'%, regen +'..RGA[L],
-        [9]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
-        [10]='Speed +'..SPL_N[L]..'%, accel +'..ACC_N[L]..'%, turn +'..TRN_N[L]..'%',
+        [9]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%',
+        [10]='Speed +'..SPL_N[L]..'%, accel +'..ACC_N[L]..'%, turn +'..TRN_N[L]..'%, fire rate +'..ROF_N[L]..'%',
         [11]='Health +'..HPA[L]..'%, regen +'..RGA[L],
-        [12]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%, RoF +'..ROF[L]..'%',
+        [12]='Damage +'..DMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%',
         [13]='Damage +'..TDMG[L]..'%, splash +'..SPL[L]..'%, range +'..RNG[L]..'%',
         [14]='Health +'..THP[L]..'%',
     }

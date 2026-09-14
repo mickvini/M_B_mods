@@ -36,7 +36,6 @@ UnitBlueprint {
         'ECONOMIC',
         'TECH3',
         'MASSPRODUCTION',
-        'MASSEXTRACTION',
         'HYDROCARBON',
         'SIZE12',
         'VISIBLETORECON',

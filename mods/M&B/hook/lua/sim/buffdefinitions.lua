@@ -1,4 +1,8 @@
 
+--M&B (2026-09-14, user): RateOfFire was MOVED from the weapon buffs into the MOBILITY
+--buffs for land/air/naval -- the speed research line now also raises fire rate, while
+--the weapon line keeps damage/splash/range only. Turrets keep RoF in their weapon line
+--(a turret has no mobility line of its own).
 do
     for i = 1, 5 do
         if i ~= 4 then
@@ -73,7 +77,6 @@ BuffBlueprint {
         Damage = {Add = 0, Mult = 1 + 0.6},  
         DamageRadius = {Add = 0, Mult = 1 + 0.3},  
         MaxRadius = {Add = 0, Mult = 1 + 0.2},
-        RateOfFire = {Add = 0, Mult = 1 - 0.55},            
     },
 }
 BuffBlueprint {
@@ -88,9 +91,10 @@ BuffBlueprint {
     Name = 'MobileBuffNaval' .. 5, DisplayName = 'MobileBuffNaval' .. 5,
     BuffType = 'MobileBuffNaval', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
-        MoveMult = {Add = 0, Mult = 1 + 0.08},  
-        AccMult = {Add = 0, Mult = 1 + 0.25}, 
-        TurnMult = {Add = 0, Mult = 1 + 0.08},             
+        MoveMult = {Add = 0, Mult = 1 + 0.08},
+        AccMult = {Add = 0, Mult = 1 + 0.25},
+        TurnMult = {Add = 0, Mult = 1 + 0.08},
+        RateOfFire = {Add = 0, Mult = 1 - 0.2},
     },
 }
 BuffBlueprint {
@@ -152,7 +156,6 @@ do
                 Damage = {Add = 0, Mult = 1 + i/10},  
                 DamageRadius = {Add = 0, Mult = 1 + i/20},  
                 MaxRadius = {Add = 0, Mult = 1 + i/10*0.4},
-                RateOfFire = {Add = 0, Mult = 1 - 0.05 - i/10},            
             },
         }
         BuffBlueprint {
@@ -170,16 +173,17 @@ do
                 Damage = {Add = 0, Mult = 1 + i*6/100},  
                 DamageRadius = {Add = 0, Mult = 1 + i/50},  
                 MaxRadius = {Add = 0, Mult = 1 + i*3/100},
-                RateOfFire = {Add = 0, Mult = 1 - i/20},            
             },
         }      
         BuffBlueprint {
             Name = 'MobileBuffNaval' .. i, DisplayName = 'MobileBuffNaval' .. i,
             BuffType = 'MobileBuffNaval', Stacks = 'REPLACE', Duration = -1,
             Affects = {        
-                MoveMult = {Add = 0, Mult = 1 + 0.01 +i/100},  
-                AccMult = {Add = 0, Mult = 1 + i/20}, 
-                TurnMult = {Add = 0, Mult = 1 + 0.01 +i/100},             
+                MoveMult = {Add = 0, Mult = 1 + 0.01 +i/100},
+                AccMult = {Add = 0, Mult = 1 + i/20},
+                TurnMult = {Add = 0, Mult = 1 + 0.01 +i/100},
+                --RoF moved from WeaponBuffNaval: reload -6/9/12/15% for levels 1-4
+                RateOfFire = {Add = 0, Mult = 1 - 0.03 - i*0.03},
             },
         }
         BuffBlueprint {
@@ -209,9 +213,11 @@ do
             Name = 'MobileBuffAir' .. i, DisplayName = 'MobileBuffAir' .. i,
             BuffType = 'MobileBuffAir', Stacks = 'REPLACE', Duration = -1,
             Affects = {        
-                MoveMult = {Add = 0, Mult = 1 + i/50},  
-                AccMult = {Add = 0, Mult = 1 + i/20}, 
-                TurnMult = {Add = 0, Mult = 1 + i/25},               
+                MoveMult = {Add = 0, Mult = 1 + i/50},
+                AccMult = {Add = 0, Mult = 1 + i/20},
+                TurnMult = {Add = 0, Mult = 1 + i/25},
+                --RoF moved from WeaponBuffAir: reload -5/10/15% for levels 1-3
+                RateOfFire = {Add = 0, Mult = 1 - i/20},
             },
         }
         BuffBlueprint {
@@ -228,18 +234,20 @@ BuffBlueprint {
     Name = 'MobileBuffAir' .. 4, DisplayName = 'MobileBuffAir' .. 4,
     BuffType = 'MobileBuffAir', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
-        MoveMult = {Add = 0, Mult = 1 + 0.08},  
-        AccMult = {Add = 0, Mult = 1 + 0.2}, 
-        TurnMult = {Add = 0, Mult = 1 + 0.2},               
+        MoveMult = {Add = 0, Mult = 1 + 0.08},
+        AccMult = {Add = 0, Mult = 1 + 0.2},
+        TurnMult = {Add = 0, Mult = 1 + 0.2},
+        RateOfFire = {Add = 0, Mult = 1 - 0.2},
     },
 }
 BuffBlueprint {
     Name = 'MobileBuffAir' .. 5, DisplayName = 'MobileBuffAir' .. 5,
     BuffType = 'MobileBuffAir', Stacks = 'REPLACE', Duration = -1,
     Affects = {        
-        MoveMult = {Add = 0, Mult = 1 + 0.1},  
-        AccMult = {Add = 0, Mult = 1 + 0.25}, 
-        TurnMult = {Add = 0, Mult = 1 + 0.28},               
+        MoveMult = {Add = 0, Mult = 1 + 0.1},
+        AccMult = {Add = 0, Mult = 1 + 0.25},
+        TurnMult = {Add = 0, Mult = 1 + 0.28},
+        RateOfFire = {Add = 0, Mult = 1 - 0.25},
     },
 }
 BuffBlueprint {
@@ -249,9 +257,8 @@ BuffBlueprint {
         Damage = {Add = 0, Mult = 1 + 0.35},  
         DamageRadius = {Add = 0, Mult = 1 + 0.1},  
         MaxRadius = {Add = 0, Mult = 1 + 0.15},
-        RateOfFire = {Add = 0, Mult = 1 - 0.25},            
     },
-}      
+}
 BuffBlueprint {
     Name = 'HealthBuffNaval' .. 4, DisplayName = 'HealthBuffNaval' .. 4,
     BuffType = 'HealthBuffNaval', Stacks = 'REPLACE', Duration = -1,
@@ -270,7 +277,6 @@ BuffBlueprint {
 }
 do
     local maxRadiusPercent = {0.06, 0.09, 0.12, 0.15, 0.20}
-    local rateOfFirePercent = {0.06, 0.09, 0.12, 0.15, 0.20}
     local damageRadiusPercent = {0.04, 0.08, 0.16, 0.24, 0.50}
     local damagePercent = {0.06, 0.12, 0.18, 0.24, 0.35,}
     for i = 1, 5 do  
@@ -279,7 +285,6 @@ do
             BuffType = 'WeaponBuffNaval', Stacks = 'REPLACE', Duration = -1,
             Affects = {        
                 MaxRadius = {Add = 0, Mult = 1 + maxRadiusPercent[i]},
-                RateOfFire = {Add = 0, Mult = 1 - rateOfFirePercent[i]},  
                 DamageRadius = {Add = 0, Mult = 1 + damageRadiusPercent[i]},
                 Damage = {Add = 0, Mult = 1 + damagePercent[i]},              
             },
@@ -297,6 +302,8 @@ do
                 MoveMult = {Add = 0, Mult = 1 + i*0.06},
                 AccMult = {Add = 0, Mult = 1 + i/20},
                 TurnMult = {Add = 0, Mult = 1 + i/50},
+                --RoF moved from WeaponBuffLand: reload -15/25/35/45/55% for levels 1-5
+                RateOfFire = {Add = 0, Mult = 1 - 0.05 - i/10},
             },
         }            
         
