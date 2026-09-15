@@ -148,7 +148,7 @@ UnitBlueprint {
         VisionRadius = 32,
     },
     Interface = {
-        HelpText = 'heavy tank',
+        HelpText = '<LOC cskmdtl0305_help>heavy tank',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 0.35,

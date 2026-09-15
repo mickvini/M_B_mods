@@ -180,7 +180,7 @@ UnitBlueprint {
         VisionRadius = 60,
     },
     Interface = {
-        HelpText = 'Advanced Armored Laser Bot',
+        HelpText = '<LOC brot2asb_help>Advanced Armored Laser Bot',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 1,

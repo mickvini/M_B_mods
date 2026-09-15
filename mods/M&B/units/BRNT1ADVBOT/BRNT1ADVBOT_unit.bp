@@ -93,7 +93,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Battle Bot',
+    Description = '<LOC brnt1advbot_desc>Advanced Battle Bot',
     Display = {
         AnimationDeath = {
             {
@@ -185,7 +185,7 @@ UnitBlueprint {
         VisionRadius = 44,
     },
     Interface = {
-        HelpText = 'Advanced Battle Bot',
+        HelpText = '<LOC brnt1advbot_help>Advanced Battle Bot',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 0.8,

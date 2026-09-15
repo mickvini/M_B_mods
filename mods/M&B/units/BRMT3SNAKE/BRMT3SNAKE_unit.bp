@@ -86,7 +86,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Prototype Battle Bot',
+    Description = '<LOC brmt3snake_desc>Prototype Battle Bot',
     Display = {
         Abilities = {
             '<LOC ability_amphibious>Amphibious',
@@ -214,7 +214,7 @@ UnitBlueprint {
         VisionRadius = 40,
     },
     Interface = {
-        HelpText = 'Prototype Battle Bot',
+        HelpText = '<LOC brmt3snake_help>Prototype Battle Bot',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 1.46,

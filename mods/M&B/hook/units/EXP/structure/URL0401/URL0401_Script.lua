@@ -5,8 +5,8 @@
 #**
 #**  Summary  :  Cybran Heavy Mobile Artillery Script
 #**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
-#****************************************************************************
+#**  Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
+#*****************************************************************************
 
 local CLandUnit = import('/lua/cybranunits.lua').CLandUnit
 local CIFArtilleryWeapon = import('/lua/cybranweapons.lua').CIFArtilleryWeapon
@@ -20,16 +20,16 @@ URL0401 = Class(CLandUnit) {
 
     OnCreate = function(self)
         CLandUnit.OnCreate(self)
-        local unitBp = self:GetBlueprint()  
+        local unitBp = self:GetBlueprint()
         self.BaseRateOfFire = {}
-        for i = 1, self:GetWeaponCount() do   
+        for i = 1, self:GetWeaponCount() do
             local wep = self:GetWeapon(i)
             local wepbp = wep:GetBlueprint()
-            local weprof = wepbp.RateOfFire     
+            local weprof = wepbp.RateOfFire
             table.insert(self.BaseRateOfFire, weprof)
         end
         local ReduceTurretsRateOfFireThread = ForkThread(self.ReduceTurretsRateOfFire, self)
-        self.Trash:Add(ReduceTurretsRateOfFireThread)    
+        self.Trash:Add(ReduceTurretsRateOfFireThread)
     end,
 
     OnStopBeingBuilt = function(self,builder,layer)
@@ -41,21 +41,18 @@ URL0401 = Class(CLandUnit) {
     end,
 
     ReduceTurretsRateOfFire = function (self)
-        local aiBrain = GetArmyBrain(self:GetArmy())        
-        
-        while not self.Dead do          
+        local aiBrain = GetArmyBrain(self:GetArmy())
+
+        while not self.Dead do
             local EconomyRate = aiBrain:GetEconomyIncome('ENERGY') / aiBrain:GetEconomyRequested('ENERGY')
             --LOG(EconomyRate)
-            --LOG()
             if aiBrain:GetEconomyStored('ENERGY') <= 0.00001 then
                 if EconomyRate < 1 then
-                    --LOG('<1')
-                    for i = 1, self:GetWeaponCount() do  
-                         
-                        local wep = self:GetWeapon(i)        
-                        if(EconomyRate == 0 or EconomyRate < 0.2)   then    
+                    for i = 1, self:GetWeaponCount() do
+                        local wep = self:GetWeapon(i)
+                        if(EconomyRate == 0 or EconomyRate < 0.2)   then
                             wep:SetWeaponEnabled(false)
-                        else                                        
+                        else
                             wep:SetWeaponEnabled(true)
                             wep:ChangeRateOfFire( self.BaseRateOfFire[i] * EconomyRate)
                         end
@@ -63,34 +60,39 @@ URL0401 = Class(CLandUnit) {
                 end
             else
                 for i = 1, self:GetWeaponCount() do
-                        --LOG('==1')  
-                        local wep = self:GetWeapon(i)          
-                        wep:SetWeaponEnabled(true)                  
-                        wep:ChangeRateOfFire(self.BaseRateOfFire[i])                     
-                end                                
+                        local wep = self:GetWeapon(i)
+                        wep:SetWeaponEnabled(true)
+                        wep:ChangeRateOfFire(self.BaseRateOfFire[i])
+                    end
             end
             WaitSeconds(5)
         end
     end,
 
     Weapons = {
-        Gun01 = Class(CIFArtilleryWeapon) {   
-            
+        --M&B: the ENGINE paces the whole salvo (bp MuzzleSalvoSize x
+        --MuzzleSalvoDelay). The script is cosmetic only: it turns the drum
+        --one notch per engine shell and keeps the visible barrels pitched
+        --like the aim barrel (FAF scheme). It never spawns shells itself.
+        Gun01 = Class(CIFArtilleryWeapon) {
+
             OnCreate = function(self)
                 CIFArtilleryWeapon.OnCreate(self)
-                self.losttarget = false      
+                self.losttarget = false
                 self.initialaim = true
                 self.PitchRotators = {}
                 self.restdirvector = {}
-                self.currentbarrel = 1                
+                self.dirvector = {}
+                self.basedirvector = {}
+                self.currentbarrel = 1
             end,
-            
+
             OnLostTarget = function(self)
-                #Mark target lost 
+                #Mark target lost
                 CIFArtilleryWeapon.OnLostTarget(self)
-                self.losttarget = true                
+                self.losttarget = true
             end,
-            
+
             PlayFxWeaponPackSequence = function(self)
                 if self.PitchRotators then
                     #We repacked the unit lets delete the rotators
@@ -99,29 +101,28 @@ URL0401 = Class(CLandUnit) {
                             self.PitchRotators[k]:Destroy()
                             self.PitchRotators[k] = nil
                         end
-                    end                
+                    end
                 end
-                self.losttarget = false      
+                self.losttarget = false
                 self.initialaim = true
                 CIFArtilleryWeapon.PlayFxWeaponPackSequence(self)
-                #self.currentbarrel = 1
-            end, 
-            
-			LaunchEffects = function(self)   
-				###LOG ("launch effects") 
-				local FxLaunch = EffectTemplate.CArtilleryFlash02 
+            end,
 
-				for k, v in FxLaunch do
-					CreateEmitterAtEntity( self.unit, self.unit:GetArmy(), v )
-				end
-			end, 	        
-            
+            LaunchEffects = function(self)
+                local FxLaunch = EffectTemplate.CArtilleryFlash02
+                for k, v in FxLaunch do
+                    CreateEmitterAtEntity( self.unit, self.unit:GetArmy(), v )
+                end
+            end,
+
+            #M&B: the engine calls this once per salvo shell. The pitch-align
+            #wait only runs on the first shell (or after target loss); every
+            #shell is then passed straight through and the drum gets one notch
             CreateProjectileAtMuzzle = function(self, muzzle)
                 if self.initialaim then
-                    #CreateRotator(unit, bone, axis, [goal], [speed], [accel], [goalspeed])
                     self.Rotator = CreateRotator(self.unit, 'Turret_Fake', 'y')
                     self.unit.Trash:Add(self.Rotator)
-                    #make pich rotators for each bone of the fake barrels
+                    #make pitch rotators for each bone of the fake barrels
                     for k, v in barrelBones do
                         local tmprotator = CreateRotator(self.unit, v, 'x')
                         tmprotator:SetSpeed(30)
@@ -130,20 +131,20 @@ URL0401 = Class(CLandUnit) {
                         self.unit.Trash:Add(self.PitchRotators[k])
                     end
                     self.Goal = 0
-                
+
                     #Get the initial position after unpacking
                     local barrel = self.currentbarrel
                     self.restdirvector.x, self.restdirvector.y, self.restdirvector.z = self.unit:GetBoneDirection( barrelBones[barrel] )
-                    local basedirvector = {}
-                    basedirvector.x, basedirvector.y, basedirvector.z  = self.unit:GetBoneDirection('Turret_Aim')
+                    local basedirvector = self.basedirvector
+                    basedirvector.x, basedirvector.y, basedirvector.z = self.unit:GetBoneDirection('Turret_Aim')
                     self.basediftorest = Util.GetAngleInBetween(self.restdirvector, basedirvector)
                 end
                 if self.losttarget or self.initialaim then
                     #Setting pitch to aim barrel
-                    local dirvector = {}
-                    dirvector.x, dirvector.y, dirvector.z  = self.unit:GetBoneDirection('Turret_Aim_Barrel')
-                    local basedirvector = {}
-                    basedirvector.x, basedirvector.y, basedirvector.z  = self.unit:GetBoneDirection('Turret_Aim')
+                    local dirvector = self.dirvector
+                    dirvector.x, dirvector.y, dirvector.z = self.unit:GetBoneDirection('Turret_Aim_Barrel')
+                    local basedirvector = self.basedirvector
+                    basedirvector.x, basedirvector.y, basedirvector.z = self.unit:GetBoneDirection('Turret_Aim')
                     local basediftoaim = Util.GetAngleInBetween(dirvector, basedirvector)
                     self.pitchdif = self.basediftorest - basediftoaim
                     #Set all the barrels to the pitch of the aim barrel
@@ -155,48 +156,35 @@ URL0401 = Class(CLandUnit) {
                     WaitSeconds(0.2)
                     if self.losttarget then
                         self.losttarget = false
-                    end 
+                    end
                     if self.initialaim then
                         self.initialaim = false
-                    end 
-                end
-                
-                local muzzleIdx = 0
-                for i=1, self.unit:GetBoneCount() do
-                    if self.unit:GetBoneName(i) == 'Turret_Aim_Barrel_Muzzle' then
-                        muzzleIdx = i
-                        break
                     end
                 end
-                
-                CIFArtilleryWeapon.CreateProjectileAtMuzzle(self, muzzleIdx)
+
+                CIFArtilleryWeapon.CreateProjectileAtMuzzle(self, muzzle)
                 self:ForkThread(self.LaunchEffects)
+                self:ForkThread(self.RotateBarrels)
             end,
-            PlayRackRecoil = function(self, rackList)
-                #self:ForkThread(self:FakeRecoil())
-                local currentfakerack = {}
-                currentfakerack.RackBone = recoilBones[self.currentbarrel]
-                currentfakerack.MuzzleBones = muzzleBones[self.currentbarrel]
-                
-                table.insert( rackList, currentfakerack )
-                CIFArtilleryWeapon.PlayRackRecoil(self, rackList)
-                if not self.losttarget then
-                    self.Rotator:SetSpeed(120)
+
+            #M&B: one 60-degree notch per shell - 300 deg/s covers it in
+            #0.2s, the same beat as MuzzleSalvoDelay, so the drum turns in
+            #lockstep with the engine-paced shells
+            RotateBarrels = function(self)
+                if not self.losttarget and self.Rotator then
+                    self.Rotator:SetSpeed(300)
                     self.Goal = self.Goal + 60
                     if self.Goal >= 360 then
                         self.Goal = 0
                     end
-                    WaitSeconds(0.5)
                     self.Rotator:SetGoal(self.Goal)
                     self.currentbarrel = self.currentbarrel + 1
-                    #Increment barrel number
                     if self.currentbarrel > 6 then
                         self.currentbarrel = 1
                     end
-                    self.rotatedbarrel = true
                 end
-            end, 
-        },		
+            end,
+        },
     },
 }
 

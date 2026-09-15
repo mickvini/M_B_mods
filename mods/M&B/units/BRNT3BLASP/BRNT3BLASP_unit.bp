@@ -95,7 +95,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Experimental Heavy Mech',
+    Description = '<LOC brnt3blasp_desc>Experimental Heavy Mech',
     Display = {
         Abilities = {
             '<LOC ability_radar>Radar',
@@ -200,7 +200,7 @@ UnitBlueprint {
         VisionRadius = 50,
     },
     Interface = {
-        HelpText = 'Experimental Heavy Mech',
+        HelpText = '<LOC brnt3blasp_help>Experimental Heavy Mech',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 1.35,

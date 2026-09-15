@@ -232,7 +232,7 @@ UnitBlueprint {
     StrategicIconSortPriority = 115,
     CollisionOffsetY = 0,
     Transport = {
-        CanFireFromTransport = false,
+        CanFireFromTransport = true,
         TransportClass = 3,
     },
     Veteran = {

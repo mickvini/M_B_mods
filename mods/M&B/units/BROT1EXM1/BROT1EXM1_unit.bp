@@ -89,7 +89,7 @@ UnitBlueprint {
         SubThreatLevel = 0,
         EconomyThreatLevel = 0,
     },
-    Description = 'Advanced Assault Bot',
+    Description = '<LOC brot1exm1_desc>Advanced Assault Bot',
     Display = {
         AnimationDeath = {
             {
@@ -159,7 +159,7 @@ UnitBlueprint {
         VisionRadius = 46,
     },
     Interface = {
-        HelpText = 'Advanced Assault Bot',
+        HelpText = '<LOC brot1exm1_help>Advanced Assault Bot',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 0.65,

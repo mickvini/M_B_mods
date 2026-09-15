@@ -215,7 +215,7 @@ UnitBlueprint {
         WaterVisionRadius = 10,
     },
     Interface = {
-        HelpText = 'Advanced Heavy Assault Bot',
+        HelpText = '<LOC brpt2hvbot_help>Advanced Heavy Assault Bot',
     },
     LifeBarHeight = 0.15,
     LifeBarOffset = 1.15,

@@ -186,7 +186,7 @@ UnitBlueprint {
         WaterVisionRadius = 10,
     },
     Interface = {
-        HelpText = 'Heavy Armored Battle Tank',
+        HelpText = '<LOC brot1extank1_help>Heavy Armored Battle Tank',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 2,

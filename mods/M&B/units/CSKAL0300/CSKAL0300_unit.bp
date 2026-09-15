@@ -150,7 +150,7 @@ UnitBlueprint {
         VisionRadius = 70,
     },
     Interface = {
-        HelpText = 'heavy bot',
+        HelpText = '<LOC CSKAL0300_help>heavy bot',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 0.35,

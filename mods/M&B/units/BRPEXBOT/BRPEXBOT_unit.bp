@@ -177,7 +177,7 @@ UnitBlueprint {
         WaterVisionRadius = 18,
     },
     Interface = {
-        HelpText = 'Medium Assault Bot',
+        HelpText = '<LOC brpexbot_help>Medium Assault Bot',
     },
     LifeBarHeight = 0.15,
     LifeBarOffset = 1.15,

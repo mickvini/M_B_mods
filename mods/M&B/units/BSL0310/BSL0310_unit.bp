@@ -218,7 +218,7 @@ UnitBlueprint {
     CollisionOffsetZ = 0,
     Transport = {
         CanFireFromTransport = false,
-        TransportClass = 2,
+        TransportClass = 3,
     },
     Veteran = {
         Level1 = 15,

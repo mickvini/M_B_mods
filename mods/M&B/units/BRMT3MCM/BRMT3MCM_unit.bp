@@ -221,7 +221,7 @@ UnitBlueprint {
         WaterVisionRadius = 10,
     },
     Interface = {
-        HelpText = 'Experimental Heavy Mech',
+        HelpText = '<LOC brmt3mcm_help>Experimental Heavy Mech',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 1.46,

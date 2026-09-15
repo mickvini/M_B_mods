@@ -97,7 +97,7 @@ UnitBlueprint {
         SurfaceThreatLevel = 200,
         SubThreatLevel = 40,
     },
-    Description = 'Experimental Assault Mecha',
+    Description = '<LOC uel0402_desc>Experimental Assault Mecha',
     Display = {
        Abilities = {
            'Amphibious',
@@ -229,7 +229,7 @@ UnitBlueprint {
         WaterVisionRadius = 40,
     },
     Interface = {
-        HelpText = 'uel0402',
+        HelpText = '<LOC uel0402_help>Experimental Assault Mecha',
     },
     LifeBarHeight = 0.15,
     LifeBarOffset = 3.25,

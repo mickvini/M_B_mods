@@ -230,7 +230,7 @@ UnitBlueprint {
     StrategicIconSortPriority = 125,
     CollisionOffsetZ = 0,
     Transport = {
-        TransportClass = 2,
+        TransportClass = 1,
     },
     Veteran = {
         Level1 = 14,
