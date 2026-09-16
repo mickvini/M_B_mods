@@ -181,7 +181,7 @@ UnitBlueprint {
     SizeX = 2.5,
     SizeY = 1.5,
     SizeZ = 2.5,
-    StrategicIconName = 'icon_structure3_artillery',
+    StrategicIconName = 'icon_structure2_artillery',
     StrategicIconSortPriority = 205,
     CollisionOffsetY = -0.375,
     Footprint = {

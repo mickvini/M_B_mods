@@ -30,7 +30,7 @@ UnitBlueprint {
         'BUILTBYTIER3COMMANDER',
         'STRUCTURE',
         'ECONOMIC',
-        'TECH3',
+        'EXPERIMENTAL',
         'EXPERIMENTALMEX',
         'MASSPRODUCTION',
         'MASSEXTRACTION',

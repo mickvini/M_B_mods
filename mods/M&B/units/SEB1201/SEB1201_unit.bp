@@ -176,7 +176,7 @@ UnitBlueprint {
     SizeX = 1.6,
     SizeY = 0.9,
     SizeZ = 1.6,
-    StrategicIconName = 'icon_structure2_energy',
+    StrategicIconName = 'icon_structure1_energy',
     StrategicIconSortPriority = 245,
     Adjacency = 'T2LightPowerGeneratorAdjacencyBuffs',
     CollisionOffsetY = 0,

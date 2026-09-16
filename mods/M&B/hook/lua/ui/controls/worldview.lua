@@ -45,8 +45,12 @@ do
 			-- nothing to drag or misplace; sim orders append, so clicking several
 			-- mexes in a row queues all of them.
 			-- NOTE: engine click event type is 'ButtonPress' with ev.Modifiers.Left/Right
+			-- Surround only on a PLAIN click: with any order mode up (reclaim, repair,
+			-- move...) or a blueprint in hand, the click keeps its own meaning, so
+			-- reclaiming your own hydro is never hijacked into a storage ring.
 			local skufConsumed = false
-			if ev.Type == 'ButtonPress' and ev.Modifiers and ev.Modifiers.Left then
+			if ev.Type == 'ButtonPress' and ev.Modifiers and ev.Modifiers.Left
+				and not CM.GetCommandMode()[1] then
 				local skufSel = GetSelectedUnits()
 				if skufSel and table.getn(skufSel) > 0
 					and table.getn(EntityCategoryFilterDown(categories.ENGINEER + categories.COMMAND, skufSel)) > 0 then

@@ -184,7 +184,7 @@ UnitBlueprint {
     SizeX = 2.9,
     SizeY = 1.9,
     SizeZ = 2.9,
-    StrategicIconName = 'icon_structure1_energy',
+    StrategicIconName = 'icon_structure2_energy',
     StrategicIconSortPriority = 250,
     Adjacency = 'HydrocarbonAdjacencyMODBuffs',
     CollisionOffsetY = 0,

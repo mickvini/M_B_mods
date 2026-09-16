@@ -167,7 +167,7 @@ UnitBlueprint {
     SizeX = 0.5,
     SizeY = 1.8,
     SizeZ = 0.7,
-    StrategicIconName = 'icon_structure2_directfire',
+    StrategicIconName = 'icon_structure3_directfire',
     StrategicIconSortPriority = 200,
     CollisionOffsetY = -0.25,
     Footprint = {

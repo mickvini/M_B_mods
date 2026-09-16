@@ -729,16 +729,23 @@ Callbacks.SkufCorridorReclaim = function(data)
 end
 
 local function SkufWatcherThread(brain)
-    -- mex auto-upgrade (user's design, 2026-08-14):
+    -- mex auto-upgrade (user's design, 2026-08-14; reworked 2026-09-16):
     --   * when a tier is researched, upgrade ALL mexes below it AT ONCE;
-    --   * stores running dry -> PAUSE everyone except one (SetPaused keeps the order
-    --     AND its progress; NOTHING is ever canceled -> no mass is ever thrown away);
-    --   * stores recovered -> unpause one per pass.
-    -- IsUnitState('Upgrading') reports FALSE for mexes that ARE upgrading (log-proven),
-    -- so outstanding orders are tracked OURSELVES; a flag clears only when the mex
-    -- reaches the target tier or dies. Manual player cancels are respected.
-    local issued = {}    -- eid -> true while an upgrade order we placed is outstanding
-    local pausedUpg = {} -- eid -> true while WE paused its upgrade
+    --   * stores running dry -> exactly ONE upgrade keeps working (the most
+    --     progressed); SetPaused keeps the order AND its progress, nothing
+    --     is ever canceled -> no mass is ever thrown away;
+    --   * stores recovered -> unpause one held mex per pass.
+    -- Rework reason (user report 2026-09-16): the old bookkeeping leaked.
+    -- An order flag set on a mex that was still UNDER CONSTRUCTION (engine
+    -- silently rejects IssueUpgrade there) stuck forever -> new mexes never
+    -- upgraded; a finished step or a manual cancel left the same stuck flag;
+    -- and while starving, the single running slot was never re-filled after
+    -- its mex finished, so held mexes stayed paused for the rest of the game.
+    -- Now the state is DERIVED from the units themselves every pass:
+    -- IsBeingBuilt() excludes unfinished mexes; an upgrade is alive when
+    -- GetWorkProgress() > 0 or the mex is paused; everything else is idle
+    -- and gets (re-)issued. No order bookkeeping at all.
+    local held = {} -- eid -> true while WE paused this mex (only we undo it)
     local ticks = 0
     while true do
         WaitSeconds(5)
@@ -762,70 +769,82 @@ local function SkufWatcherThread(brain)
                 local storedMass = brain:GetEconomyStored('MASS') or 0
                 local storedRatio = brain:GetEconomyStoredRatio('MASS') or 0
                 local starving = netMass < 0 and (storedMass + netMass * 20 < 0 or storedRatio < 0.05)
-                local mexes = brain:GetListOfUnits(categories.MASSEXTRACTION, false, true)
-                local pending = {}
-                for _, mex in mexes do
-                    if not mex.Dead then
-                        local eid = mex:GetEntityId()
-                        local tier = SkufMexTier(mex:GetBlueprint().BlueprintId or '')
-                        if tier and tier < target then
-                            table.insert(pending, { mex = mex, eid = eid, tier = tier })
-                        else
-                            -- reached the target tier (or unrecognized): forget it entirely
-                            issued[eid] = nil
-                            pausedUpg[eid] = nil
-                        end
-                    end
-                end
-                -- drop tracking of units that died
-                for eid in issued do
+                -- drop tracking of units that died (entity ids get recycled)
+                for eid in held do
                     local u = GetEntityById(eid)
                     if not u or u.Dead then
-                        issued[eid] = nil
-                        pausedUpg[eid] = nil
+                        held[eid] = nil
                     end
                 end
-
-                if starving then
-                    -- pause everyone except the single most-progressed one
-                    local running = {}
-                    for _, p in pending do
-                        if issued[p.eid] and not pausedUpg[p.eid] then
-                            table.insert(running, p)
+                local working = {} -- below target, an upgrade is alive (may be paused)
+                local idle = {}    -- below target, no live upgrade order
+                for _, mex in brain:GetListOfUnits(categories.MASSEXTRACTION, false, true) do
+                    if not mex.Dead and not mex:IsBeingBuilt() then
+                        local tier = SkufMexTier(mex:GetBlueprint().BlueprintId or '')
+                        if tier and tier < target then
+                            local entry = {
+                                mex = mex,
+                                eid = mex:GetEntityId(),
+                                tier = tier,
+                                prog = (mex:GetWorkProgress() or 0),
+                                paused = mex:IsPaused(),
+                            }
+                            -- paused counts as alive too: a paused mex keeps its order,
+                            -- and a player-paused one must never be (re-)issued over
+                            if entry.prog > 0 or entry.paused then
+                                table.insert(working, entry)
+                            else
+                                table.insert(idle, entry)
+                            end
                         end
                     end
-                    table.sort(running, function(a, b)
-                        return (a.mex:GetWorkProgress() or 0) > (b.mex:GetWorkProgress() or 0)
-                    end)
-                    for i = 2, table.getn(running) do
-                        local p = running[i]
-                        if not p.mex:IsPaused() then
+                end
+                table.sort(working, function(a, b) return a.prog > b.prog end)
+                if starving then
+                    -- keep exactly ONE upgrade alive: the most progressed mex that is
+                    -- running or held by us (player-made pauses are never undone)
+                    local slot = nil
+                    for _, p in working do
+                        if not p.paused or held[p.eid] then
+                            slot = p
+                            break
+                        end
+                    end
+                    for _, p in working do
+                        if p ~= slot and not p.paused then
                             p.mex:SetPaused(true)
+                            held[p.eid] = true
                             LOG('SKUF pause upgrade (mass ' .. string.format('%.1f', netMass) .. ')')
                         end
-                        pausedUpg[p.eid] = true
+                    end
+                    if slot and slot.paused then
+                        slot.mex:SetPaused(false)
+                        held[slot.eid] = nil
+                        LOG('SKUF promote upgrade (mass ' .. string.format('%.1f', netMass) .. ')')
                     end
                 else
                     -- stores are fine: unpause ONE held mex per pass (5s)
-                    local released = 0
-                    for _, p in pending do
-                        if pausedUpg[p.eid] and released == 0 then
-                            if p.mex:IsPaused() then
-                                p.mex:SetPaused(false)
-                                LOG('SKUF resume upgrade (mass +' .. string.format('%.1f', netMass) .. ')')
+                    local released = false
+                    for _, list in { working, idle } do
+                        for _, p in list do
+                            if not released and held[p.eid] then
+                                if p.paused then
+                                    p.mex:SetPaused(false)
+                                    LOG('SKUF resume upgrade (mass +' .. string.format('%.1f', netMass) .. ')')
+                                end
+                                held[p.eid] = nil
+                                released = true
                             end
-                            pausedUpg[p.eid] = nil
-                            released = released + 1
                         end
                     end
-                    -- issue upgrades: everything not held and not already issued goes at once
-                    for _, p in pending do
-                        local eid = p.eid
-                        if not pausedUpg[eid] and not issued[eid] then
+                    -- step up everything idle: new mexes, finished steps, cancelled or
+                    -- rejected orders -- all look the same here and converge to target;
+                    -- player-paused mexes keep their pause and their tier
+                    for _, p in idle do
+                        if not p.paused then
                             local nextId = SkufNextMexId(p.mex)
                             if nextId then
                                 IssueUpgrade({ p.mex }, nextId)
-                                issued[eid] = true
                                 LOG('SKUF upgrade mex tier ' .. p.tier .. ' -> ' .. nextId)
                             end
                         end

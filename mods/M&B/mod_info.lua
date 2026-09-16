@@ -1,6 +1,6 @@
 name = "M&B"
 uid = "62e2j64a-53a1-y6sl-32h5-146as576a18u4"
-version = 0.7
+version = 0.72
 description = "Mickvini and Bobichka Mod Pack For Supreme. Includes M28AI by maudlin27 (CC BY-NC-SA 4.0) as the integrated AI."
 author = "Bobichka, Mickvini"
 icon = "/mods/M&B/mod_info.png"

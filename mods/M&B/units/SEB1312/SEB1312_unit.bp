@@ -72,7 +72,7 @@ UnitBlueprint {
         'STRUCTURE',
         'ECONOMIC',
         'ENGINEER',
-        'TECH3',
+        'EXPERIMENTAL',
         'EXPERIMENTALMEX',
         'CONSTRUCTION',
         'REPAIR',

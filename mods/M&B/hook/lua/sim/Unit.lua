@@ -1040,6 +1040,24 @@ do
             end
         end
 
+        --M&B (2026-09-16, user): killing FRIENDLY units (own army or allies) must award
+        --nothing -- neither mass nor the kill count. The old fallback skipped the enemy
+        --check to keep NEUTRAL victims credited, and that hole also let allied kills
+        --through (for an allied victim IsEnemy filters every attacker out -> empty split
+        ---> last-hitter-takes-all). Gate: same army or IsAlly = friendly -> no credit.
+        --Unreadable armies (script kills) assume NOT friendly so credits keep working.
+        local function MNBIsFriendlyKill(oMNBKiller, oMNBVictim)
+            if not IsAlly then return false end
+            if not (oMNBKiller and oMNBKiller.GetArmy and oMNBVictim and oMNBVictim.GetArmy) then
+                return false
+            end
+            local iMNBKA = oMNBKiller:GetArmy()
+            local iMNBVA = oMNBVictim:GetArmy()
+            if iMNBKA == iMNBVA then return true end
+            local okMNBAlly, bMNBAlly = pcall(IsAlly, iMNBKA, iMNBVA)
+            return okMNBAlly and (bMNBAlly == true)
+        end
+
         local MNBOldUnitVet = Unit
         Unit = Class(MNBOldUnitVet) {
             OnDamage = function(self, instigator, amount, vector, damageType)
@@ -1085,7 +1103,8 @@ do
                     --'MNBKills' stat -- separate from KILLS, which holds killed MASS. The panel's
                     --chevron row shows this count (user request 2026-09-11: bar = mass, chevrons
                     --= units killed). The kill goes to the unit that landed the finishing blow.
-                    if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat then
+                    if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat
+                        and not MNBIsFriendlyKill(instigator, self) then
                         local iMNBCnt = 0
                         local tMNBCnt = instigator:GetStat('MNBKills', 0)
                         if tMNBCnt and tMNBCnt.Value then iMNBCnt = tMNBCnt.Value end
@@ -1145,7 +1164,10 @@ do
                                 end
                             end
                             if not bMNBSplit then
-                                if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat then
+                                --M&B (2026-09-16): friendly kills award NOTHING here either --
+                                --only enemy or neutral victims credit the last hitter.
+                                if instigator and not(instigator.Dead) and instigator.GetStat and instigator.UpdateStat
+                                    and not MNBIsFriendlyKill(instigator, self) then
                                     pcall(MNBVetCredit, instigator, iMass)
                                 end
                             end
