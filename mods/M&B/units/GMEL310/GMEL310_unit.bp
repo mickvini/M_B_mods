@@ -181,7 +181,9 @@ UnitBlueprint {
     SizeX = 1.04,
     SizeY = 0.78,
     SizeZ = 2.34,
-    StrategicIconName = 'icon_land3_antimissile',
+    -- no land3_antimissile art exists anywhere (user, 2026-09-17): reuse the
+    -- structure antimissile symbol so the icon loads instead of failing
+    StrategicIconName = 'icon_structure3_antimissile',
     StrategicIconSortPriority = 195,
     Transport = {
         TransportClass = 10,

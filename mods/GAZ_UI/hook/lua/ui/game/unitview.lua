@@ -104,12 +104,20 @@ do
                         local baseRegen = math.floor(bp.Defense.RegenRate or 0)
 
                         -- Veterancy regen: bp.Buffs.Regen['LevelN'] at the highest veteran level reached.
+                        local mnbKillsMass = info.kills or 0
+                        --M&B: level from the KILLS stat (killed MASS in M&B), not info.kills:
+                        --the engine hover's kills is a plain kill COUNT that never reaches our
+                        --mass thresholds (GAZ's own selectedinfo path already feeds the stat)
+                        if info.userUnit and info.userUnit.GetStat then
+                            local mnbKr = info.userUnit:GetStat('KILLS', 0)
+                            if mnbKr and mnbKr.Value then mnbKillsMass = mnbKr.Value end
+                        end
                         local vetRegen = 0
                         local veterancyLevels = bp.Veteran or veterancyDefaults
-                        if info.kills >= veterancyLevels[string.format('Level%d', 1)] then
+                        if mnbKillsMass >= veterancyLevels[string.format('Level%d', 1)] then
                             local lvl = 1
                             for i = 2,5 do
-                                if info.kills >= veterancyLevels[string.format('Level%d', i)] then
+                                if mnbKillsMass >= veterancyLevels[string.format('Level%d', i)] then
                                     lvl = i
                                 end
                             end

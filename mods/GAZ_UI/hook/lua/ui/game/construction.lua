@@ -249,7 +249,10 @@ do
 						LayoutHelpers.ResetLeft(control.StratIcon)
 						control.StratIcon:SetAlpha(0.8)
 					else
-						LOG('Strat Icon Mod Error: updated strat icon required for: ', iconName)
+						-- M&B (2026-09-17, user): custom icon names (research labs,
+						-- walls) have no GAZ replacement art - keep the vanilla icon
+						-- silently instead of spamming the log every menu refresh
+						--LOG('Strat Icon Mod Error: updated strat icon required for: ', iconName)
 					end
 				end
 		    end

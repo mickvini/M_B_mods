@@ -228,13 +228,14 @@ function MakeShadowCopyOrders(command)
                 -- to a garbage table and every attack dies as an area order.
                 e = eReal
             else
-                -- Unresolved: drop the id entirely. A raw handle must never
+                -- Unresolved (usually a prop/rock target: reclaim orders over
+                -- wrecks): drop the id entirely. A raw handle must never
                 -- travel to the sim (playtest v25: it did, and attacks fell
-                -- into the ground). The attack still carries its position,
+                -- into the ground). The order still carries its position,
                 -- and the sim re-finds the target there.
                 if not SeenUnknownTypes.ConvFail then
                     SeenUnknownTypes.ConvFail = true
-                    LOG('MNB SpreadOrders: id conversion failed: raw=' .. tostring(e) ..
+                    LOG('MNB SpreadOrders: non-unit target, id dropped (sim re-finds by position): raw=' .. tostring(e) ..
                         ' okU=' .. tostring(okU) ..
                         ' uTgt=' .. tostring(uTgt ~= nil) ..
                         ' okE=' .. tostring(okE) ..

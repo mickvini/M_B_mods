@@ -1,0 +1,11 @@
+------------------------------------------------------------------------
+-- Hook into unit : /units/URB5204/URB5204_unit.bp (vanilla T2 wall)
+-- M&B (2026-09-17): walls are direct-build in M&B, so T2/T3 walls show
+-- in build menus; vanilla ships build icons only for the T1 walls.
+-- Reuse the faction T1 wall icon instead of hunting a missing file.
+------------------------------------------------------------------------
+UnitBlueprint {
+    Display = {
+        IconName = 'urb5202',
+    },
+}

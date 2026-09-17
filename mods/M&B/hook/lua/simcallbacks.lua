@@ -879,6 +879,15 @@ local SKUF_REACH_MARGIN = 0 -- queue radius = arm reach minus this; 0 = full rea
                             -- the freeze it guarded against was zero-mass props, now mass-filtered)
 local SKUF_RETRY_MAX = 3 -- same target re-issued this many times = engine refuses it
                          -- (island/cliff rock) -> mark bad, never pick again
+local SKUF_HOP_FRACTION = 0.7 -- AUTOMATIC station hops cover only this share of the
+                              -- way (user, 2026-08-27): the engineer never ARRIVES at
+                              -- its self-picked target, so it never drives into a tree
+                              -- and never crushes a batch-reclaim forest array -- the
+                              -- stop point is the next station and the target is eaten
+                              -- from arm's reach. 0.8 still clipped trees sometimes
+                              -- (user, 2026-08-27 evening) -> 0.7. NEVER applied to
+                              -- the player's own anchor order (the reclaim click):
+                              -- that point the player chose themselves, driven in full
 
 local skufAutoEngs = {} -- eid -> { anchor={x,z}, radius, expect } while in auto-reclaim mode
 local skufReclaimCandidates = {} -- eid -> click pos until the thread confirms it was NOT a rock click
@@ -1088,9 +1097,15 @@ local function SkufScanAndQueue(eng, eid, entry)
     end
     -- the hop target is claimed so other auto-engineers leave it alone during the drive
     skufClaimed[hop.p] = eid
-    IssueMove({ eng }, hop.pos)
+    -- drive only 70% of the way (user, 2026-08-27): the engineer never reaches the
+    -- target, so it never drives into a tree and never breaks a forest array -- the
+    -- stop point is the next station, and the target plus everything around it is
+    -- eaten from arm's reach
+    local hx = ep[1] + (hop.pos[1] - ep[1]) * SKUF_HOP_FRACTION
+    local hz = ep[3] + (hop.pos[3] - ep[3]) * SKUF_HOP_FRACTION
+    IssueMove({ eng }, { hx, GetTerrainHeight(hx, hz), hz })
     entry.expect = 1
-    LOG('SKUF auto-reclaim hop eng=' .. eid .. ' to ' .. math.floor(hop.pos[1]) .. ',' .. math.floor(hop.pos[3]) .. ' mass=' .. hop.m .. ' radius=' .. entry.radius)
+    LOG('SKUF auto-reclaim hop eng=' .. eid .. ' to ' .. math.floor(hx) .. ',' .. math.floor(hz) .. ' mass=' .. hop.m .. ' radius=' .. entry.radius)
     return 1
 end
 
@@ -1136,6 +1151,22 @@ local function SkufAutoReclaimThread()
                     SkufReleaseClaims(eid)
                     skufAutoEngs[eid] = nil
                     LOG('SKUF auto-reclaim off: switch off eng=' .. eid)
+                elseif eng:IsUnitState('Building') or eng:IsUnitState('Attacking')
+                    or (EntityCategoryContains(categories.COMMAND, eng) and (eng:GetWorkProgress() or 0) > 0
+                        and not eng:IsUnitState('Reclaiming')) then
+                    -- player orders that end auto mode (user, 2026-09-16): build,
+                    -- attack, and an ACU enhancement. We only ever issue reclaim
+                    -- and move orders ourselves, so these states can only come
+                    -- from the player -- the scavenger is done.
+                    -- WorkProgress rises while RECLAIMING too (user, 2026-09-17:
+                    -- the ACU kept switching itself off mid-rock): a reclaiming
+                    -- commander is eating for us, not upgrading -- leave him alone.
+                    SkufReleaseClaims(eid)
+                    skufAutoEngs[eid] = nil
+                    LOG('SKUF auto-reclaim off: player order (build/attack/upgrade) eng=' .. eid
+                        .. ' b=' .. tostring(eng:IsUnitState('Building'))
+                        .. ' a=' .. tostring(eng:IsUnitState('Attacking'))
+                        .. ' wp=' .. tostring(eng:GetWorkProgress() or 0))
                 elseif entry.justArmed then
                     -- armed this very pass: skip one round so the engine registers the
                     -- move order we just issued before we start counting the queue

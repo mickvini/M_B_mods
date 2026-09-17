@@ -173,7 +173,13 @@ do
 			end
 
 			if selectedUnits and rollOver then
-				if CM.IsAutoMode() and not currentCM[2].name == 'RULEUCC_Repair' then
+				-- drop our auto-armed build ghost as soon as the cursor is over any
+				-- unit: the marker sits under the built mex, and rollover lags a frame,
+				-- so the ghost may arm briefly over an occupied deposit - close it here.
+				-- Only OUR ghost (IsAutoMode, the 3rd-arg modes) is touched; a manual
+				-- build mode from the menu is never closed. Repair stays excluded
+				-- because Alt+Left arms it ON a unit on purpose.
+				if CM.IsAutoMode() and (not currentCM[2] or currentCM[2].name ~= 'RULEUCC_Repair') then
 					--SPEW("BLURK!")
 					CM.EndCommandMode(true)
 				end
