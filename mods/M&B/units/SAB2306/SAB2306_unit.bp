@@ -267,7 +267,7 @@ UnitBlueprint {
             },
             FiringTolerance = 2,
             Label = 'EyeWeapon',
-            MaxRadius = 64,
+            MaxRadius = 68,
             MinRadius = 1,
             MuzzleChargeDelay = 0,
             MuzzleSalvoDelay = 0,
@@ -307,7 +307,7 @@ UnitBlueprint {
                 'SPECIALLOWPRI',
                 'ALLUNITS',
             },
-            TargetRestrictDisallow = 'UNTARGETABLE,           HIGHALTAIR',
+            TargetRestrictDisallow = 'UNTARGETABLE,            HIGHALTAIR',
             WeaponCategory = 'Direct Fire',
             DoNotCollideList = {
                 'MISSILE',
